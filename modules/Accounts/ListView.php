@@ -63,7 +63,11 @@ if($_REQUEST['errormsg'] != '')
 {
         $smarty->assign("ERROR","");
 }
-					
+
+if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
+	$_SESSION['ACCOUNTS_ORDER_BY'] = '';
+}	
+	
 //<<<<<<< sort ordering >>>>>>>>>>>>>
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();

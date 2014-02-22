@@ -23,7 +23,6 @@ $log = LoggerManager::getLogger('note_list');
 
 global $currentModule,$image_path,$theme;
 $category = getParentTab();
-
 if(!$_SESSION['lvs'][$currentModule])
 {
 	unset($_SESSION['lvs']);
@@ -43,8 +42,8 @@ if (!isset($where)) $where = "";
 $url_string = ''; // assigning http url string
 
 $focus = new Documents();
-// Initialize sort by fields 
-$focus->initSortbyField('Documents'); 
+// Initialize sort by fields
+$focus->initSortbyField('Documents');
 // END
 $smarty = new vtigerCRM_Smarty;
 $other_text = Array();
@@ -57,12 +56,18 @@ if($_REQUEST['errormsg'] != '')
 {
         $smarty->assign("ERROR","");
 }
+
+if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
+	$_SESSION['NOTES_ORDER_BY'] = '';
+}
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();
 
-$_SESSION['NOTES_ORDER_BY'] = $order_by;
-$_SESSION['NOTES_SORT_ORDER'] = $sorder;
+if(empty($_REQUEST['folderid'])) {
+	$_SESSION['NOTES_ORDER_BY'] = $order_by;
+	$_SESSION['NOTES_SORT_ORDER'] = $sorder;
+}
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
 
 if(isPermitted('Documents','Delete','') == 'yes')
@@ -128,7 +133,7 @@ if(isset($where) && $where != '') {
 } else {
 	unset($_SESSION['export_where']);
 }
-   
+
 $focus->query = $query;
 
 if($viewid ==0)
@@ -158,9 +163,6 @@ if($viewid !='')
 $url_string .="&viewname=".$viewid;
 
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
-$listview_header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,
-		$order_by);
-$smarty->assign("LISTHEADER", $listview_header);
 $listview_header_search = $controller->getBasicSearchFieldInfoList();
 $smarty->assign("SEARCHLISTHEADER",$listview_header_search);
 
@@ -168,14 +170,14 @@ $smarty->assign("SELECT_SCRIPT", $view_script);
 
 $start = Array();
 $request_folderid = '';
-   	
+
 if($_REQUEST['action'] == 'DocumentsAjax' && isset($_REQUEST['folderid']))
 {
 	$request_folderid = vtlib_purify($_REQUEST['folderid']);
 	$start[$request_folderid] = vtlib_purify($_REQUEST['start']);
 }
 $focus->del_create_def_folder($focus->query);
- 
+
 $dbQuery = "select * from vtiger_attachmentsfolder";
 $result = $adb->pquery($dbQuery,array());
 $foldercount = $adb->num_rows($result);
@@ -192,12 +194,22 @@ if($foldercount > 0 )
 		$list_query = $focus->query;
 		$folder_id = $adb->query_result($result,$i,"folderid");
 		$query .= " and vtiger_notes.folderid = $folder_id";
+		$sorder = $focus->getSortOrderForFolder($folder_id);
+		if(!is_array($_SESSION['NOTES_FOLDER_SORT_ORDER'])) {
+			$_SESSION['NOTES_FOLDER_SORT_ORDER'] = array();
+		}
+		$_SESSION['NOTES_FOLDER_SORT_ORDER'][$folder_id] = $sorder;
+		$order_by = $focus->getOrderByForFolder($folder_id);
+		if(!is_array($_SESSION['NOTES_FOLDER_ORDER_BY'])) {
+			$_SESSION['NOTES_FOLDER_ORDER_BY'] = array();
+		}
+		$_SESSION['NOTES_FOLDER_ORDER_BY'][$folder_id] = $order_by;
 		if($folder_id != $request_folderid)
 		{
 			$start[$folder_id] = 1;
 		}
-		
-		
+
+
 		if(isset($order_by) && $order_by != '')
 		{
 			$tablename = getTableNameForField('Documents',$order_by);
@@ -221,10 +233,10 @@ if($foldercount > 0 )
 			$displayFolder=true;
 		}
 		//navigation start
-		$max_entries_per_page = $list_max_entries_per_page; 
+		$max_entries_per_page = $list_max_entries_per_page;
 		//Postgres 8 fixes
 		if( $adb->dbType == "pgsql")
-			$list_query = fixPostgresQuery( $query, $log, 0);	
+			$list_query = fixPostgresQuery( $query, $log, 0);
 
 		if($folder_id == $request_folderid){
 			$start[$folder_id] = 1;
@@ -240,28 +252,31 @@ if($foldercount > 0 )
 				}
 			}
 		}
-		
+
 		$navigation_array = VT_getSimpleNavigationValues($start[$folder_id],$max_entries_per_page,$num_records);
 		if($folder_id == $request_folderid){
 			if(!is_array($_SESSION['lvs'][$currentModule]['start'])){
 				$_SESSION['lvs'][$currentModule]['start'] = array();
 			}
 			$_SESSION['lvs'][$currentModule]['start'][$folder_id] = $start[$folder_id];
-		}		
+		}
 		$limit_start_rec = ($start[$folder_id]-1) * $max_entries_per_page;
-		
+
 		if( $adb->dbType == "pgsql")
 			$list_result = $adb->pquery($query. " OFFSET $limit_start_rec LIMIT $max_entries_per_page", array());
 		else
 			$list_result = $adb->pquery($query. " LIMIT $limit_start_rec, $max_entries_per_page", array());
 		//navigation end
-		
+
 		$folder_details=Array();
 		$folderid = $adb->query_result($result,$i,"folderid");
 		$folder_details['folderid']=$folderid;
 		$folder_details['foldername']=$adb->query_result($result,$i,"foldername");
 		$foldername = $folder_details['foldername'];
 		$folder_details['description']=$adb->query_result($result,$i,"description");
+		$folder_url_string = $url_string . "&folderid=$folderid";
+		$folder_details['header'] = $controller->getListViewHeader($focus,$currentModule,
+				$folder_url_string,$sorder, $order_by);
 		$folder_files = $controller->getListViewEntries($focus,$currentModule,$list_result,
 			$navigation_array);
 		$folder_details['entries']= $folder_files;
@@ -300,12 +315,12 @@ $smarty->assign("ALPHABETICAL", $alphabetical);
 $smarty->assign("NAVIGATION", $navigationOutput);
 $smarty->assign("RECORD_COUNTS", $record_string);
 
-$smarty->assign("IS_ADMIN",$current_user->is_admin); 
+$smarty->assign("IS_ADMIN",$current_user->is_admin);
 
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
 
-ListViewSession::setSessionQuery($currentModule,$list_query,$viewid);
+ListViewSession::setSessionQuery($currentModule,$focus->query,$viewid);
 
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
@@ -315,6 +330,6 @@ $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModul
 
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '' || $_REQUEST['mode'] == 'ajax')
 	$smarty->display("DocumentsListViewEntries.tpl");
-else	
+else
 	$smarty->display("DocumentsListView.tpl");
 ?>

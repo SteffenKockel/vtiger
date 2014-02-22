@@ -18,7 +18,7 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $visible = vtlib_purify($_REQUEST['visible']);
 $disable = vtlib_purify($_REQUEST['disable']);
-$label = getTranslatedString($_REQUEST['label']);
+$label = getTranslatedString(vtlib_purify($_REQUEST['label']));
 require_once($theme_path.'layout_utils.php');
 
 $output  .= '<div class="layerPopup" style="position:relative; display:block">' .

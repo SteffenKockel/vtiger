@@ -26,6 +26,10 @@ $list_buttons = Array();
 
 $focus = new $currentModule();
 $focus->initSortbyField($currentModule);
+
+if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
+	$_SESSION[$currentModule."_Order_By"] = '';
+}
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();
 

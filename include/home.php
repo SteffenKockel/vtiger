@@ -420,7 +420,7 @@ class Homestuff{
 		
 		$contents = "";
 		if($adb->num_rows($result)>0){
-			$contents = $adb->query_result($result,0,"contents");
+			$contents = vtlib_purify($adb->query_result($result,0,"contents"));
 		}
 		return $contents;
 	}

@@ -13,7 +13,7 @@ require_once('include/utils/utils.php');
 
 global $app_strings;
 global $mod_strings;
-global $current_user;
+global $current_user, $currentModule;
 global $adb;
 global $theme;
 $theme_path="themes/".$theme."/";
@@ -21,6 +21,14 @@ $image_path=$theme_path."images/";
 $profileId=vtlib_purify($_REQUEST['profileid']);
 $profileName='';
 $profileDescription='';
+
+if(!empty($profileId)) {
+	if(!profileExists($profileId)) {
+		die(getTranslatedString('ERR_INVALID_PROFILE_ID', $currentModule));
+	}
+} elseif($_REQUEST['mode'] !='create') {
+	die(getTranslatedString('ERR_INVALID_PROFILE_ID', $currentModule));
+}
 
 $parentProfileId=vtlib_purify($_REQUEST['parentprofile']);
 if($_REQUEST['mode'] =='create' && $_REQUEST['radiobutton'] != 'baseprofile')
@@ -764,4 +772,11 @@ function getDisplayOutput($id,$tabid,$actionid)
 
 }
 
+function profileExists($profileId) {
+	global $adb;
+	
+	$result = $adb->pquery('SELECT 1 FROM vtiger_profile WHERE profileid = ?', array($profileId));
+	if($adb->num_rows($result) > 0) return true;
+	return false;
+}
 ?>

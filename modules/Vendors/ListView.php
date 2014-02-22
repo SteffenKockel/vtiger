@@ -55,6 +55,9 @@ if($_REQUEST['errormsg'] != '')
 }
 if (!isset($where)) $where = "";
 
+if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
+	$_SESSION['VENDORS_ORDER_BY'] = '';
+}
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
 if($_REQUEST['order_by'] != '')
 	$order_by = $adb->sql_escape_string($_REQUEST['order_by']);

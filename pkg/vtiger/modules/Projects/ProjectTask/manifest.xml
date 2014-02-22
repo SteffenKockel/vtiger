@@ -4,7 +4,7 @@
 <name>ProjectTask</name>
 <label>ProjectTask</label>
 <parent>Support</parent>
-<version>1.8</version>
+<version>1.9</version>
 <dependencies>
 <vtiger_version>5.2.0</vtiger_version>
 </dependencies>

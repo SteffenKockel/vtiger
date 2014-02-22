@@ -88,7 +88,7 @@ function set_focus() {ldelim}
 			<table width="100%" cellpadding="5" cellspacing="0" border="0"  class="homePageMatrixHdr">
 				<tr>
 					<td style="padding:10px;" >
-						<form name="basicSearch" action="index.php" onsubmit="return false;">
+						<form name="basicSearch" action="index.php" onsubmit="callSearch('Basic');return false;">
 						<table width="100%" cellpadding="5" cellspacing="0">
 						<tr>
 							<td width="20%" class="dvtCellLabel"><img src="{'basicSearchLens.gif'|@vtiger_imageurl:$THEME}"></td>

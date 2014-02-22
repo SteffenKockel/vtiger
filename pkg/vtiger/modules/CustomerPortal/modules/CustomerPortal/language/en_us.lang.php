@@ -1,7 +1,7 @@
 <?php
 /** YOUR LICENSE TEXT HERE **/
 $mod_strings = Array (
-'CustomerPortal' => 'CustomerPortal',
+'CustomerPortal' => 'Customer Portal',
 'LBL_BASIC_SETTINGS'=>'Basic Settings',
 'LBL_ADVANCED_SETTINGS'=>'Advanced Settings',
 'LBL_MODULE'=>'Module',

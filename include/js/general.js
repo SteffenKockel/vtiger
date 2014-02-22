@@ -856,9 +856,12 @@ function doformValidation(edit_type) {
 		//if existing portal value = 1, portal checkbox = checked, ( email field is available     AND email is empty ) then we should not allow
 		if(edit_type=='')
 		{
-			if((getObj('existing_portal').value == 0 && getObj('portal').checked && (getObj('email') == null || trim(getObj('email').value) == '')) ||
-			    getObj('existing_portal').value == 1 && getObj('portal').checked && getObj('email') != null && trim(getObj('email').value) == '')
-			{
+			if(getObj('existing_portal') != null 
+   				&& ((getObj('existing_portal').value == 0 && getObj('portal').checked && 
+          				(getObj('email') == null || trim(getObj('email').value) == '')) ||
+       				(getObj('existing_portal').value == 1 && getObj('portal').checked && 
+         		 		getObj('email') != null && trim(getObj('email').value) == ''))) {
+				
 				alert(alert_arr.PORTAL_PROVIDE_EMAILID);
 				return false;
 			}
@@ -1546,7 +1549,7 @@ function fnDown(obj){
 */
 var count = 0;
 var rowCnt = 1;
-function fnAddSrch(option_values,criteria_values){
+function fnAddSrch(){
 
     var tableName = document.getElementById('adSrc');
 
@@ -1563,19 +1566,40 @@ function fnAddSrch(option_values,criteria_values){
     else
 
         row.className = "dvtCellInfo";
+        
+    var fieldObject = document.getElementById("Fields0");
+    var conditionObject = document.getElementById("Condition0");
+    var searchValueObject = document.getElementById("Srch_value0");
 
-    var colone = row.insertCell(0);
+	var columnone = document.createElement('td');
+	var colone = fieldObject.cloneNode(true);
+	colone.setAttribute('id','Fields'+count);
+	colone.setAttribute('name','Fields'+count);
+	colone.setAttribute('value','');
+	colone.onchange = function() {
+							updatefOptions(colone, 'Condition'+count);
+						}
+	columnone.appendChild(colone);
+	row.appendChild(columnone);
+	
+	var columntwo = document.createElement('td');
+	var coltwo = conditionObject.cloneNode(true);
+	coltwo.setAttribute('id','Condition'+count);
+	coltwo.setAttribute('name','Condition'+count);
+	coltwo.setAttribute('value','');
+	columntwo.appendChild(coltwo);
+	row.appendChild(columntwo);
+	
+	var columnthree = document.createElement('td');
+	var colthree = searchValueObject.cloneNode(true);
+	colthree.setAttribute('id','Srch_value'+count);
+	colthree.setAttribute('name','Srch_value'+count);
+	colthree.setAttribute('value','');
+	colthree.value = '';
+	columnthree.appendChild(colthree);
+	row.appendChild(columnthree);
 
-    var coltwo = row.insertCell(1);
-
-    var colthree = row.insertCell(2);
-
-    colone.innerHTML="<select id='Fields"+count+"' name='Fields"+count+"' onchange=\"updatefOptions(this, 'Condition"+count+"')\" class='detailedViewTextBox'>"+option_values+"</select>";
-
-    coltwo.innerHTML="<select id='Condition"+count+"' name='Condition"+count+"' class='detailedViewTextBox'>"+criteria_values+"</select> ";
-
-    colthree.innerHTML="<input type='text' id='Srch_value"+count+"' name='Srch_value"+count+"' class='detailedViewTextBox'>";
-
+	updatefOptions(colone, 'Condition'+count);
 }
 
 function totalnoofrows()

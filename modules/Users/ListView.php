@@ -66,6 +66,10 @@ if(!$_SESSION['lvs'][$currentModule]) {
 	$_SESSION['lvs'][$currentModule] = get_object_vars($modObj);
 }
 
+if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
+	$_SESSION['USERS_ORDER_BY'] = '';
+}
+
 if($_REQUEST['sorder'] !='')
 	$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 else

@@ -327,7 +327,7 @@ class ReportRun extends CRMEntity
 				        $ui10_modules_query = $adb->pquery("SELECT relmodule FROM vtiger_fieldmodulerel WHERE fieldid=?",array($field_id));
   				        
 				       if($adb->num_rows($ui10_modules_query)>0){
-					        $querycolumn = " case vtiger_crmentityRel$module.setype";
+					        $querycolumn = " case vtiger_crmentityRel$module$field_id.setype";
 					        for($j=0;$j<$adb->num_rows($ui10_modules_query);$j++){
 					        	$rel_mod = $adb->query_result($ui10_modules_query,$j,'relmodule');
 					        	$rel_obj = CRMEntity::getInstance($rel_mod);
@@ -338,12 +338,12 @@ class ReportRun extends CRMEntity
 								
 								if($rel_mod=="Contacts" || $rel_mod=="Leads"){
 									if(getFieldVisibilityPermission($rel_mod,$current_user->id,'firstname')==0){
-										$link_field = "concat($link_field,' ',".$rel_tab_name."Rel$module.firstname)";
+										$link_field = "concat($link_field,' ',".$rel_tab_name."Rel$module"."_via_field".$field_id.".firstname)";
 									}
 								}
 								$querycolumn.= " when '$rel_mod' then $link_field ";
 					        }
-					        $querycolumn .= "end as '".$selectedfields[2]."', vtiger_crmentityRel$module.setype as 'Entity_type'" ;
+					        $querycolumn .= "end as '".$selectedfields[2]."', vtiger_crmentityRel$module$field_id.setype as 'Entity_type'" ;
 				       }
 			        }
 		        }
@@ -1549,7 +1549,8 @@ class ReportRun extends CRMEntity
 				left join vtiger_products as vtiger_productsSalesOrder on vtiger_productsSalesOrder.productid = vtiger_inventoryproductrelSalesOrder.productid  
 				left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid = vtiger_inventoryproductrelSalesOrder.productid";
 			}
-			$query .=" left join vtiger_contactdetails as vtiger_contactdetailsSalesOrder on vtiger_contactdetailsSalesOrder.contactid = vtiger_salesorder.contactid
+			$query .=" left join vtiger_salesordercf on vtiger_salesorder.salesorderid = vtiger_salesordercf.salesorderid
+				left join vtiger_contactdetails as vtiger_contactdetailsSalesOrder on vtiger_contactdetailsSalesOrder.contactid = vtiger_salesorder.contactid
 				left join vtiger_quotes as vtiger_quotesSalesOrder on vtiger_quotesSalesOrder.quoteid = vtiger_salesorder.quoteid				
 				left join vtiger_account as vtiger_accountSalesOrder on vtiger_accountSalesOrder.accountid = vtiger_salesorder.accountid
 				left join vtiger_potential as vtiger_potentialRelSalesOrder on vtiger_potentialRelSalesOrder.potentialid = vtiger_salesorder.potentialid 
@@ -1882,9 +1883,13 @@ class ReportRun extends CRMEntity
 							}elseif (in_array($fld->name,$this->ui10_fields) && !empty($custom_field_values[$i])) {
 								$type = getSalesEntityType($custom_field_values[$i]);
 								$tmp =getEntityName($type,$custom_field_values[$i]);
-								foreach($tmp as $key=>$val){
-									$fieldvalue = $val;
-									break;
+								if (is_array($tmp)){
+									foreach($tmp as $key=>$val){
+										$fieldvalue = $val;
+										break;
+									}
+								}else{
+									$fieldvalue = $custom_field_values[$i];
 								}
 							}
 							else {

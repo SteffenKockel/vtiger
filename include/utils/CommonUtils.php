@@ -22,6 +22,7 @@
 
   require_once('include/utils/utils.php'); //new
   require_once('include/utils/RecurringType.php');
+  require_once('include/utils/EmailTemplate.php');
   require_once 'include/QueryGenerator/QueryGenerator.php';
   require_once 'include/ListView/ListViewController.php';
 
@@ -1522,13 +1523,37 @@ function getParentTab() {
     $log->debug("Entering getParentTab() method ...");
     if(!empty($_REQUEST['parenttab'])) {
 		$log->debug("Exiting getParentTab method ...");
+        if(checkParentTabExists($_REQUEST['parenttab'])) {
 		return vtlib_purify($_REQUEST['parenttab']);
+        } else {
+            return getParentTabFromModule($_REQUEST['module']);
+        }
     } else {
 		$log->debug("Exiting getParentTab method ...");
 		return getParentTabFromModule($_REQUEST['module']);
     }
 }
 
+function checkParentTabExists($parenttab) {
+    global $adb;
+
+    if (file_exists('parent_tabdata.php') && (filesize('parent_tabdata.php') != 0)) {
+        include('parent_tabdata.php');
+        if(in_array($parenttab,$parent_tab_info_array))
+            return true;
+        else
+            return false;
+    } else {
+
+        $result = "select 1 from vtiger_parenttab where parenttab_label = ?";
+        $noofrows = $adb->num_rows($result);
+        if($noofrows > 0)
+            return true;
+        else
+            return false;
+    }
+         
+}
 /**
  * This function is used to get the days in between the current time and the modified time of an entity .
  * Takes the input parameter as $id - crmid  it will calculate the number of days in between the
@@ -2273,11 +2298,11 @@ function sendNotificationToGroups($groupid,$crmid,$module)
 	               $curr_userid = $adb->query_result($groupqry_res,$z,'id');
 	               $tosender=$adb->query_result($groupqry_res,$z,'user_name');
 	               $pmodule = 'Users';
-		       $description = $app_strings['MSG_DEAR']." ".$tosender.",<br>".$returnEntity[$crmid]." ".$app_strings['MSG_HAS_BEEN_CREATED_FOR']." ".$module."<br><br>".$app_strings['MSG_THANKS'].",<br>".$app_strings['MSG_VTIGERTEAM'];
+		       	   $description = $app_strings['MSG_DEAR']." ".$tosender.",<br>".$returnEntity[$crmid]." ".$app_strings['MSG_HAS_BEEN_CREATED_FOR']." ".$module."<br><br>".$app_strings['MSG_THANKS'].",<br>".$app_strings['MSG_VTIGERTEAM'];
 	               require_once('modules/Emails/mail.php');
-	               $mail_status = send_mail('Emails',$emailadd,$current_user->user_name,'','Record created-vTiger Team',$description,'','','all',$focus->id);
+	               $mail_status = send_mail('Emails',$emailadd,$current_user->user_name,'','Record created-vTiger Team',$description,'','','all',$crmid);
 	               $all_to_emailids []= $emailadd;
-	                $mail_status_str .= $emailadd."=".$mail_status."&&&";
+	               $mail_status_str .= $emailadd."=".$mail_status."&&&";
 	        }
 		}
 }
@@ -2611,91 +2636,22 @@ function getMergedDescription($description,$id,$parent_type)
 	global $adb,$log;
     $log->debug("Entering getMergedDescription ...");
 	$token_data_pair = explode('$',$description);
+	global $current_user;
+ 	$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
+ 	$description = $emailTemplate->getProcessedDescription();
+ 	$templateVariablePair = explode('$',$description);
+ 	$tokenDataPair = explode('$',$description);
 	$fields = Array();
 	for($i=1;$i < count($token_data_pair);$i+=2)
 	{
 
-		$module = explode('-',$token_data_pair[$i]);
+		$module = explode('-',$tokenDataPair[$i]);
 		$fields[$module[0]][] = $module[1];
-		
 	}
-	//replace the tokens with the values for the selected parent
-	switch($parent_type)
-	{
-		case 'Accounts':
-			if(is_array($fields["accounts"]))
-			{
-				$columnfields = implode(',',$fields["accounts"]);
-				$query = "select $columnfields from vtiger_account inner join vtiger_accountscf where vtiger_account.accountid =? and vtiger_accountscf.accountid =?";
-				$result = $adb->pquery($query, array($id,$id));
-				foreach($fields["accounts"] as $columnname)			
-				{
-					$token_data = '$accounts-'.$columnname.'$';
-					$description = str_replace($token_data,$adb->query_result($result,0,$columnname),$description);
-				}
-			}
-			break;
-		case 'Contacts':
-			if(is_array($fields["contacts"]))
-			{
-				//Checking for salutation type and checking the table column to be queried
-				$key = array_search('salutationtype',$fields["contacts"]);
-				if(isset($key) && $key !='')
-				{
-					$fields["contacts"][$key]='salutation';
-				}	
-				
-				$columnfields = implode(',',$fields["contacts"]);
-				$query = "select $columnfields from vtiger_contactdetails inner join vtiger_contactscf inner join vtiger_customerdetails on vtiger_customerdetails.customerid=vtiger_contactdetails.contactid and vtiger_customerdetails.customerid=vtiger_contactscf.contactid where vtiger_contactdetails.contactid=?";
-				$result = $adb->pquery($query, array($id,$id));
-				foreach($fields["contacts"] as $columnname)
-				{
-					$token_data = '$contacts-'.$columnname.'$';
-					$token_value = $adb->query_result($result,0,$columnname);
-					// Fix for #5417
-					if($columnname == 'salutation') $token_value = getTranslatedString($token_value, 'Contacts');					 
-					$description = str_replace($token_data,$token_value,$description);
-				}
-			}
-			break;
-		case 'Leads':	
-			if(is_array($fields["leads"]))
-			{
-				//Checking for salutation type and checking the table column to be queried
-				$key = array_search('salutationtype',$fields["leads"]);
-				if(isset($key) && $key !='')
-				{
-					$fields["leads"][$key]='salutation';
-				}
-				$columnfields = implode(',',$fields["leads"]);
-				$query = "select $columnfields from vtiger_leaddetails inner join vtiger_leadscf where vtiger_leaddetails.leadid=? and vtiger_leadscf.leadid=?";
-				$result = $adb->pquery($query, array($id,$id));
-				foreach($fields["leads"] as $columnname)
-				{
-					$token_data = '$leads-'.$columnname.'$';					
-					$token_value = $adb->query_result($result,0,$columnname);
-					// Fix for #5417
-					if($columnname == 'salutation') $token_value = getTranslatedString($token_value, 'Leads');					 
-					$description = str_replace($token_data,$token_value,$description);
-				}
-			}
-			break;
-		case 'Users':	
-			if(is_array($fields["users"]))
-			{
-				$columnfields = implode(',',$fields["users"]);
-				$query = "select $columnfields from vtiger_users where id=?";
-				$result = $adb->pquery($query, array($id));
-				foreach($fields["users"] as $columnname)
-				{
-					$token_data = '$users-'.$columnname.'$';
-					$description = str_replace($token_data,$adb->query_result($result,0,$columnname),$description);
-				}
-			}
-			break;
-	}
-
-	$description = getMergedDescriptionCustomVars($fields, $description);//Puneeth : Added for custom date & time fields
+    if(is_array($fields['custom']) && count($fields['custom']) > 0){
+    //Puneeth : Added for custom date & time fields
+    $description = getMergedDescriptionCustomVars($fields, $description);
+    }
     $log->debug("Exiting from getMergedDescription ...");
 	return $description;
 }
@@ -3469,46 +3425,31 @@ function perform_post_migration_activities() {
 function getEmailTemplateVariables(){
 	global $adb;
 	$modules_list = array('Accounts', 'Contacts', 'Leads', 'Users');
-	$module_cf_table = array('Accounts' => 'vtiger_accountscf',
-							'Contacts' => 'vtiger_contactscf',
-							'Leads' => 'vtiger_leadscf');
+
 	foreach($modules_list as $index=>$module){
 		if($module == 'Calendar') {
 			$focus = new Activity();
 		} else {
 			$focus = new $module();
 		}
-		$tabname = $focus->table_name;
-		$default_fields = $focus->emailTemplate_defaultFields;
-		// Set the default email template fields for the given module 
-		if ($default_fields != null) {
-			foreach($default_fields as $index=>$field){
-				if($field=='support_start_date' || $field=='support_end_date'){
-					$tabname='vtiger_customerdetails';
+		$field=array();
+		$tabid=getTabid($module);
+		//many to many relation information field campaignrelstatus(this is the column name of the
+		//field) has block set to '0', which should be ignored.
+		$result=$adb->pquery("select fieldlabel,columnname,displaytype from vtiger_field where tabid=? and vtiger_field.presence in (0,2) and displaytype in (1,2,3) and block !=0",array($tabid));
+		$norows = $adb->num_rows($result);
+		if($norows > 0){
+			for($i=0;$i<$norows;$i++){
+				$field =$adb->query_result($result,$i,'fieldlabel');
+				$columnname=$adb->query_result($result,$i,'columnname');
+				if($columnname=='support_start_date' || $columnname=='support_end_date'){
+						$tabname='vtiger_customerdetails';
 				}
-				$sql="select fieldlabel from vtiger_field where tablename=? and columnname=? and vtiger_field.presence in (0,2)";
-				$result=$adb->pquery($sql,array($tabname,$field));
-				$norows = $adb->num_rows($result);
-				if($norows > 0){
-					$option=array(getTranslatedString($module).': '.getTranslatedString($adb->query_result($result,'fieldlabel')),"$".strtolower($module)."-".$field."$");
-					$allFields[] = $option;
-				}
+				$option=array(getTranslatedString($module).': '.getTranslatedString($adb->query_result($result,$i,'fieldlabel')),"$".strtolower($module)."-".$columnname."$");
+				$allFields[] = $option;
 			}
 		}
-		// Set the custom fields of a given module for Email templates
-			$custFields=getCustomFieldArray($module);
-			foreach($custFields as $val=>$key){
-				$sql="select fieldlabel from vtiger_field where tablename=? and columnname=? and uitype!=56 and vtiger_field.presence in (0,2)";
-				$result=$adb->pquery($sql,array($module_cf_table[$module],$val));
-				$norows = $adb->num_rows($result);
-				if($norows > 0){
-					if($adb->query_result($result,'fieldlabel') != '' and $adb->query_result($result,'fieldlabel') !=NULL){
-					$option=array(getTranslatedString($module).': '.getTranslatedString($adb->query_result($result,'fieldlabel')),"$".strtolower($module)."-".$val."$");
-					$allFields[] = $option;
-					}
-				}
-			}
-		//}
+		
 		$allOptions[] = $allFields;
 		$allFields="";
 	}

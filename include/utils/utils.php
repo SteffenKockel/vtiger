@@ -432,6 +432,7 @@ function return_application_language($language)
 	$temp_app_strings = $app_strings;
 	$language_used = $language;
 
+	checkFileAccess("include/language/$language.lang.php");
 	@include("include/language/$language.lang.php");
 	if(!isset($app_strings))
 	{
@@ -4874,4 +4875,29 @@ function getBlockName($blockid) {
 	}
 	return '';
 }
+
+function validateAlphaNumericInput($string){
+    preg_match('/^[\w _\-]+$/', $string, $matches);
+    if(count($matches) == 0) {
+        return false;
+    }
+    return true;
+}
+
+function validateServerName($string){
+    preg_match('/^[\w\-\.\\/:]+$/', $string, $matches);
+    if(count($matches) == 0) {
+        return false;
+    }
+    return true;
+}
+
+function validateEmailId($string){
+    preg_match('/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/', $string, $matches);
+    if(count($matches) == 0) {
+        return false;
+    }
+    return true;
+}
+
 ?>

@@ -117,6 +117,7 @@ function editexpressionscript($){
 				var fieldLabel = getfieldlabel(fieldName);
 				var moduleName = $('#pick_module').attr('value');
 				
+				expression = expression.replace(/<script(.|\s)*?\/script>/g, "");
 				if(expression == '') return false;
 				
 				VtigerJS_DialogBox.block();

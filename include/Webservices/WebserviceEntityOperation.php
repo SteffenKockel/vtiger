@@ -67,6 +67,7 @@ abstract class WebserviceEntityOperation{
 		switch($webserviceField->getFieldDataType()){
 			case 'reference': $typeDetails['refersTo'] = $webserviceField->getReferenceList();
 				break;
+			case 'multipicklist':
 			case 'picklist': $typeDetails["picklistValues"] = $this->getPicklistDetails($webserviceField);
 				$typeDetails['defaultValue'] = $typeDetails["picklistValues"][0]['value'];
 				break;

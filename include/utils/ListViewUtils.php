@@ -1277,8 +1277,9 @@ function getSearchListViewEntries($focus, $module,$list_result,$navigation_array
 							$list_result_count = $i-1;
 							$value = getValue($ui_col_array,$list_result,$fieldname,$focus,$module,$entity_id,$list_result_count,"search",$focus->popup_type);
 							if(isset($forfield) && $forfield != '' && $focus->popup_type != 'detailview') {
-								$value = strip_tags($value); // Remove any previous html conversion
-								$value = "<a href='javascript:window.close();' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\")'>$value</a>";
+								$value1 = strip_tags($value);
+								$value = htmlspecialchars(addslashes(html_entity_decode(strip_tags($value), ENT_QUOTES,$default_charset)), ENT_QUOTES,$default_charset); // Remove any previous html conversion
+								$value = "<a href='javascript:window.close();' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\")'>$value1</a>";
 							}
 						}
 						// END

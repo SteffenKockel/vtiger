@@ -26,7 +26,7 @@ require_once("VTWorkflowUtils.php");
 			return;
 		}
 
-		$description = $request["description"];
+		$description = from_html($request["description"]);
 		$moduleName = $request["module_name"];
 		$conditions = $request["conditions"];
 		$taskId = $request["task_id"];

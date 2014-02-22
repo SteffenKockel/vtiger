@@ -81,15 +81,10 @@ function getKeyMetrics($maxval,$calCnt)
 			$metricresult = $adb->query($metricsql);
 			if($metricresult)
 			{
-				if($metriclist['module'] == "Calendar")
-					$metriclists[$key]['count'] = $adb->num_rows($metricresult);
-				else
+				$rowcount = $adb->fetch_array($metricresult);	
+				if(isset($rowcount))
 				{
-					$rowcount = $adb->fetch_array($metricresult);
-					if(isset($rowcount))
-					{
-						$metriclists[$key]['count'] = $rowcount['count'];
-					}
+					$metriclists[$key]['count'] = $rowcount['count'];
 				}
 			}
 		}

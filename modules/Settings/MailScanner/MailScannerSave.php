@@ -12,17 +12,30 @@
 require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
 require_once('modules/Settings/MailScanner/core/MailBox.php');
 
+
+$scannername = vtlib_purify(trim($_REQUEST['mailboxinfo_scannername']));
+if(!empty($scannername) && !validateAlphanumericInput($scannername)) {
+	$scannername = '';
+}
+$server     = vtlib_purify(trim($_REQUEST['mailboxinfo_server']));
+if(!empty($server) && !validateServerName($server)) {
+	$server = '';
+}
+$username   = vtlib_purify(trim($_REQUEST['mailboxinfo_username']));
+if(!empty($username) && !validateEmailId($username) && !validateAlphanumericInput($username)) {
+	$username = '';
+}
+
 $newscannerinfo = new Vtiger_MailScannerInfo(false, false);
-$newscannerinfo->scannername = trim($_REQUEST['mailboxinfo_scannername']);
-$newscannerinfo->server     = trim($_REQUEST['mailboxinfo_server']);
-$newscannerinfo->protocol   = trim($_REQUEST['mailboxinfo_protocol']);
-$newscannerinfo->username   = trim($_REQUEST['mailboxinfo_username']);
-$newscannerinfo->password   = trim($_REQUEST['mailboxinfo_password']);
-$newscannerinfo->ssltype    = trim($_REQUEST['mailboxinfo_ssltype']);
-$newscannerinfo->sslmethod  = trim($_REQUEST['mailboxinfo_sslmethod']);
-$newscannerinfo->server     = trim($_REQUEST['mailboxinfo_server']);
-$newscannerinfo->searchfor  = trim($_REQUEST['mailboxinfo_searchfor']);
-$newscannerinfo->markas     = trim($_REQUEST['mailboxinfo_markas']);
+$newscannerinfo->scannername = $scannername;
+$newscannerinfo->server     = $server;
+$newscannerinfo->protocol   = vtlib_purify(trim($_REQUEST['mailboxinfo_protocol']));
+$newscannerinfo->username   = $username;
+$newscannerinfo->password   = vtlib_purify(trim($_REQUEST['mailboxinfo_password']));
+$newscannerinfo->ssltype    = vtlib_purify(trim($_REQUEST['mailboxinfo_ssltype']));
+$newscannerinfo->sslmethod  = vtlib_purify(trim($_REQUEST['mailboxinfo_sslmethod']));
+$newscannerinfo->searchfor  = vtlib_purify(trim($_REQUEST['mailboxinfo_searchfor']));
+$newscannerinfo->markas     = vtlib_purify(trim($_REQUEST['mailboxinfo_markas']));
 $newscannerinfo->isvalid    =($_REQUEST['mailboxinfo_enable'] == 'true')? true : false;
 
 // Rescan all folders on next run?

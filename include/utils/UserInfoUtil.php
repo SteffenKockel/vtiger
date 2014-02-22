@@ -751,7 +751,7 @@ function isPermitted($module,$actionname,$record_id='')
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	$permission = "no";
-	if($module == 'Users' || $module == 'Home' || $module == 'uploads')
+	if(($module == 'Users' || $module == 'Home' || $module == 'uploads') && $_REQUEST['parenttab'] != 'Settings')
 	{
 		//These modules dont have security right now
 		$permission = "yes";

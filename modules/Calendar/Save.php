@@ -225,12 +225,6 @@ if(isset($_REQUEST['contactidlist']) && $_REQUEST['contactidlist'] != '')
 		}
 	}
 }
-//Added code to send mail to the assigned to user about the details of the vtiger_activity if sendnotification = on and assigned to user
-if($_REQUEST['sendnotification'] == 'on')
-{
-	$mail_contents = getRequestData($return_id);
-	getEventNotification($_REQUEST['activity_mode'],$_REQUEST['subject'],$mail_contents);
-}
 
 //code added to send mail to the vtiger_invitees
 if(isset($_REQUEST['inviteesid']) && $_REQUEST['inviteesid']!='')

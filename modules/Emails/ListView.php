@@ -48,6 +48,11 @@ $focus->initSortbyField('Emails');
 $smarty = new vtigerCRM_Smarty;
 $other_text = Array();
 
+
+if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
+	$_SESSION['EMAILS_ORDER_BY'] = '';
+}
+
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
 if($_REQUEST['order_by'] != '')
 	$order_by = $adb->sql_escape_string($_REQUEST['order_by']);

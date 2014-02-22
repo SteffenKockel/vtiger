@@ -12,6 +12,7 @@ class WebserviceField{
 	private $fieldId;
 	private $uitype;
 	private $blockId;
+	private $blockName;
 	private $nullable;
 	private $default;
 	private $tableName;
@@ -44,6 +45,7 @@ class WebserviceField{
 	private function __construct($adb,$row){
 		$this->uitype = $row['uitype'];
 		$this->blockId = $row['block'];
+		$this->blockName = null;
 		$this->tableName = $row['tablename'];
 		$this->columnName = $row['columnname'];
 		$this->fieldName = $row['fieldname'];
@@ -124,6 +126,17 @@ class WebserviceField{
 		return $this->columnName;
 	}
 	
+	public function getBlockId(){
+		return $this->blockId;
+	}
+	
+	public function getBlockName(){
+		if(empty($this->blockName)) {
+			$this->blockName = getBlockName($this->blockId);
+		}
+		return $this->blockName;
+	}
+
 	public function isNullable(){
 		if($this->dataFromMeta !== true){
 			$this->fillColumnMeta();

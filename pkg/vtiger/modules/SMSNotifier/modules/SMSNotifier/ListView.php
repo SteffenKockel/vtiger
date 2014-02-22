@@ -29,6 +29,10 @@ if(isPermitted($currentModule,'Delete','') == 'yes') $list_buttons['del'] = $app
 
 $focus = new $currentModule();
 $focus->initSortbyField($currentModule);
+
+if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
+	$_SESSION[$currentModule."_Order_By"] = '';
+}
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();
 

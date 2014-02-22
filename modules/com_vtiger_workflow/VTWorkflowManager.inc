@@ -112,7 +112,7 @@
 				$data = $adb->raw_query_result_rowdata($result, 0);
 				$workflow->id = $data["workflow_id"];
 				$workflow->moduleName = $data["module_name"];
-				$workflow->description = $data["summary"];
+				$workflow->description = to_html($data["summary"]);
 				$workflow->test = $data["test"];
 				$workflow->executionCondition = $data['execution_condition'];
 				return $workflow;

@@ -128,7 +128,7 @@ class Activity extends CRMEntity {
 		{
 			$this->deleteRelation('vtiger_cntactivityrel');
 		}
-		if(isset($this->column_fields['sendnotification'])){
+		if(!empty($this->column_fields['sendnotification'])){
 
 			$mail_data = Array();
 			$mail_data['user_id'] = $this->column_fields['assigned_user_id'];

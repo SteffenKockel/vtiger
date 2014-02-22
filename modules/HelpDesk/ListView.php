@@ -52,6 +52,10 @@ if($_REQUEST['errormsg'] != '')
 }
 $url_string = ''; // assigning http url string
 
+if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
+	$_SESSION['HELPDESK_ORDER_BY'] = '';
+}
+
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();

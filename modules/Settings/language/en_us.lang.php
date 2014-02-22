@@ -1200,5 +1200,7 @@ $mod_strings = Array(
 'LBL_CUSTOMER_PORTAL'=> 'Customer Portal',
 
 'LBL_ADD_CUSTOMFIELD' => 'Add Custom Field',
+
+'ERR_INVALID_PROFILE_ID' => 'Invalid Profile Id. Please specify valid Profile Id',
 );
 ?>

@@ -17,7 +17,7 @@ require_once('include/upload_file.php');
 
 // Note is used to store customer information.
 class Documents extends CRMEntity {
-	
+
 	var $log;
 	var $db;
 	var $table_name = "vtiger_notes";
@@ -26,10 +26,10 @@ class Documents extends CRMEntity {
 
 	var $tab_name = Array('vtiger_crmentity','vtiger_notes');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_notes'=>'notesid','vtiger_senotesrel'=>'notesid');
-	
+
 	var $column_fields = Array();
 
-    var $sortby_fields = Array('title','modifiedtime','filename','createdtime','lastname','filedownloadcount','smownerid');		  
+    var $sortby_fields = Array('title','modifiedtime','filename','createdtime','lastname','filedownloadcount','smownerid');
 
 	// This is used to retrieve related vtiger_fields from form posts.
 	var $additional_column_fields = Array('', '', '', '');
@@ -46,27 +46,27 @@ class Documents extends CRMEntity {
 					'File Name'=>'filename',
 					'Assigned To'=>'assigned_user_id',
 					'Folder Name' => 'folderid'
-				     );	
-				     
+				     );
+
 	var $search_fields = Array(
 					'Title' => Array('notes'=>'notes_title'),
 					'File Name' => Array('notes'=>'filename'),
 					'Assigned To' => Array('crmentity'=>'smownerid'),
 					'Folder Name' => Array('attachmentsfolder'=>'foldername')
 		);
-	
+
 	var $search_fields_name = Array(
 					'Title' => 'notes_title',
 					'File Name' => 'filename',
 					'Assigned To' => 'assigned_user_id',
 					'Folder Name' => 'folderid'
-	);				     
+	);
 	var $list_link_field= 'notes_title';
 	var $old_filename = '';
 	//var $groupTable = Array('vtiger_notegrouprelation','notesid');
 
 	var $mandatory_fields = Array('notes_title','createdtime' ,'modifiedtime','filename','filesize','filetype','filedownloadcount','assigned_user_id');
-	
+
 	//Added these variables which are used as default order by and sortorder in ListView
 	var $default_order_by = 'title';
 	var $default_sort_order = 'ASC';
@@ -83,7 +83,7 @@ class Documents extends CRMEntity {
 		global $log,$adb,$upload_badext;
 		$insertion_mode = $this->mode;
 		if(isset($this->parentid) && $this->parentid != '')
-			$relid =  $this->parentid;		
+			$relid =  $this->parentid;
 		//inserting into vtiger_senotesrel
 		if(isset($relid) && $relid != '')
 		{
@@ -104,10 +104,10 @@ class Documents extends CRMEntity {
 								$filesize = $_FILES[$filename_fieldname]['size'];
 								$filelocationtype = 'I';
 								$binFile = sanitizeUploadFileName($filename, $upload_badext);
-								$filename = ltrim(basename(" ".$binFile)); //allowed filename like UTF-8 characters 
+								$filename = ltrim(basename(" ".$binFile)); //allowed filename like UTF-8 characters
 							}
 						}
-				
+
 					}
 			}elseif($this->mode == 'edit') {
 				$fileres = $adb->pquery("select filetype, filesize,filename,filedownloadcount,filelocationtype from vtiger_notes where notesid=?", array($this->id));
@@ -129,7 +129,7 @@ class Documents extends CRMEntity {
 			$filelocationtype = 'E';
 			$filename = $this->column_fields[$filename_fieldname];
 			// If filename does not has the protocol prefix, default it to http://
-			// Protocol prefix could be like (https://, smb://, file://, \\, smb:\\,...) 
+			// Protocol prefix could be like (https://, smb://, file://, \\, smb:\\,...)
 			if(!empty($filename) && !preg_match('/^\w{1,5}:\/\/|^\w{0,3}:?\\\\\\\\/', trim($filename), $match)) {
 				$filename = "http://$filename";
 			}
@@ -146,7 +146,7 @@ class Documents extends CRMEntity {
 			$query = "delete from vtiger_seattachmentsrel where crmid = ?";
 			$qparams = array($this->id);
 			$adb->pquery($query, $qparams);
-		}	
+		}
 	}
 
 
@@ -159,7 +159,7 @@ class Documents extends CRMEntity {
 	{
 		global $log, $adb;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
-		
+
 		$file_saved = false;
 
 		foreach($_FILES as $fileindex => $files)
@@ -196,12 +196,12 @@ class Documents extends CRMEntity {
 	{
 		global $log;
 		$log->debug("Entering getOrderBy() method ...");
-		
-		$use_default_order_by = '';		
+
+		$use_default_order_by = '';
 		if(PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
 			$use_default_order_by = $this->default_order_by;
 		}
-		
+
 		if (isset($_REQUEST['order_by']))
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
 		else
@@ -210,6 +210,41 @@ class Documents extends CRMEntity {
 		return $order_by;
 	}
 
+	/**
+	 * Function used to get the sort order for Documents listview
+	 * @return String $sorder - sort order for a given folder.
+	 */
+	function getSortOrderForFolder($folderId) {
+		if(isset($_REQUEST['sorder']) && $_REQUEST['folderid'] == $folderId) {
+			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
+		} elseif(is_array($_SESSION['NOTES_FOLDER_SORT_ORDER']) &&
+					!empty($_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId])) {
+				$sorder = $_SESSION['NOTES_FOLDER_SORT_ORDER'][$folderId];
+		} else {
+			$sorder = $this->default_sort_order;
+		}
+		return $sorder;
+	}
+
+	/**
+	 * Function used to get the order by value for Documents listview
+	 * @return String order by column for a given folder.
+	 */
+	function getOrderByForFolder($folderId) {
+		$use_default_order_by = '';
+		if(PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
+			$use_default_order_by = $this->default_order_by;
+		}
+		if (isset($_REQUEST['order_by'])  && $_REQUEST['folderid'] == $folderId) {
+			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+		} elseif(is_array($_SESSION['NOTES_FOLDER_ORDER_BY']) &&
+				!empty($_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId])) {
+			$order_by = $_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId];
+		} else {
+			$order_by = ($use_default_order_by);
+		}
+		return $order_by;
+	}
 
 	/** Function to export the notes in CSV Format
 	* @param reference variable - where condition is passed when the query is executed
@@ -224,11 +259,11 @@ class Documents extends CRMEntity {
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery("Documents", "detail_view");
 		$fields_list = getFieldsListFromQuery($sql);
-		
+
 		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name" .
 				" FROM vtiger_notes
-				inner join vtiger_crmentity 
-					on vtiger_crmentity.crmid=vtiger_notes.notesid 
+				inner join vtiger_crmentity
+					on vtiger_crmentity.crmid=vtiger_notes.notesid
 				LEFT JOIN vtiger_attachmentsfolder on vtiger_notes.folderid=vtiger_attachmentsfolder.folderid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id " .
 				" LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid "
@@ -239,11 +274,11 @@ class Documents extends CRMEntity {
 			$query .= "  WHERE ($where) AND ".$where_auto;
 		else
 			$query .= "  WHERE ".$where_auto;
-					
+
 		$log->debug("Exiting create_export_query method ...");
 		        return $query;
-	}	
-	
+	}
+
 	function del_create_def_folder($query)
 	{
 		global $adb;
@@ -255,27 +290,28 @@ class Documents extends CRMEntity {
             $folderQuery = "select folderid from vtiger_attachmentsfolder";
             $folderresult = $adb->pquery($folderQuery,array());
             $noofdeffolders = $adb->num_rows($folderresult);
+
             if($noofdeffolders == 0)
             {
 			    $insertQuery = "insert into vtiger_attachmentsfolder values (0,'Default','Contains all attachments for which a folder is not set',1,0)";
 			    $insertresult = $adb->pquery($insertQuery,array());
             }
 		}
-		
+
 	}
-	
+
 	function insertintonotesrel($relid,$id)
 	{
 		global $adb;
 		$dbQuery = "insert into vtiger_senotesrel values ( ?, ? )";
 		$dbresult = $adb->pquery($dbQuery,array($relid,$id));
 	}
-	
+
 	/*function save_related_module($module, $crmid, $with_module, $with_crmid){
 		global $log;
 		$log->debug("indocument".$module.$crmid.$with_module.$with_crmid);
 		if(isset($this->parentid) && $this->parentid != '')
-			$relid =  $this->parentid;		
+			$relid =  $this->parentid;
 		//inserting into vtiger_senotesrel
 		if(isset($relid) && $relid != '')
 		{
@@ -283,7 +319,7 @@ class Documents extends CRMEntity {
 		}
 	}*/
 
-	
+
 	/*
 	 * Function to get the primary query part of a report
 	 * @param - $module Primary module name
@@ -292,7 +328,7 @@ class Documents extends CRMEntity {
 	function generateReportsQuery($module){
 	 			$moduletable = $this->table_name;
 	 			$moduleindex = $this->tab_name_index[$moduletable];
-	 				$query = "from $moduletable 
+	 				$query = "from $moduletable
 			        inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex
 			        inner join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=$moduletable.folderid
 					left join vtiger_groups as vtiger_groups".$module." on vtiger_groups".$module.".groupid = vtiger_crmentity.smownerid
@@ -300,27 +336,27 @@ class Documents extends CRMEntity {
 					left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
 		            left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
 		            return $query;
-		            
+
 	}
-	
+
 	/*
-	 * Function to get the secondary query part of a report 
+	 * Function to get the secondary query part of a report
 	 * @param - $module primary module name
 	 * @param - $secmodule secondary module name
 	 * returns the query string formed on fetching the related data for report for secondary module
 	 */
 	function generateReportsSecQuery($module,$secmodule){
 		$query = $this->getRelationQuery($module,$secmodule,"vtiger_notes","notesid");
-		$query .=" left join vtiger_crmentity as vtiger_crmentityDocuments on vtiger_crmentityDocuments.crmid=vtiger_notes.notesid and vtiger_crmentityDocuments.deleted=0 
+		$query .=" left join vtiger_crmentity as vtiger_crmentityDocuments on vtiger_crmentityDocuments.crmid=vtiger_notes.notesid and vtiger_crmentityDocuments.deleted=0
 		        left join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=vtiger_notes.folderid
 				left join vtiger_groups as vtiger_groupsDocuments on vtiger_groupsDocuments.groupid = vtiger_crmentityDocuments.smownerid
-				left join vtiger_users as vtiger_usersDocuments on vtiger_usersDocuments.id = vtiger_crmentityDocuments.smownerid"; 
+				left join vtiger_users as vtiger_usersDocuments on vtiger_usersDocuments.id = vtiger_crmentityDocuments.smownerid";
 
 		return $query;
 	}
 
 	/*
-	 * Function to get the relation tables for related modules 
+	 * Function to get the relation tables for related modules
 	 * @param - $secmodule secondary module name
 	 * returns the array with table names and fieldnames storing relations between module and this module
 	 */
@@ -328,10 +364,10 @@ class Documents extends CRMEntity {
 		$rel_tables = array();
 		return $rel_tables[$secmodule];
 	}
-	
+
 	// Function to unlink all the dependent entities of the given Entity by Id
 	function unlinkDependencies($module, $id) {
-		global $log;		
+		global $log;
 		/*//Backup Documents Related Records
 		$se_q = 'SELECT crmid FROM vtiger_senotesrel WHERE notesid = ?';
 		$se_res = $this->db->pquery($se_q, array($id));
@@ -345,18 +381,18 @@ class Documents extends CRMEntity {
 		}
 		$sql = 'DELETE FROM vtiger_senotesrel WHERE notesid = ?';
 		$this->db->pquery($sql, array($id));*/
-		
+
 		parent::unlinkDependencies($module, $id);
 	}
-	
+
 	// Function to unlink an entity with given Id from another entity
 	function unlinkRelationship($id, $return_module, $return_id) {
 		global $log;
 		if(empty($return_module) || empty($return_id)) return;
-		
+
 		$sql = 'DELETE FROM vtiger_senotesrel WHERE notesid = ? AND crmid = ?';
 		$this->db->pquery($sql, array($id, $return_id));
-			
+
 		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
 		$this->db->pquery($sql, $params);
@@ -379,11 +415,11 @@ class Documents extends CRMEntity {
 			}
 		}
 		return $fieldname;
-		
-	} 
-	
+
+	}
+
 //	Function to get fieldname for uitype 28 assuming that doc has only one file upload type
-	
+
 	function getFile_FieldName(){
 		global $adb,$log;
 		$query = 'SELECT fieldname from vtiger_field where tabid = ? and uitype = ?';
@@ -399,7 +435,7 @@ class Documents extends CRMEntity {
 		}
 		return $fieldname;
 	}
-	
+
 	/**
 	 * Check the existence of folder by folderid
 	 */
@@ -409,13 +445,13 @@ class Documents extends CRMEntity {
 		if(!empty($result) && $adb->num_rows($result) > 0) return true;
 		return false;
 	}
-	
+
 	/**
 	 * Customizing the restore procedure.
 	 */
 	function restore($modulename, $id) {
 		parent::restore($modulename, $id);
-		
+
 		global $adb;
 		$fresult = $adb->pquery("SELECT folderid FROM vtiger_notes WHERE notesid = ?", array($id));
 		if(!empty($fresult) && $adb->num_rows($fresult)) {
@@ -425,6 +461,6 @@ class Documents extends CRMEntity {
 				$adb->pquery("UPDATE vtiger_notes set folderid = 1 WHERE notesid = ?", array($id));
 			}
 		}
-	}	
-}	
+	}
+}
 ?>

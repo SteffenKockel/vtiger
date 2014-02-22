@@ -280,7 +280,7 @@ function sensex_info()
 </table>
 </form>
 
-{if ($MODULE eq 'Emails' || 'Documents') and ($USE_RTE eq 'true')}
+{if ($MODULE eq 'Emails' || $MODULE eq 'Documents') and ($USE_RTE eq 'true')}
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" defer="1">
 	var textAreaName = null;

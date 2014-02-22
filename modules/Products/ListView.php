@@ -33,6 +33,10 @@ if(isPermitted($currentModule,'Edit','') == 'yes') {
 
 $focus = new $currentModule();
 $focus->initSortbyField($currentModule);
+
+if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
+	$_SESSION['PRODUCTS_ORDER_BY'] = '';
+}
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();
 

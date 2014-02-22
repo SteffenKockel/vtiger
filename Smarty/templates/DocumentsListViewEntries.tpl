@@ -67,7 +67,7 @@
 											<table class="drop_down"  border="0" cellpadding="5" cellspacing="1" width="100%">
 												{foreach item=folder from=$ALL_FOLDERS}
 												<tr class='lvtColData' onmouseout="this.className='lvtColData'" onmouseover="this.className='lvtColDataHover'">
-													<td align="left">	
+													<td align="left">
 														<a href="javascript:;" onClick="MoveFile('{$folder.folderid}','{$folder.foldername}');" > {$folder.foldername}</a>
 													</td>
 												</tr>
@@ -76,15 +76,15 @@
 											</div>
 										</div>
 								</div>
-            					
-            					
+
+
             					</td>
             					{/if}
             					{if $CHECK.EditView eq 'yes'}
             						<td style="padding-right:5px"><input type="button" name="add" value="{$MOD.LBL_ADD_NEW_FOLDER}" class="crmbutton small edit" onClick="fnvshobj(this,'orgLay');" title="{$MOD.LBL_ADD_NEW_FOLDER}"></td>
       							{/if}
       							{if $EMPTY_FOLDERS|@count gt 0}
-      							<td> 
+      							<td>
       								<input type="button" name="show" value="{$MOD.LBL_VIEW_EMPTY_FOLDERS}" class="crmbutton small cancel" onClick="fnvshobj(this,'emptyfolder');" title="{$MOD.LBL_VIEW_EMPTY_FOLDERS}">
 								</td>
 								{/if}
@@ -123,26 +123,26 @@
 											<a href="javascript:confirmdelete('index.php?module=CustomView&action=Delete&dmodule={$MODULE}&record={$VIEWID}&parenttab={$CATEGORY}')">{$APP.LNK_CV_DELETE}</a>
 										{/if}
 										{if $CUSTOMVIEW_PERMISSION.ChangedStatus neq '' && $CUSTOMVIEW_PERMISSION.Label neq ''}
-											<span class="small">|</span>	
+											<span class="small">|</span>
 										   		<a href="#" id="customstatus_id" onClick="ChangeCustomViewStatus({$VIEWID},{$CUSTOMVIEW_PERMISSION.Status},{$CUSTOMVIEW_PERMISSION.ChangedStatus},'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_PERMISSION.Label}</a>
 										{/if}
 									</td>
 									{/if}
 								</tr>
-							</table> 
+							</table>
 						   <!-- Filters  END-->
 						   {/if}
-						</td>	
+						</td>
 					</tr>
-				</table> 
-				
+				</table>
+
 				<!-- List View's Buttons and Filters ends -->
 				{foreach item=folder from=$FOLDERS}
 				<!-- folder division starts -->
 				{assign var=foldercount value=$FOLDERS|@count}
 				<br>
 				<div id='{$folder.folderid}'>
-					<table class="reportsListTable" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">		
+					<table class="reportsListTable" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 						<tr>
 							<td class="mailSubHeader" width="30%">
 								<b>{$folder.foldername}</b>
@@ -160,10 +160,10 @@
 					 				<!-- File list table for a folder starts -->
 									<table border=0 cellspacing=1 cellpadding=3 width=100%>
 										<!-- Table Headers -->
-										{assign var="header_count" value=$LISTHEADER|@count}
+										{assign var="header_count" value=$folder.header|@count}
 										<tr>
 		            						<td class="lvtCol" width="10px"><input type="checkbox"  name="selectall{$folder.folderid}" onClick='toggleSelect_ListView(this.checked,"selected_id{$folder.folderid}","selectall{$folder.folderid}");'></td>
-											{foreach name="listviewforeach" item=header from=$LISTHEADER}
+											{foreach name="listviewforeach" item=header from=$folder.header}
 											<td class="lvtCol">{$header}</td>
 											{/foreach}
 										</tr>
@@ -171,7 +171,7 @@
 										{foreach item=entity key=entity_id from=$folder.entries}
 										<tr class="lvtColData" bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
 											<td width="2%"><input type="checkbox" name="selected_id{$folder.folderid}" id="{$entity_id}" value= '{$entity_id}' onClick='check_object(this,"selectall{$folder.folderid}")'></td>
-											{foreach item=recordid key=record_id from=$entity}				
+											{foreach item=recordid key=record_id from=$entity}
 												{foreach item=data from=$recordid}
 													{* vtlib customization: Trigger events on listview cell *}
 													<td onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">{$data}</td>
@@ -234,37 +234,37 @@
 																</td>
 																</tr>
 																</table>
-																{/if}	
-														</div>	 
+																{/if}
+														</div>
 													</td>
 												</tr>
 											{/if}
 										{/foreach}
 					 				</table>
-								</div> 
+								</div>
 							<!-- File list table for a folder ends -->
 							</td>
 						</tr>
 					</table>
 				</div>
 				<!-- folder division ends -->
-				{/foreach} 
+				{/foreach}
 				<!-- $FOLDERS ends -->
 			</td>
 			{/if}
 		<!-- conditional statement for $NO_FOLDERS ends -->
 		</tr>
 	</table>
-	
+
 			<!-- Move documents UI for Documents module starts -->
-		
-		
+
+
 		<!-- Move documents UI for Documents module ends -->
 		<div class="layerPopup thickborder" style="display:none;position:absolute; left:193px;top:106px;width:250px;" id="emptyfolder">
 			<table  class="layerHeadingULine" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tr>
 					<td class="genHeaderSmall" align="left">
-						{$MOD.LBL_EMPTY_FOLDERS} 
+						{$MOD.LBL_EMPTY_FOLDERS}
 					</td>
 					<td align="right" width="40%">
 						<a onclick="fninvsh('emptyfolder')" href="javascript:void(0);">
@@ -283,14 +283,14 @@
 						{else}
 							&nbsp;
 						{/if}
-					</td>					
+					</td>
 				</tr>
 			{/foreach}
 			</table>
 			</div>
 		</div>
-	
-</form>	
+
+</form>
 {$SELECT_SCRIPT}
 <div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options  options=$SEARCHLISTHEADER}</select></div>
 

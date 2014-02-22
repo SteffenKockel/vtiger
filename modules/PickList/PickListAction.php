@@ -11,7 +11,7 @@ require_once 'include/utils/utils.php';
 require_once 'modules/PickList/PickListUtils.php';
 require_once "include/Zend/Json.php";
 
-global $adb, $current_user;
+global $adb, $current_user, $default_charset;
 
 $moduleName = $_REQUEST['fld_module'];
 $tableName = $_REQUEST['fieldname'];
@@ -35,7 +35,7 @@ if($mode == 'add'){
 	$picklistid = $adb->query_result($result,0,"picklistid");
 	
 	for($i=0; $i<$count;$i++){
-		$val = trim($arr[$i]);
+		$val = htmlentities(trim($arr[$i]), ENT_QUOTES, $default_charset);
 		if(!empty($val)){
 			$id = $adb->getUniqueID("vtiger_$tableName");
 			$picklist_valueid = getUniquePicklistID();
@@ -68,7 +68,7 @@ if($mode == 'add'){
 	$num = $adb->num_rows($result);
 
 	for($i=0; $i<count($newValues);$i++){
-		$newVal = $newValues[$i];
+		$newVal = htmlentities($newValues[$i], ENT_QUOTES, $default_charset);
 		$oldVal = $oldValues[$i];
 		
 		if($newVal != $oldVal){

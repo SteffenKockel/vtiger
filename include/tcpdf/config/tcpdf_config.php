@@ -2,7 +2,7 @@
 //============================================================+
 // File name   : tcpdf_config.php
 // Begin       : 2004-06-11
-// Last Update : 2008-11-17
+// Last Update : 2010-09-24
 //
 // Description : Configuration file for TCPDF.
 //
@@ -30,32 +30,16 @@
  */
 
 // If you define the constant K_TCPDF_EXTERNAL_CONFIG, the following settings will be ignored.
+//crm-now: from config.inc.php
+global $root_directory, $site_URL;
 
 if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
-	
-	// DOCUMENT_ROOT fix for IIS Webserver
-	if ((!isset($_SERVER['DOCUMENT_ROOT'])) OR (empty($_SERVER['DOCUMENT_ROOT']))) {
-		if(isset($_SERVER['SCRIPT_FILENAME'])) {
-			$_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr($_SERVER['SCRIPT_FILENAME'], 0, 0-strlen($_SERVER['PHP_SELF'])));
-		} elseif(isset($_SERVER['PATH_TRANSLATED'])) {
-			$_SERVER['DOCUMENT_ROOT'] = str_replace( '\\', '/', substr(str_replace('\\\\', '\\', $_SERVER['PATH_TRANSLATED']), 0, 0-strlen($_SERVER['PHP_SELF'])));
-		}	else {
-			// define here your DOCUMENT_ROOT path if the previous fails
-			$_SERVER['DOCUMENT_ROOT'] = '/var/www';
-		}
-	}
-	
-	// Automatic calculation for the following K_PATH_MAIN constant
-	$k_path_main = str_replace( '\\', '/', realpath(substr(dirname(__FILE__), 0, 0-strlen('config'))));
-	if (substr($k_path_main, -1) != '/') {
-		$k_path_main .= '/';
-	}
 	
 	/**
 	 * Installation path (/var/www/tcpdf/).
 	 * By default it is automatically calculated but you can also set it as a fixed string to improve performances.
 	 */
-	define ('K_PATH_MAIN', $k_path_main);
+	define ('K_PATH_MAIN', $root_directory."include/tcpdf/");
 	
 	// Automatic calculation for the following K_PATH_URL constant
 	if (isset($_SERVER['HTTP_HOST']) AND (!empty($_SERVER['HTTP_HOST']))) {
@@ -72,7 +56,7 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	 * URL path to tcpdf installation folder (http://localhost/tcpdf/).
 	 * By default it is automatically calculated but you can also set it as a fixed string to improve performances..
 	 */
-	define ('K_PATH_URL', $k_path_url);
+	define ('K_PATH_URL', $site_URL."/include/tcpdf/");
 	
 	/**
 	 * path for PDF fonts
@@ -138,7 +122,7 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	/**
 	 * header logo image width [mm]
 	 */
-	define ('PDF_HEADER_LOGO_WIDTH', 30);
+	define ('PDF_HEADER_LOGO_WIDTH', 20);
 	
 	/**
 	 *  document unit of measure [pt=point, mm=millimeter, cm=centimeter, in=inch]
@@ -148,27 +132,27 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	/**
 	 * header margin
 	 */
-	define ('PDF_MARGIN_HEADER', 5);
+	define ('PDF_MARGIN_HEADER', 20);
 	
 	/**
 	 * footer margin
 	 */
-	define ('PDF_MARGIN_FOOTER', 10);
+	define ('PDF_MARGIN_FOOTER', 40);
 	
 	/**
 	 * top margin
 	 */
-	define ('PDF_MARGIN_TOP', 27);
+	define ('PDF_MARGIN_TOP', 20);
 	
 	/**
 	 * bottom margin
 	 */
-	define ('PDF_MARGIN_BOTTOM', 25);
+	define ('PDF_MARGIN_BOTTOM', 30);
 	
 	/**
 	 * left margin
 	 */
-	define ('PDF_MARGIN_LEFT', 15);
+	define ('PDF_MARGIN_LEFT', 20);
 	
 	/**
 	 * right margin
@@ -176,29 +160,34 @@ if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
 	define ('PDF_MARGIN_RIGHT', 15);
 	
 	/**
-	 * main font name
+	 * default main font name
 	 */
 	define ('PDF_FONT_NAME_MAIN', 'helvetica');
 	
 	/**
-	 * main font size
+	 * default main font size
 	 */
 	define ('PDF_FONT_SIZE_MAIN', 10);
 	
 	/**
-	 * data font name
+	 * default data font name
 	 */
 	define ('PDF_FONT_NAME_DATA', 'helvetica');
 	
 	/**
-	 * data font size
+	 * default data font size
 	 */
 	define ('PDF_FONT_SIZE_DATA', 8);
 	
 	/**
-	 * Ratio used to scale the images
+	 * default monospaced font name
 	 */
-	define ('PDF_IMAGE_SCALE_RATIO', 4);
+	define ('PDF_FONT_MONOSPACED', 'courier');
+	
+	/**
+	 * ratio used to adjust the conversion of pixels to user units
+	 */
+	define ('PDF_IMAGE_SCALE_RATIO', 1);
 	
 	/**
 	 * magnification factor for titles

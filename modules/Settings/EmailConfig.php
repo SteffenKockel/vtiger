@@ -34,21 +34,35 @@ $mail_server_username = $adb->query_result($result,0,'server_username');
 $mail_server_password = $adb->query_result($result,0,'server_password');
 $smtp_auth = $adb->query_result($result,0,'smtp_auth');
 $from_email_field = $adb->query_result($result, 0, 'from_email_field');
-if(isset($_REQUEST['server_name']))
-	$smarty->assign("MAILSERVER",vtlib_purify($_REQUEST['server_name']));
-elseif(isset($mail_server))
-	$smarty->assign("MAILSERVER",$mail_server);
-if(isset($_REQUEST['server_user']))
-	$smarty->assign("USERNAME",vtlib_purify($_REQUEST['server_user']));
-elseif(isset($mail_server_username))
+$servername = vtlib_purify($_REQUEST['server_name']);
+$username = vtlib_purify($_REQUEST['server_user']);
+
+if(!empty($servername)) {
+    $validInput = validateServerName($servername);
+if(! $validInput) {
+    $servername = '';
+ }
+    $smarty->assign("MAILSERVER",$servername);
+} elseif(isset($mail_server)) {
+    $smarty->assign("MAILSERVER",$mail_server);
+}
+
+if(!empty($username)) {
+    $validInput = validateEmailId($username);
+if(! $validInput) {
+    $username = '';
+ }
+	$smarty->assign("USERNAME",$username);
+} elseif(isset($mail_server_username)) {
 	$smarty->assign("USERNAME",$mail_server_username);
+}
+
 if (isset($mail_server_password))
 	$smarty->assign("PASSWORD",$mail_server_password);
 if(isset($_REQUEST['from_email_field'])){
 
 	$smarty->assign("FROM_EMAIL_FIELD",vtlib_purify($_REQUEST['from_email_field']));
-}
-elseif(isset($from_email_field)){
+} elseif(isset($from_email_field)) {
 	$smarty->assign("FROM_EMAIL_FIELD",$from_email_field);
 }
 if(isset($_REQUEST['auth_check']))

@@ -51,15 +51,11 @@ global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
-$log->info("Document detail view");
-
 $smarty = new vtigerCRM_Smarty;
-$dbQuery="select filename,folderid,filelocationtype,filestatus from vtiger_notes where notesid = ?";
-$result=$adb->pquery($dbQuery,array($focus->id));
-$filename=$adb->query_result($result,0,'filename');
-$folderid=$adb->query_result($result,0,'folderid');
-$filestatus=$adb->query_result($result,0,'filestatus');
-$filelocationtype=$adb->query_result($result,0,'filelocationtype');
+$filename=$focus->column_fields['filename'];
+$folderid = $focus->column_fields['folderid'];
+$filestatus = $focus->column_fields['filestatus'];
+$filelocationtype = $focus->column_fields['filelocationtype'];
 
 $fileattach = "select attachmentsid from vtiger_seattachmentsrel where crmid = ?";
 $res = $adb->pquery($fileattach,array($focus->id));
@@ -72,7 +68,7 @@ if($filelocationtype == 'I'){
 else{
 	$filepath = $filename;
 }
-		
+
 
 $smarty->assign("FILEID",$fileid);
 $smarty->assign("MOD", $mod_strings);
@@ -93,7 +89,7 @@ if($flag == 1)
 	$smarty->assign("FILE_EXIST","yes");
 elseif($flag == 0)
 	$smarty->assign("FILE_EXIST","no");
-	
+
 $smarty->assign("UPDATEINFO",updateInfo($focus->id));
 
 if (isset($focus->name)) $smarty->assign("NAME", $focus->name);
@@ -145,12 +141,12 @@ $tabid = getTabid("Documents");
  $smarty->assign("VALIDATION_DATA_FIELDNAME",$data['fieldname']);
  $smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$data['datatype']);
  $smarty->assign("VALIDATION_DATA_FIELDLABEL",$data['fieldlabel']);
- if($current_user->id == 1)
+ if(is_admin($current_user))
 {
  	$smarty->assign("CHECK_INTEGRITY_PERMISSION","yes");
     $smarty->assign("ADMIN","yes");
 }
-$smarty->assign("FILE_STATUS",$filestatus); 	
+$smarty->assign("FILE_STATUS",$filestatus);
  $smarty->assign("DLD_TYPE",$filelocationtype);
  $smarty->assign("NOTESID",$focus->id);
  $smarty->assign("FOLDERID",$folderid);

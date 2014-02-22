@@ -55,6 +55,10 @@ if($_REQUEST['errormsg'] != '')
 }
 if (!isset($where)) $where = "";
 
+
+if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
+	$_SESSION['PRICEBOOK_ORDER_BY'] = '';
+}
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();

@@ -68,13 +68,5 @@ class Vtiger_SalesOrderPDFController extends Vtiger_InventoryPDFController{
 	function getWatermarkContent() {
 		return $this->focusColumnValue('sostatus');
 	}
-
-	function buildFooterModel() {
-		$footerModel = new Vtiger_PDF_Model();
-		$termsconditionLabel = getTranslatedString('Order Notes', $this->moduleName);
-		$footerModel->set('title', $termsconditionLabel);
-		$footerModel->set('content', from_html($this->focusColumnValue("description")));
-		return $footerModel;
-	}
 }
 ?>

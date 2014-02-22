@@ -81,21 +81,23 @@ if($cvmodule != "") {
 	//<<<<<<<advancedfilter>>>>>>>>>
 	for ($i=0;$i<count($allKeys);$i++) {
 	   $string = substr($allKeys[$i], 0, 4);
-	   if($string == "fcol" && !empty($_REQUEST[$allKeys[$i]])) {
+		if($string == "fcol" && $_REQUEST[$allKeys[$i]] !== null &&
+				$_REQUEST[$allKeys[$i]] !== '') {
            	$adv_filter_col[] = $_REQUEST[$allKeys[$i]];
    	   }
 	}
 	for ($i=0;$i<count($allKeys);$i++) {
 	   $string = substr($allKeys[$i], 0, 3);
-	   if($string == "fop" && !empty($_REQUEST[$allKeys[$i]])) {
+		if($string == "fop" && $_REQUEST[$allKeys[$i]] !== null &&
+				$_REQUEST[$allKeys[$i]] !== '') {
            	$adv_filter_option[] = $_REQUEST[$allKeys[$i]];
    	   }
 	}
 	for ($i=0;$i<count($allKeys);$i++) {
    	   $string = substr($allKeys[$i], 0, 4);
-	   if($string == "fval"  && !empty($_REQUEST[$allKeys[$i]])) {
-		   //$adv_filter_value[] = htmlentities(trim($_REQUEST[$allKeys[$i]]));
-		   $adv_filter_value[] = trim($_REQUEST[$allKeys[$i]]);
+		if($string == "fval"  && $_REQUEST[$allKeys[$i]] !== null &&
+				$_REQUEST[$allKeys[$i]] !== '') {
+		   $adv_filter_value[] = trim(vtlib_purify($_REQUEST[$allKeys[$i]]));
    	   }
 	}
 	//<<<<<<<advancedfilter>>>>>>>>

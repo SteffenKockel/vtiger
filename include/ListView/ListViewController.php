@@ -57,11 +57,11 @@ class ListViewController {
 		$isRoleBased = vtws_isRoleBasedPicklist($name);
 		$this->picklistRoleMap[$name] = $isRoleBased;
 		if ($this->picklistRoleMap[$name]) {
-			$this->picklistValueMap[$name] = getAssignedPicklistValues($fieldName, 
+			$this->picklistValueMap[$name] = getAssignedPicklistValues($fieldName,
 					$this->user->roleid, $this->db);
 		}
 	}
-	
+
 	public function fetchNameList($field, $result) {
 		$referenceFieldInfoList = $this->queryGenerator->getReferenceFieldInfoList();
 		$fieldName = $field->getFieldName();
@@ -180,7 +180,7 @@ class ListViewController {
 				$baseTable = $meta->getEntityBaseTable();
 				$moduleTableIndexList = $meta->getEntityTableIndexList();
 				$baseTableIndex = $moduleTableIndexList[$baseTable];
-				
+
 				$recordId = $db->query_result($result,$i,$baseTableIndex);
 				$ownerId = $db->query_result($result,$i,"smownerid");
 			}else {
@@ -244,6 +244,7 @@ class ListViewController {
 					}
 
 					$fileName = $db->query_result($result,$i,'filename');
+
 					$downloadType = $db->query_result($result,$i,'filelocationtype');
 					$status = $db->query_result($result,$i,'filestatus');
 					$fileIdQuery = "select attachmentsid from vtiger_seattachmentsrel where crmid=?";
@@ -439,13 +440,14 @@ class ListViewController {
 					$value = "<span align='right'>$value</div>";
 				}
 
+                                    $parenttab = getParentTab();
 				$nameFields = $this->queryGenerator->getModuleNameFields($module);
 				$nameFieldList = explode(',',$nameFields);
 				if(in_array($fieldName, $nameFieldList) && $module != 'Emails') {
-					$value = "<a href='index.php?module=$module&action=DetailView&record=".
+					$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
 					"$recordId' title='$module'>$value</a>";
 				} elseif($fieldName == $focus->list_link_field && $module != 'Emails') {
-					$value = "<a href='index.php?module=$module&action=DetailView&record=".
+					$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
 					"$recordId' title='$module'>$value</a>";
 				}
 
@@ -512,7 +514,7 @@ class ListViewController {
 		$link = "index.php?module=$module&action=EditView&record=$recordId&return_module=$module".
 			"&return_action=$return_action&parenttab=$parent".$url."&return_viewname=".
 			$_SESSION['lvs'][$module]["viewname"];
-		
+
 		if($module == 'Calendar') {
 			if($activityType == 'Task') {
 				$link .= '&activity_mode=Task';
@@ -524,7 +526,7 @@ class ListViewController {
 	}
 
 	public function getListViewDeleteLink($module,$recordId) {
-		$parent = getParentTab();
+		$parenttab = getParentTab();
 		$viewname = $_SESSION['lvs'][$module]['viewname'];
 		//Added to fix 4600
 		$url = getBasic_Advance_SearchURL();
@@ -535,13 +537,12 @@ class ListViewController {
 		//This is added to avoid the del link in Product related list for the following modules
 		$link = "index.php?module=$module&action=Delete&record=$recordId".
 			"&return_module=$module&return_action=$return_action".
-			"&parenttab=$parent&return_viewname=".$viewname.$url;
+			"&parenttab=$parenttab&return_viewname=".$viewname.$url;
 
 		// vtlib customization: override default delete link for custom modules
 		$requestModule = vtlib_purify($_REQUEST['module']);
 		$requestRecord = vtlib_purify($_REQUEST['record']);
 		$requestAction = vtlib_purify($_REQUEST['action']);
-		$parenttab = vtlib_purify($_REQUEST['parenttab']);
 		$isCustomModule = vtlib_isCustomModule($requestModule);
 		if($isCustomModule && !in_array($requestAction, Array('index','ListView'))) {
 			$link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
@@ -555,7 +556,7 @@ class ListViewController {
 			$skipActions=false) {
 		global $log, $singlepane_view;
 		global $theme;
-		
+
 		$arrow='';
 		$qry = getURLstring($focus);
 		$theme_path="themes/".$theme."/";
@@ -566,7 +567,7 @@ class ListViewController {
 		$tabid = getTabid($module);
 		$tabname = getParentTab();
 		global $current_user;
-		
+
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		$fields = $this->queryGenerator->getFields();
 		$whereFields = $this->queryGenerator->getWhereFields();
@@ -575,13 +576,13 @@ class ListViewController {
 		$moduleFields = $meta->getModuleFields();
 		$accessibleFieldList = array_keys($moduleFields);
 		$listViewFields = array_intersect($fields, $accessibleFieldList);
-		
 		//Added on 14-12-2005 to avoid if and else check for every list
 		//vtiger_field for arrow image and change order
 		$change_sorder = array('ASC'=>'DESC','DESC'=>'ASC');
 		$arrow_gif = array('ASC'=>'arrow_down.gif','DESC'=>'arrow_up.gif');
 		foreach($listViewFields as $fieldName) {
 			$field = $moduleFields[$fieldName];
+
 			if(in_array($field->getColumnName(),$focus->sortby_fields)) {
 				if($orderBy == $field->getColumnName()) {
 					$temp_sorder = $change_sorder[$sorder];
@@ -603,9 +604,10 @@ class ListViewController {
 				} else {
 					if($this->isHeaderSortingEnabled()) {
 						$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
-							"\",\"parenttab=".$tabname."&order_by=".$field->getColumnName()."&start=".
+							"\",\"parenttab=".$tabname."&foldername=Default&order_by=".$field->getColumnName()."&start=".
 							$_SESSION["lvs"][$module]["start"]."&sorder=".$temp_sorder."".
 						$sort_qry."\");' class='listFormHeaderLinks'>".$label."".$arrow."</a>";
+
 					} else {
 						$name = $label;
 					}
@@ -673,9 +675,25 @@ class ListViewController {
 			if($i++ == 0) {
 				$selected = "selected";
 			}
-			$OPTION_SET .= "<option value=\'$fieldName::::$typeOfData\' $selected>$label</option>";
+						
+			// place option in array for sorting later
+			//$blockName = getTranslatedString(getBlockName($field->getBlockId()), $module);
+			$blockName = getTranslatedString($field->getBlockName(), $module);
+
+			$OPTION_SET[$blockName][$label] = "<option value=\'$fieldName::::$typeOfData\' $selected>$label</option>";
+
 		}
-		return $OPTION_SET;
+	   	// sort array on block label
+	    ksort($OPTION_SET, SORT_STRING);
+	    	    
+		foreach ($OPTION_SET as $key=>$value) {
+	  		$shtml .= "<optgroup label='$key' class='select' style='border:none'>";
+	   		// sort array on field labels
+	   		ksort($value, SORT_STRING);
+	  		$shtml .= implode('',$value);
+	  	}
+	    
+	    return $shtml;
 	}
 
 }

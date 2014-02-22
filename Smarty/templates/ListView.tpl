@@ -291,7 +291,7 @@ function alphabetic(module,url,dataid)
 							</td>
 							<td width="32%"><select name="Condition0" id="Condition0" class="detailedViewTextBox">{$CRITERIA}</select>
 							</td>
-							<td width="32%"><input type="text" name="Srch_value0" class="detailedViewTextBox"></td>
+							<td width="32%"><input type="text" name="Srch_value0" id="Srch_value0" class="detailedViewTextBox"></td>
 						</tr>
 						</table>
 					</td>
@@ -305,7 +305,7 @@ function alphabetic(module,url,dataid)
 		<table border=0 cellspacing=0 cellpadding=5 width=80% class="searchUIAdv3 small" align="center">
 		<tr>
 			<td align=left width=40%>
-						<input type="button" name="more" value=" {$APP.LBL_MORE} " onClick="fnAddSrch('{$FIELDNAMES}','{$CRITERIA}')" class="crmbuttom small edit" >
+						<input type="button" name="more" value=" {$APP.LBL_MORE} " onClick="fnAddSrch()" class="crmbuttom small edit" >
 						<input name="button" type="button" value=" {$APP.LBL_FEWER_BUTTON} " onclick="delRow()" class="crmbuttom small edit" >
 			</td>
 			<td align=left class="small"><input type="button" class="crmbutton small create" value=" {$APP.LBL_SEARCH_NOW_BUTTON} " onClick="totalnoofrows();callSearch('Advanced');">

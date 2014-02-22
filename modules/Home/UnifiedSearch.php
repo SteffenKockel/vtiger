@@ -12,7 +12,7 @@ require_once('include/logging.php');
 require_once('modules/CustomView/CustomView.php');
 require_once('include/utils/utils.php');
 require_once('Smarty_setup.php');
-global $mod_strings, $current_language;
+global $mod_strings, $current_language, $default_charset;
 
 require_once('modules/Home/language/'.$current_language.'.lang.php');
 
@@ -68,7 +68,7 @@ if(isset($query_string) && $query_string != ''){
 				$smarty->assign("MODULE",$module);
 				$smarty->assign("SEARCH_MODULE",vtlib_purify($_REQUEST['search_module']));
 				$smarty->assign("SINGLE_MOD",$module);
-				$smarty->assign("SEARCH_STRING",vtlib_purify($search_val));
+				$smarty->assign("SEARCH_STRING",htmlentities($search_val, ENT_QUOTES, $default_charset));
 		
 				$listquery = getListQuery($module);
 				$oCustomView = '';
@@ -97,7 +97,7 @@ if(isset($query_string) && $query_string != ''){
 				}else{			//This is for Global search
 					$where = getUnifiedWhere($listquery,$module,$search_val);
 					$search_msg = $app_strings['LBL_SEARCH_RESULTS_FOR'];
-					$search_msg .=	"<b>".to_html($search_val)."</b>";
+					$search_msg .=	"<b>".htmlentities($search_val, ENT_QUOTES, $default_charset)."</b>";
 				}
 	
 				if($where != ''){
@@ -166,7 +166,7 @@ if(isset($query_string) && $query_string != ''){
 				$smarty->assign("ModuleRecordCount", $moduleRecordCount);
 	
 				$total_record_count = $total_record_count + $noofrows;
-	
+				
 				$smarty->assign("SEARCH_CRITERIA","( $noofrows )".$search_msg);
 				$smarty->assign("MODULES_LIST", $object_array);
 				$smarty->assign("CUSTOMVIEW_OPTION",$customviewcombo_html);

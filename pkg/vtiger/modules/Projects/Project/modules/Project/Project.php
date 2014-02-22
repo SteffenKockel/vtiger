@@ -475,8 +475,18 @@ class Project extends CRMEntity {
 			// TODO Handle actions when this module is about to be deleted.
 		} else if($event_type == 'module.preupdate') {
 			// TODO Handle actions before this module is updated.
-		} else if($event_type == 'module.postupdate') {
-			// TODO Handle actions after this module is updated.
+		} else if($event_type == 'module.postupdate') {			
+			global $adb;
+			
+			$projectTabid = getTabid($modulename);
+			// Add Gnatt chart to the related list of the module			
+			$relation_id = $adb->getUniqueID('vtiger_relatedlists');
+			$max_sequence = 0;
+			$result = $adb->query("SELECT max(sequence) as maxsequence FROM vtiger_relatedlists WHERE tabid=$projectTabid");
+			if($adb->num_rows($result)) $max_sequence = $adb->query_result($result, 0, 'maxsequence');
+			$sequence = $max_sequence+1;
+			$adb->pquery("INSERT INTO vtiger_relatedlists(relation_id,tabid,related_tabid,name,sequence,label,presence) VALUES(?,?,?,?,?,?,?)",
+						array($relation_id,$projectTabid,0,'get_gantt_chart',$sequence,'Charts',0));
 		}
 	}
 

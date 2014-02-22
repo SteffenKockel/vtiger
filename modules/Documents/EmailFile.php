@@ -14,10 +14,11 @@ global $adb;
 
 $notesid = vtlib_purify($_REQUEST['record']);
 
-$dbQuery = "select filename,folderid from vtiger_notes where notesid= ?";
+$dbQuery = "select filename,folderid,filestatus from vtiger_notes where notesid= ?";
 $result = $adb->pquery($dbQuery,array($notesid));
 $folderid = $adb->query_result($result,0,'folderid');
 $filename = $adb->query_result($result,0,'filename');
+$filestatus = $adb->query_result($result,0,'filestatus');
 
 $fileidQuery = "select attachmentsid from vtiger_seattachmentsrel where crmid = ?";
 $fileidRes = $adb->pquery($fileidQuery,array($notesid));
@@ -31,7 +32,9 @@ if(!file($fileinattachments))$fileinattachments = $root_directory.$filepath.$fil
 
 $newfileinstorage = $root_directory."/storage/$fileid-".$filename;
 
-copy($fileinattachments,$newfileinstorage);
+if($filestatus == 1){
+	copy($fileinattachments,$newfileinstorage);
+}
 
 echo "<script>window.history.back();</script>";
 exit();

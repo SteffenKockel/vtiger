@@ -134,7 +134,7 @@ class Vtiger_InventoryPDFController {
 			}
             $contentModel->set('Name', $productName);
 			$contentModel->set('Code', $productLineItem["hdnProductcode{$productLineItemIndex}"]);
-			$contentModel->set('Quantity',  $this->formatNumber($quantity));
+			$contentModel->set('Quantity', $quantity);
 			$contentModel->set('Price',     $this->formatPrice($listPrice));
 			$contentModel->set('Discount',  $this->formatPrice($discount)."\n ($discountPercentage%)");
 			$contentModel->set('Tax',       $this->formatPrice($tax)."\n ($total_tax_percent%)");

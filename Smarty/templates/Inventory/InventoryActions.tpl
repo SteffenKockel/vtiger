@@ -153,7 +153,6 @@
 
 {* vtlib customization: Custom links on the Detail view basic links *}
 {if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
-	<table width="100%" border="0" cellpadding="5" cellspacing="0">
 	{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBASIC}
 	<tr>
 		<td align="left" style="padding-left:10px;">
@@ -172,12 +171,12 @@
 		</td>
 	</tr>
 	{/foreach}
-	</table>
 {/if}
 
 {* vtlib customization: Custom links on the Detail view *}
 {if $CUSTOM_LINKS}
 	<br>
+<tr><td>
 	{if !empty($CUSTOM_LINKS.DETAILVIEW)}					
 		<table width="100%" border="0" cellpadding="5" cellspacing="0">
 			<tr><td align="left" class="dvtUnSelectedCell dvtCellLabel">
@@ -238,7 +237,7 @@
 		{/if}
 	{/foreach}
 	{/if}
-	
+</td></tr>
 {/if}
 {* END *}
 <!-- Action links END -->

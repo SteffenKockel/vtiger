@@ -47,7 +47,7 @@
 
 			{if count($fldlabel.options) eq 1}
 				{assign var="use_parentmodule" value=$fldlabel.options.0}
-				<input type='hidden' class='small' name="{$fldname}_type" value="{$use_parentmodule}">{$APP.$use_parentmodule}
+				<input type='hidden' class='small' name="{$fldname}_type" value="{$use_parentmodule}">
 			{else}
 			<br>
 			{if $fromlink eq 'qcreate'}

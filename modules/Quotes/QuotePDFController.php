@@ -21,14 +21,14 @@ class Vtiger_QuotePDFController extends Vtiger_InventoryPDFController{
 
 	function buildHeaderModelColumnRight() {
 		$issueDateLabel = getTranslatedString('Issued Date', $this->moduleName);
-		$validDateLabel = getTranslatedString('Due Date', $this->moduleName);
+		$validDateLabel = getTranslatedString('Valid Date', $this->moduleName);
 		$billingAddressLabel = getTranslatedString('Billing Address', $this->moduleName);
 		$shippingAddressLabel = getTranslatedString('Shipping Address', $this->moduleName);
 
 		$modelColumn2 = array(
 				'dates' => array(
 					$issueDateLabel  => $this->formatDate(date("Y-m-d")),
-					$validDateLabel => $this->formatDate($this->focusColumnValue('duedate')),
+					$validDateLabel => $this->formatDate($this->focusColumnValue('validtill')),
 				),
 				$billingAddressLabel  => $this->buildHeaderBillingAddress(),
 				$shippingAddressLabel => $this->buildHeaderShippingAddress()

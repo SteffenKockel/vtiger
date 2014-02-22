@@ -70,9 +70,6 @@ class VTSimpleTemplate{
 				}
 			}
 		}
-			if(!empty($result)){
-				$result .= ',';
-		}
 		return $result;						
 		
 	}

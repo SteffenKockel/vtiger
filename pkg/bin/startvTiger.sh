@@ -111,14 +111,14 @@ if [ $exit_status -ne 0 ]; then
 		
 fi
 echo ""
-echo "Checking if the vtigercrm520 database already exists"
+echo "Checking if the vtigercrm521 database already exists"
 echo ""
-echo "select 1" | ./bin/mysql --user=$mysql_username --password=$mysql_password  --port=$mysql_port --socket=$mysql_socket -D vtigercrm520 >/dev/null
+echo "select 1" | ./bin/mysql --user=$mysql_username --password=$mysql_password  --port=$mysql_port --socket=$mysql_socket -D vtigercrm521 >/dev/null
 if [ $? -ne 0 ]; then
 	echo ""
-	echo "Database vtigercrm520 does not exist. Creating database vtigercrm520"
+	echo "Database vtigercrm521 does not exist. Creating database vtigercrm521"
 	echo ""
-	./bin/mysql --user=$mysql_username --password=$mysql_password  --port=$mysql_port --socket=$mysql_socket -e "create database if not exists vtigercrm520"
+	./bin/mysql --user=$mysql_username --password=$mysql_password  --port=$mysql_port --socket=$mysql_socket -e "create database if not exists vtigercrm521"
 fi
 
 host=`hostname`

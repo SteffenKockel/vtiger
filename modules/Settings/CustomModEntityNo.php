@@ -20,6 +20,13 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
 $recprefix = vtlib_purify($_REQUEST['recprefix']);
+$mode = $_REQUEST['mode'];
+$validInput = validateAlphaNumericInput($recprefix);
+if(!empty($recprefix) && ! $validInput) {
+    $recprefix = '';
+    $mode='';
+    $STATUSMSG = "<font color='red'>".$mod_strings['LBL_UPDATE']." ".$mod_strings['LBL_FAILED']."</font>";
+}
 $recnumber = vtlib_purify($_REQUEST['recnumber']);
 
 $module_array=getCRMSupportedModules();
@@ -44,7 +51,6 @@ $modulesList = array_keys($module_array);
 $selectedModule = vtlib_purify($_REQUEST['selmodule']);
 if($selectedModule == '') $selectedModule = $modulesList[0];
 
-$mode = $_REQUEST['mode'];
 if(in_array($selectedModule, $module_array)) {
 	$focus = CRMEntity::getInstance($selectedModule);
 }
