@@ -18,8 +18,8 @@ require_once("include/DatabaseUtil.php");
 
 if(!function_exists('GetRelatedList')) {
 	function GetRelatedList($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',
-			$edit_val='',$del_val='') {
-		return GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $returnset, $id, $edit_val, $del_val);
+			$edit_val='',$del_val='',$skipActions=false) {
+		return GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $returnset, $id, $edit_val, $del_val, $skipActions);
 	}
 }
 
@@ -37,7 +37,7 @@ if(!function_exists('GetRelatedList')) {
   *
   */
 
-function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',$edit_val='',$del_val='')
+function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',$edit_val='',$del_val='',$skipActions=false)
 {
 	$log = LoggerManager::getLogger('account_list');
 	$log->debug("Entering GetRelatedList(".$module.",".$relatedmodule.",".get_class($focus).",".$query.",".$button.",".$returnset.",".$edit_val.",".$del_val.") method ...");
@@ -132,7 +132,9 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	//Added by Don for AssignedTo ordering issue in Related Lists
 	$query_order_by = $order_by;
 	if($order_by == 'smownerid') {
-		$query_order_by = "case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end ";
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
+		$query_order_by = "case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end ";
 	} elseif($order_by != 'crmid' && !empty($order_by)) {
 		$tabname = getTableNameForField($relatedmodule, $order_by);
 		if($tabname !== '' and $tabname != NULL)
@@ -197,7 +199,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 
 	//Retreive the List View Table Header
 	$id = vtlib_purify($_REQUEST['record']);
-	$listview_header = getListViewHeader($focus,$relatedmodule,'',$sorder,$order_by,$id,'',$module);//"Accounts");
+	$listview_header = getListViewHeader($focus,$relatedmodule,'',$sorder,$order_by,$id,'',$module,$skipActions);//"Accounts");
 	if ($noofrows > 15) {
 		$smarty->assign('SCROLLSTART','<div style="overflow:auto;height:315px;width:100%;">');
 		$smarty->assign('SCROLLSTOP','</div>');
@@ -205,14 +207,14 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	$smarty->assign("LISTHEADER", $listview_header);
 
 	if($module == 'PriceBook' && $relatedmodule == 'Products') {
-		$listview_entries = getListViewEntries($focus,$relatedmodule,$list_result,$navigation_array,'relatedlist',$returnset,$edit_val,$del_val);
+		$listview_entries = getListViewEntries($focus,$relatedmodule,$list_result,$navigation_array,'relatedlist',$returnset,$edit_val,$del_val,'','','','',$skipActions);
 	}
 	if($module == 'Products' && $relatedmodule == 'PriceBook') {
-		$listview_entries = getListViewEntries($focus,$relatedmodule,$list_result,$navigation_array,'relatedlist',$returnset,'EditListPrice','DeletePriceBookProductRel');
+		$listview_entries = getListViewEntries($focus,$relatedmodule,$list_result,$navigation_array,'relatedlist',$returnset,'EditListPrice','DeletePriceBookProductRel','','','','',$skipActions);
 	} elseif($relatedmodule == 'SalesOrder') {
-		$listview_entries = getListViewEntries($focus,$relatedmodule,$list_result,$navigation_array,'relatedlist',$returnset,'SalesOrderEditView','DeleteSalesOrder');
+		$listview_entries = getListViewEntries($focus,$relatedmodule,$list_result,$navigation_array,'relatedlist',$returnset,'SalesOrderEditView','DeleteSalesOrder','','','','',$skipActions);
 	}else {
-		$listview_entries = getListViewEntries($focus,$relatedmodule,$list_result,$navigation_array,'relatedlist',$returnset);
+		$listview_entries = getListViewEntries($focus,$relatedmodule,$list_result,$navigation_array,'relatedlist',$returnset,$edit_val,$del_val,'','','','',$skipActions);
 	}
 
 	$navigationOutput = Array();
@@ -490,10 +492,10 @@ function getHistory($parentmodule,$query,$id)
 			$parentname = getRelatedTo('Calendar',$result,$i-1);
 			$entries[] = $parentname;
 			
-			$entries[] = getDisplayDate($row['date_start'])."   ".$row['time_start'];
-			$entries[] = getDisplayDate($row['due_date'])."   ".$row['time_end'];
-
-			//$entries[] = nl2br($row['description']);
+			$date = new DateTimeField($row['date_start']."   ".$row['time_start']);
+			$entries[] = $date->getDisplayDateTimeValue();
+			$date = new DateTimeField($row['due_date']."   ".$row['time_end']);
+			$entries[] = $date->getDisplayDate();
 
 			$entries[] = $status;
 
@@ -607,9 +609,9 @@ function getPriceBookRelatedProducts($query,$focus,$returnset='')
 		if(getFieldVisibilityPermission('Products', $current_user->id, 'productcode') == '0')
 			$entries[] = $adb->query_result($list_result,$i,"productcode");
 		if(getFieldVisibilityPermission('Products', $current_user->id, 'unit_price') == '0')
-			$entries[] = $unit_price;
+			$entries[] = CurrencyField::convertToUserFormat($unit_price, null, true);
 
-		$entries[] = $listprice;
+		$entries[] = CurrencyField::convertToUserFormat($listprice, null, true);
 		$action = "";
 		if(isPermitted("PriceBooks","EditView","") == 'yes')
 			$action .= '<img style="cursor:pointer;" src="'. vtiger_imageurl('editfield.gif', $theme).'" border="0" onClick="fnvshobj(this,\'editlistprice\'),editProductListPrice(\''.$entity_id.'\',\''.$pricebook_id.'\',\''.$listprice.'\')" alt="'.$app_strings["LBL_EDIT_BUTTON"].'" title="'.$app_strings["LBL_EDIT_BUTTON"].'"/>';

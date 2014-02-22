@@ -4,9 +4,9 @@
   <name>Spanish</name>
   <label>ES Spanish</label>
   <prefix>es_es</prefix>
-  <version>5.2</version>
+  <version>5.3.0</version>
   <dependencies>
-	  <vtiger_version>5.1.0</vtiger_version>
+	  <vtiger_version>5.2.1</vtiger_version>
 	  <vtiger_max_version>5.*</vtiger_max_version>
   </dependencies>
   <license>
@@ -19,9 +19,12 @@
  * the specific language governing rights and limitations under the License.
  ********************************************************************************
  *  Language     : Español es_es
- *  Version      : 5.2
- *  Author       : Joe Bordes JPL TSolucio, S. L.
- *  Author       : Rafael Soler. 5.0.4 modifications inheritance
+ *  Version      : 5.3.0RC
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.3.0RC
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.2.1
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.1.0
+ *  Author       : Joe Bordes JPL TSolucio. Rafael Soler. 5.0.4
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.0.3
  ********************************************************************************
 ]]></inline>
   </license>

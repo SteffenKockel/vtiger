@@ -16,13 +16,6 @@ License for
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for the Account module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): crm-now Berlin  www.crm-now.com
- ********************************************************************************/
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'benutzerdefinierte Ansicht',
 'LBL_STEP_1_TITLE'=>'Information',
@@ -281,5 +274,7 @@ Beispiel: Die Eingabe von SG, ZH, TG, AR sucht nach SG oder ZH oder TG oder AR.'
 'LBL_EDIT'=>'bearbeiten',
 'LBL_STATUS_PUBLIC_APPROVE'=>'bestätigen',
 'LBL_STATUS_PUBLIC_DENY'=>'ablehnen',
+
+'LBL_ADVANCED_FILTER' => 'Regel',
 ); 
 ?>

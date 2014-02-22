@@ -476,8 +476,8 @@ function vtlib_getPicklistValues($field_columnname) {
 function vtlib_isCustomModule($moduleName) {
 	$moduleFile = "modules/$moduleName/$moduleName.php";
 	if(file_exists($moduleFile)) {
-		if(function_exists('checkFileAccess')) {
-			checkFileAccess($moduleFile);
+		if(function_exists('checkFileAccessForInclusion')) {
+			checkFileAccessForInclusion($moduleFile);
 		}
 		include_once($moduleFile);
 		$focus = new $moduleName();
@@ -573,7 +573,7 @@ function vtlib_process_widget($widgetLinkInfo, $context = false) {
 	if (preg_match("/^block:\/\/(.*)/", $widgetLinkInfo->linkurl, $matches)) {
 		list($widgetControllerClass, $widgetControllerClassFile) = explode(':', $matches[1]);
 		if (!class_exists($widgetControllerClass)) {
-			checkFileAccess($widgetControllerClassFile);
+			checkFileAccessForInclusion($widgetControllerClassFile);
 			include_once $widgetControllerClassFile;
 		}
 		if (class_exists($widgetControllerClass)) {

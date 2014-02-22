@@ -160,7 +160,7 @@ if(PerformancePrefs::getBoolean('NOTIFY_OWNER_EMAILS', true) === true){
 		if($_REQUEST['parent_id'] != '' && $_REQUEST['parent_type'] != '')
         {
         	$parentmodule = $_REQUEST['parent_type'];
-            $parentid = $_REQUEST['parent_id'];
+            $parentid = vtlib_purify($_REQUEST['parent_id']);
 
 			$parent_email = getParentMailId($parentmodule,$parentid);
 			if($_REQUEST['mode'] != 'edit')

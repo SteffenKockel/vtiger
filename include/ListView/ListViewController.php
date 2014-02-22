@@ -312,28 +312,43 @@ class ListViewController {
 				}elseif($field->getFieldDataType() == 'date' ||
 						$field->getFieldDataType() == 'datetime') {
 					if($value != '' && $value != '0000-00-00') {
-						$value = getDisplayDate($value);
+						$date = new DateTimeField($value);
+						$value = $date->getDisplayDate();
+						if($field->getFieldDataType() == 'datetime') {
+							$value .= (' ' . $date->getDisplayTime());
+						}
 					} elseif ($value == '0000-00-00') {
 						$value = '';
 					}
-				} elseif($field->getUIType() == 71 || $field->getUIType() == 72) {
+				} elseif($field->getFieldDataType() == 'currency') {
 					if($value != '') {
-						if($fieldName == 'unit_price') {
-							$currencyId = getProductBaseCurrency($recordId,$module);
-							$cursym_convrate = getCurrencySymbolandCRate($currencyId);
-							$value = "<font style='color:grey;'>".$cursym_convrate['symbol'].
-								"</font> ". $value;
+						if($field->getUIType() == 72) {
+							if($fieldName == 'unit_price') {
+								$currencyId = getProductBaseCurrency($recordId,$module);
+								$cursym_convrate = getCurrencySymbolandCRate($currencyId);
+								$currencySymbol = $cursym_convrate['symbol'];
+							} else {
+								$currencyInfo = getInventoryCurrencyInfo($module, $recordId);
+								$currencySymbol = $currencyInfo['currency_symbol'];
+							}
+							$currencyValue = CurrencyField::convertToUserFormat($value, null, true);
+							$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
 						} else {
-							$rate = $user_info['conv_rate'];
 							//changes made to remove vtiger_currency symbol infront of each
 							//vtiger_potential amount
 							if ($value != 0) {
-								$value = convertFromDollar($value,$rate);
+								$value = CurrencyField::convertToUserFormat($value);
 							}
 						}
 					}
 				} elseif($field->getFieldDataType() == 'url') {
-					$value = '<a href="http://'.$rawValue.'" target="_blank">'.$value.'</a>';
+                    $matchPattern = "^[\w]+:\/\/^";
+                    preg_match($matchPattern, $rawValue, $matches);
+                    if(!empty ($matches[0])){
+                        $value = '<a href="'.$rawValue.'" target="_blank">'.$value.'</a>';
+                    }else{
+                        $value = '<a href="http://'.$rawValue.'" target="_blank">'.$value.'</a>';
+                    }
 				} elseif ($field->getFieldDataType() == 'email') {
 					if($_SESSION['internal_mailer'] == 1) {
 						//check added for email link in user detailview
@@ -422,21 +437,8 @@ class ListViewController {
 						$json = new Zend_Json();
 						$value = vt_suppressHTMLTags(implode(',',$json->decode($temp_val)));
 					}
-				} elseif ($fieldName == 'expectedroi' || $fieldName == 'actualroi' ||
-						$fieldName == 'actualcost' || $fieldName == 'budgetcost' ||
-						$fieldName == 'expectedrevenue') {
-					$rate = $user_info['conv_rate'];
-					$value = convertFromDollar($value,$rate);
-				} elseif(($module == 'Invoice' || $module == 'Quotes' || $module == 'PurchaseOrder' ||
-						$module == 'SalesOrder') && ($fieldName == 'hdnGrandTotal' ||
-						$fieldName == 'hdnSubTotal' || $fieldName == 'txtAdjustment' ||
-						$fieldName == 'hdnDiscountAmount' || $fieldName == 'hdnS_H_Amount')) {
-					$currencyInfo = getInventoryCurrencyInfo($module, $recordId);
-					$currencyId = $currencyInfo['currency_id'];
-					$currencySymbol = $currencyInfo['currency_symbol'];
-					$value = $currencySymbol.$value;
 				}
-				if ( in_array($uitype,array(71,72,7,9,90)) ) {
+				if ( in_array($uitype,array(7,9,90)) ) {
 					$value = "<span align='right'>$value</div>";
 				}
 
@@ -679,8 +681,11 @@ class ListViewController {
 			// place option in array for sorting later
 			//$blockName = getTranslatedString(getBlockName($field->getBlockId()), $module);
 			$blockName = getTranslatedString($field->getBlockName(), $module);
+			
+			$fieldLabelEscaped = str_replace(" ","_",$field->getFieldLabelKey());
+			$optionvalue = $field->getTableName().":".$field->getColumnName().":".$fieldName.":".$module."_".$fieldLabelEscaped.":".$typeOfData;
 
-			$OPTION_SET[$blockName][$label] = "<option value=\'$fieldName::::$typeOfData\' $selected>$label</option>";
+			$OPTION_SET[$blockName][$label] = "<option value=\'$optionvalue\' $selected>$label</option>";
 
 		}
 	   	// sort array on block label

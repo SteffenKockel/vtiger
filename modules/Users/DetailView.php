@@ -26,9 +26,9 @@ require_once('modules/Users/Users.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/GetUserGroups.php');
+require_once('modules/Users/UserTimeZonesArray.php');
 //to check audittrail if enable or not
 require_once('user_privileges/audit_trail.php');
-
 global $current_user;
 global $theme;
 global $default_language;
@@ -200,9 +200,11 @@ $smarty->assign("START_HOUR",$focus->start_hour);
 $_SESSION['Users_FORM_TOKEN'] = rand(5, 2000) * rand(2, 7);
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 
+
 //for check audittrail if it is enable or not
 $smarty->assign("AUDITTRAIL",$audit_trail);
 
+$smarty->assign("view", null);
 $smarty->display("UserDetailView.tpl");
 }
 else

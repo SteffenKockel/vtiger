@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * German version created by crm-now, www.crm-now.de
  ********************************************************************************/
 /**
  * this file can be used to internationalise the strings present in the picklist
@@ -30,5 +29,21 @@ $mod_strings = array(
 	'LBL_OK_BUTTON_LABEL'=>'OK',
 	'LBL_SELECT_ROLES'=>'Rollen auswählen',
 	'LBL_DISPLAYED_VALUES'=>'Alle Listeneinträge für die Rolle sind unten angezeigt',
+	
+	// For Dependency picklist
+	'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Einstellungen der Abhängigkeiten von Auswahllisten',
+	'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Erstelle Abhängigkeiten zwischen den Werten der Auswahllisten in jedem Modul',
+	'LBL_NEW_DEPENDENCY' => 'Neue Auswahllisten-Abhängigkeit',
+	'LBL_TOOLS' => 'Werkzeuge',
+	'LBL_SOURCE_FIELD' => 'Quellfeld',
+	'LBL_TARGET_FIELD' => 'Zielfeld',
+	'LBL_BUTTON_SELECTED_SOURCE_VALUES' => 'Wählen Sie Quellwerte',
+	'LBL_SELECTED_SOURCE_VALUES_MSG' => 'Wählen Sie die Quellwerte der Auswahlliste um die Verknüpfung zu konfigurieren.',
+	'LBL_ERR_CYCLIC_DEPENDENCY' => 'Die eingestellten Abhängigkeiten sind nicht zulässig, da es am Ende einer zyklischen Abhängigkeit liegt.',
+	'LBL_SELECTED_VALUES' => 'Ausgewählte Werte',
+	'LBL_CONFIGURE_DEPENDENCY_HELP_1' => 'Nur verknüpfte Werte der Auswahlliste des Quellfelds werden unten a ngezeigt (außer beim ersten Mal)',
+	'LBL_CONFIGURE_DEPENDENCY_HELP_2' => "Wenn Sie Abhängigkeiten anderer Werte von Auswahllisten des Quellfeldes sehen oder ändern wollen, <br/>
+										  müssen Sie die Werte durch einen Klick auf den <b>'Wählen Sie Quellwerte'</b>-Button, auf der rechten Seite, auswählen",
+	'LBL_CONFIGURE_DEPENDENCY_HELP_3' => 'Selektierte Werte der Zielfeld-Werte werden hevorgehoben als',
 );
 ?>

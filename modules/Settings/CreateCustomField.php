@@ -19,9 +19,12 @@ $image_path="themes/images/";
 
 $tabid=vtlib_purify($_REQUEST['tabid']);
 $fieldid=vtlib_purify($_REQUEST['fieldid']);
+$fieldModule = vtlib_purify($_REQUEST['fld_module']);
+
+if(empty($tabid)) $tabid = getTabid($fieldModule);
 
 // Set the tab type only during Custom Field creation for Calendar module based on the activity type
-if ($fieldid == '' && $_REQUEST['fld_module'] == 'Calendar' && isset($_REQUEST['activity_type'])) {
+if ($fieldid == '' && $fieldModule == 'Calendar' && isset($_REQUEST['activity_type'])) {
 	$activitytype = vtlib_purify($_REQUEST['activity_type']);
 	if ($activitytype == 'E') $tabid = '16';
 	if ($activitytype == 'T') $tabid = '9';

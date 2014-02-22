@@ -2,9 +2,9 @@
 /***********************************************************
 *  Module       : General
 *  Language     : ES Spanish
-*  Version      : vt5.0.4
+*  Version      : vt5.2.0
 *  Created Date : 2008-01-18 17:46:07 Last change : 2008-01-18 18:11:37
-*  Author       : rasomu
+*  Author       : JPL TSolucio, S.L.  -  rasomu
 *  License      : 
 
 ***********************************************************/
@@ -155,7 +155,7 @@ $app_strings = array (
       'SINGLE_Rss' => 'Rss',
       'SINGLE_Reports' => 'Informe',
       'SINGLE_Portal' => 'Portal',
-      'SINGLE_Webmails' => 'Email',
+      'SINGLE_Webmails' => 'Webmail',
       'SINGLE_Users' => 'Usuario',
       'ServiceContracts' => 'Contratos de Servicio',
       'Service Contracts' => 'Contratos de Servicio',
@@ -179,7 +179,7 @@ $app_strings = array (
       'ERR_CREATING_FIELDS' => 'Error al completar detalles adicionales de campo: ',
       'ERR_MISSING_REQUIRED_FIELDS' => 'Faltan campos requeridos:',
       'ERR_INVALID_EMAIL_ADDRESS' => 'Dirección de Email no válida.',
-      'ERR_INVALID_YAHOO_EMAIL_ADDRESS' => 'no es una dirección de email de yahoo válida',
+      'ERR_INVALID_SECONDARY_EMAIL_ADDRESS' => 'no es una dirección de email alternativa válida',
       'ERR_INVALID_DATE_FORMAT' => 'El formato de la fecha debe ser: aaaa-mm-dd',
       'ERR_INVALID_MONTH' => ' Por favor, introduzca un mes válido.',
       'ERR_INVALID_DAY' => 'Por favor, introduzca un dia válido.',
@@ -393,7 +393,7 @@ $app_strings = array (
       'Vendors' => 'Proveedores',
       'Rss' => 'RSS',
       'Portal' => 'Webs Favoritas',
-      'Webmails' => 'Emails',
+      'Webmails' => 'Webmails',
       'Activity History' => 'Histórico de eventos',
       'Ticket History' => 'Histórico de tickets',
       'Purchase Order' => 'Órdenes de Compra',
@@ -434,7 +434,7 @@ $app_strings = array (
       'Dashboard' => 'Indicadores',
       'Report' => 'Informes',
       'Vendor' => 'Proveedor',
-      'Webmail' => 'Email',
+      'Webmail' => 'Webmail',
       'LBL_NONE_INCLUDED' => 'Sin Asignar',
       'LBL_ADD_TO' => 'Agregar a',
       'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE' => 'Seleccione una plantilla para enviar el Mailing:',
@@ -466,6 +466,8 @@ $app_strings = array (
       'End Date & Time' => 'Fecha y Hora de Vencimiento',
       'Start Date' => 'Fecha de Inicio',
       'Start Date & Time' => 'Fecha y Hora de Inicio',
+      'Start Time' => 'Hora Inicio',
+      'End Time' => 'Hora Fin',
       'Recurring Type' => 'Periodicidad',
       'SalesOrders' => 'Pedidos',
       'LBL_QUOTE_NAME' => 'Presupuesto',
@@ -611,7 +613,7 @@ $app_strings = array (
       'Salutation' => 'Saludo ',
       'Rating' => 'Ratio',
       'industry' => 'Industria',
-      'Severity' => 'Gravedad',
+      'Severity' => 'Urgencia',
       'Product Category' => 'Categoría de Producto',
       'GL Account' => 'Cuenta Contable',
       'Usage Unit' => 'Unidad de Uso',
@@ -677,7 +679,7 @@ $app_strings = array (
       'DELETE_CONFIRMATION' => '¿Está seguro de querer borrar la selección de',
       'SELECT_ATLEAST_ONE' => 'Seleccione, al menos, una entidad',
       'DELETING_ACCOUNT' => 'Al eliminar esta cuenta se eliminarán sus oportunidades, presupuestos, albaranes y facturas asociadas. ¿Estás seguro que quieres eliminar la ',
-      'DELETING_VENDOR' => 'Al eliminar este proveedor se eliminarán sus pedidos asociadas. ¿Estás seguro que quieres eliminar el ',
+      'DELETING_VENDOR' => 'Al eliminar este proveedor se eliminarán sus compras asociadas. ¿Estás seguro que quieres eliminar el ',
       'PLEASE_SELECT_MAILID' => 'Selecciones un mail ID',
       'OVERWRITE_EXISTING_ACCOUNT1' => '¿Sobreescribir la dirección existente con la de la cuenta seleccionada (',
       'OVERWRITE_EXISTING_ACCOUNT2' => ')?',
@@ -774,13 +776,13 @@ $app_strings = array (
       'PROFILENAME_CANNOT_BE_EMPTY' => 'El nombre del Perfil no puede estar vacío',
       'PROFILE_DETAILS_UPDATED' => 'Los detalles del perfil se han actualizado',
       'CURRENCY_CHANGE_INFO' => 'Los ',
-      'CURRENCY_CONVERSION_INFO' => '¿Está usando el $ como símbolo de Divisa?\n Pulse OK para continuar usando $. Cancelar para canviar el ratio de conversión',
+      'CURRENCY_CONVERSION_INFO' => '¿Está usando el $ como símbolo de Divisa?\n Pulse OK para continuar usando $. Cancelar para cambiar el ratio de conversión',
       'THE_EMAILID' => 'La email Id',
       'EMAIL_FIELD_INVALID' => 'en el campo email es incorrecta',
       'SELECT_VALID_IMAGE' => 'Seleccione una imágen válida',
       'EMAIL_FILED_IS' => 'en el campo email ',
       'OTHER_EMAIL_FILED_IS' => 'en el campo otro email ',
-      'YAHOO_EMAIL_FILED_IS' => 'en el yahoo email ',
+      'SECONDARY_EMAIL_FILED_IS' => 'en el email alternativo ',
       'INVALID_ADD_IN_EMAILFIELD' => ' del campo email no es válido',
       'INVALID_ADD_IN_OTHER_EMAILFIELD' => ' del campo otro email no es válido',
       'ENTER_VALID_4DIGIT_YEAR' => 'Entre un año válido de 4 dígitos entre',
@@ -869,7 +871,7 @@ $app_strings = array (
       'Home Phone' => 'Tel. Particular',
       'Other Phone' => 'Tel. Directo',
       'Fax' => 'Fax',
-      'Department' => 'Departmento',
+      'Department' => 'Departamento',
       'Birthdate' => 'Cumpleaños',
       'Reports To' => 'Informa a',
       'Assistant' => 'Secretaria',
@@ -1000,6 +1002,13 @@ $app_strings = array (
       'Price'=>'Precio',
       'Discount'=>'Descuento',
       'LBL_ADD_BUTTON' => 'Añadir',
+      //PDF VERSION 5.2
+      'Net Total' => 'Neto Total',
+      'Shipping & Handling Charges' => 'Gastos de Manipulación y Transporte',
+      'Shipping & Handling Tax:' => 'Impuestos de Manipulación y Transporte',
+      'Quantity'=>'Cantidad',
+      'Grand Total : (in €)'=>'Total : (en €)',
+      'Issued Date' => 'Fecha',
 
       // Added after 5.0.4 GA
       
@@ -1193,6 +1202,23 @@ $app_strings = array (
      'LBL_SELECT_FIELDS_TO_UDPATE_WITH_NEW_VALUE'=>'Selecciona campos a actualizar e introduce su nuevo valor.',
 
      'LBL_LOADING'=>'Cargando...',
+     'LBL_REFRESH' => 'Actualizar',
+     'LBL_Reminder' => 'Recordatorio',
+     'LBL_RESET_PASSWORD' => 'Reinicializar Contraseña',
+     'LBL_PHP_UPGRADE' => 'Has actualizado la versión de php, debido a cambios en el API de la librería crypt tu contraseña ya no es válida, por favor reinicializa tu contraseña.',
+     'LBL_RESET_PASSWORD_DESCRIPTION' => 'Puedes reinicializar las contraseñas de todos los usuarios a su nombre de usuario utilizando el programa suministrado.',
+
+     'LBL_CRITERIA_AND'=>'y',
+     'LBL_CRITERIA_OR'=>'o',
+     'LBL_NEW_GROUP'=>'Nuevo Grupo',
+     'LBL_DELETE_GROUP'=>'Eliminar Grupo',
+     'LBL_NEW_CONDITION'=>'Nueva Condición',
+     'LBL_ADVANCED_FILTER' => 'Búsqueda Avanzada',
+
+     'LBL_CHANGE'=>'Cambiar',
+     'LBL_CHANGE_TITLE'=>'Cambiar [Alt+C]',
+
+     'LBL_NEXT_BUTTON_LABEL' => 'Siguiente',
 
 );
 $app_list_strings = array (
@@ -1303,12 +1329,13 @@ $app_currency_strings = array(
 	'Costa Rica, Colón' 	=> 'Costa Rica, Colón',
 	'Croatia, Kuna' 		=> 'Croatia, Kuna',
 	'Cuba, Pesos' 			=> 'Cuba, Pesos',
+	'Cyprus, Pounds'		=> 'Cyprus, Pounds',
 	'Czech Republic, Koruny' => 'Czech Republic, Koruny',
 	'Denmark, Kroner' 		=> 'Denmark, Kroner',
 	'Dominican Republic, Pesos' => 'Dominican Republic, Pesos',
 	'East Caribbean, Dollars' => 'East Caribbean, Dollars',
 	'Egypt, Pounds' 		=> 'Egypt, Pounds',
-	'El Salvador, Colones' 	=> 'El Salvador, Colones',
+	'El Salvador, Colón' 	=> 'El Salvador, Colón',
 	'England, Pounds' 		=> 'England, Pounds',
 	'Estonia, Krooni' 		=> 'Estonia, Krooni',
 	'Euro' 					=> 'Euro',
@@ -1343,6 +1370,7 @@ $app_currency_strings = array(
 	'Lithuania, Litai' 		=> 'Lithuania, Litai',
 	'Macedonia, Denars' 	=> 'Macedonia, Denars',
 	'Malaysia, Ringgits' 	=> 'Malaysia, Ringgits',
+	'Malta, Liri'			=> 'Malta, Liri',
 	'Mauritius, Rupees' 	=> 'Mauritius, Rupees',
 	'Mexico, Pesos' 		=> 'Mexico, Pesos',
 	'Mongolia, Tugriks' 	=> 'Mongolia, Tugriks',
@@ -1362,6 +1390,7 @@ $app_currency_strings = array(
 	'Peru, Nuevos Soles' 	=> 'Peru, Nuevos Soles',
 	'Philippines, Pesos' 	=> 'Philippines, Pesos',
 	'Poland, Zlotych' 		=> 'Poland, Zlotych',
+	'Qatar, Rials'			=> 'Qatar, Rials',
 	'Romania, New Lei' 		=> 'Romania, New Lei',
 	'Russia, Rubles'		=> 'Russia, Rubles',
 	'Saint Helena, Pounds' => 'Saint Helena, Pounds',
@@ -1395,5 +1424,16 @@ $app_currency_strings = array(
 	'China, Yuan Renminbi' 	=> 'China, Yuan Renminbi',
 	'Afghanistan, Afghanis' => 'Afghanistan, Afghanis',
 	'Cambodia, Riels' 		=> 'Cambodia, Riels',
+    'China, Yuan Renminbi' => 'China, Yuan Renminbi',
+    'Jordan, Dinar' => 'Jordan, Dinar',
+    'Kenya, Shilling' => 'Kenya, Shilling',
+    'MADAGASCAR, Malagasy Ariary' => 'MADAGASCAR, Malagasy Ariary',
+    'United Arab Emirates, Dirham' => 'United Arab Emirates, Dirham',
+    'United Republic of Tanzania, Shilling' => 'United Republic of Tanzania, Shilling',
+    'Yemen, Rials'			=> 'Yemen, Rials',
+    'Zambia, Kwacha' => 'Zambia, Kwacha',
+	'Malawi, kwacha'		=> 'Malawi, kwacha',
+	'Tunisian, Dinar'		=> 'Tunisian, Dinar',
+	'Moroccan, Dirham'		=> 'Moroccan, Dirham',
 );
 ?>

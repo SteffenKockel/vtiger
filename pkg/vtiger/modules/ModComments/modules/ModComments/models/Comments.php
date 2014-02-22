@@ -24,8 +24,9 @@ class ModComments_CommentsModel {
 		return self::$ownerNamesCache[$authorid];
 	}
 	
-	function timestamp(){ 
-		return getDisplayDate($this->data['modifiedtime']);
+	function timestamp(){
+		$date = new DateTimeField($this->data['modifiedtime']);
+		return $date->getDisplayDateTimeValue();
 	}
 	
 	function content() {

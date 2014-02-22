@@ -47,21 +47,36 @@ require_once('Smarty_setup.php');
 
 function webforms_getUserData($ownerId, $describeFields,$source){
 	$userData = Array();
-	for($i=0;$i<sizeof($describeFields);++$i){
+	$len = sizeof($describeFields);
+	for($i=0;$i<$len;++$i){
 		$fieldName = $describeFields[$i]['name'];
-		if(isset($source[$fieldName]) || $describeFields[$i]['type']['name'] == 'owner'){
-			/*if($describeFields[$i]['type']['name'] == 'reference'){
+		// Handle meta fields right away
+		if ($describeFields[$i]['type']['name'] == 'owner') {
+			$userData[$fieldName] = $ownerId;
+			continue;
+		}
+		/* TODO: if($describeFields[$i]['type']['name'] == 'reference'){ continue; }*/
+		
+		/**
+		 * Support for specifying (fieldname or label:fieldlabel)
+		 */		
+
+		// NOTE: Spaces in parameter key will be converted to _ 
+		$transformedFieldLabel= str_replace(' ','_', $describeFields[$i]['label']);
+								
+		$valuekey = false;
+		if (isset($source[$fieldName])) {
+			$valuekey = $fieldName;
+		} else if (isset($source["label:$transformedFieldLabel"])) {
+			$valuekey = "label:$transformedFieldLabel";
+		}
 				
-			}*/
-			if($describeFields[$i]['type']['name'] == 'owner'){
-				$userData[$fieldName] = $ownerId;
-			}else{
-				$value = vtws_getParameter($source,$fieldName);
-				if($value !== null){
-					$userData[$fieldName] = $value;
-				}
+		if($valuekey) {
+			$value = vtws_getParameter($source, $valuekey);
+			if($value !== null){
+				$userData[$fieldName] = $value;
 			}
-		}else if($describeFields[$i]['mandatory'] == true){
+		} else if($describeFields[$i]['mandatory'] == true) {
 			return null;
 		}
 	}

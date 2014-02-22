@@ -183,7 +183,7 @@ $app_strings = array (
 'ERR_CREATING_FIELDS' => 'Error filling in additional detail fields: ',
 'ERR_MISSING_REQUIRED_FIELDS' => 'Missing required fields:',
 'ERR_INVALID_EMAIL_ADDRESS' => 'not a valid email address.',
-'ERR_INVALID_YAHOO_EMAIL_ADDRESS' => 'not a valid yahoo email address.',
+'ERR_INVALID_SECONDARY_EMAIL_ADDRESS' => 'not a valid secondary email address.',
 'ERR_INVALID_DATE_FORMAT' => 'The date format must be: yyyy-mm-dd',
 'ERR_INVALID_MONTH' => 'Please enter a valid month.',
 'ERR_INVALID_DAY' => 'Please enter a valid day.',
@@ -797,7 +797,7 @@ $app_strings = array (
 'SELECT_VALID_IMAGE' => 'Please Select a Valid Image',
 'EMAIL_FILED_IS' => "\' in the email field is ",
 'OTHER_EMAIL_FILED_IS' => "\' in other email field is ",
-'YAHOO_EMAIL_FILED_IS' => "\' in yahoo email field is ",
+'SECONDARY_EMAIL_FILED_IS' => "\' in secondary email field is ",
 'INVALID_ADD_IN_EMAILFIELD' => '\" not a valid email address in Email field',
 'INVALID_ADD_IN_OTHER_EMAILFIELD' => '\" not a valid email address in Other Email field',
 'ENTER_VALID_4DIGIT_YEAR' => 'Please enter a valid 4 digit year between ',
@@ -1267,7 +1267,19 @@ $app_strings = array (
 		  is no longer applicable, please reset your password.',
 	'LBL_RESET_PASSWORD_DESCRIPTION' => 'you can reset password for all users using a script and set it to thier respective
 			  user names.',
-	
+
+'LBL_CRITERIA_AND'=>'and',
+'LBL_CRITERIA_OR'=>'or',
+'LBL_NEW_GROUP'=>'New Group',
+'LBL_DELETE_GROUP'=>'Delete Group',
+'LBL_NEW_CONDITION'=>'New Condition',
+'LBL_ADVANCED_FILTER' => 'Advanced Search',
+
+'LBL_CHANGE'=>'Change',
+'LBL_CHANGE_TITLE'=>'Change [Alt+C]',
+
+'LBL_NEXT_BUTTON_LABEL' => 'Next',
+
 );
 
 $app_list_strings = array (
@@ -1497,5 +1509,8 @@ $app_currency_strings = array(
 	'United Republic of Tanzania, Shilling' => 'United Republic OF Tanzania, Shilling',
 	'Yemen, Rials'			=> 'Yemen, Rials',
 	'Zambia, Kwacha'		=> 'Zambia, Kwacha',
+	'Malawi, kwacha'		=> 'Malawi, kwacha',
+	'Tunisian, Dinar'		=> 'Tunisian, Dinar',
+	'Moroccan, Dirham'		=> 'Moroccan, Dirham',
 );
 ?>

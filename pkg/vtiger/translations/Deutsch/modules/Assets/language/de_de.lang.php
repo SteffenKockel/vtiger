@@ -5,39 +5,41 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
+ * Portions created by Different Solutions GmbH are Copyright (C) Different Solutions GmbH
  * All Rights Reserved.
  ************************************************************************************/
-
+//ds@em91n - German language file for new module "Assets" -> translation is based on "Inventory Management"
 $mod_strings = Array(
-/*some general information*/
-'LBL_MODULE_NAME'=>'Bestandverwaltung',
-'SINGLE_Assets'=>'Produkt',
+    /*some general information*/
+    'LBL_MODULE_NAME'=>'Bestandsverwaltung',
+    'SINGLE_Assets'=>'Bestandsverwaltung',
 
-/*blocks for the module*/
-'LBL_ASSET_INFORMATION'=>'Produkt Information',
-'LBL_CUSTOM_INFORMATION'=>'weitere Informatonen',
-'LBL_DESCRIPTION_INFORMATION'=>'Notiz',
+    /*blocks for the module*/
+    'LBL_ASSET_INFORMATION'=>'Bestandsverwaltung Information',
+    'LBL_CUSTOM_INFORMATION'=>'Custom Information',
+    'LBL_DESCRIPTION_INFORMATION'=>'Beschreibung',
 
-/*fields for the module*/
-'Assets'=>'Produktverwaltung',
-'Asset Name' => 'Bestandsname',
-'Customer Name'=>'Kundenname',
-'Product Name'=>'Produktname',
-'Serial Number'=>'Seriennummer',
-'Asset No'=>'Produktnr.',
-'Date Sold'=>'Verkaufsdatum',
-'Date in Service'=>'Servicedatum',
-'Status'=>'Status',
-'Shipping Method'=>'Versandmethode',
-'Shipping Tracking Number'=>'Versand Tracking Number',
-'Tag Number'=>'Tag Nummer',
-'Notes'=>'Notiz',
-'Invoice Name'=>'Rechnungsnummer',
+    /*fields for the module*/
+    'Assets'=>'Bestandsverwaltung',
+    'Asset Name' => 'Titel Bestandsverwaltung',
+    'Customer Name'=>'Organisation',
+    'Product Name'=>'Produkt',
+    'Serial Number'=>'Seriennummer',
+    'Asset No'=>'Bestandsverwaltung Nr',
+    'Date Sold'=>'Verkaufsdatum',
+    'Date in Service'=>'Servicedatum',
+    'Status'=>'Status',
+    'Shipping Method'=>'Versandmethode',
+    'Shipping Tracking Number'=>'Sendungsverfolgungsnummer',
+    'Tag Number'=>'Tag-Nummer',
+    'Notes'=>'Beschreibung',
+    'Invoice Name'=>'Rechnung',
 
-/*picklist values*/
-'In Service'=>'in Service',
-'Out-of-service'=>'aus Service',
-
-
+    /*picklist values*/
+    '--none--'=>'--ohne--',
+    'In Service'=>'unterstützt',
+    'Out-of-service'=>'wird nicht mehr unterstützt',
+    
+    /* additional related lists */
 );
 ?>

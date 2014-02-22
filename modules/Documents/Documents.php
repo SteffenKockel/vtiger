@@ -38,12 +38,14 @@ class Documents extends CRMEntity {
 	var $list_fields = Array(
 				'Title'=>Array('notes'=>'title'),
 				'File Name'=>Array('notes'=>'filename'),
+				'Modified Time'=>Array('crmentity'=>'modifiedtime'),
 				'Assigned To' => Array('crmentity'=>'smownerid'),
 				'Folder Name' => Array('attachmentsfolder'=>'foldername')
 				);
 	var $list_fields_name = Array(
 					'Title'=>'notes_title',
 					'File Name'=>'filename',
+					'Modified Time'=>'modifiedtime',
 					'Assigned To'=>'assigned_user_id',
 					'Folder Name' => 'folderid'
 				     );
@@ -260,7 +262,9 @@ class Documents extends CRMEntity {
 		$sql = getPermittedFieldsQuery("Documents", "detail_view");
 		$fields_list = getFieldsListFromQuery($sql);
 
-		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name" .
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
+		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name" .
 				" FROM vtiger_notes
 				inner join vtiger_crmentity
 					on vtiger_crmentity.crmid=vtiger_notes.notesid
@@ -460,6 +464,19 @@ class Documents extends CRMEntity {
 				// Re-link to default folder
 				$adb->pquery("UPDATE vtiger_notes set folderid = 1 WHERE notesid = ?", array($id));
 			}
+		}
+	}
+
+	function getQueryByModuleField($module, $fieldname, $srcrecord, $query) {
+		if($module == "MailManager") {
+			$tempQuery = split('WHERE', $query);
+			if(!empty($tempQuery[1])) {
+				$where = " vtiger_notes.filelocationtype = 'I' AND vtiger_notes.filename != '' AND vtiger_notes.filestatus != 0 AND ";
+				$query = $tempQuery[0].' WHERE '.$where.$tempQuery[1];
+			} else{
+				$query = $tempQuery[0].' WHERE '.$tempQuery;
+			}
+			return $query;
 		}
 	}
 }

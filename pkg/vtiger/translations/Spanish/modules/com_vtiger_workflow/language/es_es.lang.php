@@ -14,6 +14,7 @@ $mod_strings = array(
 'LBL_EDIT_TASK_TITLE'=>'Editar una tarea existente o crear una nueva',
 'LBL_EDIT_WORKFLOW'=>'Editar Flujo Trabajo',
 'LBL_EDIT_WORKFLOW_TITLE'=>'Editar un flujo de trabajo existente o crear uno nuevo',
+'LBL_FROM_TEMPLATE'=>'Basado en plantilla',
 'LBL_NEW_WORKFLOW'=>'Nuevo Flujo de Trabajo',
 'LBL_NEW_TEMPLATE'=>'Guardar como Plantilla',
 'LBL_CREATE_WORKFLOW_FOR'=>'Crear un flujo de trabajo para',
@@ -34,6 +35,36 @@ $mod_strings = array(
 'LBL_NO_TEMPLATES'=>'Sin Plantillas',
 'LBL_SELECT'=>'Selecciona',
 'LBL_MESSAGE'=>'Mensaje',
+'LBL_SET_FIELD_VALUES'=>'Establecer valor de campo',
+'LBL_ADD_FIELD'=>'Añadir campo',
+
+'LBL_USE_FIELD_VALUE_DASHDASH'=>'-- Utilizar Valor --',
+'LBL_USE_FUNCTION_DASHDASH'=>'-- Utilizar Función --',
+
+'LBL_RAW_TEXT'=>'Texto',
+'LBL_FIELD'=>'Campo',
+'LBL_EXPRESSION'=>'Expresión',
+'LBL_SET_EXPRESSION'=>'Expresión Asignación',
+
+'LBL_MANUAL'=>'Sistema',
+
+'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Añadir Condición de Grupo',
+
+'VTUpdateFieldsTask' => 'Actualizar Campos',
+
+'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'El mismo campo ha sido seleccionado más de una vez.',
+'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Valores de Campos Inválidos',
+'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Nota: Las expresiones se evalúan en el orden de los campos.
+											Así que asegurate de asignar un valor al campo antes de utilizarlo.',
+'LBL_SET_VALUE' => 'Establecer Valor',
+
+'LBL_EMAIL_RECIPIENT' => 'Destinatario',
+'LBL_EMAIL_CC' => 'CC',
+'LBL_EMAIL_BCC' => 'BCC',
+'LBL_EMAIL_SUBJECT' => 'Asunto',
+
+'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: Todas las fechas, horas e información recurrente configurada para el evento,
+											serán respecto a la zona horaria por defecto, configurada en config.inc.php',
 
 );
 ?>

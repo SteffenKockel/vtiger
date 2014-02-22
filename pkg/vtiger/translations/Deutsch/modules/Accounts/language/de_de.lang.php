@@ -12,13 +12,6 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Accounts/language/en_us.lang.php,v 1.18 2005/03/19 08:59:20 rank Exp $
- * Description:  Defines the English language pack
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s):4net AG, Schoretshuebstr. 26 , CH-9015 St.Gallen; UTF-8 and v5.0.4 ff. by crm-now, Berlin, www.crm-now.com
- ********************************************************************************/
 
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Organisationen',

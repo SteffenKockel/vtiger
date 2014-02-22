@@ -29,7 +29,7 @@ $sql='SELECT blocklabel FROM vtiger_blocks WHERE blockid = ?';
 $res= $adb->pquery($sql, array($_REQUEST['blockid']));
 $row= $adb->fetch_array($res);
 
-checkFileAccess('modules/'.$_REQUEST['fld_module'].'/language/'.$_SESSION['authenticated_user_language'].'.lang.php');
+checkFileAccessForInclusion('modules/'.$_REQUEST['fld_module'].'/language/'.$_SESSION['authenticated_user_language'].'.lang.php');
 include('modules/'.$_REQUEST['fld_module'].'/language/'.$_SESSION['authenticated_user_language'].'.lang.php');
 
 $blockLabel=$mod_strings[$row["blocklabel"]];

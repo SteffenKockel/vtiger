@@ -860,8 +860,7 @@ ini_set('memory_limit','64M');
 \$allow_exports = 'all';
 
 // files with one of these extensions will have '.txt' appended to their filename on upload
-// upload_badext default value = php, php3, php4, php5, pl, cgi, py, asp, cfm, js, vbs, html, htm
-\$upload_badext = array('php', 'php3', 'php4', 'php5', 'pl', 'cgi', 'py', 'asp', 'cfm', 'js', 'vbs', 'html', 'htm', 'exe', 'bin', 'bat', 'sh', 'dll', 'phps');
+\$upload_badext = array('php', 'php3', 'php4', 'php5', 'pl', 'cgi', 'py', 'asp', 'cfm', 'js', 'vbs', 'html', 'htm', 'exe', 'bin', 'bat', 'sh', 'dll', 'phps', 'phtml', 'xhtml', 'rb', 'msi', 'jsp', 'shtml', 'sth', 'shtm');
 
 // full path to include directory including the trailing slash
 // includeDirectory default value = \$root_directory..'include/
@@ -1085,7 +1084,7 @@ class Common_Install_Wizard_Utils {
 		}
 		return self::$recommendedDirectives;
 	}
-	
+
 	/** Function to check the file access is made within web root directory. */
 	static function checkFileAccess($filepath) {
 		global $root_directory, $installationStrings;
@@ -1094,18 +1093,47 @@ class Common_Install_Wizard_Utils {
 		if(empty($use_root_directory)) {
 			$use_root_directory = realpath(dirname(__FILE__).'/../../..');
 		}
-	
+
 		$realfilepath = realpath($filepath);
-	
+
 		/** Replace all \\ with \ first */
 		$realfilepath = str_replace('\\\\', '\\', $realfilepath);
 		$rootdirpath  = str_replace('\\\\', '\\', $use_root_directory);
-	
+
 		/** Replace all \ with / now */
 		$realfilepath = str_replace('\\', '/', $realfilepath);
 		$rootdirpath  = str_replace('\\', '/', $rootdirpath);
-		
+
 		if(stripos($realfilepath, $rootdirpath) !== 0) {
+			die($installationStrings['ERR_RESTRICTED_FILE_ACCESS']);
+		}
+	}
+	
+	/** Function to check the file access is made within web root directory. */
+	static function checkFileAccessForInclusion($filepath) {
+		global $root_directory, $installationStrings;
+		// Set the base directory to compare with
+		$use_root_directory = $root_directory;
+		if(empty($use_root_directory)) {
+			$use_root_directory = realpath(dirname(__FILE__).'/../../..');
+		}
+
+		$unsafeDirectories = array('storage', 'cache', 'test');
+
+		$realfilepath = realpath($filepath);
+
+		/** Replace all \\ with \ first */
+		$realfilepath = str_replace('\\\\', '\\', $realfilepath);
+		$rootdirpath  = str_replace('\\\\', '\\', $use_root_directory);
+
+		/** Replace all \ with / now */
+		$realfilepath = str_replace('\\', '/', $realfilepath);
+		$rootdirpath  = str_replace('\\', '/', $rootdirpath);
+
+		$relativeFilePath = str_replace($rootdirpath, '', $realfilepath);
+		$filePathParts = explode('/', $relativeFilePath);
+
+		if(stripos($realfilepath, $rootdirpath) !== 0 || in_array($filePathParts[0], $unsafeDirectories)) {
 			die($installationStrings['ERR_RESTRICTED_FILE_ACCESS']);
 		}
 	}
@@ -1332,7 +1360,7 @@ class Common_Install_Wizard_Utils {
 				        if($moduleInstance) {
 		        			updateVtlibModule($module, $packagepath);
 		        		} else {
-		        			installVtlibModule($packageName, $packagepath);
+		        			installVtlibModule($module, $packagepath);
 		        		}
 	        		}
 		        }
@@ -1372,19 +1400,25 @@ class Common_Install_Wizard_Utils {
 		require_once('include/utils/utils.php');
 		
 		$selected_modules = explode(":",$selected_modules);
-		
+
+		$languagePacks = array();
 		if ($handle = opendir('packages/vtiger/optional')) {		    
 		    while (false !== ($file = readdir($handle))) {
 		        $filename_arr = explode(".", $file);
-		        $packagename = $filename_arr[0];
-		        if (!empty($packagename) && in_array($packagename,$selected_modules)) {
-		        	$packagepath = "packages/vtiger/optional/$file";
-					$package = new Vtiger_Package();
+				if($filename_arr[count($filename_arr)-1] != 'zip'){
+					continue;
+				}
+				$packagename = $filename_arr[0];
+				$packagepath = "packages/vtiger/optional/$file";
+				$package = new Vtiger_Package();
+				$module = $package->getModuleNameFromZip($packagepath);
+				
+		        if (!empty($packagename) && in_array($module,$selected_modules)) {
 					if($package->isLanguageType($packagepath)) {
-						installVtlibModule($packagename, $packagepath);
+						$languagePacks[$module] = $packagepath;
 						continue;
 					}
-	        		$module = $package->getModuleNameFromZip($packagepath);
+					
 	        		if($module != null) {
 						if($package->isModuleBundle()) {
 							$unzip = new Vtiger_Unzip($packagepath);
@@ -1407,13 +1441,18 @@ class Common_Install_Wizard_Utils {
 							if($moduleInstance) {
 								updateVtlibModule($module, $packagepath);
 							} else {
-								installVtlibModule($packagename, $packagepath);
+								installVtlibModule($module, $packagepath);
 							}
 						}
 		        	}
 		        }
 		    }
 		    closedir($handle);
+		}
+
+		foreach($languagePacks as $module => $packagepath) {
+			installVtlibModule($module, $packagepath);
+			continue;
 		}
 	}
 	

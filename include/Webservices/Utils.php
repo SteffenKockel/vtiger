@@ -125,10 +125,10 @@ function vtws_getId($objId, $elemId){
 function getEmailFieldId($meta, $entityId){
 	global $adb;
 	//no email field accessible in the module. since its only association pick up the field any way.
-	$query="SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? 
+	$query="SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=?
 		and uitype=13 and presence in (0,2)";
 	$result = $adb->pquery($query, array($meta->getTabId()));
-	
+
 	//pick up the first field.
 	$fieldId = $adb->query_result($result,0,'fieldid');
 	return $fieldId;
@@ -137,7 +137,11 @@ function getEmailFieldId($meta, $entityId){
 function vtws_getParameter($parameterArray, $paramName,$default=null){
 	
 	if (!get_magic_quotes_gpc()) {
-		$param = addslashes($parameterArray[$paramName]);
+		if(is_array($parameterArray[$paramName])) {
+			$param = array_map('addslashes', $parameterArray[$paramName]);
+		} else {
+			$param = addslashes($parameterArray[$paramName]);
+		}
 	} else {
 		$param = $parameterArray[$paramName];
 	}
@@ -290,6 +294,11 @@ function vtws_addModuleTypeWebserviceEntity($moduleName,$filePath,$className){
 	}
 }
 
+function vtws_deleteWebserviceEntity($moduleName) {
+	global $adb;
+	$adb->pquery('DELETE FROM vtiger_ws_entity WHERE name=?',array($moduleName));	
+}
+
 function vtws_addDefaultActorTypeEntity($actorName,$actorNameDetails,$withName = true){
 	$actorHandler = array('file'=>'include/Webservices/VtigerActorOperation.php',
 		'class'=>'VtigerActorOperation');
@@ -437,6 +446,31 @@ function vtws_getModuleHandlerFromId($id,$user){
 	return $handler;
 }
 
+function vtws_CreateCompanyLogoFile($fieldname) {
+	global $root_directory;
+	$uploaddir = $root_directory ."/test/logo/";
+	$allowedFileTypes = array("jpeg", "png", "jpg", "pjpeg" ,"x-png");
+	$binFile = $_FILES[$fieldname]['name'];
+	$fileType = $_FILES[$fieldname]['type'];
+	$fileSize = $_FILES[$fieldname]['size'];
+	$fileTypeArray = explode("/",$fileType);
+	$fileTypeValue = strtolower($fileTypeArray[1]);
+	if($fileTypeValue == '') {
+		$fileTypeValue = substr($binFile,strrpos($binFile, '.')+1);
+	}
+	if($fileSize != 0) {
+		if(in_array($fileTypeValue, $allowedFileTypes)) {
+			move_uploaded_file($_FILES[$fieldname]["tmp_name"],
+					$uploaddir.$_FILES[$fieldname]["name"]);
+			return $binFile;
+		}
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN,
+			"$fieldname wrong file type given for upload");
+	}
+	throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN,
+			"$fieldname file upload failed");
+}
+
 function vtws_getActorEntityName ($name, $idList) {
 	$db = PearDatabase::getInstance();
 	if (!is_array($idList) && count($idList) == 0) {
@@ -511,7 +545,7 @@ function vtws_getConvertLeadFieldMapping(){
 
 /**	Function used to get the lead related Notes and Attachments with other entities Account, Contact and Potential
  *	@param integer $id - leadid
- *	@param integer $accountid -  related entity id (accountid)
+ *	@param integer $relatedId -  related entity id (accountid / contactid)
  */
 function vtws_getRelatedNotesAttachments($id,$relatedId) {
 	global $adb,$log;
@@ -623,10 +657,12 @@ function vtws_getFieldfromFieldId($fieldId, $fieldObjectList){
 }
 
 /**	Function used to get the lead related activities with other entities Account and Contact
- *	@param integer $accountid - related entity id
- *	@param integer $contact_id -  related entity id
+ *	@param integer $leadId - lead entity id
+ *	@param integer $accountId - related account id
+ *	@param integer $contactId -  related contact id
+ *	@param integer $relatedId - related entity id to which the records need to be transferred
  */
-function vtws_getRelatedActivities($leadId,$accountId,$contactId) {
+function vtws_getRelatedActivities($leadId,$accountId,$contactId,$relatedId) {
 	global $adb;
 	$sql = "select * from vtiger_seactivityrel where crmid=?";
 	$result = $adb->pquery($sql, array($leadId));
@@ -662,7 +698,7 @@ function vtws_getRelatedActivities($leadId,$accountId,$contactId) {
 			}
 		} else {
 			$sql = "insert into vtiger_seactivityrel(crmid,activityid) values (?,?)";
-			$resultNew = $adb->pquery($sql, array($contactId, $activityId));
+			$resultNew = $adb->pquery($sql, array($relatedId, $activityId));
 			if($resultNew === false){
 				return false;
 			}
@@ -674,21 +710,27 @@ function vtws_getRelatedActivities($leadId,$accountId,$contactId) {
 /**
  * Function used to save the lead related Campaigns with Contact
  * @param $leadid - leadid
- * @param $relatedid - related entity id (contactid)
+ * @param $relatedid - related entity id (contactid/accountid)
+ * @param $setype - related module(Accounts/Contacts)
  * @return Boolean true on success, false otherwise.
  */
-function vtws_saveLeadRelatedCampaigns($leadId, $relatedId) {
+function vtws_saveLeadRelatedCampaigns($leadId, $relatedId, $seType) {
 	global $adb;
 	
-	$result = $adb->pquery("select * from vtiger_campaignleadrel where leadid=?", array($leadid));
-	if($resultNew === false){
+	$result = $adb->pquery("select * from vtiger_campaignleadrel where leadid=?", array($leadId));
+	if($result === false){
 		return false;
 	}
 	$rowCount = $adb->num_rows($result);
 	for($i = 0; $i < $rowCount; ++$i) {
 		$campaignId = $adb->query_result($result,$i,'campaignid');
-		$resultNew = $adb->pquery("insert into vtiger_campaigncontrel (campaignid, contactid) values(?,?)",
-			array($campaignId, $relatedId));
+		if($seType == 'Accounts') {
+			$resultNew = $adb->pquery("insert into vtiger_campaignaccountrel (campaignid, accountid) values(?,?)",
+				array($campaignId, $relatedId));
+		} elseif ($seType == 'Contacts') {
+			$resultNew = $adb->pquery("insert into vtiger_campaigncontrel (campaignid, contactid) values(?,?)",
+				array($campaignId, $relatedId));
+		}
 		if($resultNew === false){
 			return false;
 		}
@@ -696,11 +738,53 @@ function vtws_saveLeadRelatedCampaigns($leadId, $relatedId) {
 	return true;
 }
 
+/**
+ * Function used to transfer all the lead related records to given Entity(Contact/Account) record
+ * @param $leadid - leadid
+ * @param $relatedid - related entity id (contactid/accountid)
+ * @param $setype - related module(Accounts/Contacts)
+ */
+function vtws_transferLeadRelatedRecords($leadId, $relatedId, $seType) {
+
+	$status = vtws_getRelatedNotesAttachments($leadId, $relatedId);
+	if($status === false){
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED,
+			"Failed to move related Documents to the ".$seType);
+	}
+	//Retrieve the lead related products and relate them with this new account
+	$status = vtws_saveLeadRelatedProducts($leadId, $relatedId, $seType);
+	if($status === false){
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED,
+			"Failed to move related Products to the ".$seType);
+	}
+	$status = vtws_saveLeadRelations($leadId, $relatedId, $seType);
+	if($status === false){
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED,
+			"Failed to move Records to the ".$seType);
+	}
+	$status = vtws_saveLeadRelatedCampaigns($leadId, $relatedId, $seType);
+	if($status === false){
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_RELATED_UPDATE_FAILED,
+			"Failed to move Records to the ".$seType);
+	}
+	vtws_transferComments($leadId, $relatedId);
+}
+
+function vtws_transferComments($sourceRecordId, $destinationRecordId) {
+	if(vtlib_isModuleActive('ModComments')) { 
+		CRMEntity::getInstance('ModComments'); ModComments::transferRecords($sourceRecordId, $destinationRecordId);
+	}
+}
+
 function vtws_transferOwnership($ownerId, $newOwnerId) {
 	$db = PearDatabase::getInstance();
 	//Updating the smcreatorid,smownerid, modifiedby in vtiger_crmentity
 	$sql = "update vtiger_crmentity set smcreatorid=? where smcreatorid=?";
 	$db->pquery($sql, array($newOwnerId, $ownerId));
+
+	$sql = "update vtiger_crmentity set smownerid=? where smownerid=?";
+	$db->pquery($sql, array($newOwnerId, $ownerId));
+	
 	$sql = "update vtiger_crmentity set modifiedby=? where modifiedby=?";
 	$db->pquery($sql, array($newOwnerId, $ownerId));
 
@@ -750,6 +834,59 @@ function vtws_transferOwnership($ownerId, $newOwnerId) {
 			$db->pquery($sql, array($newOwnerId, $ownerId));
 		}
 	}
+}
+
+
+function vtws_getWebserviceTranslatedStringForLanguage($label, $currentLanguage) {
+	static $translations = array();
+	$currentLanguage = vtws_getWebserviceCurrentLanguage();
+	if(empty($translations[$currentLanguage])) {
+		include 'include/Webservices/language/'.$currentLanguage.'.lang.php';
+		$translations[$currentLanguage] = $webservice_strings;
+	}
+	if(isset($translations[$currentLanguage][$label])) {
+		return $translations[$currentLanguage][$label];
+	}
+	return null;
+}
+
+function vtws_getWebserviceTranslatedString($label) {
+	$currentLanguage = vtws_getWebserviceCurrentLanguage();
+	$translation = vtws_getWebserviceTranslatedStringForLanguage($label, $currentLanguage);
+	if(!empty($translation)) {
+		return $translation;
+	}
+	
+	//current language doesn't have translation, return translation in default language
+	//if default language is english then LBL_ will not shown to the user.
+	$defaultLanguage = vtws_getWebserviceDefaultLanguage();
+	$translation = vtws_getWebserviceTranslatedStringForLanguage($label, $defaultLanguage);
+	if(!empty($translation)) {
+		return $translation;
+	}
+	
+	//if default language is not en_us then do the translation in en_us to eliminate the LBL_ bit 
+	//of label.
+	if('en_us' != $defaultLanguage) {
+		$translation = vtws_getWebserviceTranslatedStringForLanguage($label, 'en_us');
+		if(!empty($translation)) {
+			return $translation;
+		}
+	}
+	return $label;
+}
+
+function vtws_getWebserviceCurrentLanguage() {
+	global $default_language, $current_language;
+	if(empty($current_language)) {
+		return $default_language;
+	}
+	return $current_language;
+}
+
+function vtws_getWebserviceDefaultLanguage() {
+	global $default_language;
+	return $default_language;
 }
 
 ?>

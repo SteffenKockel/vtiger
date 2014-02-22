@@ -35,17 +35,8 @@ function InsertImportRecords($rows,$rows1,$focus,$ret_field_count,$col_pos_to_fi
 	global $process_fields;
 
 	// MWC ** Getting vtiger_users
-	$temp = get_user_array(FALSE);
-	foreach ( $temp as $key=>$data)
-	$users_groups_list[$data] = $key;
+	$users_groups_list = array();
 
-	$temp = get_group_array(FALSE);
-	foreach ( $temp as $key=>$data)
-	$users_groups_list[$data] = $key;
-
-	p(print_r(users_groups_list,1));
-	$adb->println("Users List : ");
-	$adb->println($users_groups_list);
 	$dup_count = 0;
 	$count = 0;
 	$dup_ow_count = 0;
@@ -102,7 +93,16 @@ function InsertImportRecords($rows,$rows1,$focus,$ret_field_count,$col_pos_to_fi
 				{
 					//Here we are assigning the user id in column fields, so in function assign_user (ImportLead.php and ImportProduct.php files) we should use the id instead of user name when query the user
 					//or we can use $focus->column_fields['smownerid'] = $users_groups_list[$row[$field_count]];
-					$focus->column_fields[$field] = $users_groups_list[trim($row[$field_count])];
+					$row[$field_count] = trim($row[$field_count]);
+					if(empty($users_groups_list[$row[$field_count]])) {
+						$id = getUserId_Ol($row[$field_count]);
+						if(empty($id)) {
+							$id = getGrpId($row[$field_count]);
+						}
+						$users_groups_list[trim($row[$field_count])] = $id;
+								
+					}
+					$focus->column_fields[$field] = $users_groups_list[$row[$field_count]];
 					p("setting my_userid=$my_userid for user=".$row[$field_count]);
 				}
 				else
@@ -174,7 +174,7 @@ function InsertImportRecords($rows,$rows1,$focus,$ret_field_count,$col_pos_to_fi
 		}
 
 		//added for duplicate handling
-		if(is_record_exist($module,$focus))
+		if(is_record_exist($module,$focus,$col_pos_to_field))
 		{
 			if($do_save != 0)
 			{
@@ -283,7 +283,7 @@ function b()
 	//return $_SESSION['import_display_message'];
 }
 
-function is_record_exist($module,$focus)
+function is_record_exist($module,$focus,$mappedFields)
 {
 	global $adb;
 	global $dup_ow_count;
@@ -364,9 +364,9 @@ function is_record_exist($module,$focus)
 		else
 		return false;
 	}
-	else if($auto_dup_type == "overwrite")
+	else if($auto_dup_type == "overwrite" || $auto_dup_type == "merge")
 	{
-		return overwrite_duplicate_records($module,$focus);
+		return overwrite_duplicate_records($module,$focus,$auto_dup_type,$mappedFields);
 	}
 	else
 	return false;
@@ -399,7 +399,7 @@ function get_where_clause($module,$column_fields) {
 	return $where_clause;
 }
 //function to overwrite the existing duplicate records with the importing record's values
-function overwrite_duplicate_records($module,$focus)
+function overwrite_duplicate_records($module,$focus,$autoDupType,$mappedFields)
 {
 	global $adb;
 	global $dup_ow_count;
@@ -497,14 +497,21 @@ function overwrite_duplicate_records($module,$focus)
 		{
 			$id_field = $moduleObj->table_index;
 			$id_value = $adb->query_result($result,$i,$id_field);
-			if($i == 0)
-			{
+			if($i == 0){
 				$moduleObj->mode = "edit";
 				$moduleObj->id = $id_value;
-				$moduleObj->column_fields = $focus->column_fields;
-				$moduleObj->save($module);
-			}
-			else{
+				if($autoDupType == "merge"){
+					$moduleObj->retrieve_entity_info($id_value,$module);
+					foreach ($mappedFields as $index => $fieldName) {
+						if(!empty($focus->column_fields[$fieldName])) {
+							$moduleObj->column_fields[$fieldName] = $focus->column_fields[$fieldName];
+						}
+					}
+				}else{
+					$moduleObj->column_fields = $focus->column_fields;
+				}
+				$moduleObj->saveentity($module);
+			}else{
 				DeleteEntity($module,$module,$moduleObj,$id_value,"");
 			}
 		}
@@ -542,7 +549,5 @@ function getPicklist($field,$value)
                 return $correct_val;
         }
         return null;
-
 }
-
 ?>

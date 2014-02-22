@@ -143,17 +143,18 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 	global $log, $current_user;
 	
 	// Reset date format for a while
-	$old_userdate_format = $current_user->date_format;	
-	$current_user->date_format = 'yyyy-mm-dd';
 	
+	$date = new DateTimeField(null);
+	$currentDate = $date->getDisplayDate();
+	$currentTime = $date->getDisplayTime();
 	require_once 'modules/Calendar/Activity.php';
 	$focus = new Activity();
 	$focus->column_fields['subject'] = "Incoming call from $callerName ($callerNumber)";
 	$focus->column_fields['activitytype'] = "Call";
-	$focus->column_fields['date_start'] = date('Y-m-d');
-	$focus->column_fields['due_date'] = date('Y-m-d');
-	$focus->column_fields['time_start'] = date('H:i');
-	$focus->column_fields['time_end'] = date('H:i');
+	$focus->column_fields['date_start'] = $currentDate;
+	$focus->column_fields['due_date'] = $currentDate;
+	$focus->column_fields['time_start'] = $currentTime;
+	$focus->column_fields['time_end'] = $currentTime;
 	$focus->column_fields['eventstatus'] = "Held";
 	$focus->column_fields['assigned_user_id'] = $userid;
 	$focus->save('Calendar');
@@ -191,13 +192,18 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 function addOutgoingcallHistory($current_user,$extension, $record ,$adb){
 	global $log;
 	require_once 'modules/Calendar/Activity.php';
+	
+	$date = new DateTimeField(null);
+	$currentDate = $date->getDisplayDate();
+	$currentTime = $date->getDisplayTime();
+	
 	$focus = new Activity();
 	$focus->column_fields['subject'] = "Outgoing call from $current_user->user_name ($extension)";
 	$focus->column_fields['activitytype'] = "Call";
-	$focus->column_fields['date_start'] = date('Y-m-d');
-	$focus->column_fields['due_date'] = date('Y-m-d');
-	$focus->column_fields['time_start'] = date('H:i');
-	$focus->column_fields['time_end'] = date('H:i');
+	$focus->column_fields['date_start'] = $currentDate;
+	$focus->column_fields['due_date'] = $currentDate;
+	$focus->column_fields['time_start'] = $currentTime;
+	$focus->column_fields['time_end'] = $currentTime;
 	$focus->column_fields['eventstatus'] = "Held";
 	$focus->column_fields['assigned_user_id'] = $current_user->id;
 	$focus->save('Calendar');

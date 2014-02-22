@@ -68,14 +68,19 @@
 		 * Retrieve a task from the database
 		 *
 		 * @param $taskId The id of the task to retrieve.
-		 * @return The retrieved task.
+		 * @return VTTask The retrieved task.
 		 */
 		public function retrieveTask($taskId){
 			$adb = $this->adb;
 			$result = $adb->pquery("select task from com_vtiger_workflowtasks where task_id=?", array($taskId));
 			$data = $adb->raw_query_result_rowdata($result, 0);
 			$task = $data["task"];
-			return $this->unserializeTask($task);
+			$task = $this->unserializeTask($task);
+			$timeFieldList = $task->getTimeFieldList();
+			foreach ($timeFieldList as $field) {
+				$task->$field = $task->formatTimeForTimePicker($task->$field);
+			}
+			return $task;
 		}
 		
 		
@@ -110,7 +115,7 @@
 		
 		
 		function getTaskTypes(){
-			$taskTypes = array("VTEmailTask", "VTEntityMethodTask", "VTCreateTodoTask","VTCreateEventTask");
+			$taskTypes = array("VTEmailTask", "VTEntityMethodTask", "VTCreateTodoTask","VTCreateEventTask","VTUpdateFieldsTask");
 			// Make SMSTask available if module is active
 			// TODO Generic way of handling this could be helpful
 			if(getTabid('SMSNotifier') && vtlib_isModuleActive('SMSNotifier')) {
@@ -147,6 +152,18 @@
 	abstract class VTTask{
 		public abstract function doTask($data);
 		public abstract function getFieldNames();
+
+		public function getTimeFieldList() {
+			return array();
+		}
+
+		public function formatTimeForTimePicker($time) {
+			list($h, $m, $s) = explode(':', $time);
+			$mn = str_pad($m - $m % 15, 2, 0, STR_PAD_LEFT);
+			$AM_PM = array('am', 'pm');
+			return str_pad(($h%12), 2, 0, STR_PAD_LEFT).':'.$mn.$AM_PM[($h/12)%2];
+		}
+
 	}
 	
 	//require 'modules/Workflow/tasks/VTEmailTask.inc';

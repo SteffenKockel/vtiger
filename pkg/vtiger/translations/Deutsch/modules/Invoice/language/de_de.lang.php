@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): www.crm-now.de translation to German
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the German (Germany) language pack
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): crm-now, Berlin, www.crm-now.com
- ********************************************************************************/
-
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Rechnung',
 'LBL_SO_MODULE_NAME'=>'Rechnungen',
@@ -197,6 +188,8 @@ $mod_strings = Array(
 // Added affter 5.0.4 GA
 //Added for Documents module
 'Documents'=>'Dokumente',
+
+'SINGLE_Invoice'=>'Rechnung',
 );
 
 ?>

@@ -196,13 +196,12 @@ function calcProductTotal(rowId) {
 
 			var totalAfterDiscount = eval(total-document.getElementById("discountTotal"+rowId).innerHTML);
 			getObj("totalAfterDiscount"+rowId).innerHTML=roundValue(totalAfterDiscount.toString())
-
 			
 			var tax_type = document.getElementById("taxtype").value;
 			//if the tax type is individual then add the tax with net price
 			if(tax_type == 'individual')
 			{	
-				callTaxCalc(i);
+				callTaxCalc(rowId);
 				netprice = totalAfterDiscount+eval(document.getElementById("taxTotal"+rowId).innerHTML);
 			}
 			else

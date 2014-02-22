@@ -153,7 +153,7 @@ class Vtiger_ModuleBasic {
 		if(!Vtiger_Utils::CheckTable('vtiger_tab_info')) {
 			Vtiger_Utils::CreateTable(
 				'vtiger_tab_info',
-				'(tabid INT PRIMARY KEY, prefname VARCHAR(256), prefvalue VARCHAR(256), FOREIGN KEY fk_1_vtiger_tab_info(tabid) REFERENCES vtiger_tab(tabid) ON DELETE CASCADE ON UPDATE CASCADE)',
+				'(tabid INT, prefname VARCHAR(256), prefvalue VARCHAR(256), FOREIGN KEY fk_1_vtiger_tab_info(tabid) REFERENCES vtiger_tab(tabid) ON DELETE CASCADE ON UPDATE CASCADE)',
 				true);
 		}
 		if($this->minversion) {
@@ -240,6 +240,9 @@ class Vtiger_ModuleBasic {
 			Vtiger_Access::deleteTools($this);
 			Vtiger_Filter::deleteForModule($this);
 			Vtiger_Block::deleteForModule($this);
+			if(method_exists($this, 'deinitWebservice')) {
+				$this->deinitWebservice();
+			}
 		}
 		$this->__delete();
 		Vtiger_Profile::deleteForModule($this);
@@ -314,6 +317,15 @@ class Vtiger_ModuleBasic {
 		self::log("Deleting related lists ... DONE");
 	}
 
+	/**
+	 * Delete links information
+	 */
+	function deleteLinks() {
+		global $adb;
+		$adb->pquery("DELETE FROM vtiger_links WHERE tabid=?", Array($this->id));
+		self::log("Deleting links ... DONE");
+	}
+	
 	/**
 	 * Configure default sharing access for the module
 	 * @param String Permission text should be one of ['Public_ReadWriteDelete', 'Public_ReadOnly', 'Public_ReadWrite', 'Private']

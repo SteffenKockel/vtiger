@@ -149,7 +149,12 @@ class VtigerCRMObject{
 			$this->instance->column_fields[$k] = $v;
 		}
 
-		$adb->startTransaction();
+		//added to fix the issue of utf8 characters
+		foreach($this->instance->column_fields as $key=>$value){
+			$this->instance->column_fields[$key] = decode_html($value);
+		}
+
+                $adb->startTransaction();
 		$this->instance->mode = "edit";
 		$this->instance->Save($this->getTabName());
 		$error = $adb->hasFailedTransaction();

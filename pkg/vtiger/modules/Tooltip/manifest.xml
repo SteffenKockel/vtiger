@@ -5,7 +5,7 @@
 <label>Tool Tip</label>
 <parent></parent>
 <type>extension</type>
-<version>1.1</version>
+<version>1.2</version>
 <dependencies>
 <vtiger_version>5.1.0</vtiger_version>
 <vtiger_max_version>5.*</vtiger_max_version>

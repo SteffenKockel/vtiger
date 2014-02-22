@@ -4,7 +4,7 @@
 <name>ServiceContracts</name>
 <label>Service Contracts</label>
 <parent>Support</parent>
-<version>1.2</version>
+<version>1.5</version>
 <dependencies>
 <vtiger_version>5.1.0</vtiger_version>
 <vtiger_max_version>5.*</vtiger_max_version>
@@ -74,7 +74,7 @@
 <fieldlabel>Assigned To</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>4</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~M</typeofdata>
@@ -94,7 +94,7 @@
 <fieldlabel>Created Time</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>17</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -114,7 +114,7 @@
 <fieldlabel>Modified Time</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>18</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -134,7 +134,7 @@
 <fieldlabel>Start Date</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>7</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>D~O</typeofdata>
@@ -154,7 +154,7 @@
 <fieldlabel>End Date</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>11</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>D~O</typeofdata>
@@ -174,7 +174,7 @@
 <fieldlabel>Related to</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>3</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -198,7 +198,7 @@
 <fieldlabel>Tracking Unit</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>6</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -224,7 +224,7 @@
 <fieldlabel>Total Units</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>8</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -244,7 +244,7 @@
 <fieldlabel>Used Units</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>10</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -264,7 +264,7 @@
 <fieldlabel>Subject</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>1</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~M</typeofdata>
@@ -288,7 +288,7 @@
 <fieldlabel>Due date</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>9</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>D~O</typeofdata>
@@ -308,7 +308,7 @@
 <fieldlabel>Planned Duration</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>13</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -328,7 +328,7 @@
 <fieldlabel>Actual Duration</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>15</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -348,7 +348,7 @@
 <fieldlabel>Status</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>12</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -376,7 +376,7 @@
 <fieldlabel>Priority</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>14</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -401,7 +401,7 @@
 <fieldlabel>Type</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>5</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -426,7 +426,7 @@
 <fieldlabel>Progress</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>16</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>N~O~2~2</typeofdata>
@@ -446,7 +446,7 @@
 <fieldlabel>Contract No</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>2</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>

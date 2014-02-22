@@ -26,20 +26,6 @@
 
  ********************************************************************************/
 
-/*********************************************************************************
- * $Header: /cvsroot/vtigercrm/vtiger_crm/modules/Settings/language/ge_de.lang.php,v 1.45 2006/02/03 05:19:44 mangai Exp $
-
- * Description:  Defines the German language pack
-
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
-
- * All Rights Reserved.
-
- * Contributor(s): 4net AG, Schoretshuebstr. 26 , CH-9015 St.Gallen
-
- *                 since v.5.0.4 by crm-now, Berlin, www.crm-now.com
- ********************************************************************************/
-
 
 
 $mod_strings = Array(
@@ -1199,8 +1185,50 @@ Leads entsprechende benutzerdefinierten Felder aus den Modulen Personen, Organis
 'PORTAL_EXTENSION_DESCRIPTION'=>'Gestattet das Kundenportal zu konfigurieren',
 'LBL_CUSTOMER_PORTAL'=> 'Kundenportal',
 
-//crm-now: added  missing lables
 'Assets' => 'Bestand',
 
+// Customization
+'LBL_PUBLISHER' => 'Herausgeber',
+'LBL_PUBLISHED_ON' => 'veröffentlicht am',
+'LBL_LICENSE'   => 'Lizenz',
+'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Das Erweiterungs-Packet konnte nicht heruntergeladen werden!',
+'LBL_DEFAULT'=>' Als Standard wird der Postausgangsserver mit dem Server od1.vtiger.com konfiguriert. Um zu verhindern, dass gesendete E-Mails als Spam erkannt werden, sollten Sie einen der folgenden implementieren.',
+'LBL_OPTIONS1'=>'Senden Sie E-Mails von Ihren E-Mail-Server<br>
+				- Geben Sie die Postausgangsserver-Einstellungen (Servername, Benutzer, Password) mit dem selben Benutzer, wie Sie als "Von"-E-Mail-Adresse eingetragen haben.',
+'LBL_OPTIONS2'=>"Fügen Sie od1.vtiger.com als authorisierter Server für Ihre Domain hinzu.<br>
+				- Wenn Sie den vtiger Server als Postausgangsserver behalten wollen, empfehlen wir, dass Sie Ihren Domain-SPF-Eintrag so konfigurieren, dass der vtiger Server als gültiger Absender gilt.
+				  Für weitere Informationen zum Einrichten des SPF-Eintrages senden Sie bitte eine E-Mail an od-support@vtiger.com.",
+'LBL_ALREADY_EXISTS' => 'Existiert bereits',
+'LBL_EXTENSION_INCOMPATIBLE' => 'Erweiterung nicht kompatibel',
+'LBL_INSTALL' => 'Installieren',
+'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Zum Standard zurücksetzen',
+'LBL_CONFIRM_DEFAULT_SETTINGS' => 'Sind Sie sicher, dass Sie die Server-Einstellungen zum Standard zurück setzen wollen?',
+'EXISTING_DEFAULT_VALUES' => 'Die Server-Einstellungen wurden bereits zum Standard zurückgesetzt.',
+'LBL_NOTE' => 'Hinweis:',
+'LBL_HIDE' => 'Verberge Details',
+'LBL_SHOW' => 'Zeige Details',
+// END
+'LBL_USER_ADDITION_INFO'=>"Um einen neuen Benutzer hinzuzufügen, klicken Sie bitte auf  
+			   <span style='font-style:italic;color:blue;'>OD-Einstellungsmenü -> On Demand Admin -> Benutzer hinzufügen / einladen </span>",
+
+'LBL_READ_ONLY_ACCESS_MSG' => 'Lesezugriff',
+'LBL_READ_WRITE_ACCESS_MSG' => 'Lese- und Schreibzugriff',
+
+'LBL_DEFAULT_VALUE' => 'Standardwerte',
+
+'LBL_DESCRIPTION_Public: Read Only'=>'Benutzer können andere Benutzer nur ansehen ',
+'LBL_DESCRIPTION_Public: Read, Create/Edit'=>'Benutzer können andere Benutzer ansehen, bearbeiten und anlegen ',
+'LBL_DESCRIPTION_Public: Read, Create/Edit, Delete'=>'Benutzer können andere Benutzer ansehen, bearbeiten, anlegen und löschen ',
+
+// For Dependency picklist
+'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Einstellungen der Abhängigkeiten von Auswahllisten',
+'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Erstelle Abhängigkeiten zwischen den Werten der Auswahllisten in jedem Modul',
+
+'Settings' => 'Einstellungen',
+'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Diese Mwst. ist bereits vorhanden.',
+'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Einige Mwst. Beschriftungen sind bereits vorhanden, deshalb kann es nicht gespeichert werden.',
+
+'Configuration Editor'=>'Konfigurations Editor',
+'Update configuration file of the application'=>'Verändern Sie globale Einstellungen für das CRM',
 );
 ?>

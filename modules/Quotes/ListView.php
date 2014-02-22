@@ -136,11 +136,13 @@ if($_REQUEST['query'] == 'true') {
 
 $query = $queryGenerator->getQuery();
 
+$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 if(isset($order_by) && $order_by != '')
 {
 	if($order_by == 'smownerid')
         {
-		$query .= " ORDER BY case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end ".$sorder;
+		$query .= " ORDER BY case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end ".$sorder;
         }
         else
         {

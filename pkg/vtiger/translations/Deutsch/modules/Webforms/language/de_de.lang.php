@@ -1,8 +1,4 @@
 <?php
-/**
- * German translation by crm-now [ http://www.crm-now.com ]
- * IMPORTANT: save file with UTF-8 without BOM!
- **/
 $mod_strings = Array (
 'Webforms' => 'Webforms',
 'LBL_SUCCESS' => 'Vielen Dank. Ihre Nachricht wurde empfangen und wird von uns umgehend bearbeitet.',

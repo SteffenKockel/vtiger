@@ -274,8 +274,15 @@ class PriceBooks extends CRMEntity {
 	function generateReportsQuery($module){
 	 			$moduletable = $this->table_name;
 	 			$moduleindex = $this->table_index;
+				$modulecftable = $this->customFieldTable[0];
+				$modulecfindex = $this->customFieldTable[1];
+
+				$cfquery = '';
+				if(isset($modulecftable)){
+					$cfquery = "inner join $modulecftable as $modulecftable on $modulecftable.$modulecfindex=$moduletable.$moduleindex";
+				}
 	 			
-	 			$query = "from $moduletable
+	 			$query = "from $moduletable $cfquery
 					inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex
 					left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = $moduletable.currency_id 
 					left join vtiger_groups as vtiger_groups$module on vtiger_groups$module.groupid = vtiger_crmentity.smownerid 

@@ -5,13 +5,7 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved. translated to German by crm-now, www.crm-now.de
-* 
  ********************************************************************************/
-/**
- * German translation by crm-now [ http://www.crm-now.com ]
- * IMPORTANT: save file with UTF-8 without BOM!
- **/
 
 $mod_strings = Array (
 'Tooltip' => 'Kurzinfo',

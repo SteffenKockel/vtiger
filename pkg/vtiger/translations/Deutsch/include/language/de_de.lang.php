@@ -17,7 +17,6 @@
  * Description:  Defines the German language pack for the base application.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): crm-now Berlin, www.crm-now.com
  ********************************************************************************/
 $app_strings = array(
 'LBL_BROWSER_TITLE' => 'vtiger CRM 5 - Commercial Open Source CRM',
@@ -623,6 +622,8 @@ $app_strings = array(
 'LBL_ADDRESS_INF'=>'Adressinformation',
 'yes'=>'ja',
 'no' => 'nein',
+'on'=>'ja',
+'off'=>'nein',
 'LBL_RENAMEPROFILE_BUTTON_LABEL'=>'Umbenennen',
 'LBL_RENAME_PROFILE'=>'Profil umbenennen',
 'LBL_PROFILE_NAME'=>'Profilname',
@@ -1268,7 +1269,7 @@ $app_strings = array(
 	'LBL_RESET_PASSWORD_DESCRIPTION' => 'you can reset password for all users using a script and set it to thier respective
 			  user names.',
 
-//crm-now: added  missing lables
+
 'Assets' => 'Produktverwaltung',
 'CustomerPortal' => 'Kundenportal',
 'Comments' => 'Kommentare',
@@ -1279,7 +1280,18 @@ $app_strings = array(
 'Recycle Bin' => 'Papierkorb',
 'SMSNotifier' => 'SMS',
 'Tool Tip' => 'Kurzinfo',
-			  
+
+'ERR_INVALID_SECONDARY_EMAIL_ADDRESS' => 'keine gültige zweite E-Mail-Adresse angegeben.',
+'SECONDARY_EMAIL_FILED_IS' => "\' im sekundären E-Mail Feld ist ",
+'LBL_CRITERIA_AND'=>'und',
+'LBL_CRITERIA_OR'=>'oder',
+'LBL_NEW_GROUP'=>'Neue Gruppe',
+'LBL_DELETE_GROUP'=>'Gruppe löschen',
+'LBL_NEW_CONDITION'=>'Neue Bedingung',
+'LBL_ADVANCED_FILTER' => 'Erweiterte Suche',
+'LBL_CHANGE'=>'Ändern',
+'LBL_CHANGE_TITLE'=>'Ändern [Alt+C]',
+'LBL_NEXT_BUTTON_LABEL' => 'Weiter',	  
 );
 
 $app_list_strings = array (
@@ -1505,5 +1517,8 @@ $app_currency_strings = array(
 	'United Arab Emirates, Dirham' => 'United Arab Emirates, Dirham',
 	'United Republic OF Tanzania, Shilling' => 'United Republic OF Tanzania, Shilling',
 	'Zambia, Kwacha' => 'Zambia, Kwacha',
+	'Malawi, kwacha'		=> 'Malawi, kwacha',
+	'Tunisian, Dinar'		=> 'Tunisian, Dinar',
+	'Moroccan, Dirham'		=> 'Moroccan, Dirham',
 );
 ?>

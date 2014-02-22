@@ -12,13 +12,6 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /......./modules/Dashboard/language/ge_de.lang.php,v 5.0 2006/08/11 06:56:00  $
- * Description:  Defines the German (Germany) language pack for the base application.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * Contributor(s): 4net AG, Schoretshuebstr. 26 , CH-9015 St.Gallen
- *                  crm-now, Berlin, www.crm-now.com
-********************************************************************************/
 
 $mod_strings = Array(
 'LBL_SALES_STAGE_FORM_TITLE'=>'Pipeline nach Verkaufsstufen',

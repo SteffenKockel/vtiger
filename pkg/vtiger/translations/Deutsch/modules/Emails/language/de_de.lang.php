@@ -12,11 +12,6 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * Description:  Defines the German (Germany) language pack for the base application.
- * Contributor(s): 4net AG, Schoretshuebstr. 26 , CH-9015 St.Gallen
- *                starting with v5.0.4 by crm-now, Berlin, www.crm-now.com
- ********************************************************************************/
 $mod_strings = Array(
 // Mike Crowe Mod --------------------------------------------------------added for general search
 'LBL_GENERAL_INFORMATION'=>'Allgemeine Information',

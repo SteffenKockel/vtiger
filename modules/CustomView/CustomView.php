@@ -28,6 +28,9 @@ $adv_filter_options = array("e"=>"".$mod_strings['equals']."",
                             "g"=>"".$mod_strings['greater than']."",
                             "m"=>"".$mod_strings['less or equal']."",
                             "h"=>"".$mod_strings['greater or equal']."",
+                            "b"=>"".$mod_strings['before']."",
+                            "a"=>"".$mod_strings['after']."",
+                            "bw"=>"".$mod_strings['between']."",
                             );
 
 class CustomView extends CRMEntity{
@@ -126,8 +129,12 @@ class CustomView extends CRMEntity{
 		}
 		else {
 			$viewname = vtlib_purify($_REQUEST['viewname']);
-			if((is_string($viewname) && strtolower($viewname) == 'all') || $viewname == 0) {
-        		$viewid = $this->getViewIdByName('All', $module);
+			if(!is_numeric($viewname)) {
+				if(strtolower($viewname) == 'all' || $viewname == 0) {
+					$viewid = $this->getViewIdByName('All', $module);
+				} else {
+					$viewid = $this->getViewIdByName($viewname, $module);
+				}
 			} else { 
         		$viewid = $viewname;
 			}
@@ -138,9 +145,8 @@ class CustomView extends CRMEntity{
 		return $viewid;
 
 	}
-	//Return id of a view : Added by Pavani
-	function getViewIdByName($viewname, $module)
-	{
+
+	function getViewIdByName($viewname, $module) {
 		global $adb;
 		if(isset($viewname)) {
 			$query="select cvid from vtiger_customview where viewname=? and entitytype=?";
@@ -218,7 +224,7 @@ class CustomView extends CRMEntity{
 		$selected = 'selected';
 		if ($markselected == false) $selected = '';
 		
-		$ssql = "select vtiger_customview.*, vtiger_users.user_name from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype 
+		$ssql = "select vtiger_customview.*, vtiger_users.first_name,vtiger_users.last_name from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype 
 					left join vtiger_users on vtiger_customview.userid = vtiger_users.id ";
 		$ssql .= " where vtiger_tab.tabid=?";
 		$sparams = array($tabid);
@@ -241,7 +247,9 @@ class CustomView extends CRMEntity{
 			if ($cvrow['status'] == CV_STATUS_DEFAULT || $cvrow['userid'] == $current_user->id) {
 				$disp_viewname = $viewname;				
 			} else {
-				$disp_viewname = $viewname . " [" . $cvrow['user_name'] . "] ";	
+				$userName = getDisplayName(array('f'=>$cvrow['first_name'], 
+					'l'=>$cvrow['last_name']));
+				$disp_viewname = $viewname . " [" . $userName . "] ";	
 			}
 			
 			
@@ -702,129 +710,129 @@ class CustomView extends CRMEntity{
 				}
 				if( type == "today" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($today).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($today).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($today).'";
 				}
 				else if( type == "yesterday" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($yesterday).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($yesterday).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($yesterday).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($yesterday).'";
 				}
 				else if( type == "tomorrow" )
 				{
 
-					document.CustomView.startdate.value = "'.getDisplayDate($tomorrow).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($tomorrow).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($tomorrow).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($tomorrow).'";
 				}
 				else if( type == "thisweek" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($thisweek0).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($thisweek1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($thisweek0).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($thisweek1).'";
 				}
 				else if( type == "lastweek" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($lastweek0).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($lastweek1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($lastweek0).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($lastweek1).'";
 				}
 				else if( type == "nextweek" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($nextweek0).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($nextweek1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($nextweek0).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($nextweek1).'";
 				}
 				else if( type == "thismonth" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($currentmonth0).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($currentmonth1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($currentmonth0).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($currentmonth1).'";
 				}
 				else if( type == "lastmonth" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($lastmonth0).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($lastmonth1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($lastmonth0).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($lastmonth1).'";
 				}
 				else if( type == "nextmonth" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($nextmonth0).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($nextmonth1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($nextmonth0).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($nextmonth1).'";
 				}
 				else if( type == "next7days" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($today).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($next7days).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($next7days).'";
 				}
 				else if( type == "next30days" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($today).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($next30days).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($next30days).'";
 				}
 				else if( type == "next60days" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($today).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($next60days).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($next60days).'";
 				}
 				else if( type == "next90days" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($today).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($next90days).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($next90days).'";
 				}
 				else if( type == "next120days" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($today).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($next120days).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($next120days).'";
 				}
 				else if( type == "last7days" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($last7days).'";
-					document.CustomView.enddate.value =  "'.getDisplayDate($today).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($last7days).'";
+					document.CustomView.enddate.value =  "'.DateTimeField::convertToUserFormat($today).'";
 				}
 				else if( type == "last30days" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($last30days).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($today).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($last30days).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($today).'";
 				}
 				else if( type == "last60days" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($last60days).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($today).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($last60days).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($today).'";
 				}
 				else if( type == "last90days" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($last90days).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($today).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($last90days).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($today).'";
 				}
 				else if( type == "last120days" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($last120days).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($today).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($last120days).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($today).'";
 				}
 				else if( type == "thisfy" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($currentFY0).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($currentFY1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($currentFY0).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($currentFY1).'";
 				}
 				else if( type == "prevfy" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($lastFY0).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($lastFY1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($lastFY0).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($lastFY1).'";
 				}
 				else if( type == "nextfy" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($nextFY0).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($nextFY1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($nextFY0).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($nextFY1).'";
 				}
 				else if( type == "nextfq" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($nFq).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($nFq1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($nFq).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($nFq1).'";
 				}
 				else if( type == "prevfq" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($pFq).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($pFq1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($pFq).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($pFq1).'";
 				}
 				else if( type == "thisfq" )
 				{
-					document.CustomView.startdate.value = "'.getDisplayDate($cFq).'";
-					document.CustomView.enddate.value = "'.getDisplayDate($cFq1).'";
+					document.CustomView.startdate.value = "'.DateTimeField::convertToUserFormat($cFq).'";
+					document.CustomView.enddate.value = "'.DateTimeField::convertToUserFormat($cFq1).'";
 				}
 				else
 				{
@@ -877,29 +885,72 @@ class CustomView extends CRMEntity{
 
 	/** to get the Advanced filter for the given customview Id  
 	  * @param $cvid :: Type Integer
-	  * @returns  $stdfilterlist Array in the following format
-	  * $stdfilterlist = Array( 0=>Array('columnname' =>  $tablename:$columnname:$fieldname:$module_$fieldlabel,'comparator'=>$comparator,'value'=>$value),
-	  *			    1=>Array('columnname' =>  $tablename1:$columnname1:$fieldname1:$module_$fieldlabel1,'comparator'=>$comparator1,'value'=>$value1),
-	  *		   			|
-	  *			    4=>Array('columnname' =>  $tablename4:$columnname4:$fieldname4:$module_$fieldlabel4,'comparator'=>$comparatorn,'value'=>$valuen),
+	  * @returns  $advfilterlist Array
 	  */	
-    	function getAdvFilterByCvid($cvid)
-	{
-		global $adb;
-		global $modules;
-
-		$sSQL = "select vtiger_cvadvfilter.* from vtiger_cvadvfilter inner join vtiger_customview on vtiger_cvadvfilter.cvid = vtiger_customview.cvid";
-		$sSQL .= " where vtiger_cvadvfilter.cvid=?";
-		$result = $adb->pquery($sSQL, array($cvid));
-
-		while($advfilterrow = $adb->fetch_array($result))
-		{
-			$advft["columnname"] = $advfilterrow["columnname"];
-			$advft["comparator"] = $advfilterrow["comparator"];
-			$advft["value"] = $advfilterrow["value"];
-			$advfilterlist[] = $advft;
+    function getAdvFilterByCvid($cvid) {
+		
+		global $adb, $log;
+		
+		$advft_criteria = array();
+		
+		$sql = 'SELECT * FROM vtiger_cvadvfilter_grouping WHERE cvid = ? ORDER BY groupid';
+		$groupsresult = $adb->pquery($sql, array($cvid));
+		
+		$i = 1;
+		$j = 0;
+		while($relcriteriagroup = $adb->fetch_array($groupsresult)) {
+			$groupId = $relcriteriagroup["groupid"];
+			$groupCondition = $relcriteriagroup["group_condition"];
+			
+			$ssql = 'select vtiger_cvadvfilter.* from vtiger_customview 
+						inner join vtiger_cvadvfilter on vtiger_cvadvfilter.cvid = vtiger_customview.cvid
+						left join vtiger_cvadvfilter_grouping on vtiger_cvadvfilter.cvid = vtiger_cvadvfilter_grouping.cvid 
+								and vtiger_cvadvfilter.groupid = vtiger_cvadvfilter_grouping.groupid';
+			$ssql.= " where vtiger_customview.cvid = ? AND vtiger_cvadvfilter.groupid = ? order by vtiger_cvadvfilter.columnindex";
+	
+			$result = $adb->pquery($ssql, array($cvid, $groupId));
+			$noOfColumns = $adb->num_rows($result);
+			if($noOfColumns <= 0) continue;
+			
+			while($relcriteriarow = $adb->fetch_array($result)) {
+				$columnIndex = $relcriteriarow["columnindex"];
+				$criteria = array();
+				$criteria['columnname'] = html_entity_decode($relcriteriarow["columnname"]);
+				$criteria['comparator'] = $relcriteriarow["comparator"];
+				$advfilterval = $relcriteriarow["value"];
+				$col = explode(":",$relcriteriarow["columnname"]);
+				$temp_val = explode(",",$relcriteriarow["value"]);
+				if($col[4] == 'D' || ($col[4] == 'T' && $col[1] != 'time_start' && $col[1] != 'time_end') || ($col[4] == 'DT')) {
+					$val = Array();
+					for($x=0;$x<count($temp_val);$x++) {						
+						if($col[4] == 'D') {
+							$date = new DateTimeField(trim($temp_val[$x]));
+							$val[$x] = $date->getDisplayDate();
+						} elseif($col[4] == 'DT') {
+							$date = new DateTimeField(trim($temp_val[$x]));
+							$val[$x] = $date->getDisplayDateTimeValue();
+						} else {
+							$date = new DateTimeField(trim($temp_val[$x]));
+							$val[$x] = $date->getDisplayTime();
+						}
+					}
+					$advfilterval = implode(",",$val);
+				}
+				$criteria['value'] = $advfilterval;
+				$criteria['column_condition'] = $relcriteriarow["column_condition"];
+				
+				$advft_criteria[$i]['columns'][$j] = $criteria;
+				$advft_criteria[$i]['condition'] = $groupCondition;
+				$j++;
+			}
+			if(!empty($advft_criteria[$i]['columns'][$j-1]['column_condition'])) {
+				$advft_criteria[$i]['columns'][$j-1]['column_condition'] = '';
+			}
+			$i++;
 		}
-		return $advfilterlist;
+		// Clear the condition (and/or) for last group, if any.
+		if(!empty($advft_criteria[$i-1]['condition'])) $advft_criteria[$i-1]['condition'] = '';
+		return $advft_criteria;
 	}
 	
 	
@@ -972,7 +1023,9 @@ class CustomView extends CRMEntity{
 					//Added for assigned to sorting
 					if($list[1] == "smownerid")
 					{
-						$sqllist_column = "case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name";
+						$userNameSql = getSqlForNameInDisplayFormat(array('f'=>
+							'vtiger_users.first_name', 'l' => 'vtiger_users.last_name'));
+						$sqllist_column = "case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name";
 					}
 					if($list[0] == "vtiger_contactdetails" && $list[1] == "lastname")
                     	$sqllist_column = "vtiger_contactdetails.lastname,vtiger_contactdetails.firstname";	
@@ -1049,76 +1102,96 @@ class CustomView extends CRMEntity{
 	  * @returns  $advfiltersql as a string 
 	  * This function will return the advanced filter criteria for the given customfield 
 	  * 
-	  */	
+	  */
+	// Needs to be modified according to the new advanced filter (support for grouping). 
+	// Not modified as of now, as this function is not used for now (Instead Query Generator is used for better performance).
 	function getCVAdvFilterSQL($cvid)
 	{
 		global $current_user;
+		
 		$advfilter = $this->getAdvFilterByCvid($cvid);
-		if(isset($advfilter))
-		{
-			foreach($advfilter as $key=>$advfltrow)
-			{
-				if(isset($advfltrow))
-				{
-					$columns = explode(":",$advfltrow["columnname"]);
-					$datatype = (isset($columns[4])) ? $columns[4] : "";
-					if($advfltrow["columnname"] != "" && $advfltrow["comparator"] != "")
-					{
-
-						$valuearray = explode(",",trim($advfltrow["value"]));
-						if(isset($valuearray) && count($valuearray) > 1)
-						{
-							$advorsql = "";
-							for($n=0;$n<count($valuearray);$n++)
-							{
-								$advorsql[] = $this->getRealValues($columns[0],$columns[1],$advfltrow["comparator"],trim($valuearray[$n]),$datatype);
-							}
-							//If negative logic filter ('not equal to', 'does not contain') is used, 'and' condition should be applied instead of 'or'
-							if($advfltrow["comparator"] == 'n' || $advfltrow["comparator"] == 'k')
-								$advorsqls = implode(" and ",$advorsql);
-							else
-								$advorsqls = implode(" or ",$advorsql);
-							$advfiltersql[] = " (".$advorsqls.") ";
-						}else
-						{
-							//Added for getting vtiger_activity Status -Jaguar
-							if($this->customviewmodule == "Calendar" && ($columns[1] == "status" || $columns[1] == "eventstatus"))
-							{
-								if(getFieldVisibilityPermission("Calendar", $current_user->id,'taskstatus') == '0')
-								{
-									$advfiltersql[] = "case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end".$this->getAdvComparator($advfltrow["comparator"],trim($advfltrow["value"]),$datatype);
-								}
-								else
-									$advfiltersql[] = "vtiger_activity.eventstatus".$this->getAdvComparator($advfltrow["comparator"],trim($advfltrow["value"]),$datatype);
-							}
-							elseif($this->customviewmodule == "Documents" && $columns[1]=='folderid'){
-								$advfiltersql[] = "vtiger_attachmentsfolder.foldername".$this->getAdvComparator($advfltrow["comparator"],trim($advfltrow["value"]),$datatype);
-							}
-							elseif($this->customviewmodule == "Assets"){
-								if($columns[1]=='account' ){
-									$advfiltersql[] = "vtiger_account.accountname".$this->getAdvComparator($advfltrow["comparator"],trim($advfltrow["value"]),$datatype);
-								}
-								if($columns[1]=='product'){
-									$advfiltersql[] = "vtiger_products.productname".$this->getAdvComparator($advfltrow["comparator"],trim($advfltrow["value"]),$datatype);
-								}
-								if($columns[1]=='invoiceid'){
-									$advfiltersql[] = "vtiger_invoice.subject".$this->getAdvComparator($advfltrow["comparator"],trim($advfltrow["value"]),$datatype);
-								}
+		
+		$advcvsql = "";
+		
+		foreach($advfilter as $groupid => $groupinfo) {
+			
+			$groupcolumns = $groupinfo["columns"];
+			$groupcondition = $groupinfo["condition"];
+			$advfiltergroupsql = "";
+			
+			foreach($groupcolumns as $columnindex => $columninfo) {
+				$columnname = $columninfo['columnname'];
+				$comparator = $columninfo['comparator'];
+				$value = $columninfo['value'];
+				$columncondition = $columninfo['column_condition'];
+				
+				$columns = explode(":",$columnname);
+				$datatype = (isset($columns[4])) ? $columns[4] : "";
+				
+				if($columnname != "" && $comparator != "") {
+					$valuearray = explode(",",trim($value));
+					
+					if(isset($valuearray) && count($valuearray) > 1 && $comparator != 'bw') {
+						$advorsql = "";
+						for($n=0;$n<count($valuearray);$n++) {
+							$advorsql[] = $this->getRealValues($columns[0],$columns[1],$comparator,trim($valuearray[$n]),$datatype);
+						}
+						//If negative logic filter ('not equal to', 'does not contain') is used, 'and' condition should be applied instead of 'or'
+						if($comparator == 'n' || $comparator == 'k')
+							$advorsqls = implode(" and ",$advorsql);
+						else
+							$advorsqls = implode(" or ",$advorsql);
+						$advfiltersql = " (".$advorsqls.") ";
+					} 
+					elseif($comparator == 'bw' && count($valuearray) == 2) {
+						$advfiltersql = "(".$columns[0].".".$columns[1]." between '".getValidDBInsertDateTimeValue(trim($valuearray[0]),$datatype)."' and '".getValidDBInsertDateTimeValue(trim($valuearray[1]),$datatype)."')";
+					} 
+					else {
+						//Added for getting vtiger_activity Status -Jaguar
+						if($this->customviewmodule == "Calendar" && ($columns[1] == "status" || $columns[1] == "eventstatus")) {
+							if(getFieldVisibilityPermission("Calendar", $current_user->id,'taskstatus') == '0') {
+								$advfiltersql = "case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end".$this->getAdvComparator($comparator,trim($value),$datatype);
 							}
 							else
-							{
-								$advfiltersql[] = $this->getRealValues($columns[0],$columns[1],$advfltrow["comparator"],trim($advfltrow["value"]),$datatype);
+								$advfiltersql = "vtiger_activity.eventstatus".$this->getAdvComparator($comparator,trim($value),$datatype);
+						}
+						elseif($this->customviewmodule == "Documents" && $columns[1]=='folderid'){
+							$advfiltersql = "vtiger_attachmentsfolder.foldername".$this->getAdvComparator($comparator,trim($value),$datatype);
+						}
+						elseif($this->customviewmodule == "Assets") {
+							if($columns[1]=='account' ){
+								$advfiltersql = "vtiger_account.accountname".$this->getAdvComparator($comparator,trim($value),$datatype);
+							}
+							if($columns[1]=='product'){
+								$advfiltersql = "vtiger_products.productname".$this->getAdvComparator($comparator,trim($value),$datatype);
+							}
+							if($columns[1]=='invoiceid'){
+								$advfiltersql = "vtiger_invoice.subject".$this->getAdvComparator($comparator,trim($value),$datatype);
 							}
 						}
+						else {
+							$advfiltersql = $this->getRealValues($columns[0],$columns[1],$comparator,trim($value),$datatype);
+						}
+					}				
+						
+					$advfiltergroupsql .= $advfiltersql;
+					if($columncondition != NULL && $columncondition != '' && count($groupcolumns) > $columnindex ) {
+						$advfiltergroupsql .= ' '.$columncondition.' ';
 					}
 				}
+			}			
+				
+			if (trim($advfiltergroupsql) != "") {
+				$advfiltergroupsql =  "( $advfiltergroupsql ) ";
+				if($groupcondition != NULL && $groupcondition != '' && $advfilter > $groupid) {
+					$advfiltergroupsql .= ' '. $groupcondition . ' ';
+				}
+				
+				$advcvsql .= $advfiltergroupsql;
 			}
 		}
-		if(isset($advfiltersql))
-		{
-			$advfsql = implode(" and ",$advfiltersql);
-		}
-		return $advfsql;
+		if (trim($advcvsql) != "") $advcvsql = '('.$advcvsql.')';
+		return $advcvsql;
 	}
 	
 	/** to get the realvalues for the given value   
@@ -1382,6 +1455,7 @@ class CustomView extends CRMEntity{
 		global $adb, $default_charset;
 		$value=html_entity_decode(trim($value),ENT_QUOTES,$default_charset);
 		$value = $adb->sql_escape_string($value);
+		
 		if($comparator == "e")
 		{
 			if(trim($value) == "NULL")
@@ -1472,6 +1546,12 @@ class CustomView extends CRMEntity{
 		if($comparator == "h")
 		{
 			$rtvalue = " >= ".$adb->quote($value);
+		}
+		if($comparator == "b") {
+			$rtvalue = " < ".$adb->quote($value);
+		}
+		if($comparator == "a") {
+			$rtvalue = " > ".$adb->quote($value);
 		}
 
 		return $rtvalue;

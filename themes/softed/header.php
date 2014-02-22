@@ -49,7 +49,8 @@ $smarty->assign("CNT", $cnt);
 
 $smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
 $smarty->assign("MODULE_NAME", $currentModule);
-$smarty->assign("DATE", getDisplayDate(date("Y-m-d H:i")));
+$date = new DateTimeField(null);
+$smarty->assign("DATE", $date->getDisplayDateTimeValue());
 
 $smarty->assign("CURRENT_USER", $current_user->user_name);
 
@@ -95,6 +96,12 @@ $gmail_bookmarklet = '<a href=\'javascript:(function()%7Bvar%20doc=top.document;
 'bodyElement.appendChild(scriptElement);%7D)();\'>'.
 $app_strings['LBL_GMAIL'].' '.$app_strings['LBL_BOOKMARKLET'].'</a>';
 $smarty->assign("GMAIL_BOOKMARKLET", $gmail_bookmarklet);
+
+$sql="select * from vtiger_organizationdetails";
+$result = $adb->pquery($sql, array());
+//Handle for allowed organation logo/logoname likes UTF-8 Character
+$organization_logo = decode_html($adb->query_result($result,0,'logoname'));
+$smarty->assign("LOGO",$organization_logo);
 
 $smarty->display("Header.tpl");
 ?>

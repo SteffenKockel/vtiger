@@ -155,7 +155,7 @@
 {if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
 	{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBASIC}
 	<tr>
-		<td align="left" style="padding-left:10px;">
+		<td align="left" style="padding-left:5px;">
 			{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 			{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
 			{if $customlink_label eq ''}
@@ -318,13 +318,13 @@ function sendpdf_submit()
 {/literal}
 
 	{if $MODULE eq 'Invoice'}
-		OpenCompose('{$ID}','Invoice');
+		OpenCompose('{$INV_NO}','Invoice');
 	{elseif $MODULE eq 'Quotes'}
-		OpenCompose('{$ID}','Quote');
+		OpenCompose('{$QUO_NO}','Quote');
 	{elseif $MODULE eq 'PurchaseOrder'}
-		OpenCompose('{$ID}','PurchaseOrder');
+		OpenCompose('{$PO_NO}','PurchaseOrder');
 	{elseif $MODULE eq 'SalesOrder'}
-		OpenCompose('{$ID}','SalesOrder');
+		OpenCompose('{$SO_NO}','SalesOrder');
 	{/if}
 {literal}
 }

@@ -226,47 +226,82 @@ class Homestuff{
 		if(isPermitted($modname,'index') == "yes"){	
 			if($adb->num_rows($cvid_check_query)>0){
 				$focus = CRMEntity::getInstance($modname);
-					
+				
 				$oCustomView = new CustomView($modname);
-				$queryGenerator = new QueryGenerator($modname, $current_user);
-				$queryGenerator->initForCustomViewById($cvid);
-				$customViewFields = $queryGenerator->getCustomViewFields();
-				$fields = $queryGenerator->getFields();
-				$newFields = array_diff($fields, $customViewFields);
-
-				for($l=0;$l < $column_count;$l++){
-					$customViewColumnInfo = $adb->query_result($resultcvid,$l,"fieldname");
-					$details = explode(':', $customViewColumnInfo);
-					$newFields[] = $details[2];
-				}
-				$queryGenerator->setFields($newFields);
-				$query = $queryGenerator->getQuery();
-				$count_result = $adb->query(mkCountQuery($query));
+                if($modname == "Calendar"){
+                    $listquery = getListQuery($modname);
+                    if(trim($listquery) == ''){
+                        $listquery = $focus->getListQuery($modname);
+                    }
+                    $query = $oCustomView->getModifiedCvListQuery($cvid,$listquery,$modname);
+                }else{
+                    $queryGenerator = new QueryGenerator($modname, $current_user);
+                    $queryGenerator->initForCustomViewById($cvid);
+                    $customViewFields = $queryGenerator->getCustomViewFields();
+                    $fields = $queryGenerator->getFields();
+                    $newFields = array_diff($fields, $customViewFields);
+                    for($l=0;$l < $column_count;$l++){
+                        $customViewColumnInfo = $adb->query_result($resultcvid,$l,"fieldname");
+                        $details = explode(':', $customViewColumnInfo);
+                        $newFields[] = $details[2];
+                    }
+                    $queryGenerator->setFields($newFields);
+                    $query = $queryGenerator->getQuery();
+                }
+                $count_result = $adb->query(mkCountQuery($query));
 				$noofrows = $adb->query_result($count_result,0,"count");
 				$navigation_array = getNavigationValues(1, $noofrows, $maxval);
 				
 				//To get the current language file
 				global $current_language,$app_strings;
 				$fieldmod_strings = return_module_language($current_language, $modname);
-				
+
+				if($modname == "Calendar"){
+					$query .= "AND vtiger_activity.activitytype NOT IN ('Emails')";
+				}
+
 				if( $adb->dbType == "pgsql"){
 					$list_result = $adb->query($query. " OFFSET 0 LIMIT ".$maxval);
 				}else{
 					$list_result = $adb->query($query. " LIMIT 0,".$maxval);
 				}
-				
-				$controller = new ListViewController($adb, $current_user, $queryGenerator);
-				$controller->setHeaderSorting(false);
-				$header = $controller->getListViewHeader($focus,$modname,'','','', true);
 
-				$listview_entries = $controller->getListViewEntries($focus,$modname,$list_result,
-						$navigation_array, true);
-				$return_value =Array('ModuleName'=>$modname,'cvid'=>$cvid,'Maxentries'=>$maxval,'Header'=>$header,'Entries'=>$listview_entries);
-				if(sizeof($header)!=0){
-		       		return $return_value;
-				}else{
-		       		return array('Entries'=>"Fields not found in Selected Filter");
-				}
+                if($modname == "Calendar"){
+                    for($l=0;$l < $column_count;$l++){
+                        $fieldinfo = $adb->query_result($resultcvid,$l,"fieldname");
+                        list($tabname,$colname,$fldname,$fieldmodlabel) = explode(":",$fieldinfo);
+
+                        $fieldheader=explode("_",$fieldmodlabel,2);
+                        $fldlabel=$fieldheader[1];
+                        $pos=strpos($fldlabel,"_");
+                        if($pos==true){
+                            $fldlabel=str_replace("_"," ",$fldlabel);
+                        }
+                        $field_label = isset($app_strings[$fldlabel])?$app_strings[$fldlabel]:(isset($fieldmod_strings[$fldlabel])?$fieldmod_strings[$fldlabel]:$fldlabel);
+                        $cv_presence = $adb->pquery("SELECT * from vtiger_cvcolumnlist WHERE cvid = ? and columnname LIKE '%".$fldname."%'", array($cvid));
+                        if($is_admin == false){
+                            $fld_permission = getFieldVisibilityPermission($modname,$current_user->id,$fldname);
+                        }
+                        if($fld_permission == 0 && $adb->num_rows($cv_presence)){
+                            $field_query = $adb->pquery("SELECT fieldlabel FROM vtiger_field WHERE fieldname = ? AND tablename = ? and vtiger_field.presence in (0,2)", array($fldname,$tabname));
+                            $field_label = $adb->query_result($field_query,0,'fieldlabel');
+                            $header[] = $field_label;
+                        }
+                        $fieldcolumns[$fldlabel] = Array($tabname=>$colname);
+                    }
+                    $listview_entries = getListViewEntries($focus,$modname,$list_result,$navigation_array,"","","EditView","Delete",$oCustomView,'HomePage',$fieldcolumns);
+                }else{
+                    $controller = new ListViewController($adb, $current_user, $queryGenerator);
+                    $controller->setHeaderSorting(false);
+                    $header = $controller->getListViewHeader($focus,$modname,'','','', true);
+                    $listview_entries = $controller->getListViewEntries($focus,$modname,$list_result,$navigation_array, true);
+                }
+                $return_value =Array('ModuleName'=>$modname,'cvid'=>$cvid,'Maxentries'=>$maxval,'Header'=>$header,'Entries'=>$listview_entries);
+                if(sizeof($header)!=0){
+                    return $return_value;
+                }else{
+                    return array('Entries'=>"Fields not found in Selected Filter");
+                }
 			}
 			else{
 				return array('Entries'=>"<font color='red'>Filter You have Selected is Not Found</font>");

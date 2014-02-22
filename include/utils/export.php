@@ -289,9 +289,6 @@ class ExportUtils{
 					$this->picklistValues[$fieldname] = getAssignedPicklistValues($fieldname, $roleid, $adb);
 				}
 				$value = trim($value);
-				if(!empty($this->picklistValues[$fieldname]) && !in_array($value, $this->picklistValues[$fieldname]) && !empty($value)){
-					$value = getTranslatedString("LBL_NOT_ACCESSIBLE");
-				}
 			}elseif($uitype == 10){
 				//have to handle uitype 10
 				$value = trim($value);

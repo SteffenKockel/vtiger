@@ -54,13 +54,42 @@ function redirectWhenNoRelatedRecordsFound()
 <script language="JavaScript" type="text/javascript" src="include/js/vtlib.js"></script>
 <!-- END -->
 <script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
+<script language="JavaScript" type="text/javascript" src="modules/{$RETURN_MODULE}/{$RETURN_MODULE}.js"></script>
 <script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 <script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+<script type='text/javascript' src='modules/com_vtiger_workflow/resources/jquery-1.2.6.js'></script>
+<script type='text/javascript'>
+	jQuery.noConflict();
+</script>
 <script type="text/javascript">
-function add_data_to_relatedlist(entity_id,recordid,mod) {ldelim}
+{literal}
+function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
+	var return_module = document.getElementById('return_module').value;
+	if(popupmode == 'ajax') {
+		VtigerJS_DialogBox.block();
+		new Ajax.Request(
+            'index.php',
+            {queue: {position: 'end', scope: 'command'},
+             method: 'post',
+             postBody: "module="+return_module+"&action="+return_module+"Ajax&file=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&mode=Ajax",
+             onComplete: function(response) {
+					VtigerJS_DialogBox.unblock();
+					var res = JSON.parse(response.responseText);
+					if(typeof callback == 'function') {
+						callback(res);
+					}
+                }
+			}
+		);
+		return false;
+	} else {
+		{/literal}
         opener.document.location.href="index.php?module={$RETURN_MODULE}&action=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&return_module={$RETURN_MODULE}&return_action={$RETURN_ACTION}&parenttab={$CATEGORY}";
-{rdelim}
-
+		window.close();
+		{literal}
+	}
+}
+{/literal}
 function set_focus() {ldelim}
 	$('search_txt').focus();
 {rdelim}
@@ -184,6 +213,11 @@ function callSearch(searchtype)
 	urlstring = urlstring +'&query=true&file=Popup&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true';
 	urlstring +=gethiddenelements();
 	record_id = document.basicSearch.record_id.value;
+
+	//support for popupmode and callback
+	urlstring += "&popupmode={$POPUPMODE}";
+	urlstring += "&callback={$CALLBACK}";
+
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
 	$("status").style.display="inline";

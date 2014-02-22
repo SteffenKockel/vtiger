@@ -149,6 +149,8 @@ class EmailTemplate {
 						}elseif(strcasecmp($webserviceField->getFieldDataType(),'picklist') === 0){
 							$values[$fieldColumnMapping[$fieldName]] = getTranslatedString(
 								$values[$fieldColumnMapping[$fieldName]], $this->module);
+						}elseif(strcasecmp($webserviceField->getFieldDataType(),'datetime') === 0){
+							$values[$fieldColumnMapping[$fieldName]] = $values[$fieldColumnMapping[$fieldName]] .' '. DateTimeField::getDBTimeZone();
 						}
 					}
 				}

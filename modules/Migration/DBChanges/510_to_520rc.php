@@ -319,7 +319,11 @@ function VT520_migrateCustomview($sql,$forModule, $user, $handler) {
 		$module = $row->entitytype;
 		$current_module = $module;
 		if($forModule == 'Accounts') {
-			$fieldname = 'account_id';
+			if($module == 'Potentials') {
+				$fieldname = 'related_to';
+			} else {
+				$fieldname = 'account_id';
+			}
 		}elseif($forModule == 'Contacts') {
 			$fieldname = 'contact_id';
 		}elseif($forModule == 'Products') {
@@ -360,16 +364,7 @@ function VT520_queryGeneratorMigration() {
 	$db = PearDatabase::getInstance();
 	$sql = "delete from vtiger_cvadvfilter where columnname IS NULL or columnname='';";
 	$db->pquery($sql, array());
-	$sql = "select id from vtiger_users where is_admin='On' and status='Active' limit 1";
-	$result = $db->pquery($sql, array());
-	$adminId = 1;
-	$it = new SqlResultIterator($db, $result);
-	foreach ($it as $row) {
-		$adminId = $row->id;
-	}
-	$user = new Users();
-	$current_user = $user->retrieveCurrentUserInfoFromFile($adminId);
-	$user = $current_user;
+    $user = Users::getActiveAdminUser();
 	$sql = "select vtiger_customview.cvid,columnindex,entitytype from vtiger_customview inner join ".
 		"vtiger_cvcolumnlist on vtiger_customview.cvid=vtiger_cvcolumnlist.cvid where entitytype !=".
 		"'Accounts' and columnname like 'vtiger_account:accountname:accountname%';";

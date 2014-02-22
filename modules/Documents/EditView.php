@@ -1,12 +1,12 @@
 <?php
-/*+*******************************************************************************
+/*+**********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ ************************************************************************************/
 
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
@@ -219,6 +219,13 @@ if($focus->mode != 'edit' && $mod_seq_field != null) {
 	$smarty->assign("MOD_SEQ_ID", $focus->column_fields[$mod_seq_field['name']]);
 }
 // END
+
+// Gather the help information associated with fields
+$smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
+// END
+
+$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
+$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDependencyDatasource));
  
 if($focus->mode == 'edit')
 	$smarty->display("salesEditView.tpl");

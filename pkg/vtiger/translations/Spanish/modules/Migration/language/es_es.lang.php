@@ -4,7 +4,7 @@
 *  Language     : ES Spanish
 *  Version      : vt5.0.4
 *  Created Date : 2008-01-18 17:46:07 Last change : 2008-01-20 00:48:29
-*  Author       : rasomu
+*  Author       : JPL TSolucio, S.L.  -  rasomu
 *  License      : 
 
 ***********************************************************/

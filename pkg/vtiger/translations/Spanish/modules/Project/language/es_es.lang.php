@@ -66,6 +66,9 @@ $mod_strings = Array(
 	'LBL_PROGRESS_CHART' => 'Gráfico Progreso',
 	'Project No' => 'Nº Proyecto',
 
+	'Project Milestones' => 'Hitos Proyecto',
+	'Project Tasks' => 'Actividades Proyecto',
+	'Project Team' => 'Equipo Proyecto',
 );
 
 ?>

@@ -248,6 +248,7 @@ $mod_strings = Array(
 'Lead No'=>'Núm. Pre-Contacto',
 // END
 
+'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Transferir elementos relacionados a',
 );
 
 ?>

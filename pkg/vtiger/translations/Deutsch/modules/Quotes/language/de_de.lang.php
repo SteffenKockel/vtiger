@@ -10,14 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): www.crm-now.de translation to German
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the German language pack
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): crm-now, Berlin, www.crm-now.com.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -183,6 +175,8 @@ $mod_strings = Array(
 
 //Added after 5.0.4 GA
 'Quote No'=>'Angebotsnr.',
+
+'SINGLE_Quotes'=>'Angebot',
 );
 
 ?>

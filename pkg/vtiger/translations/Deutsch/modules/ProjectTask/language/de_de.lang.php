@@ -7,10 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-/**
- * German tranlsation by crm-now [ http://www.crm-now.com ]
- * IMPORTANT: save file with UTF-8 without BOM!
- **/
+
 $mod_strings = Array(
 
     'LBL_MODULE_NAME'=>'Projektaufgaben',

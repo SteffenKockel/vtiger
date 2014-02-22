@@ -53,13 +53,23 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 	$open_activity_list = array();
 	if ($noofrecords>0){
 		for($i=0;$i<$noofrecords;$i++){
+			$dateValue = $adb->query_result($res,$i,'date_start') . ' ' . 
+					$adb->query_result($res,$i,'time_start');
+			$endDateValue = $adb->query_result($res,$i,'due_date') . ' ' . 
+					$adb->query_result($res,$i,'time_end');
+			$recurringDateValue = $adb->query_result($res,$i,'due_date') . ' ' . 
+					$adb->query_result($res,$i,'time_start');
+			$date = new DateTimeField($dateValue);
+			$endDate = new DateTimeField($endDateValue);
+			$recurringDate = new DateTimeField($recurringDateValue);
+			
 			$open_activity_list[] = array('name' => $adb->query_result($res,$i,'subject'),
 										'id' => $adb->query_result($res,$i,'activityid'),
 										'type' => $adb->query_result($res,$i,'activitytype'),
 										'module' => $adb->query_result($res,$i,'setype'),
-										'date_start' => getDisplayDate($adb->query_result($res,$i,'date_start')),
-										'due_date' => getDisplayDate($adb->query_result($res,$i,'due_date')),
-										'recurringdate' => getDisplayDate($adb->query_result($res,$i,'recurringdate')),
+										'date_start' => $date->getDisplayDate(),
+										'due_date' => $endDate->getDisplayDate(),
+										'recurringdate' => $recurringDate->getDisplayDate(),
 										'priority' => $adb->query_result($res,$i,'priority'),
 									);
 		}
@@ -167,13 +177,23 @@ function homepage_getPendingActivities($maxval,$calCnt){
 	$noofrows = $adb->num_rows($res);
 	if (count($res)>0){
 		for($i=0;$i<$noofrows;$i++){
+			$dateValue = $adb->query_result($res,$i,'date_start') . ' ' . 
+					$adb->query_result($res,$i,'time_start');
+			$endDateValue = $adb->query_result($res,$i,'due_date') . ' ' . 
+					$adb->query_result($res,$i,'time_end');
+			$recurringDateValue = $adb->query_result($res,$i,'due_date') . ' ' . 
+					$adb->query_result($res,$i,'time_start');
+			$date = new DateTimeField($dateValue);
+			$endDate = new DateTimeField($endDateValue);
+			$recurringDate = new DateTimeField($recurringDateValue);
+			
 			$open_activity_list[] = array('name' => $adb->query_result($res,$i,'subject'),
 										'id' => $adb->query_result($res,$i,'activityid'),
 										'type' => $adb->query_result($res,$i,'activitytype'),
 										'module' => $adb->query_result($res,$i,'setype'),
-										'date_start' => getDisplayDate($adb->query_result($res,$i,'date_start')),
-										'due_date' => getDisplayDate($adb->query_result($res,$i,'due_date')),
-										'recurringdate' => getDisplayDate($adb->query_result($res,$i,'recurringdate')),
+										'date_start' => $date->getDisplayDate(),
+										'due_date' => $endDate->getDisplayDate(),
+										'recurringdate' => $recurringDate->getDisplayDate(),
 										'priority' => $adb->query_result($res,$i,'priority'),
 									);
 			}

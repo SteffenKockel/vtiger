@@ -1008,7 +1008,7 @@ a.submenu:Hover{
 }
 
 .prvPrfTexture {
-	background:url(../images/prvPrfTexture1.gif);
+
 }
 
 .prvPrfHoverOn {
@@ -1850,7 +1850,7 @@ ul {
 
 .colHeader{
 	background-color:#fff;
-	background-repeat:repeat-x;
+	background-repeat:repeat;
 	background-image:url(images/mailSubHeaderBg-grey.gif);	
 	border-left:1px solid #fff;
 	border-top:1px solid #ddd;
@@ -2046,7 +2046,6 @@ textarea {
 }
 
 .mailClientBg {
-
 	background-color:#ddd;
 	background-image:url(images/layerPopupBg.gif) ;
 	border:2px solid #dddddd;
@@ -2462,5 +2461,126 @@ a.drop_down:Hover{
 	margin: 0 0 2px 0; 
 	border: 1px solid yellow;
 }
-
 /* feedback or help message end here*/
+
+.selectedCell {
+	background-color: #80E5FF;
+	cursor: pointer;
+	border: 2px inset #EEEEEE;
+	white-space: nowrap;
+}
+
+.selectedCellIndex {
+	background-color: #80E5FF;
+	border: 2px dashed #EEEEEE;
+	padding: .5em;
+	white-space: nowrap;
+}
+
+.unselectedCell {
+	background-color: #EEEEEE;
+	color: #666666;
+	cursor: pointer;
+	border: 2px outset #EEEEEE;
+	white-space : nowrap;
+}
+
+.fixedHeight18px {
+	white-space: nowrap;
+	height: 18px;
+}
+
+/* Mail Manager starts*/
+.mm_blur {
+	color: lightgrey;
+}
+.mm_bold {
+	padding: .3em;
+	font-weight: bold;
+}
+.mm_normal {
+	padding: .3em;
+	font-weight: normal;
+}
+.mm_normal td {
+	padding: .3em;
+	border-bottom: 1px solid #aaa;
+}
+.mm_bold td {
+	padding: .3em;
+	border-bottom: 1px solid #aaa;
+}
+input {
+	vertical-align: middle;
+}
+.mm_clickable {
+	cursor: pointer;
+}
+.mm_disabled {
+	background-color: #EFEFEF;
+}
+.mm_error {
+	margin: 0;
+	position: fixed;
+	left: 50%;
+}
+.mm_error p {
+	border: 1px solid yellow;
+	padding: 2px;
+	margin: 0;
+	color: rgb(255, 250, 191);
+	background-color: red;
+	display: inline;
+	font-weight: bold;
+}
+.mm_message p {
+    border: 2px solid #8EB6F5;
+	padding: 2px;
+	margin: 0;
+	color: black;
+	background-color: #BAD1F6;
+	display: inline;
+	font-weight: bold;
+}
+.mm_folder {
+	display: block;
+	padding: 0 2px;
+    color : black
+}
+.mm_folder_selected {
+	color: black;
+    font-weight: bold;
+}
+.mm_body {
+	border-top: 1px solid #E0ECFF;
+}
+.mm_mailwrapper {
+	border-collapse:collapse;
+}
+.mm_folder_selected_background {
+    background-color: #C9E0F0
+}
+.mm_folder_unselected_background {
+    background-color: white
+}
+.mm_tableHeadBg{
+  background-color:#C9E0F0;
+  height:25px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:11px;
+  color:#000066;
+}
+.mm_lvtColData {
+	background-color:#ffffff;
+	color:#000;
+}
+.mm_lvtColDataHover {
+	background-color:#EFF1F9;
+	color:#000;
+}
+.mm_outerborder{
+    border: 2px solid lightgrey;
+    padding: 5px;
+}
+/* Mail Manager ends */=======
+

@@ -10,11 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): crm-now: www.crm-now.de
- ********************************************************************************/
-/*********************************************************************************
- * Description:  Defines the German (Germany & Swiss) language pack for the base application.
- * Contributor(s): 4net AG, Schoretshuebstr. 26 , CH-9015 St.Gallen
  ********************************************************************************/
 
 $mod_strings = Array(

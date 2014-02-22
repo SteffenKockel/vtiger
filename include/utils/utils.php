@@ -42,6 +42,8 @@ require_once('include/utils/SearchUtils.php');
 require_once('include/FormValidationUtil.php');
 require_once('include/DatabaseUtil.php');
 require_once('include/events/SqlResultIterator.inc');
+require_once('include/fields/DateTimeField.php');
+require_once('include/fields/CurrencyField.php');
 require_once('data/CRMEntity.php');
 require_once 'vtlib/Vtiger/Language.php';
  
@@ -196,13 +198,17 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 				if($private == 'private')
 				{
 					$log->debug("Sharing is Private. Only the current user should be listed");
-					$query = "select id as id,user_name as user_name from vtiger_users where id=? and status='Active' union select vtiger_user2role.userid as id,vtiger_users.user_name as user_name from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ? and status='Active' union select shareduserid as id,vtiger_users.user_name as user_name from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?";	
+					$query = "select id as id,user_name as user_name,first_name,last_name from vtiger_users where id=? and status='Active' union select vtiger_user2role.userid as id,vtiger_users.user_name as user_name ,
+							  vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name  
+							  from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ? and status='Active' union 
+							  select shareduserid as id,vtiger_users.user_name as user_name ,
+							  vtiger_users.first_name as first_name ,vtiger_users.last_name as last_name  from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?";
 					$params = array($current_user->id, $current_user_parent_role_seq."::%", $current_user->id, getTabid($module));	
 				}
 				else
 				{
 					$log->debug("Sharing is Public. All vtiger_users should be listed");
-					$query = "SELECT id, user_name from vtiger_users WHERE status=?";
+					$query = "SELECT id, user_name,first_name,last_name from vtiger_users WHERE status=?";
 					$params = array($status);
 				}
 		}
@@ -223,7 +229,7 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 		// Get the id and the name.
 		while($row = $db->fetchByAssoc($result))
 		{
-			$temp_result[$row['id']] = $row['user_name'];
+			$temp_result[$row['id']] = getDisplayName(array('f'=>$row['first_name'],'l'=>$row['last_name']));
 		}
 
 		$user_array = &$temp_result;
@@ -432,7 +438,7 @@ function return_application_language($language)
 	$temp_app_strings = $app_strings;
 	$language_used = $language;
 
-	checkFileAccess("include/language/$language.lang.php");
+	checkFileAccessForInclusion("include/language/$language.lang.php");
 	@include("include/language/$language.lang.php");
 	if(!isset($app_strings))
 	{
@@ -1072,6 +1078,13 @@ function getTabModuleName($tabid)
 		if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 			include('tabdata.php');
 			$tabname = array_search($tabid,$tab_info_array);
+
+			if($tabname == false) {
+				global $adb;
+				$sql = "select name from vtiger_tab where tabid=?";
+				$result = $adb->pquery($sql, array($tabid));
+				$tabname=  $adb->query_result($result,0,"name");
+			}
 			
 			// Update information to cache for re-use
 			VTCacheUtils::updateTabidInfo($tabid, $tabname);
@@ -1323,13 +1336,12 @@ function insertProfile2field($profileid)
 	global $adb;
 	$adb->database->SetFetchMode(ADODB_FETCH_ASSOC); 
 	$fld_result = $adb->pquery("select * from vtiger_field where generatedtype=1 and displaytype in (1,2,3) and vtiger_field.presence in (0,2) and tabid != 29", array());
-        $num_rows = $adb->num_rows($fld_result);
-        for($i=0; $i<$num_rows; $i++)
-        {
-                 $tab_id = $adb->query_result($fld_result,$i,'tabid');
-                 $field_id = $adb->query_result($fld_result,$i,'fieldid');
-				 $params = array($profileid, $tab_id, $field_id, 0, 1);
-                 $adb->pquery("insert into vtiger_profile2field values (?,?,?,?,?)", $params);
+    $num_rows = $adb->num_rows($fld_result);
+    for($i=0; $i<$num_rows; $i++) {
+         $tab_id = $adb->query_result($fld_result,$i,'tabid');
+         $field_id = $adb->query_result($fld_result,$i,'fieldid');
+		 $params = array($profileid, $tab_id, $field_id, 0, 0);
+         $adb->pquery("insert into vtiger_profile2field values (?,?,?,?,?)", $params);
 	}
 	$log->debug("Exiting insertProfile2field method ...");
 }
@@ -1349,7 +1361,7 @@ function insert_def_org_field()
         {
                  $tab_id = $adb->query_result($fld_result,$i,'tabid');
                  $field_id = $adb->query_result($fld_result,$i,'fieldid');
-				 $params = array($tab_id, $field_id, 0, 1);
+				 $params = array($tab_id, $field_id, 0, 0);
                  $adb->pquery("insert into vtiger_def_org_field values (?,?,?,?)", $params);
 	}
 	$log->debug("Exiting insert_def_org_field() method ...");
@@ -1407,7 +1419,7 @@ function getProfile2FieldPermissionList($fld_module, $profileid)
 		global $adb;
 		$tabid = getTabid($fld_module);
 	
-		$query = "SELECT vtiger_profile2field.visible, vtiger_field.fieldlabel, vtiger_field.uitype, 
+		$query = "SELECT vtiger_profile2field.visible, vtiger_profile2field.readonly, vtiger_field.fieldlabel, vtiger_field.uitype, 
 			vtiger_field.fieldid, vtiger_field.displaytype, vtiger_field.typeofdata 
 			FROM vtiger_profile2field INNER JOIN vtiger_field ON vtiger_field.fieldid=vtiger_profile2field.fieldid 
 			WHERE vtiger_profile2field.profileid=? and vtiger_profile2field.tabid=? and vtiger_field.presence in (0,2)";
@@ -1420,7 +1432,7 @@ function getProfile2FieldPermissionList($fld_module, $profileid)
 				$adb->query_result($result,$i,"fieldlabel"),
 				$adb->query_result($result,$i,"visible"), // From vtiger_profile2field.visible
 				$adb->query_result($result,$i,"uitype"),
-				$adb->query_result($result,$i,"visible"),
+				$adb->query_result($result,$i,"readonly"),
 				$adb->query_result($result,$i,"fieldid"),
 				$adb->query_result($result,$i,"displaytype"),
 				$adb->query_result($result,$i,"typeofdata")
@@ -1532,43 +1544,6 @@ function ChangeStatus($status,$activityid,$activity_mode='')
 		}
 	$log->debug("Exiting ChangeStatus method ...");
  }
-
-/** Function to set date values compatible to database (YY_MM_DD)
-  * @param $value -- value :: Type string
-  * @returns $insert_date -- insert_date :: Type string
-  */
-
-function getDBInsertDateValue($value)
-{
-	global $log;
-	$log->debug("Entering getDBInsertDateValue(".$value.") method ...");
-	global $current_user;
-	$dat_fmt = $current_user->date_format;
-	if($dat_fmt == '') {
-		$dat_fmt = 'dd-mm-yyyy';
-	}
-	$insert_date='';
-	if($dat_fmt == 'dd-mm-yyyy')
-	{
-		list($d,$m,$y) = explode('-',$value);
-	}
-	elseif($dat_fmt == 'mm-dd-yyyy')
-	{
-		list($m,$d,$y) = explode('-',$value);
-	}
-	elseif($dat_fmt == 'yyyy-mm-dd')
-	{
-		list($y,$m,$d) = explode('-',$value);
-	}
-
-	if(!$y && !$m && !$d) {
-		$insert_date = '';
-	} else {
-		$insert_date=$y.'-'.$m.'-'.$d;
-	}
-	$log->debug("Exiting getDBInsertDateValue method ...");
-	return $insert_date;
-}
 
 /** Function to get unitprice for a given product id
   * @param $productid -- product id :: Type integer
@@ -2241,9 +2216,10 @@ function getEmailParentsList($module,$id,$focus = false)
     
         $fieldid = 0;
         $fieldname = 'email';
-        if($focus->column_fields['email'] == '' && $focus->column_fields['yahooid'] != '')
+        if($focus->column_fields['email'] == '' && $focus->column_fields['yahooid'] != '' )
                 $fieldname = 'yahooid';
-
+        elseif($focus->column_fields['email'] == '' && $focus->column_fields['secondaryemail'] != '' )         
+				$fieldname='secondaryemail';
         $res = $adb->pquery("select * from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)", array(getTabid($module), $fieldname));
         $fieldid = $adb->query_result($res,0,'fieldid');
 
@@ -3223,15 +3199,16 @@ function getRecordValues($id_array,$module) {
 	$query="select fieldname,fieldlabel,uitype from vtiger_field where tabid=? and fieldname  not in ('createdtime','modifiedtime') and vtiger_field.presence in (0,2) and uitype not in('4')";
 	$result=$adb->pquery($query, array($tabid));
 	$no_rows=$adb->num_rows($result);
-	
+
 	$focus = new $module();
 	if(isset($id_array) && $id_array !='') {
-		foreach($id_array as $value) {
-			$focus->id=$value;
-			$focus->retrieve_entity_info($value,$module);
+		foreach($id_array as $value_pair['disp_value']) {
+			$focus->id=$value_pair['disp_value'];
+			$focus->retrieve_entity_info($value_pair['disp_value'],$module);
 			$field_values[]=$focus->column_fields;
 		}
 	}
+	
 	$labl_array=array();
 	$value_pair = array();
 	$c = 0;
@@ -3240,12 +3217,12 @@ function getRecordValues($id_array,$module) {
 		$fld_label=$adb->query_result($result,$i,"fieldlabel");
 		$ui_type=$adb->query_result($result,$i,"uitype");
 		
-		if(getFieldVisibilityPermission($module,$current_user->id,$fld_name) == '0') {
-			$fld_array []= $fld_name;	
+		if(getFieldVisibilityPermission($module,$current_user->id,$fld_name, 'readwrite') == '0') {
+			$fld_array []= $fld_name;
 			$record_values[$c][$fld_label] = Array();
 			$ui_value[]=$ui_type;
 			for($j=0;$j < count($field_values);$j++) {
-				
+
 				if($ui_type ==56) {
 					if($field_values[$j][$fld_name] == 0)
 						$value_pair['disp_value']=$app_strings['no'];
@@ -3296,8 +3273,26 @@ function getRecordValues($id_array,$module) {
 				} elseif($ui_type == 10) {
 					$value_pair['disp_value'] = getRecordInfoFromID($field_values[$j][$fld_name]);
 				}elseif($ui_type == 5 || $ui_type == 6 || $ui_type == 23){
-					$value_pair['disp_value'] = getDisplayDate($field_values[$j][$fld_name]);
-				}else {
+					if ($field_values[$j][$fld_name] != '' && $field_values[$j][$fld_name] 
+							!= '0000-00-00') {
+						$date = new DateTimeField($field_values[$j][$fld_name]);
+						$value_pair['disp_value'] = $date->getDisplayDate();
+						if(strpos($field_values[$j][$fld_name], ' ') > -1) {
+							$value_pair['disp_value'] .= (' ' . $date->getDisplayTime());
+						}
+					} elseif ($field_values[$j][$fld_name] == '0000-00-00') {
+						$value_pair['disp_value'] = '';
+					} else {
+						$value_pair['disp_value'] = $field_values[$j][$fld_name];
+					}
+				}elseif($ui_type == '71' || $ui_type == '72') {
+					$currencyField = new CurrencyField($field_values[$j][$fld_name]);
+					if($ui_type == '72') {
+						$value_pair['disp_value'] = $currencyField->getDisplayValue(null, true);
+					} else {
+						$value_pair['disp_value'] = $currencyField->getDisplayValue();
+					}
+				} else {
 					$value_pair['disp_value']=$field_values[$j][$fld_name];
 				}
 				$value_pair['org_value'] = $field_values[$j][$fld_name];
@@ -3875,8 +3870,25 @@ function getDuplicateRecordsArr($module)
 				$result[$col_arr[$k]] = getRecordInfoFromID($result[$col_arr[$k]]);
 			}
 			if($ui_type[$fld_arr[$k]] == 5 || $ui_type[$fld_arr[$k]] == 6 || $ui_type[$fld_arr[$k]] == 23){
-				$result[$col_arr[$k]]  = getDisplayDate($result[$col_arr[$k]]);
-			} 
+				if ($$result[$col_arr[$k]] != '' && $$result[$col_arr[$k]] != '0000-00-00') {
+					$date = new DateTimeField($$result[$col_arr[$k]]);
+					$value = $date->getDisplayDate();
+					if(strpos($$result[$col_arr[$k]], ' ') > -1) {
+						$value .= (' ' . $date->getDisplayTime());
+					}
+				} elseif ($$result[$col_arr[$k]] == '0000-00-00') {
+					$value = '';
+				} else {
+					$value = $$result[$col_arr[$k]];
+				}
+				$result[$col_arr[$k]] = $value;
+			}
+			if($ui_type[$fld_arr[$k]] == 71) {
+				$result[$col_arr[$k]] = CurrencyField::convertToUserFormat($result[$col_arr[$k]]);
+			}
+			if($ui_type[$fld_arr[$k]] == 72) {
+				$result[$col_arr[$k]] = CurrencyField::convertToUserFormat($result[$col_arr[$k]], null, true);
+			}
 			
 			$fld_values[$grp][$ii][$fld_labl_arr[$k]] = $result[$col_arr[$k]];
 			
@@ -4600,6 +4612,16 @@ function installVtlibModule($packagename, $packagepath, $customized=false) {
 		return;
 	}
 	$module = $package->getModuleNameFromZip($packagepath);
+
+	// Customization
+	if($package->isLanguageType()) {
+		require_once('vtlib/Vtiger/Language.php');		
+		$languagePack = new Vtiger_Language();
+		@$languagePack->import($packagepath, true);
+		return;
+	}
+	// END
+
 	$module_exists = false;
 	$module_dir_exists = false;
 	if($module == null) {
@@ -4628,12 +4650,19 @@ function updateVtlibModule($module, $packagepath) {
 	require_once('vtlib/Vtiger/Module.php');
 	$Vtiger_Utils_Log = true;
 	$package = new Vtiger_Package();
-	
+
+	if($package->isLanguageType($packagepath)) {
+		require_once('vtlib/Vtiger/Language.php');
+		$languagePack = new Vtiger_Language();
+		$languagePack->update(null, $packagepath, true);
+		return;
+	}
+
 	if($module == null) {
 		$log->fatal("Module name is invalid");
 	} else {
 		$moduleInstance = Vtiger_Module::getInstance($module);
-		if($moduleInstance) {
+		if($moduleInstance || $package->isModuleBundle($packagepath)) {
 			$log->debug("$module - Module instance found - Update starts here");
 			$package->update($moduleInstance, $packagepath);
 		} else {
@@ -4780,7 +4809,7 @@ function isRecordExists($recordId) {
   */
 function getValidDBInsertDateValue($value) {
 	global $log;
-	$log->debug("Entering getDBInsertDateValue(".$value.") method ...");
+	$log->debug("Entering getValidDBInsertDateValue(".$value.") method ...");
         $delim = array('/','.');
         foreach ($delim as $delimiter){
             $x = strpos($value, $delimiter);
@@ -4794,12 +4823,23 @@ function getValidDBInsertDateValue($value) {
 	list($y,$m,$d) = explode('-',$value);
 
 	if(strlen($y)<4){
-		$insert_date = getDBInsertDateValue($value);
+		$insert_date = DateTimeField::convertToDBFormat($value);
 	} else {
 		$insert_date = $value;
 	}
-	$log->debug("Exiting getDBInsertDateValue method ...");
+	$log->debug("Exiting getValidDBInsertDateValue method ...");
 	return $insert_date;
+}
+	
+function getValidDBInsertDateTimeValue($value) {
+	$valueList = explode(' ',$value);
+	$date = new DateTimeField($value);
+	if(count($valueList) == 2) {
+		$value = $date->getDBInsertDateTimeValue();
+	} elseif(count($valueList == 1)) {
+		$value = $date->getDBInsertDateValue();
+	}
+	return $value;
 }
 
 /** Function to set the PHP memory limit to the specified value, if the memory limit set in the php.ini is less than the specified value
@@ -4898,6 +4938,32 @@ function validateEmailId($string){
         return false;
     }
     return true;
+}
+
+function str_rsplit($string, $splitLength) {
+	$reverseString = strrev($string);
+	$chunks = str_split($reverseString, $splitLength);
+	return array_reverse($chunks);
+}
+
+/**
+ * Function to get the list of Contacts related to an activity
+ * @param Integer $activityId
+ * @return Array $contactsList - List of Contact ids, mapped to Contact Names
+ */
+function getActivityRelatedContacts($activityId) {
+	$adb = PearDatabase::getInstance();
+
+	$query = 'SELECT * FROM vtiger_cntactivityrel WHERE activityid=?';
+	$result = $adb->pquery($query, array($activityId));
+
+	$noOfContacts = $adb->num_rows($result);
+	$contactsList = array();
+	for ($i = 0; $i < $noOfContacts; ++$i) {
+		$contactId = $adb->query_result($result, $i, 'contactid');
+		$contactsList[$contactId] = getContactName($contactId);
+	}
+	return $contactsList;
 }
 
 ?>

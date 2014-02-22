@@ -213,7 +213,7 @@ function sendfile_email()
 					
 					<td class="dvtSelectedCell" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>	
 					<td class="dvtTabCache" style="width:10px">&nbsp;</td>
-					{if $SinglePane_View eq 'false' && $IS_REL_LIST|@count > 0}
+					{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 					<td class="dvtUnSelectedCell" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');" align="center" nowrap>
 						<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
 						<div onmouseover="fnShowDrop('More_Information_Modules_List')" onmouseout="fnHideDrop('More_Information_Modules_List')"
@@ -275,7 +275,7 @@ function sendfile_email()
 							{include file='DetailViewHidden.tpl'}
 						
 							  <!-- Start of File Include by SAKTI on 10th Apr, 2008 -->
-							 {include_php file="./include/DetailViewBlockStatus.php"}
+							 {include_php file="include/DetailViewBlockStatus.php"}
 							 <!-- Start of File Include by SAKTI on 10th Apr, 2008 -->
 
 							{foreach key=header item=detail from=$BLOCKS}
@@ -697,7 +697,7 @@ function sendfile_email()
 					
 					<td class="dvtSelectedCellBottom" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>	
 					<td class="dvtTabCacheBottom" style="width:10px">&nbsp;</td>
-					{if $SinglePane_View eq 'false'}
+					{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 					<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></td>
 					{/if}
 					<td class="dvtTabCacheBottom" align="right" style="width:100%">

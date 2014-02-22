@@ -224,8 +224,8 @@ if ($HTTP_POST_VARS['submit'])
              <?=$options?>
              </SELECT></td>
              <td nowrap>
-             <div align="right">Yahoo ID:</div></td>
-             <td> <SELECT NAME="Yahoo_ID">
+             <div align="right">Secondary Email:</div></td>
+             <td> <SELECT NAME="Secondary_Email">
              <OPTION>None 
              <?=$options?>
              </SELECT> </td>

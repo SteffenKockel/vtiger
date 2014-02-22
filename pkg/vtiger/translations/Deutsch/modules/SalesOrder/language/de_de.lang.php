@@ -10,14 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): www.crm-now.de translation to German
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the German (Germany) language pack
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): crm-now, Berlin, www.crm-now.com
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -209,6 +201,14 @@ $mod_strings = Array(
 'Payment Duration' => 'Zahlungsbedingung',
 'Invoice Status' => 'Rechnungsstatus',
 
+'SINGLE_SalesOrder'=>'Bestellung',
+
+'--None--'=>'--ohne--',
+'Daily'=>'täglich',
+'Weekly'=>'wöchentlich',
+'Monthly'=>'monatlich',
+'Quarterly'=>'quartalsweise',
+'Yearly'=>'jährlich',
 );
 
 ?>

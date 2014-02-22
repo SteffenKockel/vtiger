@@ -237,21 +237,13 @@ class Vtiger_InventoryPDFController {
 		if($num_rows) {
 			$resultrow = $adb->fetch_array($result);
 
-			$org_address = $adb->query_result($result,0,"address");
-			$org_city = $adb->query_result($result,0,"city");
-			$org_state = $adb->query_result($result,0,"state");
-			$org_country = $adb->query_result($result,0,"country");
-			$org_code = $adb->query_result($result,0,"code");
-			$org_phone = $adb->query_result($result,0,"phone");
-			$org_fax = $adb->query_result($result,0,"fax");
-			$org_website = $adb->query_result($result,0,"website");
-
 			$addressValues = array();
 			$addressValues[] = $resultrow['address'];
 			if(!empty($resultrow['city'])) $addressValues[]= "\n".$resultrow['city'];
-			if(!empty($resultrow['state'])) $addressValues[]= $resultrow['state'];
-			if(!empty($resultrow['country'])) $addressValues[]= "\n".$resultrow['country'];
+			if(!empty($resultrow['state'])) $addressValues[]= ",".$resultrow['state'];
 			if(!empty($resultrow['code'])) $addressValues[]= $resultrow['code'];
+			if(!empty($resultrow['country'])) $addressValues[]= "\n".$resultrow['country'];
+			
 
 			if(!empty($resultrow['phone']))		$additionalCompanyInfo[]= "\n".getTranslatedString("Phone: ", $this->moduleName). $resultrow['phone'];
 			if(!empty($resultrow['fax']))		$additionalCompanyInfo[]= "\n".getTranslatedString("Fax: ", $this->moduleName). $resultrow['fax'];
@@ -260,7 +252,7 @@ class Vtiger_InventoryPDFController {
 			$modelColumnLeft = array(
 				'logo' => "test/logo/".$resultrow['logoname'],
 				'summary' => decode_html($resultrow['organizationname']),
-				'content' => $this->joinValues($addressValues, ', '). $this->joinValues($additionalCompanyInfo, ', ')
+				'content' => $this->joinValues($addressValues, ' '). $this->joinValues($additionalCompanyInfo, ' ')
 			);
 		}
 		return $modelColumnLeft;
@@ -328,11 +320,29 @@ class Vtiger_InventoryPDFController {
 	}
 
 	function buildHeaderBillingAddress() {
-		return $this->focusColumnValues(array('bill_pobox','bill_street','bill_city','bill_state','bill_country','bill_code'), ', ');
+		$billPoBox	= $this->focusColumnValues(array('bill_pobox'));
+		$billStreet = $this->focusColumnValues(array('bill_street'));
+		$billCity	= $this->focusColumnValues(array('bill_city'));
+		$billState	= $this->focusColumnValues(array('bill_state'));
+		$billCountry = $this->focusColumnValues(array('bill_country'));
+		$billCode	=  $this->focusColumnValues(array('bill_code'));
+		$address	= $this->joinValues(array($billPoBox, $billStreet), ' ');
+		$address .= "\n".$this->joinValues(array($billCity, $billState), ',')." ".$billCode;
+		$address .= "\n".$billCountry;
+		return $address;
 	}
 
 	function buildHeaderShippingAddress() {
-		return $this->focusColumnValues(array('ship_pobox','ship_street','ship_city','ship_state','ship_country','ship_code'), ', ');
+		$shipPoBox	= $this->focusColumnValues(array('ship_pobox'));
+		$shipStreet = $this->focusColumnValues(array('ship_street'));
+		$shipCity	= $this->focusColumnValues(array('ship_city'));
+		$shipState	= $this->focusColumnValues(array('ship_state'));
+		$shipCountry = $this->focusColumnValues(array('ship_country'));
+		$shipCode	=  $this->focusColumnValues(array('ship_code'));
+		$address	= $this->joinValues(array($shipPoBox, $shipStreet), ' ');
+		$address .= "\n".$this->joinValues(array($shipCity, $shipState), ',')." ".$shipCode;
+		$address .= "\n".$shipCountry;
+		return $address;
 	}
 
 	function buildCurrencySymbol() {
@@ -391,11 +401,12 @@ class Vtiger_InventoryPDFController {
 	}
 
 	function formatPrice($value, $decimal=2) {
-		return number_format($value, $decimal, '.', ',');
+		$currencyField = new CurrencyField($value);
+		return $currencyField->getDisplayValue(null, true);
 	}
 
 	function formatDate($value) {
-		return getDisplayDate($value);
+		return DateTimeField::convertToUserFormat($value);
 	}
 
 }

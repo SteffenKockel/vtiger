@@ -368,8 +368,32 @@
 													</td>
 												</tr>
 												<tr>
+													<td valign="top" class="dvtCellInfo" align="left" width="10px">
+														{assign var="defaultsetting" value=$value.defaultvalue}
+														<input id="defaultvalue_check_{$value.fieldselect}"  type="checkbox" 
+														{if $defaultsetting.permitted eq false}
+															disabled 
+														{/if}
+														{if $defaultsetting.value neq ''}
+															checked
+														{/if}
+													</td>
+													<td valign="top" class="dvtCellInfo" align="left">	
+														&nbsp;{$MOD.LBL_DEFAULT_VALUE}<br>
+														{assign var="fieldElementId" value='defaultvalue_'|cat:$value.fieldselect}
+														{if $defaultsetting.permitted eq true}
+                											{include file="Settings/FieldUI.tpl" 
+                												_FIELD_UI_TYPE=$value.uitype
+                												_FIELD_SELECTED_VALUE=$defaultsetting.value
+                												_FIELD_ELEMENT_ID=$fieldElementId
+                												_ALL_AVAILABLE_VALUES=$defaultsetting._allvalues
+                											}
+														{/if}
+													</td>
+												</tr>
+												<tr>
 													<td colspan="3" class="dvtCellInfo" align="center">
-														<input  type="button" name="save"  value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties');" />&nbsp;
+														<input  type="button" name="save"  value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
 														{if $value.customfieldflag neq 0}
 															<input type="button" name="delete" value=" {$APP.LBL_DELETE_BUTTON_LABEL} " class="crmButton small delete" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')" />
 														{/if}

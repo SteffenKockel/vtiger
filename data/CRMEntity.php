@@ -39,7 +39,7 @@ class CRMEntity
 		}
 		// File access security check
 		if(!class_exists($modName)) {
-			checkFileAccess("modules/$module/$modName.php");
+			checkFileAccessForInclusion("modules/$module/$modName.php");
 			require_once("modules/$module/$modName.php");
 		}
 		$focus = new $modName();
@@ -109,7 +109,7 @@ class CRMEntity
 	
 	function insertIntoAttachment1($id,$module,$filedata,$filename,$filesize,$filetype,$user_id)
 	{
-		$date_var = date('Y-m-d H:i:s');
+		$date_var = date("Y-m-d H:i:s");
 		global $current_user;
 		global $adb;
 		//global $root_directory;
@@ -170,7 +170,7 @@ class CRMEntity
 		global $adb, $current_user;
 		global $upload_badext;
 
-		$date_var = date('Y-m-d H:i:s');
+		$date_var = date("Y-m-d H:i:s");
 
 		//to get the owner id
 		$ownerid = $this->column_fields['assigned_user_id'];
@@ -290,7 +290,7 @@ class CRMEntity
 		$this->mode = 'edit';
 	}
 	
-	$date_var = date('Y-m-d H:i:s');
+	$date_var = date("Y-m-d H:i:s");
 	
 	$ownerid = $this->column_fields['assigned_user_id'];
      
@@ -325,7 +325,7 @@ class CRMEntity
 		else
 		{
 			$profileList = getCurrentUserProfileList();
-			$perm_qry = "SELECT columnname FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid WHERE vtiger_field.tabid = ? AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) . ") AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename='vtiger_crmentity' and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2);"; 
+			$perm_qry = "SELECT columnname FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid WHERE vtiger_field.tabid = ? AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.readonly = 0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) . ") AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename='vtiger_crmentity' and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2);"; 
 			$perm_result = $adb->pquery($perm_qry, array($tabid, $profileList));
 			$perm_rows = $adb->num_rows($perm_result);
 			for($i=0; $i<$perm_rows; $i++)
@@ -426,7 +426,7 @@ class CRMEntity
 			  			INNER JOIN vtiger_def_org_field
 			  			ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
 			  			WHERE vtiger_field.tabid = ?
-			  			AND vtiger_profile2field.visible = 0 
+			  			AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.readonly = 0
 			  			AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .")
 			  			AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2) group by columnname"; 
 			  			  
@@ -439,7 +439,7 @@ class CRMEntity
 			  			INNER JOIN vtiger_def_org_field
 			  			ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
 			  			WHERE vtiger_field.tabid = ?
-			  			AND vtiger_profile2field.visible = 0 
+			  			AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.readonly = 0
 			  			AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2) group by columnname"; 
 			  	
 				$params = array($tabid, $table_name);
@@ -565,12 +565,13 @@ class CRMEntity
 			  	if($rows > 0) {
 			  		$fldvalue = $adb->query_result($res,0,'email1');
 				}
-			}elseif($uitype == 71 && $generatedtype == 2) { // Convert currency to base currency value before saving for custom fields of type currency
-				$currency_id = $current_user->currency_id;
-				$curSymCrate = getCurrencySymbolandCRate($currency_id);
-				$fldvalue = convertToDollar($this->column_fields[$fieldname], $curSymCrate['rate']);
+			}elseif($uitype == 72) {
+				// Some of the currency fields like Unit Price, Totoal , Sub-total - doesn't need currency conversion during save
+				$fldvalue = CurrencyField::convertToDBFormat($this->column_fields[$fieldname],null,true);
+			} elseif($uitype == 71) {
+				$fldvalue = CurrencyField::convertToDBFormat($this->column_fields[$fieldname]);
 			} else {
-				$fldvalue = $this->column_fields[$fieldname]; 
+				$fldvalue = $this->column_fields[$fieldname];
 			}
 			if($uitype != 33 && $uitype !=8)
 				$fldvalue = from_html($fldvalue,($insertion_mode == 'edit')?true:false);
@@ -603,8 +604,9 @@ class CRMEntity
 			  $sales_stage = $adb->query_result($adb->pquery($dbquery, array($this->id)),0,'sales_stage');
 			  if($sales_stage != $_REQUEST['sales_stage'] && $_REQUEST['sales_stage'] != '')
 			  {
-				  $date_var = date('YmdHis');
-				  $closingdate = ($_REQUEST['ajxaction'] == 'DETAILVIEW')? $this->column_fields['closingdate'] : getDBInsertDateValue($this->column_fields['closingdate']);
+				  $date_var = date("Y-m-d H:i:s");
+				  $closingDateField = new DateTimeField($this->column_fields['closingdate']);
+				  $closingdate = ($_REQUEST['ajxaction'] == 'DETAILVIEW')? $this->column_fields['closingdate'] : $closingDateField->getDBInsertDateValue();
 				  $sql = "insert into vtiger_potstagehistory values(?,?,?,?,?,?,?,?)";
 				  $params = array('', $this->id, $this->column_fields['amount'], decode_html($sales_stage), $this->column_fields['probability'], 0, $adb->formatDate($closingdate, true), $adb->formatDate($date_var, true));
 				  $adb->pquery($sql, $params);
@@ -970,7 +972,7 @@ $log->info("in getOldFileName  ".$notesid);
 	*/
 	function mark_deleted($id) {
 		global $current_user;
-		$date_var = date('Y-m-d H:i:s');
+		$date_var = date("Y-m-d H:i:s");
 		$query = "UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?";
 		$this->db->pquery($query, array($this->db->formatDate($date_var, true),$current_user->id,$id), true,"Error marking record deleted: ");
 	}
@@ -1188,7 +1190,7 @@ $log->info("in getOldFileName  ".$notesid);
 		}
 		
 		foreach($colf as $key=>$value) {
-			if (getFieldVisibilityPermission($module, $current_user->id, $key) == '0')
+			if (getFieldVisibilityPermission($module, $current_user->id, $key, 'readwrite') == '0')
 				$this->importable_fields[$key] = $value;
 		}
 	}
@@ -1292,7 +1294,7 @@ $log->info("in getOldFileName  ".$notesid);
 		$this->db->println("TRANS restore starts $module");
 		$this->db->startTransaction();		
 	
-		$date_var = date('Y-m-d H:i:s'); 
+		$date_var = date("Y-m-d H:i:s");
 		$query = 'UPDATE vtiger_crmentity SET deleted=0,modifiedtime=?,modifiedby=? WHERE crmid = ?'; 
 		$this->db->pquery($query, array($this->db->formatDate($date_var, true),$current_user->id,$id),true,"Error restoring records :" ); 
 		//Restore related entities/records
@@ -1541,8 +1543,10 @@ $log->info("in getOldFileName  ".$notesid);
 		if($singlepane_view == 'true') $returnset = "&return_module=$this_module&return_action=DetailView&return_id=$id";
 		else $returnset = "&return_module=$this_module&return_action=CallRelatedList&return_id=$id";
 		
-	 	$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name," .
-				"'Documents' ActivityType,vtiger_attachments.type  FileType,crm2.modifiedtime lastmodified,
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
+	 	$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name," .
+				"'Documents' ActivityType,vtiger_attachments.type  FileType,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,
 				vtiger_seattachmentsrel.attachmentsid attachmentsid, vtiger_notes.notesid crmid,
 				vtiger_notes.notecontent description,vtiger_notes.*
 				from vtiger_notes
@@ -1710,7 +1714,9 @@ $log->info("in getOldFileName  ".$notesid);
 
 		$query = "SELECT vtiger_crmentity.*, $other->table_name.*";
 
-		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END AS user_name";
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
+		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
 		
 		$more_relation = '';
 		if(!empty($other->related_tables)) {
@@ -1727,7 +1733,6 @@ $log->info("in getOldFileName  ".$notesid);
 		$query .= " FROM $other->table_name";
 		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 		$query .= " INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid = vtiger_crmentity.crmid)";
-		$query .= " LEFT  JOIN $this->table_name   ON $this->table_name.$this->table_index = $other->table_name.$other->table_index";
 		$query .= $more_relation;
 		$query .= " LEFT  JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 		$query .= " LEFT  JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
@@ -1783,7 +1788,7 @@ $log->info("in getOldFileName  ".$notesid);
 			if($actions) {
 				if(is_string($actions)) $actions = explode(',', strtoupper($actions));
 				if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes' 
-						&& getFieldVisibilityPermission($related_module,$current_user->id,$dependentField) == '0') {
+						&& getFieldVisibilityPermission($related_module,$current_user->id,$dependentField,'readwrite') == '0') {
 					$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString($singular_modname, $related_module) ."' class='crmbutton small create'" .
 						" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 						" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString($singular_modname, $related_module) ."'>&nbsp;";
@@ -1792,7 +1797,9 @@ $log->info("in getOldFileName  ".$notesid);
 			
 			$query = "SELECT vtiger_crmentity.*, $other->table_name.*";
 	
-			$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END AS user_name";
+			$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+				'vtiger_users.last_name'));
+			$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
 			
 			$more_relation = '';
 			if(!empty($other->related_tables)) {
@@ -2030,25 +2037,35 @@ $log->info("in getOldFileName  ".$notesid);
 			$tables[]=$key;
 			$fields[] = $value;
 		}
-		$tabname = $tables[0];
+		$pritablename = $tables[0];
+		$sectablename = $tables[1];
 		$prifieldname = $fields[0][0];
 		$secfieldname = $fields[0][1];
-		$tmpname = $tabname."tmp".$secmodule;
+		$tmpname=$pritablename.'tmp'.$secmodule;
 		$condition = "";
 		if(!empty($tables[1]) && !empty($fields[1])){
 			$condvalue = $tables[1].".".$fields[1];
+			$condition = "$pritablename.$prifieldname=$condvalue";
 		} else {
-			$condvalue = $tabname.".".$prifieldname;
+			$condvalue = $table_name.".".$column_name;
+			$condition = "$pritablename.$secfieldname=$condvalue";
 		}
-		$condition = " {$tmpname}.{$prifieldname} = {$condvalue} ";
-		$condition_secmod_table = " {$table_name}.{$column_name} = {$tmpname}.{$secfieldname} ";
-		if($tabname=='vtiger_crmentityrel'){
-			$condition = " ($condition OR {$tmpname}.{$secfieldname} = $condvalue) ";
-			$condition_secmod_table = "({$condition_secmod_table})";
+		$secQuery = "select $table_name.* from $table_name inner join vtiger_crmentity on ".
+				"vtiger_crmentity.crmid=$table_name.$column_name and vtiger_crmentity.deleted=0";
+		$query = '';
+		if($pritablename=='vtiger_crmentityrel'){
+			$condition = "($table_name.$column_name={$tmpname}.{$secfieldname} ".
+			"OR $table_name.$column_name={$tmpname}.{$prifieldname})";
+			$query = " left join vtiger_crmentityrel as $tmpname ON ($condvalue={$tmpname}.{$secfieldname} ".
+			"OR $condvalue={$tmpname}.{$prifieldname}) ";
+		} elseif(strripos($pritablename, 'rel') === (strlen($pritablename) - 3)) {
+			$instance = self::getInstance($module);
+			$sectableindex = $instance->tab_name_index[$sectablename];
+			$condition = "$table_name.$column_name=$tmpname.$secfieldname";
+			$query = " left join $pritablename as $tmpname ON ($sectablename.$sectableindex=$tmpname.$prifieldname)";
 		}
-
-		$query = " left join {$tabname} as {$tmpname} on {$condition}";
-		$query .= " LEFT JOIN {$table_name} ON {$condition_secmod_table}";
+		
+		$query .= " left join ($secQuery) as $table_name on {$condition}";
 		
 		return $query;
 	}

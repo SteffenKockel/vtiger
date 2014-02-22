@@ -6,8 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contribution: crm-now, Berlin, www.crm-now.com
-*
  ********************************************************************************/
 
 

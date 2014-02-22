@@ -95,7 +95,7 @@ $import_modules_array = Array(
 			     
 if(!empty($_REQUEST['req_mod'])) {
 	$req_mod = $_REQUEST['req_mod'];
-	checkFileAccess("modules/$req_mod/$req_mod.php");
+	checkFileAccessForInclusion("modules/$req_mod/$req_mod.php");
 	require_once("modules/$req_mod/$req_mod.php");
 	if(!isset($import_modules_array[$req_mod])) {
 		$import_modules_array[$req_mod] = $req_mod;

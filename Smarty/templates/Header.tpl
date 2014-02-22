@@ -16,22 +16,22 @@
 	<link REL="SHORTCUT ICON" HREF="themes/images/vtigercrm_icon.ico">	
 	<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
-	{* vtlib customization: Inclusion of custom javascript and css as registered *}
-	{if $HEADERCSS}
-		<!-- Custom Header CSS -->
-		{foreach item=HDRCSS from=$HEADERCSS}
-			<link rel="stylesheet" type="text/css" href="{$HDRCSS->linkurl}"></script>
-		{/foreach}
-		<!-- END -->
-	{/if}
-	{* END *}
+{* vtlib customization: Inclusion of custom javascript and css as registered *}
+{if $HEADERCSS}
+	<!-- Custom Header CSS -->
+	{foreach item=HDRCSS from=$HEADERCSS}
+	<link rel="stylesheet" type="text/css" href="{$HDRCSS->linkurl}" />
+	{/foreach}
+	<!-- END -->
+{/if}
+{* END *}
 	<!-- ActivityReminder customization for callback -->
-	{literal}
+{literal}
 	<style type="text/css">div.fixedLay1 { position:fixed; }</style>
 	<!--[if lte IE 6]>
 	<style type="text/css">div.fixedLay { position:absolute; }</style>
 	<![endif]-->
-	{/literal}
+{/literal}
 	<!-- End -->
 </head>
 	<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small>
@@ -51,28 +51,28 @@
 	<script language="JavaScript" type="text/javascript" src="modules/Calendar/script.js"></script>
 	<script language="javascript" type="text/javascript" src="include/scriptaculous/dom-drag.js"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/notificationPopup.js"></script>
-        <script type="text/javascript" src="jscalendar/calendar.js"></script>
-        <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
-        <script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
+	<script type="text/javascript" src="jscalendar/calendar.js"></script>
+	<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
+	<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
         
     <!-- asterisk Integration -->
-    {if $USE_ASTERISK eq 'true'}
-    	<script type="text/javascript" src="include/js/asterisk.js"></script>
-    	<script type="text/javascript">
-    	if(typeof(use_asterisk) == 'undefined') use_asterisk = true;
-    	</script>
-    {/if}
+{if $USE_ASTERISK eq 'true'}
+	<script type="text/javascript" src="include/js/asterisk.js"></script>
+	<script type="text/javascript">
+	if(typeof(use_asterisk) == 'undefined') use_asterisk = true;
+	</script>
+{/if}
     <!-- END -->
 
-	{* vtlib customization: Inclusion of custom javascript and css as registered *}
-	{if $HEADERSCRIPTS}
-		<!-- Custom Header Script -->
-		{foreach item=HEADERSCRIPT from=$HEADERSCRIPTS}
-			<script type="text/javascript" src="{$HEADERSCRIPT->linkurl}"></script>
-		{/foreach}
-		<!-- END -->
-	{/if}
-	{* END *}
+{* vtlib customization: Inclusion of custom javascript and css as registered *}
+{if $HEADERSCRIPTS}
+	<!-- Custom Header Script -->
+	{foreach item=HEADERSCRIPT from=$HEADERSCRIPTS}
+	<script type="text/javascript" src="{$HEADERSCRIPT->linkurl}"></script>
+	{/foreach}
+	<!-- END -->
+{/if}
+{* END *}
 	
 	{* PREFECTHING IMAGE FOR BLOCKING SCREEN USING VtigerJS_DialogBox API *}
     <img src="{'layerPopupBg.gif'|@vtiger_imageurl:$THEME}" style="display: none;"/>
@@ -80,13 +80,13 @@
 
 	<TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="hdrNameBg">
 	<tr>
-		<td valign=top><img src="{'vtiger-crm.gif'|@vtiger_imageurl:$THEME}" alt="vtiger CRM" title="vtiger CRM" border=0></td>
+		<td valign=top><img src="test/logo/{$LOGO}" alt="{$LOGO}" title="{$LOGO}" border=0 style="width: 15em;height: 3.5em;"></td>
 		<td width=100% align=center>
-		{if $APP.$MODULE_NAME eq 'Dashboards'}
+{if $APP.$MODULE_NAME eq 'Dashboards'}
 		<marquee id="rss" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="marStyle" onMouseOver="javascript:stop();" onMouseOut="javascript:start();">&nbsp;{$ANNOUNCEMENT|escape}</marquee>
-		{else}
-                <marquee id="rss" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="marStyle" onMouseOver="javascript:stop();" onMouseOut="javascript:start();">&nbsp;{$ANNOUNCEMENT}</marquee>
-                {/if}		
+{else}
+		<marquee id="rss" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="marStyle" onMouseOver="javascript:stop();" onMouseOut="javascript:start();">&nbsp;{$ANNOUNCEMENT}</marquee>
+{/if}
 		</td>
 		<td class=small nowrap>
 			<table border=0 cellspacing=0 cellpadding=0>
@@ -96,30 +96,31 @@
 			{if $HEADERLINKS}
 			<td style="padding-left:10px;padding-right:5px" class=small nowrap>
 				<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_headerLinksLay');" onclick="fnvshobj(this,'vtlib_headerLinksLay');">{$APP.LBL_MORE}</a> <img src="{'arrow_down.gif'|@vtiger_imageurl:$THEME}" border=0>
-				<div style="display: none; left: 193px; top: 106px;width:155px; position:absolute;" id="vtlib_headerLinksLay" 
+				<div style="display: none; left: 193px; top: 106px;width:155px; position:absolute;" id="vtlib_headerLinksLay"
 					onmouseout="fninvsh('vtlib_headerLinksLay')" onmouseover="fnvshNrm('vtlib_headerLinksLay')">
 					<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
 					<tr><td style="border-bottom: 1px solid rgb(204, 204, 204); padding: 5px;"><b>{$APP.LBL_MORE}</b></td></tr>
 					<tr>
 						<td>
-							{foreach item=HEADERLINK from=$HEADERLINKS}
-								{assign var="headerlink_href" value=$HEADERLINK->linkurl}
-								{assign var="headerlink_label" value=$HEADERLINK->linklabel}
-								{if $headerlink_label eq ''}
-									{assign var="headerlink_label" value=$headerlink_href}
-								{else}
-									{* Pickup the translated label provided by the module *}
-									{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$HEADERLINK->module()}
-								{/if}
-								<a href="{$headerlink_href}" class="drop_down">{$headerlink_label}</a>
-							{/foreach}
+	{foreach item=HEADERLINK from=$HEADERLINKS}
+		{assign var="headerlink_href" value=$HEADERLINK->linkurl}
+		{assign var="headerlink_label" value=$HEADERLINK->linklabel}
+		{if $headerlink_label eq ''}
+			{assign var="headerlink_label" value=$headerlink_href}
+		{else}
+			{* Pickup the translated label provided by the module *}
+			{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$HEADERLINK->module()}
+		{/if}
+							<a href="{$headerlink_href}" class="drop_down">{$headerlink_label}</a>
+	{/foreach}
 						</td>
 					</tr>
 					</table>
 				</div>
 			</td>
-			{/if}
-			{* END *}
+{/if}
+{* END *}
+
 			
 			<!-- gmailbookmarklet customization -->
 			 <td style="padding-left:10px;padding-right:10px" class=small nowrap>
@@ -325,7 +326,7 @@
 <div id="calculator_cont" style="position:absolute; z-index:10000" ></div>
 	{include file="Clock.tpl"}
 
-<div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:100000;"></div>
+<div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
 
 <!-- Unified Search module selection feature -->
 <div id="UnifiedSearch_moduleformwrapper" style="position:absolute;width:400px;z-index:100002;display:none;"></div>
@@ -410,7 +411,7 @@ function fetch_calc()
 {rdelim}
 </script>
 
-<script>
+<script type="text/javascript">
 {literal}
 function QCreate(qcoptions){
 	var module = qcoptions.options[qcoptions.options.selectedIndex].value;
@@ -612,7 +613,7 @@ function getFormValidate(divValidate)
 	 }//end
 	return true;
 }
-</SCRIPT>
+</script>
 {/literal}
 
 {* Quick Access Functionality *}

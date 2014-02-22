@@ -199,7 +199,7 @@ function getListViewHeader($focus, $module,$sort_qry='',$sorder='',$order_by='',
 						{
 							$temp_sorder = 'ASC';
 						}
-						$lbl_name = getTranslatedString($name, $module);
+						$lbl_name = getTranslatedString(decode_html($name), $module);
 						//added to display vtiger_currency symbol in listview header
 						if($lbl_name =='Amount')
 						{
@@ -260,10 +260,10 @@ function getListViewHeader($focus, $module,$sort_qry='',$sorder='',$order_by='',
 						} else {
 							$name = getTranslatedString($name, $module);
 						}
-					}
-				}
-			}
-																	//added to display vtiger_currency symbol in related listview header
+                    }
+                }
+            }
+        															//added to display vtiger_currency symbol in related listview header
 		if($name =='Amount' && $relatedlist !='' )
 		{
 			$name .=' ('.$app_strings['LBL_IN'].' '.$user_info['currency_symbol'].')';
@@ -281,10 +281,10 @@ function getListViewHeader($focus, $module,$sort_qry='',$sorder='',$order_by='',
 		}
 		else
 		{
-			$list_header[]=$name;
-		}
+            $list_header[]=$name;
+        }
 	}
-     }
+	 }
 
 	//Added for Action - edit and delete link header in listview
 	if(!$skipActions && (isPermitted($module,"EditView","") == 'yes' || isPermitted($module,"Delete","") == 'yes'))
@@ -755,16 +755,17 @@ function getListViewEntries($focus, $module,$list_result,$navigation_array,$rela
 						$column_name = $colname;
 					}
 					$value = $adb->query_result($list_result,$i-1,$colname);
-				}
-				else {
+				} else {
 					if($module == 'Calendar') {
 						$act_id = $adb->query_result($list_result,$i-1,"activityid");
-						
-						$cal_sql = "select activitytype from vtiger_activity where activityid=?";
-						$cal_res = $adb->pquery($cal_sql,array($act_id));
-						if($adb->num_rows($cal_res)>=0)
-							$activitytype = $adb->query_result($cal_res,0,"activitytype");
-					}					
+						$activitytype = $adb->query_result($list_result,$i-1,'activitytype');
+						if(empty($activitytype)) {
+							$cal_sql = "select activitytype from vtiger_activity where activityid=?";
+							$cal_res = $adb->pquery($cal_sql,array($act_id));
+							if($adb->num_rows($cal_res)>=0)
+								$activitytype = $adb->query_result($cal_res,0,"activitytype");
+						}
+					}			
 					if(($module == 'Calendar' || $module == 'Emails' || $module == 'HelpDesk' || $module == 'Invoice' || $module == 'Leads' || $module == 'Contacts') && (($fieldname=='parent_id') || ($name=='Contact Name') || ($name=='Close') || ($fieldname == 'firstname'))) {
 						if($module == 'Calendar'){
 							if($fieldname=='status'){
@@ -816,15 +817,6 @@ function getListViewEntries($focus, $module,$list_result,$navigation_array,$rela
 								$activityid = $adb->query_result($list_result,$i-1,"activityid");
 								if(empty($activityid)){
 									$activityid = $adb->query_result($list_result, $i-1, "tmp_activity_id");
-								}
-								$activitytype = $adb->query_result($list_result,$i-1,"activitytype");
-								// TODO - Picking activitytype when it is not present in the Custom View. 
-								// Going forward, this column should be added to the select list if not already present as a performance improvement.
-								if (empty($activitytype)) {
-									$activitytypeRes = $adb->pquery('SELECT activitytype FROM vtiger_activity WHERE activityid=?', array($activityid));
-									if ($adb->num_rows($activitytypeRes) > 0) {
-										$activitytype = $adb->query_result($activitytypeRes, 0, 'activitytype');
-									}
 								}
 								if ($activitytype != 'Task' && $activitytype != 'Emails') {
 									$eventstatus = $adb->query_result($list_result,$i-1,"eventstatus");
@@ -975,6 +967,7 @@ function getListViewEntries($focus, $module,$list_result,$navigation_array,$rela
 						} elseif($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') { //Potential,Contacts,Invoice,SalesOrder & Quotes  records   sort by Account Name
 							$accountname = textlength_check($adb->query_result($list_result,$i-1,"accountname"));
 							$accountid = $adb->query_result($list_result,$i-1,"accountid");
+							if(empty($accountname)) $accountname = getAccountName($accountid);
 							$value = '<a href="index.php?module=Accounts&action=DetailView&record='.$accountid.'&parenttab='.$tabname.'" style="'.$P_FONT_COLOR.'">'.$accountname.'</a>'; 
 						} else {
 							$account_id = $adb->query_result($list_result,$i-1,"accountid");
@@ -1027,11 +1020,11 @@ function getListViewEntries($focus, $module,$list_result,$navigation_array,$rela
 							} else {
 								$value = '';
 							}
-						} 
+						}
 					} else {
-						$list_result_count = $i-1;
-						$value = getValue($ui_col_array,$list_result,$fieldname,$focus,$module,$entity_id,$list_result_count,"list","",$returnset,$oCv->setdefaultviewid);
-					}
+                        $list_result_count = $i-1;
+                        $value = getValue($ui_col_array,$list_result,$fieldname,$focus,$module,$entity_id,$list_result_count,"list","",$returnset,$oCv->setdefaultviewid);
+                    }
 				}
 				
 				// vtlib customization: For listview javascript triggers
@@ -1415,10 +1408,9 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 	$tabid = getTabid($module);
 	$current_module_strings = return_module_language($current_language, $module);
 	$uicolarr=$field_result[$fieldname];
-	foreach($uicolarr as $key=>$value)
-	{
-		$uitype = $key;
-		$colname = $value;
+    foreach($uicolarr as $key=>$value){
+        $uitype = $key;
+        $colname = $value;
     }
 	//added for getting event status in Custom view - Jaguar
 	if($module == 'Calendar' && ($colname == "status" || $colname == "eventstatus"))
@@ -1445,10 +1437,10 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 			$displayValueArray = getEntityName($parent_module, $parent_id);
 			if(!empty($displayValueArray)){
 				foreach($displayValueArray as $key=>$value){
-					$displayValue = $value;
+					$value = $value;
 				}
 			}
-			$value = "<a href='index.php?module=$parent_module&action=DetailView&record=$parent_id' title='$valueTitle'>$displayValue</a>";
+			$value = "<a href='index.php?module=$parent_module&action=DetailView&record=$parent_id' title='$valueTitle'>$value</a>";
 		} else {
 			$value = '';
 		}
@@ -1466,7 +1458,7 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 	}
 	elseif($uitype == 52) 
 	{        
-		$value = getUserName($adb->query_result($list_result,$list_result_count,$colname)); 
+		$value = getOwnerName($adb->query_result($list_result,$list_result_count,$colname)); 
 	}
 	elseif($uitype == 51)//Accounts - Member Of
 	{
@@ -1480,25 +1472,37 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 	}
 	elseif($uitype == 77) 
 	{        
-		$value = getUserName($adb->query_result($list_result,$list_result_count,'inventorymanager')); 
-	} 
-	elseif($uitype == 5 || $uitype == 6 || $uitype == 23 || $uitype == 70)
-	{
-		if($temp_val != '' && $temp_val != '0000-00-00')
-		{
-			$value = getDisplayDate($temp_val);  
+		$value = getOwnerName($adb->query_result($list_result,$list_result_count,'inventorymanager')); 
+	} elseif ($uitype == 5 || $uitype == 6 || $uitype == 23 || $uitype == 70) {
+		$temp_val = trim($temp_val);
+		$timeField = 'time_start';
+		if($fieldname == 'due_date') {
+			$timeField = 'time_end';
 		}
-		elseif($temp_val == '0000-00-00')
-		{
+		if ($temp_val != '' && $module == 'Calendar' && ($uitype == 23 || $uitype == 6) &&
+				$timeField != '' && ($fieldname == 'date_start' || $fieldname == 'due_date' )) {
+			$time = $adb->query_result($list_result,$list_result_count, $timeField);
+			if(empty($time)) {
+				$time = getSingleFieldValue('vtiger_activity', $timeField, 'activityid', $entity_id);
+			}
+		}
+		if ($temp_val == '0000-00-00' || empty($temp_val)) {
 			$value = '';
+		} else {
+			if (empty($time) && strpos($temp_val, ' ') == false) {
+				$value = DateTimeField::convertToUserFormat($temp_val);
+			} else {
+				if(!empty($time)) {
+					$date = new DateTimeField($temp_val.' '.$time);
+					$value = $date->getDisplayDate();
+				} else {
+					$date = new DateTimeField($temp_val);
+					$value = $date->getDisplayDateTimeValue();
+				}
+			}
 		}
-		else
-		{
-			$value = $temp_val;
-		}
-			
-	
 	}
+	
 	elseif($uitype == 15 || ($uitype == 55 && $fieldname =="salutationtype"))
 	{
 		$temp_val = decode_html($adb->query_result($list_result,$list_result_count,$colname));
@@ -1544,15 +1548,22 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 	elseif($uitype == 71 || $uitype == 72)
 	{
 		if($temp_val != '')
-		{   
-			if($fieldname == 'unit_price') {			
-				$currency_id = getProductBaseCurrency($entity_id,$module);
-				$cursym_convrate = getCurrencySymbolandCRate($currency_id);
-				$value = "<font style='color:grey;'>".$cursym_convrate['symbol']."</font> ". $temp_val;
+		{
+			// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
+			if($uitype == 72) {
+				if($fieldname == 'unit_price') {
+					$currency_id = getProductBaseCurrency($entity_id,$module);
+					$cursym_convrate = getCurrencySymbolandCRate($currency_id);
+					$currency_symbol = $cursym_convrate['symbol'];
+				} else {
+					$currency_info = getInventoryCurrencyInfo($module, $entity_id);
+					$currency_symbol = $currency_info['currency_symbol'];
+				}
+				$currencyValue = CurrencyField::convertToUserFormat($temp_val, null, true);
+				$value = CurrencyField::appendCurrencySymbol($currencyValue, $currency_symbol);
 			} else {
-				$rate = $user_info['conv_rate'];
 				//changes made to remove vtiger_currency symbol infront of each vtiger_potential amount
-        		if ($temp_val != 0) $value = convertFromDollar($temp_val,$rate);
+        		if ($temp_val != 0) $value = CurrencyField::convertToUserFormat($temp_val);
         		else $value = $temp_val;
 			}
 		}
@@ -1564,7 +1575,13 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 	}
 	elseif($uitype == 17)
 	{
-		$value = '<a href="http://'.$field_val.'" target="_blank">'.$temp_val.'</a>';
+        $matchPattern = "^[\w]+:\/\/^";
+        preg_match($matchPattern, $field_val, $matches);
+        if(!empty ($matches[0])){
+            $value = '<a href="'.$field_val.'" target="_blank">'.$temp_val.'</a>';
+        }else{
+            $value = '<a href="http://'.$field_val.'" target="_blank">'.$temp_val.'</a>';
+        }
 	}
 	elseif($uitype == 13 || $uitype == 104 && ($_REQUEST['action'] != 'Popup' && $_REQUEST['file'] != 'Popup'))
 	{
@@ -1973,12 +1990,19 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
                                         $slashes_temp_val = htmlspecialchars($slashes_temp_val,ENT_QUOTES,$default_charset);
 					
 					$focus->record_id = $_REQUEST['recordid'];
+					$popupMode = $_REQUEST['popupmode'];
+					$callBack = $_REQUEST['callback'];
 					if($_REQUEST['return_module'] == "Calendar")
 					{
 						$value = '<a href="javascript:window.close();" id="calendarCont'.$entity_id.'" LANGUAGE=javascript onclick=\'add_data_to_relatedlist_incal("'.$entity_id.'","'.decode_html($slashes_temp_val).'");\'>'.$temp_val.'</a>';
 					}
-					else
-						$value = '<a href="javascript:window.close();" onclick=\'add_data_to_relatedlist("'.$entity_id.'","'.$focus->record_id.'","'.$module.'");\'>'.$temp_val.'</a>';
+					else {
+						if(empty($callBack)) {
+							$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("'.$entity_id.'","'.$focus->record_id.'","'.$module.'","'.$popupMode.'");\'>'.$temp_val.'</a>';
+						} else {
+							$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("'.$entity_id.'","'.$focus->record_id.'","'.$module.'","'.$popupMode.'",'.$callBack.');\'>'.$temp_val.'</a>';
+						}
+					}
 				}
 				elseif($popuptype == "formname_specific")
 				{
@@ -2282,9 +2306,9 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 							$email_check = 0;
 						if($emailaddress == '')
 						{
-							if(CheckFieldPermission('yahooid',$module) == 'true')
+							if(CheckFieldPermission('secondaryemail',$module) == 'true')
 							{
-								$emailaddress2=$adb->query_result($list_result,$list_result_count,"yahooid");
+								$emailaddress2=$adb->query_result($list_result,$list_result_count,"secondaryemail");
 								$email_check = 2;
 							}
 							else{
@@ -2297,7 +2321,7 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 
 						$querystr="SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
 						$queryres = $adb->pquery($querystr, array(getTabid($module)));
-						//Change this index 0 - to get the vtiger_fieldid based on email or yahooid
+						//Change this index 0 - to get the vtiger_fieldid based on email or secondaryemail
 						$fieldid = $adb->query_result($queryres,0,'fieldid');
 
 						$slashes_name = popup_from_html($name);
@@ -2350,12 +2374,14 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 				}
 				else
 				{
-					if($colname == "lastname")
+					if($colname == "lastname") {
 						$temp_val = getFullNameFromQResult($list_result,$list_result_count,$module);
-
+					} elseif($module == 'Users' && $fieldname == 'last_name') {
+						$temp_val = getFullNameFromQResult($list_result,$list_result_count,$module);
+					}
 					$slashes_temp_val = popup_from_html($temp_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val,ENT_QUOTES,$default_charset);
-
+					
 					$log->debug("Exiting getValue method ...");
 					if($_REQUEST['maintab'] == 'Calendar')
 						$value = '<a href="javascript:window.close();" onclick=\'set_return_todo("'.$entity_id.'", "'.nl2br(decode_html($slashes_temp_val)).'");\'>'.$temp_val.'</a>';
@@ -2407,19 +2433,23 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 				}
 			}
 		}
-		elseif($fieldname == 'expectedroi' || $fieldname == 'actualroi' || $fieldname == 'actualcost' || $fieldname == 'budgetcost' || $fieldname == 'expectedrevenue')
-		{
-			$rate = $user_info['conv_rate'];
-			$value = convertFromDollar($temp_val,$rate);
-		}
-		elseif(($module == 'Invoice' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'SalesOrder') 
-				&& ($fieldname == 'hdnGrandTotal' || $fieldname == 'hdnSubTotal' || $fieldname == 'txtAdjustment' 
-						|| $fieldname == 'hdnDiscountAmount' || $fieldname == 'hdnS_H_Amount')) 
-		{								
-			$currency_info = getInventoryCurrencyInfo($module, $entity_id);
-			$currency_id = $currency_info['currency_id'];
-			$currency_symbol = $currency_info['currency_symbol'];
-			$value = $currency_symbol.$temp_val;
+		elseif($module == 'Calendar' && ($fieldname == 'time_start' || 
+				$fieldname == 'time_end')) {
+			$dateField = 'date_start';
+			if($fieldname == 'time_end') {
+				$dateField = 'due_date';
+			}
+			$type = $adb->query_result($list_result,$list_result_count,'activitytype');
+			if(empty($type)) {
+				$type = $adb->query_result($list_result,$list_result_count,'type');
+			}
+			if($type == 'Task' && $fieldname == 'time_end') {
+				$value = '--';
+			} else {
+				$date_val = $adb->query_result($list_result,$list_result_count, $dateField);
+				$date = new DateTimeField($date_val .' '. $temp_val);
+				$value = $date->getDisplayTime();
+			}
 		}
 		else
 		{
@@ -2449,7 +2479,9 @@ function getListQuery($module,$where='')
 	global $current_user;
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	$tab_id = getTabid($module);	
+	$tab_id = getTabid($module);
+	$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 	switch($module)
 	{
 	Case "HelpDesk":
@@ -2571,7 +2603,7 @@ function getListQuery($module,$where='')
                 $query .= " WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 	Case "Documents":
-		$query = "SELECT case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,vtiger_crmentity.crmid, vtiger_crmentity.modifiedtime,
+		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,vtiger_crmentity.crmid, vtiger_crmentity.modifiedtime,
 			vtiger_crmentity.smownerid,vtiger_attachmentsfolder.*,vtiger_notes.*
 			FROM vtiger_notes
 			INNER JOIN vtiger_crmentity
@@ -2890,7 +2922,7 @@ function getListQuery($module,$where='')
 		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 	Case "Users":
-		$query = "SELECT id,user_name,first_name,last_name,email1,phone_mobile,phone_work,is_admin,status,
+		$query = "SELECT id,user_name,first_name,last_name,email1,phone_mobile,phone_work,is_admin,status,email2,
 					vtiger_user2role.roleid as roleid,vtiger_role.depth as depth
 				 	FROM vtiger_users 
 				 	INNER JOIN vtiger_user2role ON vtiger_users.id = vtiger_user2role.userid 
@@ -3410,8 +3442,8 @@ function getTableHeaderNavigation($navigation_array, $url_qry,$module='',$action
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start=1'.$url_string.'\');" alt="'.$app_strings['LBL_FIRST'].'" title="'.$app_strings['LBL_FIRST'].'"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['prev'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_PREVIOUS'].'"title="'.$app_strings['LNK_LIST_PREVIOUS'].'"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}elseif($action_val == 'UnifiedSearch'){
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start=1'.$url_string.'\');" alt="'.$app_strings['LBL_FIRST'].'" title="'.$app_strings['LBL_FIRST'].'"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['prev'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_PREVIOUS'].'"title="'.$app_strings['LNK_LIST_PREVIOUS'].'"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$search_tag.'\',\''.$module.'\',\'parenttab='.$tabname.'&start=1'.$url_string.'\');" alt="'.$app_strings['LBL_FIRST'].'" title="'.$app_strings['LBL_FIRST'].'"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$search_tag.'\',\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['prev'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_PREVIOUS'].'"title="'.$app_strings['LNK_LIST_PREVIOUS'].'"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}
 		elseif($module == 'Documents')
 		{
@@ -3466,8 +3498,8 @@ function getTableHeaderNavigation($navigation_array, $url_qry,$module='',$action
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['next'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_NEXT'].'" title="'.$app_strings['LNK_LIST_NEXT'].'"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['verylast'].$url_string.'\');" alt="'.$app_strings['LBL_LAST'].'" title="'.$app_strings['LBL_LAST'].'"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}elseif($action_val == 'UnifiedSearch'){
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['next'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_NEXT'].'" title="'.$app_strings['LNK_LIST_NEXT'].'"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['verylast'].$url_string.'\');" alt="'.$app_strings['LBL_LAST'].'" title="'.$app_strings['LBL_LAST'].'"><img src="themes/images/end.gif" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$search_tag.'\',\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['next'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_NEXT'].'" title="'.$app_strings['LNK_LIST_NEXT'].'"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$search_tag.'\',\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['verylast'].$url_string.'\');" alt="'.$app_strings['LBL_LAST'].'" title="'.$app_strings['LBL_LAST'].'"><img src="themes/images/end.gif" border="0" align="absmiddle"></a>&nbsp;';
 		}
 		elseif($module == 'Documents')
 		{
@@ -4244,7 +4276,7 @@ function textlength_check($field_val)
 	if($listview_max_textlength) {
 		$temp_val = preg_replace("/(<\/?)(\w+)([^>]*>)/i","",$field_val);
 		if(function_exists('mb_strlen')){
-			if(mb_strlen($default_charset) > $listview_max_textlength) {
+			if(mb_strlen($temp_val) > $listview_max_textlength) {
 				$temp_val = mb_substr(preg_replace("/(<\/?)(\w+)([^>]*>)/i","",$field_val),0,
 						$listview_max_textlength,$default_charset).'...';
 			}
@@ -4372,7 +4404,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry,$module='',$
 		$output = '<td align="right" style="padding: 5px;">';
 	}
 	$tabname = getParentTab();
-
+	$search_tag = $_REQUEST['search_tag'];
 	$url_string = '';
 
 	// vtlib Customization : For uitype 10 popup during paging
@@ -4425,8 +4457,8 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry,$module='',$
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start=1'.$url_string.'\');" alt="'.$app_strings['LBL_FIRST'].'" title="'.$app_strings['LBL_FIRST'].'"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['prev'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_PREVIOUS'].'"title="'.$app_strings['LNK_LIST_PREVIOUS'].'"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}elseif($action_val == 'UnifiedSearch'){
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start=1'.$url_string.'\');" alt="'.$app_strings['LBL_FIRST'].'" title="'.$app_strings['LBL_FIRST'].'"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['prev'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_PREVIOUS'].'"title="'.$app_strings['LNK_LIST_PREVIOUS'].'"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$search_tag.'\',\''.$module.'\',\'parenttab='.$tabname.'&start=1'.$url_string.'\');" alt="'.$app_strings['LBL_FIRST'].'" title="'.$app_strings['LBL_FIRST'].'"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$search_tag.'\',\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['prev'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_PREVIOUS'].'"title="'.$app_strings['LNK_LIST_PREVIOUS'].'"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}elseif($module == 'Documents'){
 			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start=1'.$url_string.'\');" alt="'.$app_strings['LBL_FIRST'].'" title="'.$app_strings['LBL_FIRST'].'"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['prev'].$url_string.'&folderid='.$action_val.'\');" alt="'.$app_strings['LNK_LIST_PREVIOUS'].'"title="'.$app_strings['LNK_LIST_PREVIOUS'].'"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
@@ -4443,7 +4475,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry,$module='',$
 	}else if($action_val == "FindDuplicate"){
 		$jsNavigate = "getDuplicateListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
 	}elseif($action_val == 'UnifiedSearch'){
-		$jsNavigate = "getUnifiedSearchEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
+		$jsNavigate = "getUnifiedSearchEntries_js('$search_tag','$module','parenttab=$tabname&start='+this.value+'$url_string');";
 	}elseif($module == 'Documents'){
 		$jsNavigate = "getListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string&folderid=$action_val');";
 	}else{
@@ -4478,8 +4510,8 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry,$module='',$
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['next'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_NEXT'].'" title="'.$app_strings['LNK_LIST_NEXT'].'"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getDuplicateListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['verylast'].$url_string.'\');" alt="'.$app_strings['LBL_LAST'].'" title="'.$app_strings['LBL_LAST'].'"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 		}elseif($action_val == 'UnifiedSearch'){
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['next'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_NEXT'].'" title="'.$app_strings['LNK_LIST_NEXT'].'"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['verylast'].$url_string.'\');" alt="'.$app_strings['LBL_LAST'].'" title="'.$app_strings['LBL_LAST'].'"><img src="themes/images/end.gif" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$search_tag.'\',\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['next'].$url_string.'\');" alt="'.$app_strings['LNK_LIST_NEXT'].'" title="'.$app_strings['LNK_LIST_NEXT'].'"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="getUnifiedSearchEntries_js(\''.$search_tag.'\',\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['verylast'].$url_string.'\');" alt="'.$app_strings['LBL_LAST'].'" title="'.$app_strings['LBL_LAST'].'"><img src="themes/images/end.gif" border="0" align="absmiddle"></a>&nbsp;';
 		}elseif($module == 'Documents'){
 			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['next'].$url_string.'&folderid='.$action_val.'\');" alt="'.$app_strings['LNK_LIST_NEXT'].'" title="'.$app_strings['LNK_LIST_NEXT'].'"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
 			$output .= '<a href="javascript:;" onClick="getListViewEntries_js(\''.$module.'\',\'parenttab='.$tabname.'&start='.$navigation_array['verylast'].$url_string.'&folderid='.$action_val.'\');" alt="'.$app_strings['LBL_LAST'].'" title="'.$app_strings['LBL_LAST'].'"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
@@ -4516,5 +4548,45 @@ function listQueryNonAdminChange($query, $module, $scope='') {
 	$instance = CRMEntity::getInstance($module);
 	return $instance->listQueryNonAdminChange($query, $scope);
 }
+function html_strlen($str) {
+	$chars = preg_split('/(&[^;\s]+;)|/', $str, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+	return count($chars);
+}
 
+function html_substr($str, $start, $length = NULL) {
+	if($length === 0) return ""; 
+	//check if we can simply use the built-in functions
+	if(strpos($str, '&') === false) { //No entities. Use built-in functions
+		if($length === NULL)
+			return substr($str, $start);
+		else
+			return substr($str, $start, $length);
+	}
+
+	// create our array of characters and html entities
+	$chars = preg_split('/(&[^;\s]+;)|/', $str, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE);
+	$html_length = count($chars);
+	// check if we can predict the return value and save some processing time
+	if(($html_length === 0) or ($start >= $html_length) or (isset($length) and ($length <= -$html_length)))
+		return "";
+
+	//calculate start position
+	if($start >= 0) {
+		$real_start = $chars[$start][1];
+	} else { //start'th character from the end of string
+		$start = max($start,-$html_length);
+		$real_start = $chars[$html_length+$start][1];
+	}
+	if (!isset($length)) // no $length argument passed, return all remaining characters
+		return substr($str, $real_start);
+	else if ($length > 0) { // copy $length chars
+		if ($start+$length >= $html_length) { // return all remaining characters
+			return substr($str, $real_start);
+		} else { //return $length characters
+			return substr($str, $real_start, $chars[max($start,0)+$length][1] - $real_start);
+		}
+	} else { //negative $length. Omit $length characters from end
+		return substr($str, $real_start, $chars[$html_length+$length][1] - $real_start);
+	}
+}
 ?>

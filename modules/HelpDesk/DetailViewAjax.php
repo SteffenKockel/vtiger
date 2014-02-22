@@ -48,7 +48,7 @@ if($ajaxaction == "DETAILVIEW")
 			require_once('modules/Emails/mail.php');
 			$user_emailid = getUserEmailId('id',$modObj->column_fields['assigned_user_id']);
 			
-			$subject = $modObj->column_fields['ticket_no'] . ' [ '.$mod_strings['LBL_TICKET_ID'].' : '.$modObj->id.' ] Re : '.$modObj->column_fields['ticket_title'];
+			$subject = $modObj->column_fields['ticket_no'] . ' [ '.$mod_strings['LBL_TICKET_ID'].' : '.$modObj->id.' ] '.$mod_strings["Re"].''.$modObj->column_fields['ticket_title'];
 			$parent_id = $modObj->column_fields['parent_id'];
 			if(!empty($parent_id) && $parent_id!=0){
 				$parent_module = getSalesEntityType($parent_id);
@@ -68,23 +68,23 @@ if($ajaxaction == "DETAILVIEW")
 					$sql = "select * from vtiger_portalinfo where user_name=?";
 					$isactive = $adb->query_result($adb->pquery($sql, array($contact_mailid)),0,'isactive');
 				}
-				
-				if($isactive == 1){
+			}
+			if($isactive == 1){
 					$url = "<a href='".$PORTAL_URL."/index.php?module=HelpDesk&action=index&ticketid=".$modObj->id."&fun=detail'>Ticket Details</a>";
 					$email_body = $subject.'<br><br>'.getPortalInfo_Ticket($modObj->id,$sub,$contactname,$url,"edit");
-				}else{
-					$data['sub']=$modObj->column_fields['ticket_title'];
-					$data['parent_name']=$parentname;
-					$data['status']=$modObj->column_fields['ticketstatus'];
-					$data['category']=$modObj->column_fields['ticketcategories'];
-					$data['severity'] = $modObj->column_fields['ticketseverities'];
-					$data['priority']=$modObj->column_fields['ticketpriorities'];
-					$data['description']=$modObj->column_fields['description'];
-					$data['solution'] = $modObj->column_fields['solution'];
-					$data['mode']= 'edit';
-					$email_body = getTicketDetails($modObj->id,$data);
-				}
+		   } else {
+				$data['sub'] = $modObj->column_fields['ticket_title'];
+				$data['parent_name'] = $parentname;
+				$data['status'] = $modObj->column_fields['ticketstatus'];
+				$data['category'] = $modObj->column_fields['ticketcategories'];
+				$data['severity'] = $modObj->column_fields['ticketseverities'];
+				$data['priority'] = $modObj->column_fields['ticketpriorities'];
+				$data['description'] = $modObj->column_fields['description'];
+				$data['solution'] = $modObj->column_fields['solution'];
+				$data['mode'] = 'edit';
+				$email_body = getTicketDetails($modObj->id, $data);
 			}
+			
 			if(PerformancePrefs::getBoolean('NOTIFY_OWNER_EMAILS', true) === true){
 				if($user_emailid != ''){
 					$mail_status = send_mail('HelpDesk',$user_emailid,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);

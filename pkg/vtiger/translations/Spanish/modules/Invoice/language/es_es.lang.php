@@ -22,6 +22,7 @@
  
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Facturas',
+'SINGLE_Invoice'=>'Factura',
 'LBL_SO_MODULE_NAME'=>'Factura',
 'LBL_RELATED_PRODUCTS'=>'Elementos',
 'LBL_MODULE_TITLE'=>'Factura: Inicio',
@@ -179,7 +180,7 @@ $mod_strings = Array(
 'Created'=>'Creada',
 'Approved'=>'Aprobada',
 'Sent'=>'Enviada',
-'Credit Invoice'=>'Abono',
+'Credit Invoice'=>'Rectificativa',
 'Paid'=>'Pagada',
 'AutoCreated'=>'Automática',
 //Added to Custom Invoice Number

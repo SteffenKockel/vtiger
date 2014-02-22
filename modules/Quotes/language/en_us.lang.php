@@ -183,6 +183,8 @@ $mod_strings = Array(
 
 //Added after 5.0.4 GA
 'Quote No'=>'Quote No',
+
+'SINGLE_Quotes'=>'Quote',
 );
 
 ?>

@@ -9,6 +9,6 @@
   *
   ********************************************************************************/
 
-	checkFileAccess('modules/'.$_REQUEST['module'].'/'.$_REQUEST['file'].'.php');
+	checkFileAccessForInclusion('modules/'.$_REQUEST['module'].'/'.$_REQUEST['file'].'.php');
 	require_once('modules/'.$_REQUEST['module'].'/'.$_REQUEST['file'].'.php');
 ?>

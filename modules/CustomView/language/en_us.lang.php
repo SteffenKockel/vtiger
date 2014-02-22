@@ -280,6 +280,8 @@ following values "Call","Meeting" or "Task".',
 'LBL_NEW'=>'New',
 'LBL_EDIT'=>'Edit',
 'LBL_STATUS_PUBLIC_APPROVE'=>'Approve',
-'LBL_STATUS_PUBLIC_DENY'=>'Deny'
+'LBL_STATUS_PUBLIC_DENY'=>'Deny',
+
+'LBL_ADVANCED_FILTER' => 'Rule',
 ); 
 ?>

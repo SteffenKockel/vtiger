@@ -12,6 +12,7 @@ require_once('Smarty_setup.php');
 require_once('include/CustomFieldUtil.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
+require_once 'modules/PickList/PickListUtils.php';
 
 global $mod_strings,$app_strings,$log,$theme;
 $theme_path="themes/".$theme."/";
@@ -22,6 +23,8 @@ $smarty=new vtigerCRM_Smarty;
 $subMode = $_REQUEST['sub_mode'];
 $smarty->assign("MOD",$mod_strings);
 $smarty->assign("APP",$app_strings);
+$smarty->assign("THEME", $theme);
+$smarty->assign("JS_DATEFORMAT",parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 
 if ($subMode == 'updateFieldProperties')
 	updateFieldProperties();
@@ -39,8 +42,7 @@ elseif($subMode == 'movehiddenfields' || $subMode == 'showhiddenfields')
 	show_move_hiddenfields($subMode);
 elseif($subMode == 'changeRelatedInfoOrder')
 	changeRelatedListOrder();
-	
-$smarty->assign("THEME", $theme);
+
 $module_array=getCustomFieldSupportedModules();
 
 $cfimagecombo = Array(
@@ -146,7 +148,7 @@ function InStrCount($String,$Find,$CaseSensitive = false) {
 function getFieldListEntries($module)
 {
 	$tabid = getTabid($module);
-	global $adb, $smarty,$log;
+	global $adb, $smarty,$log,$current_user;
 	global $theme;
 	$theme_path="themes/".$theme."/";
 	$image_path="themes/images/";
@@ -158,8 +160,15 @@ function getFieldListEntries($module)
 	$row = $adb->fetch_array($result);
 	
 	$focus = CRMEntity::getInstance($module);
-
+	
 	$nonEditableUiTypes = array('4','70');
+	
+	// To get reference field names
+	require_once('include/Webservices/Utils.php');
+	$handler = vtws_getModuleHandlerFromName($module, $current_user);
+
+	$meta = $handler->getMeta();
+	$referenceFieldNames = array_keys($meta->getReferenceFieldDetails());
 	
 	$cflist=Array();
 	$i=0;
@@ -225,16 +234,31 @@ function getFieldListEntries($module)
 					$displaytype = $row_field['displaytype'];
 					$uitype = $row_field['uitype'];
 					$fld_type_name = getCustomFieldTypeName($row_field['uitype']);
-					
+					$defaultValue = $row_field['defaultvalue'];
+					if(!empty($defaultValue) && ($uitype == '5' || $uitype == '6' || $uitype == '23')) {
+						$defaultValue = getValidDisplayDate($defaultValue);
+					}
+									
 					$fieldlabel = getTranslatedString($row_field['fieldlabel'], $module);
 					
+					$defaultPermitted = true;
 					$strictlyMandatory = false;
 					if(isset($focus->mandatory_fields) && (!empty($focus->mandatory_fields)) && in_array($fieldname, $focus->mandatory_fields)){
 						$strictlyMandatory = true;
+						$defaultPermitted = false;
 					} elseif (in_array($uitype, $nonEditableUiTypes) || $displaytype == 2) {
 						$strictlyMandatory = true;
+						$defaultPermitted = false;
+					}
+					if(in_array($fieldname, $referenceFieldNames)) {
+						$defaultPermitted = false;						
 					}
 					$visibility = getFieldInfo($fieldname,$typeofdata,$quickcreate,$massedit,$presence,$strictlyMandatory,$customfieldflag,$displaytype,$uitype);
+					
+					$allValues = array();
+					if(in_array($uitype, array('15','16','33'))) {
+						$allValues = getAllPickListValues($fieldname);
+					}
 					
 					if ($presence == 0 || $presence == 2) {
 						$cf_element[$count]['fieldselect']=$fieldid;
@@ -244,8 +268,10 @@ function getFieldListEntries($module)
 						$cf_element[$count]['label']=$fieldlabel;					
 						$cf_element[$count]['fieldlabel'] = $row_field['fieldlabel'];
 						$cf_element[$count]['type']=$fld_type_name;
+						$cf_element[$count]['typeofdata']=$typeofdata;
 						$cf_element[$count]['uitype']=$uitype;
-						$cf_element[$count]['columnname']=$row_field['columnname'];					
+						$cf_element[$count]['columnname']=$row_field['columnname'];	
+						$cf_element[$count]['defaultvalue']= array('permitted' => $defaultPermitted, 'value' => $defaultValue, '_allvalues' => $allValues);				
 						$cf_element[$count] = array_merge($cf_element[$count], $visibility);
 						
 						$count++;
@@ -257,8 +283,10 @@ function getFieldListEntries($module)
 						$cf_hidden_element[$hiddencount]['label']=$fieldlabel;					
 						$cf_hidden_element[$hiddencount]['fieldlabel'] = $row_field['fieldlabel'];
 						$cf_hidden_element[$hiddencount]['type']=$fld_type_name;
+						$cf_hidden_element[$hiddencount]['typeofdata']=$typeofdata;
 						$cf_hidden_element[$hiddencount]['uitype']=$uitype;
-						$cf_hidden_element[$hiddencount]['columnname']=$row_field['columnname'];					
+						$cf_hidden_element[$hiddencount]['columnname']=$row_field['columnname'];	
+						$cf_hidden_element[$hiddencount]['defaultvalue']= array('permitted' => $defaultPermitted, 'value' => $defaultValue, '_allvalues' => $allValues);				
 						$cf_hidden_element[$hiddencount] = array_merge($cf_hidden_element[$hiddencount], $visibility);
 						
 						$hiddencount++;						
@@ -546,6 +574,21 @@ function updateFieldProperties(){
 	$quickcreate_checked = $_REQUEST['quickcreate'];
 	$presence_check = $_REQUEST['isPresent'];
 	$massedit_check = $_REQUEST['massedit'];
+	$defaultvalue = vtlib_purify($_REQUEST['defaultvalue']);
+	
+	if(!empty($defaultvalue)) {
+		if($uitype == 56) {
+			if($defaultvalue == 'on' || $defaultvalue == '1') {
+				$defaultvalue = '1';
+			} elseif($defaultvalue == 'off' || $defaultvalue == '0') {
+				$defaultvalue = '0';
+			} else {
+				$defaultvalue = '';
+			}
+		} elseif($uitype == 5 || $uitype == 6 || $uitype == 23) {
+			$defaultvalue = getValidDBInsertDateValue($defaultvalue);
+		}
+	}
 	
 
 	if(isset($focus->mandatory_fields) && (!empty($focus->mandatory_fields)) && in_array($fieldname, $focus->mandatory_fields)){
@@ -611,6 +654,10 @@ function updateFieldProperties(){
 	$massedit_query = "update vtiger_field set masseditable = ? where fieldid = ? and masseditable not in (0,3) AND displaytype != 2";
 	$massedit_params = array($massedit,$fieldid);
 	$adb->pquery($massedit_query,$massedit_params);	
+
+	$defaultvalue_query = "update vtiger_field set defaultvalue=? where fieldid = ? and fieldname not in (?) AND displaytype != 2";
+	$defaultvalue_params = array($defaultvalue,$fieldid,$fieldname_list);
+	$adb->pquery($defaultvalue_query, $defaultvalue_params);
 	
 }
 
@@ -872,8 +919,8 @@ else{
 				}else{
 					$quickcreate = 1;
 				}
-				$query = "insert into vtiger_field (tabid,fieldid,columnname,tablename,generatedtype,uitype,fieldname,fieldlabel,readonly,presence,selected,maximumlength,sequence,block,displaytype,typeofdata,quickcreate,quickcreatesequence,info_type,masseditable) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-				$qparams = array($tabid,$custfld_fieldid,$columnName,$tableName,2,$uitype,$columnName,$fldlabel,0,2,0,100,$max_seq+1,$blockid,1,$uichekdata,$quickcreate,0,'BAS',1);
+				$query = "insert into vtiger_field (tabid,fieldid,columnname,tablename,generatedtype,uitype,fieldname,fieldlabel,readonly,presence,defaultvalue,maximumlength,sequence,block,displaytype,typeofdata,quickcreate,quickcreatesequence,info_type,masseditable) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				$qparams = array($tabid,$custfld_fieldid,$columnName,$tableName,2,$uitype,$columnName,$fldlabel,0,2,'',100,$max_seq+1,$blockid,1,$uichekdata,$quickcreate,0,'BAS',1);
 				$adb->pquery($query, $qparams);
 				$adb->alterTable($tableName, $columnName." ".$type, "Add_Column");
 				//Inserting values into vtiger_profile2field vtiger_tables
@@ -883,12 +930,12 @@ else{
 				for($i=0; $i<$sql1_num; $i++){
 					$profileid = $adb->query_result($sql1_result,$i,"profileid");
 					$sql2 = "insert into vtiger_profile2field values(?,?,?,?,?)";
-					$adb->pquery($sql2, array($profileid, $tabid, $custfld_fieldid, 0, 1));	 	
+					$adb->pquery($sql2, array($profileid, $tabid, $custfld_fieldid, 0, 0));	 	
 				}
 	
 				//Inserting values into def_org vtiger_tables
 				$sql_def = "insert into vtiger_def_org_field values(?,?,?,?)";
-				$adb->pquery($sql_def, array($tabid, $custfld_fieldid, 0, 1));
+				$adb->pquery($sql_def, array($tabid, $custfld_fieldid, 0, 0));
 
 			if($fldType == 'Picklist' || $fldType == 'MultiSelectCombo'){
 				$columnName = $adb->sql_escape_string($columnName);

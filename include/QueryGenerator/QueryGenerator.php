@@ -95,11 +95,7 @@ class QueryGenerator {
 			$handler = vtws_getModuleHandlerFromName($module, $this->user);
 			$meta = $handler->getMeta();
 			$this->referenceModuleMetaInfo[$module] = $meta;
-			if($module == 'Users') {
-				$this->moduleNameFields[$module] = 'user_name';
-			} else {
-				$this->moduleNameFields[$module] = $meta->getNameFields();
-			}
+			$this->moduleNameFields[$module] = $meta->getNameFields();
 		}
 		return $this->referenceModuleMetaInfo[$module];
 	}
@@ -207,22 +203,33 @@ class QueryGenerator {
 				$this->addCondition($name, $value, 'BETWEEN');
 			}
 		}
-		if($this->conditionInstanceCount <= 0 && is_array($this->advFilterList)) {
+		if($this->conditionInstanceCount <= 0 && is_array($this->advFilterList) && count($this->advFilterList) > 0) {
 			$this->startGroup('');
-		} elseif($this->conditionInstanceCount > 0 && is_array($this->advFilterList)) {
+		} elseif($this->conditionInstanceCount > 0 && is_array($this->advFilterList) && count($this->advFilterList) > 0) {
 			$this->addConditionGlue(self::$AND);
 		}
-		if(is_array($this->advFilterList)) {
-			foreach ($this->advFilterList as $index=>$filter) {
-				$name = explode(':',$filter['columnname']);
-				if(empty($name[2]) && $name[1] == 'crmid' && $name[0] == 'vtiger_crmentity') {
-					$name = $this->getSQLColumn('id');
-				} else {
-					$name = $name[2];
-				}
-				$this->addCondition($name, decode_html($filter['value']), $filter['comparator']);
-				if(count($this->advFilterList) -1  > $index) {
-					$this->addConditionGlue(self::$AND);
+		if(is_array($this->advFilterList) && count($this->advFilterList) > 0) {
+			foreach ($this->advFilterList as $groupindex=>$groupcolumns) {
+				$filtercolumns = $groupcolumns['columns'];
+				if(count($filtercolumns) > 0) {
+					$this->startGroup('');
+					foreach ($filtercolumns as $index=>$filter) {
+						$name = explode(':',$filter['columnname']);
+						if(empty($name[2]) && $name[1] == 'crmid' && $name[0] == 'vtiger_crmentity') {
+							$name = $this->getSQLColumn('id');
+						} else {
+							$name = $name[2];
+						}
+						$this->addCondition($name, $filter['value'], $filter['comparator']);
+						$columncondition = $filter['column_condition'];
+						if(!empty($columncondition)) {
+							$this->addConditionGlue($columncondition);
+						}
+					}
+					$this->endGroup();
+					$groupConditionGlue = $groupcolumns['condition'];
+					if(!empty($groupConditionGlue)) 
+						$this->addConditionGlue($groupConditionGlue);
 				}
 			}
 		}
@@ -253,18 +260,9 @@ class QueryGenerator {
 					$meta = $this->getMeta('Groups');
 				}
 			}
-			$query = 'SELECT ';
-			$columns = array();
-			$moduleFields = $this->meta->getModuleFields();
-			$accessibleFieldList = array_keys($moduleFields);
-			$accessibleFieldList[] = 'id';
-			$this->fields = array_intersect($this->fields, $accessibleFieldList);
-			foreach ($this->fields as $field) {
-				$sql = $this->getSQLColumn($field);
-				$columns[] = $sql;
-			}
-			$this->columns = implode(', ',$columns);
-			$query .= $this->columns;
+
+			$query = "SELECT ";
+			$query .= $this->getSelectClauseColumnSQL();
 			$query .= $this->getFromClause();
 			$query .= $this->getWhereClause();
 			$this->query = $query;
@@ -289,6 +287,20 @@ class QueryGenerator {
 		//one module or is of type owner.
 		$column = $field->getColumnName();
 		return $field->getTableName().'.'.$column;
+	}
+
+	public function getSelectClauseColumnSQL(){
+		$columns = array();
+		$moduleFields = $this->meta->getModuleFields();
+		$accessibleFieldList = array_keys($moduleFields);
+		$accessibleFieldList[] = 'id';
+		$this->fields = array_intersect($this->fields, $accessibleFieldList);
+		foreach ($this->fields as $field) {
+			$sql = $this->getSQLColumn($field);
+			$columns[] = $sql;
+		}
+		$this->columns = implode(', ',$columns);
+		return $this->columns;
 	}
 
 	public function getFromClause() {
@@ -344,6 +356,12 @@ class QueryGenerator {
 				continue;
 			}
 			$baseTable = $field->getTableName();
+			// When a field is included in Where Clause, but not is Select Clause, and the field table is not base table,
+			// The table will not be present in tablesList and hence needs to be added to the list.
+			if(empty($tableList[$baseTable])) {
+				$tableList[$baseTable] = $field->getTableName();
+				$tableJoinMapping[$baseTable] = $this->meta->getJoinClause($field->getTableName());
+			}
 			if($field->getFieldDataType() == 'reference') {
 				$moduleList = $this->referenceFieldInfoList[$fieldName];
 				$tableJoinMapping[$field->getTableName()] = 'INNER JOIN';
@@ -517,16 +535,18 @@ class QueryGenerator {
 							}
 							$columnList[] = "$referenceTable.$column";
 						}
-						$columnSql = implode(",' ',",$columnList);
 						if(count($columnList) > 1) {
-							$columnSql = 'CONCAT('.$columnSql.')';
+							$columnSql = getSqlForNameInDisplayFormat(array('f'=>$columnList[1],'l'=>$columnList[0]));
+						} else {
+							$columnSql = implode('', $columnList);
 						}
+						
 						$fieldSql .= "$fieldGlue $columnSql $valueSql";
 						$fieldGlue = ' OR';
 					}
 				} elseif (in_array($fieldName, $this->ownerFields)) {
-					$fieldSql .= "$fieldGlue vtiger_users.user_name $valueSql or ".
-							"vtiger_groups.groupname $valueSql";
+					$concatSql = getSqlForNameInDisplayFormat(array('f'=>"vtiger_users.first_name",'l'=>"vtiger_users.last_name"));
+					$fieldSql .= "$fieldGlue $concatSql $valueSql or "."vtiger_groups.groupname $valueSql";
 				} else {
 					if($fieldName == 'birthday' && !$this->isRelativeSearchOperators(
 							$conditionInfo['operator'])) {
@@ -552,7 +572,7 @@ class QueryGenerator {
 			$conditionInfo['value'].")";
 			$fieldSqlList[$index] = $fieldSql;
 		}
-
+		
 		$groupSql = $this->makeGroupSqlReplacements($fieldSqlList, $groupSql);
 		if($this->conditionInstanceCount > 0) {
 			$this->conditionalWhere = $groupSql;
@@ -570,23 +590,29 @@ class QueryGenerator {
 	 * @param WebserviceField $field
 	 */
 	private function getConditionValue($value, $operator, $field) {
+		
 		$operator = strtolower($operator);
 		$db = PearDatabase::getInstance();
 
 		if(is_string($value)) {
 			$valueArray = explode(',' , $value);
 		} elseif(is_array($value)) {
-			$valueArray = $value;
-		}else{
+			$valueArray = $value;		
+		} else{
 			$valueArray = array($value);
 		}
-
 		$sql = array();
-		if($operator == 'between') {
+		if($operator == 'between' || $operator == 'bw') {
 			if($field->getFieldName() == 'birthday') {
+				$valueArray[0] = getValidDBInsertDateTimeValue($valueArray[0]);
+				$valueArray[1] = getValidDBInsertDateTimeValue($valueArray[1]);
 				$sql[] = "BETWEEN DATE_FORMAT(".$db->quote($valueArray[0]).", '%m%d') AND ".
 						"DATE_FORMAT(".$db->quote($valueArray[1]).", '%m%d')";
 			} else {
+				if($this->isDateType($field->getFieldDataType())) {
+					$valueArray[0] = getValidDBInsertDateTimeValue($valueArray[0]);
+					$valueArray[1] = getValidDBInsertDateTimeValue($valueArray[1]);
+				}
 				$sql[] = "BETWEEN ".$db->quote($valueArray[0])." AND ".
 							$db->quote($valueArray[1]);
 			}
@@ -613,14 +639,7 @@ class QueryGenerator {
 					$value = 0;
 				}
 			} elseif($this->isDateType($field->getFieldDataType())) {
-				if($field->getFieldDataType() == 'datetime') {
-					$valueList = explode(' ',$value);
-					$value = $valueList[0];
-				}
-				$value = getValidDBInsertDateValue($value);
-				if($field->getFieldDataType() == 'datetime') {
-					$value .=(' '.$valueList[1]);
-				}
+				$value = getValidDBInsertDateTimeValue($value);
 			}
 
 			if($field->getFieldName() == 'birthday' && !$this->isRelativeSearchOperators(
@@ -669,6 +688,10 @@ class QueryGenerator {
 					break;
 				case 'h': $sqlOperator = ">=";
 					break;
+				case 'a': $sqlOperator = ">";
+					break;
+				case 'b': $sqlOperator = "<";
+					break;
 			}
 			if(!$this->isNumericType($field->getFieldDataType()) &&
 					($field->getFieldName() != 'birthday' || ($field->getFieldName() == 'birthday'
@@ -698,7 +721,7 @@ class QueryGenerator {
 		return in_array($operator, $nonDaySearchOperators);
 	}
 	private function isNumericType($type) {
-		return ($type == 'integer' || $type == 'double');
+		return ($type == 'integer' || $type == 'double' || $type == 'currency');
 	}
 
 	private function isStringType($type) {
@@ -761,56 +784,49 @@ class QueryGenerator {
 	public function addUserSearchConditions($input) {
 		global $log,$default_charset;
 		if($input['searchtype']=='advance') {
-			if(empty($input['search_cnt'])) {
+			
+			$json = new Zend_Json();	
+			$advft_criteria = $_REQUEST['advft_criteria'];
+			if(!empty($advft_criteria))	$advft_criteria = $json->decode($advft_criteria);	
+			$advft_criteria_groups = $_REQUEST['advft_criteria_groups'];
+			if(!empty($advft_criteria_groups))	$advft_criteria_groups = $json->decode($advft_criteria_groups);
+			
+			if(empty($advft_criteria) || count($advft_criteria) <= 0) {
 				return ;
 			}
-			$noOfConditions = vtlib_purify($input['search_cnt']);
-			if($input['matchtype'] == 'all') {
-				$matchType = self::$AND;
-			} else {
-				$matchType = self::$OR;
+			
+			$advfilterlist = getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups);
+			
+			if(empty($advfilterlist) || count($advfilterlist) <= 0) {
+				return ;
 			}
+			
 			if($this->conditionInstanceCount > 0) {
 				$this->startGroup(self::$AND);
 			} else {
 				$this->startGroup('');
 			}
-			for($i=0; $i<$noOfConditions; $i++) {
-				$fieldInfo = 'Fields'.$i;
-				$condition = 'Condition'.$i;
-				$value = 'Srch_value'.$i;
-
-				list($fieldName,$typeOfData) = split("::::",str_replace('\'','',
-						stripslashes($input[$fieldInfo])));
-				$moduleFields = $this->meta->getModuleFields();
-				$field = $moduleFields[$fieldName];
-				$type = $field->getFieldDataType();
-			
-				$operator = str_replace('\'','',stripslashes($input[$condition]));
-				$searchValue = $input[$value];
-				$searchValue = function_exists(iconv) ? @iconv("UTF-8",$default_charset, 
-						$searchValue) : $searchValue;
-								
-				if($type == 'picklist') { 
-					global $mod_strings;
-					// Get all the keys for the for the Picklist value
-					$mod_keys = array_keys($mod_strings, $searchValue);
-					if(sizeof($mod_keys) >= 1) {
-						// Iterate on the keys, to get the first key which doesn't start with LBL_      (assuming it is not used in PickList)
-						foreach($mod_keys as $mod_idx=>$mod_key) {
-							$stridx = strpos($mod_key, 'LBL_');
-							// Use strict type comparision, refer strpos for more details
-							if ($stridx !== 0) {
-								$searchValue = $mod_key;
-								break;
-							}
+			foreach ($advfilterlist as $groupindex=>$groupcolumns) {
+				$filtercolumns = $groupcolumns['columns'];
+				if(count($filtercolumns) > 0) {
+					$this->startGroup('');
+					foreach ($filtercolumns as $index=>$filter) {
+						$name = explode(':',$filter['columnname']);
+						if(empty($name[2]) && $name[1] == 'crmid' && $name[0] == 'vtiger_crmentity') {
+							$name = $this->getSQLColumn('id');
+						} else {
+							$name = $name[2];
+						}
+						$this->addCondition($name, $filter['value'], $filter['comparator']);
+						$columncondition = $filter['column_condition'];
+						if(!empty($columncondition)) {
+							$this->addConditionGlue($columncondition);
 						}
 					}
-				}
-				
-				$this->addCondition($fieldName, $searchValue, $operator);
-				if($i+1<$noOfConditions) {
-					$this->addConditionGlue($matchType);
+					$this->endGroup();
+					$groupConditionGlue = $groupcolumns['condition'];
+					if(!empty($groupConditionGlue)) 
+						$this->addConditionGlue($groupConditionGlue);
 				}
 			}
 			$this->endGroup();
@@ -878,6 +894,18 @@ class QueryGenerator {
 								break;
 							}
 						}
+					}
+				}
+				if($type == 'currency') {
+					// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
+					if($field->getUIType() == '72') {
+						$value = CurrencyField::convertToDBFormat($value, null, true);
+					} else {
+						$currencyField = new CurrencyField($value);
+						if($this->getModule() == 'Potentials' && $fieldName == 'amount') {
+							$currencyField->setNumberofDecimals(2);
+						}
+						$value = $currencyField->getDBInsertedValue();
 					}
 				}
 			}

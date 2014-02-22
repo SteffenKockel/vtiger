@@ -90,7 +90,11 @@ class Activity extends CRMEntity {
        'Start Date & Time'=>'date_start',
        'End Date & Time'=>'due_date',
 	   'Recurring Type'=>'recurringtype',	
-       'Assigned To'=>'assigned_user_id');
+       'Assigned To'=>'assigned_user_id',
+       'Start Date'=>'date_start',
+       'Start Time'=>'time_start',
+       'End Date'=>'due_date',
+       'End Time'=>'time_end');
 
        var $list_link_field= 'subject';
 	
@@ -135,12 +139,13 @@ class Activity extends CRMEntity {
 			$mail_data['subject'] = $this->column_fields['subject'];
 			$mail_data['status'] = (($this->column_fields['activitytype']=='Task')?($this->column_fields['taskstatus']):($this->column_fields['eventstatus']));
 			$mail_data['taskpriority'] = $this->column_fields['taskpriority'];
-			$mail_data['contact_name'] = $this->column_fields['contact_id'];
+			$relatedContacts = getActivityRelatedContacts($this->id);
+			$mail_data['contact_name'] = implode(',',$relatedContacts);
 			$mail_data['description'] = $this->column_fields['description'];
-			$value = getaddEventPopupTime($this->column_fields['time_start'],$this->column_fields['time_end'],'24');
-			$start_hour = $value['starthour'].':'.$value['startmin'].''.$value['startfmt'];
-			$mail_data['st_date_time'] = getDisplayDate($this->column_fields['date_start'])." ".$start_hour;
-			$mail_data['end_date_time']=getDisplayDate($this->column_fields['due_date']);
+			$mail_data['st_date_time'] = $this->column_fields['date_start'].' '.$this->column_fields['time_start'];
+			$mail_data['end_date_time'] = $this->column_fields['due_date'].' '.$this->column_fields['time_end'];
+			$mail_data['relatedto'] =  getParentName($this->column_fields['parent_id']);
+			$mail_data['location'] = $this->column_fields['location'];
 			getEventNotification($this->column_fields['activitytype'],$this->column_fields['subject'],$mail_data);
 
 		}
@@ -262,13 +267,13 @@ function insertIntoRecurringTable(& $recurObj)
 {
 	global $log,$adb;
 	$log->info("in insertIntoRecurringTable  ");
-	$st_date = $recurObj->startdate->get_formatted_date();
+	$st_date = $recurObj->startdate->get_DB_formatted_date();
 	$log->debug("st_date ".$st_date);
-	$end_date = $recurObj->enddate->get_formatted_date();
+	$end_date = $recurObj->enddate->get_DB_formatted_date();
 	$log->debug("end_date is set ".$end_date);
-	$type = $recurObj->recur_type;
+	$type = $recurObj->getRecurringType();
 	$log->debug("type is ".$type);
-        $flag="true";
+    $flag="true";
 
 	if($_REQUEST['mode'] == 'edit')
 	{
@@ -310,55 +315,25 @@ function insertIntoRecurringTable(& $recurObj)
 			$adb->pquery($sql, array($activity_id));
 		}
 	}
-	$date_array = $recurObj->recurringdates;
-	if(isset($recurObj->recur_freq) && $recurObj->recur_freq != null)
-		$recur_freq = $recurObj->recur_freq;
-	else
-		$recur_freq = 1;
-	if($recurObj->recur_type == 'Daily' || $recurObj->recur_type == 'Yearly')
-		$recurringinfo = $recurObj->recur_type;
-	elseif($recurObj->recur_type == 'Weekly')
-	{
-		$recurringinfo = $recurObj->recur_type;
-		if($recurObj->dayofweek_to_rpt != null)
-			$recurringinfo = $recurringinfo.'::'.implode('::',$recurObj->dayofweek_to_rpt);
-	}
-	elseif($recurObj->recur_type == 'Monthly')
-	{
-		$recurringinfo =  $recurObj->recur_type.'::'.$recurObj->repeat_monthby;
-		if($recurObj->repeat_monthby == 'date')
-			$recurringinfo = $recurringinfo.'::'.$recurObj->rptmonth_datevalue;
-		else
-			$recurringinfo = $recurringinfo.'::'.$recurObj->rptmonth_daytype.'::'.$recurObj->dayofweek_to_rpt[0];
-	}
-	else
-	{
-		$recurringinfo = '';
-	}
-	if($flag=="true")
-	{
-		for($k=0; $k< count($date_array); $k++)
-		{
-			$tdate=$date_array[$k];
-			if($tdate <= $end_date)
-			{
-				$max_recurid_qry = 'select max(recurringid) AS recurid from vtiger_recurringevents;';
-				$result = $adb->pquery($max_recurid_qry, array());
-				$noofrows = $adb->num_rows($result);
-				for($i=0; $i<$noofrows; $i++)
-				{
-					$recur_id = $adb->query_result($result,$i,"recurid");
-				}
-				$current_id =$recur_id+1;
-				$recurring_insert = "insert into vtiger_recurringevents values (?,?,?,?,?,?)";
-				$rec_params = array($current_id, $this->id, $tdate, $type, $recur_freq, $recurringinfo);
-				$adb->pquery($recurring_insert, $rec_params);
-				unset($_SESSION['next_reminder_time']);
-				if($_REQUEST['set_reminder'] == 'Yes')
-				{
-					$this->insertIntoReminderTable("vtiger_activity_reminder",$module,$current_id,'');
-				}
-			}
+
+	$recur_freq = $recurObj->getRecurringFrequency();
+	$recurringinfo = $recurObj->getDBRecurringInfoString();
+
+	if($flag=="true") {
+		$max_recurid_qry = 'select max(recurringid) AS recurid from vtiger_recurringevents;';
+		$result = $adb->pquery($max_recurid_qry, array());
+		$noofrows = $adb->num_rows($result);
+		$recur_id = 0;
+		if($noofrows > 0) {
+			$recur_id = $adb->query_result($result,0,"recurid");
+		}
+		$current_id =$recur_id+1;
+		$recurring_insert = "insert into vtiger_recurringevents values (?,?,?,?,?,?)";
+		$rec_params = array($current_id, $this->id, $st_date, $type, $recur_freq, $recurringinfo);
+		$adb->pquery($recurring_insert, $rec_params);
+		unset($_SESSION['next_reminder_time']);
+		if($_REQUEST['set_reminder'] == 'Yes') {
+			$this->insertIntoReminderTable("vtiger_activity_reminder",$module,$current_id,'');
 		}
 	}
 }
@@ -426,6 +401,17 @@ function insertIntoRecurringTable(& $recurObj)
 		}
 	}	
 }
+
+	/**
+	 *
+	 * @param String $tableName
+	 * @return String
+	 */
+	public function getJoinClause($tableName) {
+        if($tableName == "vtiger_activity_reminder")
+            return 'LEFT JOIN';
+		return parent::getJoinClause($tableName);
+	}
 	
 	
 	// Mike Crowe Mod --------------------------------------------------------Default ordering for us
@@ -531,7 +517,7 @@ function insertIntoRecurringTable(& $recurObj)
 
 		$returnset = '&return_module=Calendar&return_action=CallRelatedList&return_id='.$id;
 
-		$query = 'SELECT vtiger_users.id, vtiger_users.first_name,vtiger_users.last_name, vtiger_users.user_name, vtiger_users.email1, vtiger_users.email2, vtiger_users.status, vtiger_users.is_admin, vtiger_user2role.roleid, vtiger_users.yahoo_id, vtiger_users.phone_home, vtiger_users.phone_work, vtiger_users.phone_mobile, vtiger_users.phone_other, vtiger_users.phone_fax,vtiger_activity.date_start,vtiger_activity.due_date,vtiger_activity.time_start,vtiger_activity.duration_hours,vtiger_activity.duration_minutes from vtiger_users inner join vtiger_salesmanactivityrel on vtiger_salesmanactivityrel.smid=vtiger_users.id  inner join vtiger_activity on vtiger_activity.activityid=vtiger_salesmanactivityrel.activityid inner join vtiger_user2role on vtiger_user2role.userid=vtiger_users.id where vtiger_activity.activityid='.$id;
+		$query = 'SELECT vtiger_users.id, vtiger_users.first_name,vtiger_users.last_name, vtiger_users.user_name, vtiger_users.email1, vtiger_users.email2, vtiger_users.status, vtiger_users.is_admin, vtiger_user2role.roleid, vtiger_users.secondaryemail, vtiger_users.phone_home, vtiger_users.phone_work, vtiger_users.phone_mobile, vtiger_users.phone_other, vtiger_users.phone_fax,vtiger_activity.date_start,vtiger_activity.due_date,vtiger_activity.time_start,vtiger_activity.duration_hours,vtiger_activity.duration_minutes from vtiger_users inner join vtiger_salesmanactivityrel on vtiger_salesmanactivityrel.smid=vtiger_users.id  inner join vtiger_activity on vtiger_activity.activityid=vtiger_salesmanactivityrel.activityid inner join vtiger_user2role on vtiger_user2role.userid=vtiger_users.id where vtiger_activity.activityid='.$id;
 		
 		$return_data = GetRelatedList('Calendar','Users',$focus,$query,$button,$returnset);
 		
@@ -672,9 +658,14 @@ function insertIntoRecurringTable(& $recurObj)
              {
                 foreach($this->range_fields as $columnName)
                 {
-                    if (isset($row[$columnName])) {
-			    
-                        $task[$columnName] = $row[$columnName];
+					if (isset($row[$columnName])) {
+						if($columnName == 'time_start'){
+							$startDate = new DateTimeField($row['date_start'].' '.
+									$row[$columnName]);
+							$task[$columnName] = $startDate->getDBInsertTimeValue();
+						}else{
+							$task[$columnName] = $row[$columnName];
+						}
                     }   
                     else     
                     {   
@@ -948,7 +939,7 @@ function insertIntoRecurringTable(& $recurObj)
 		$query .=" left join vtiger_crmentity as vtiger_crmentityCalendar on vtiger_crmentityCalendar.crmid=vtiger_activity.activityid and vtiger_crmentityCalendar.deleted=0 
 				left join vtiger_cntactivityrel on vtiger_cntactivityrel.activityid= vtiger_activity.activityid 
 				left join vtiger_contactdetails as vtiger_contactdetailsCalendar on vtiger_contactdetailsCalendar.contactid= vtiger_cntactivityrel.contactid
-				left join vtiger_activitycf on vtiger_activitycf.activityid = vtiger_crmentity.crmid
+				left join vtiger_activitycf on vtiger_activitycf.activityid = vtiger_activity.activityid
 				left join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid
 				left join vtiger_activity_reminder on vtiger_activity_reminder.activity_id = vtiger_activity.activityid
 				left join vtiger_recurringevents on vtiger_recurringevents.activityid = vtiger_activity.activityid
@@ -985,7 +976,7 @@ function insertIntoRecurringTable(& $recurObj)
 			$sharedIds = getSharedCalendarId($user->id);
 			if(!empty($sharedIds)){
 				$query .= "or ($tableName$scope.id = vtiger_crmentity$scope.smownerid AND ".
-					"$tableName$scope.shared=1 and vtiger_activity$scope.visibility = 'Public') ";
+					"$tableName$scope.shared=1 and vtiger_activity.visibility = 'Public') ";
 			}
 		}
 		return $query;

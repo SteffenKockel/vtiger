@@ -275,7 +275,7 @@ function sendfile_email()
 							{include file='DetailViewHidden.tpl'}
 						
 							  <!-- Start of File Include by SAKTI on 10th Apr, 2008 -->
-							 {include_php file="./include/DetailViewBlockStatus.php"}
+							 {include_php file="include/DetailViewBlockStatus.php"}
 							 <!-- Start of File Include by SAKTI on 10th Apr, 2008 -->
 
 							{foreach key=header item=detail from=$BLOCKS}
@@ -353,7 +353,7 @@ function sendfile_email()
 							   {assign var=keycntimage value=$data.cntimage}
 							   {assign var=keyadmin value=$data.isadmin}
 							   {assign var=display_type value=$data.displaytype}
-							   
+							   {assign var=_readonly value=$data.readonly}
 							   
                            {if $label ne ''}
 	                        {if $keycntimage ne ''}
@@ -363,7 +363,7 @@ function sendfile_email()
 				{else}
 					<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label}</td>
 				{/if}
-				{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2'}
+				{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'}
 					{* Performance Optimization Control *}
 					{if !empty($DETAILVIEW_AJAX_EDIT) }
 						{include file="DetailViewUI.tpl"}
@@ -531,7 +531,7 @@ function sendfile_email()
 							</td></tr>
 						{/if}
 						<tr><td align="left" style="padding-left:10px;">			        
-						{if $DLD_TYPE eq 'I'}	
+						{if $DLD_TYPE eq 'I' &&  $FILE_STATUS eq '1'}
 							<input type="hidden" id="dldfilename" name="dldfilename" value="{$FILEID}-{$FILENAME}">
 							<br><a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();" class="webMnu"><img src="{'attachment.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" border="0"/></a>
 		                    <a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();">{$MOD.LBL_EMAIL_FILE}</a>                                      

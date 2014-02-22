@@ -187,7 +187,9 @@ $mod_strings = Array(
 'link' => 'You can use the following link to view the replies made:',
 'Thanks' => 'Thanks',
 'Support_team' => 'Vtiger Support Team',
-
+'The comments are' => 'The comments are',
+'Ticket Title' => 'Ticket Title',
+'Re' => 'Re :',
 // Added/Updated for vtiger CRM 5.0.4
 
 //this label for customerportal.

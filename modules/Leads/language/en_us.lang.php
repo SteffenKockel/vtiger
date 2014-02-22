@@ -238,7 +238,8 @@ $mod_strings = Array(
 //Module Sequence Numbering
 'Lead No'=>'Lead No',
 // END
-     
+
+'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Transfer related records to',
 );
 
 ?>

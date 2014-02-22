@@ -74,9 +74,9 @@ if($_REQUEST['mode'] !='')
 $smarty->assign("MODE", $mode);
 
 if($_REQUEST['ajax'] != 'true')
-	$smarty->display(vtlib_getModuleTemplate('Calendar','CustomFieldList.tpl'));	
+	$smarty->display(vtlib_getModuleTemplate('Vtiger','CustomFieldList.tpl'));
 else
-	$smarty->display(vtlib_getModuleTemplate('Calendar','CustomFieldEntries.tpl'));
+	$smarty->display(vtlib_getModuleTemplate('Vtiger','CustomFieldEntries.tpl'));
 
 	/**
 	* Function to get customfield entries
@@ -120,8 +120,7 @@ function getCFListEntries($module)
 					$cf_element['activitytype'] = getTranslatedString('Task',$module);
 				else
 					$cf_element['activitytype'] = getTranslatedString('Event',$module);
-			}
-			if ($module == 'Calendar') {
+				
 				$cf_element['tool']='&nbsp;<img style="cursor:pointer;" onClick="deleteCustomField('.$row["fieldid"].',\''.$module.'\', \''.$row["columnname"].'\', \''.$row["uitype"].'\')" src="'. vtiger_imageurl('delete.gif', $theme) .'" border="0"  alt="'.$app_strings['LBL_DELETE_BUTTON_LABEL'].'" title="'.$app_strings['LBL_DELETE_BUTTON_LABEL'].'"/></a>';
 			}
 			$cflist[] = $cf_element;

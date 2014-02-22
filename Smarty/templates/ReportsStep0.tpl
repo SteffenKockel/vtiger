@@ -54,6 +54,7 @@
 									<tr><td class="settingsTabList" style="padding-left:10px;">6. {$MOD.LBL_CALCULATIONS}</td></tr>
 									<tr><td class="settingsTabList" style="padding-left:10px;">7. {$MOD.LBL_FILTERS} </td></tr>
 									<tr><td class="settingsTabList" style="padding-left:10px;">8. {$MOD.LBL_SHARING} </td></tr>
+									<tr><td class="settingsTabList" style="padding-left:10px;">9. {$MOD.LBL_SCHEDULE_EMAIL} </td></tr>
 								</table>
 							</td>
 							<td width="75%" valign="top"  bgcolor=white >

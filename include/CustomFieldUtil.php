@@ -247,8 +247,12 @@ function getCalendarCustomFields($tabid,$mode='edit',$col_fields='') {
  				" INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid" .
  				" INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid" .
  				" WHERE vtiger_field.block=? AND vtiger_field.tabid=? AND vtiger_profile2field.visible=0" .
- 				" AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .")" .
- 				" ORDER BY vtiger_field.fieldid";
+ 				" AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .")";
+ 		
+ 		if ($mode == 'edit') {
+ 			$custquery .= "  AND vtiger_profile2field.readonly = 0";
+ 		}
+ 		$custquery .= " ORDER BY vtiger_field.fieldid";
  		array_push($custparams, $profileList);		
 	}
 	$custresult = $adb->pquery($custquery, $custparams);

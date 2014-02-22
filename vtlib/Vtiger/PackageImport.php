@@ -506,7 +506,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$fieldInstance->generatedtype= $fieldnode->generatedtype;
 		$fieldInstance->readonly     = $fieldnode->readonly;
 		$fieldInstance->presence     = $fieldnode->presence;
-		$fieldInstance->selected     = $fieldnode->selected;
+		$fieldInstance->defaultvalue = $fieldnode->defaultvalue;
 		$fieldInstance->maximumlength= $fieldnode->maximumlength;
 		$fieldInstance->sequence     = $fieldnode->sequence;
 		$fieldInstance->quickcreate  = $fieldnode->quickcreate;
@@ -698,12 +698,20 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		if(empty($modulenode->customlinks) || empty($modulenode->customlinks->customlink)) return;
 
 		foreach($modulenode->customlinks->customlink as $customlinknode) {
+			$handlerInfo = null;
+			if(!empty($customlinknode->handler_path)) {
+				$handlerInfo = array();
+				$handlerInfo = array("$customlinknode->handler_path",
+										"$customlinknode->handler_class",
+										"$customlinknode->handler");
+			}
 			$moduleInstance->addLink(
 				"$customlinknode->linktype",
 				"$customlinknode->linklabel",
 				"$customlinknode->linkurl",
 				"$customlinknode->linkicon",
-				"$customlinknode->sequence"	
+				"$customlinknode->sequence",
+				$handlerInfo
 			);
 		}
 	}

@@ -50,10 +50,12 @@ if(isset($_REQUEST['record']) && $_REQUEST['record'] != ''){
 
 if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 	$smarty->assign("DUPLICATE_FROM", $focus->id);
-	$QUOTE_associated_prod = getAssociatedProducts("Quotes",$focus);
+	$QUOTE_associated_prod = getAssociatedProducts($currentModule,$focus);
+    $inventory_cur_info = getInventoryCurrencyInfo($currentModule, $focus->id);
+	$currencyid = $inventory_cur_info['currency_id'];
 	$log->debug("Mode is Duplicate. Quoteid to be duplicated is ".$focus->id);
 	$focus->id = "";
-    	$focus->mode = ''; 	
+    $focus->mode = ''; 	
 }
 if(empty($_REQUEST['record']) && $focus->mode != 'edit'){
 	setObjectValuesFromRequest($focus);
@@ -90,8 +92,8 @@ if(isset($_REQUEST['product_id']) && $_REQUEST['product_id'] !=''){
 
 if(!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])){
     if ($_REQUEST['return_module'] == 'Services') {
-	    $focus->column_fields['product_id'] = $_REQUEST['parent_id'];
-	    $log->debug("Service Id from the request is ".$_REQUEST['parent_id']);
+	    $focus->column_fields['product_id'] = vtlib_purify($_REQUEST['parent_id']);
+	    $log->debug("Service Id from the request is ".vtlib_purify($_REQUEST['parent_id']));
 	    $associated_prod = getAssociatedProducts("Services",$focus,$focus->column_fields['product_id']);
 		for ($i=1; $i<=count($associated_prod);$i++) {
 			$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
@@ -261,12 +263,19 @@ if($focus->mode != 'edit' && $mod_seq_field != null) {
 // END
 
 $smarty->assign("CURRENCIES_LIST", getAllCurrencies());
-if($focus->mode == 'edit' || $_REQUEST['isDuplicate'] == 'true') {
+if($focus->mode == 'edit') {
 	$inventory_cur_info = getInventoryCurrencyInfo('Quotes', $focus->id);
 	$smarty->assign("INV_CURRENCY_ID", $inventory_cur_info['currency_id']);
 } else {
 	$smarty->assign("INV_CURRENCY_ID", $currencyid);
 }
+
+$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
+$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDependencyDatasource));
+
+// Gather the help information associated with fields
+$smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
+// END
 
 if($focus->mode == 'edit')
 	$smarty->display("Inventory/InventoryEditView.tpl");

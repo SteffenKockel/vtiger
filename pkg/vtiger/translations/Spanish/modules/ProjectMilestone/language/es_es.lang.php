@@ -15,14 +15,14 @@ $mod_strings = Array(
     'LBL_MILESTONES'=>'Hitos',
     'LBL_MILESTONE'=>'Hito',
     'Project Milestone ID'=>'ID Hito', 
-	'ProjectMilestone' => 'Nombre Hito',
+	'ProjectMilestone' => 'Hitos',
     'projectmilestones' => 'Hitos',
     'SINGLE_ProjectMilestone' => 'Hito',
     'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
     'LBL_PROJECT_MILESTONE_INFORMATION' => 'Información Hito',
     'LBL_DESCRIPTION_INFORMATION' => 'Descripción',
+    'description' => 'Descripción',
     'Assigned To' => 'Asignado a',
-    'Milestone Date' => 'Fecha hito',
     'Milestone' => 'Hito',
     'Type'=>'Tipo',
     //'linktoproject'=>'Link To',
@@ -32,13 +32,14 @@ $mod_strings = Array(
   	'administrative' => 'administrativo',
     'operative' => 'operativo',
     'other' => 'otro',
+    '--none--' => '--ninguno--',
     'Created Time' => 'Fecha Creación',
     'Modified Time' => 'Fecha Modificación',
-    'description' => 'Descripción',
     'Description' => 'Descripción',
     //added for related lists 
     'Project Milestone Name' => 'Nombre Hito',
 	'Project Milestone No' => 'Nº Hito',
+    'Milestone Date'=>'Fecha Hito',
 
 );
 

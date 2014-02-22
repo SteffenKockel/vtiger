@@ -131,7 +131,7 @@ $mod_strings = Array(
 'Subject' => 'Asunto',
 
 //Added after 4.2 alpha
-'Severity' => 'Importancia',
+'Severity' => 'Urgencia',
 'Product Name' => 'Producto',
 'Related To' => 'Relacionado con',
 'LBL_MORE' => 'Más',
@@ -185,7 +185,9 @@ $mod_strings = Array(
 'link' => 'Utilice el siguiente enlace para ver las respuestas dadas:',
 'Thanks' => 'Gracias',
 'Support_team' => 'Equipo de Soporte Técnico',
-
+'The comments are' => 'Los comentarios son',
+'Ticket Title' => 'Título Incidencia',
+'Re' => 'Re :',
 // Added/Updated for vtiger CRM 5.0.4
 
 //this label for customerportal.

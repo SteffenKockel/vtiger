@@ -10,14 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): www.crm-now.de translation to German
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /cvsroot/vtigercrm/vtiger_crm/modules/Rss/language/en_us.lang.php,v 1.1 2005/05/20 07:12:23 venkatraj Exp $
- * Description:  Defines the German (Germany) language pack for the Account module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): crm-now, Berlin, www.crm-now.com
  ********************************************************************************/
 
 $mod_strings = Array(

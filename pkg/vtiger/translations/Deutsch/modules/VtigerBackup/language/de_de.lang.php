@@ -6,16 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
-/**
- * @author MAK
- */
-/**
- * German translation by crm-now [ http://www.crm-now.com ]
- * IMPORTANT: save file with UTF-8 without BOM!
- **/
 
 $mod_strings = array(
 	'LBL_CREATE_ZIP_FAILURE' => 'Fehler beim Erzeugen der ZIP Datei',

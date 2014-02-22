@@ -198,6 +198,7 @@ $mod_strings = Array(
 //Added after 5.0.4 GA
 'PurchaseOrder No'=>'PurchaseOrder No',
 
+'SINGLE_PurchaseOrder'=>'Purchase Order',
 );
 
 ?>

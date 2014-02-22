@@ -85,7 +85,7 @@
 	</td>
    </tr>
 	<tr>
-	{if 'ccmail'|@emails_checkFieldVisiblityPermission eq '0'}   
+	{if 'ccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}   
    	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_CC}</td>
 	<td class="cellText" style="padding: 5px;">
 		<input name="ccmail" id ="cc_name" class="txtBox" type="text" value="{$CC_MAIL}" style="width:99%">&nbsp;
@@ -96,7 +96,7 @@
 	{/if}
    <td valign="top" class="cellLabel" rowspan="4"><div id="attach_cont" class="addEventInnerBox" style="overflow:auto;height:100px;width:100%;position:relative;left:0px;top:0px;"></div>
    	</tr>
-   {if 'bccmail'|@emails_checkFieldVisiblityPermission eq '0'}   
+   {if 'bccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}   
    	<tr>
 	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_BCC}</td>
 	<td class="cellText" style="padding: 5px;">

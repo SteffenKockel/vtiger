@@ -21,7 +21,7 @@ $url = getBasic_Advance_SearchURL();
 
 //split the string and store in an array
 $storearray = explode(";",$idlist);
-array_filter($storearray);
+$storearray = array_filter($storearray);
 $ids_list = array();
 $errormsg = '';
 foreach($storearray as $id)
@@ -66,7 +66,7 @@ if($returnmodule == 'Emails')
 elseif($return_action == 'ActivityAjax')
 {
 	$subtab = vtlib_purify($_REQUEST['subtab']);
-	header("Location: index.php?module=".$returnmodule."&action=".$return_action."".$rstart."&view=".vtlib_purify($_REQUEST['view'])."&hour=".vtlib_purify($_REQUEST['hour'])."&day=".vtlib_purify($_REQUEST['day'])."&month=".vtlib_purify($_REQUEST['month'])."&year=".vtlib_purify($_REQUEST['year'])."&type=".vtlib_purify($_REQUEST['type'])."&viewOption=".vtlib_purify($_REQUEST['viewOption'])."&subtab=".$subtab.$url);
+	header("Location: index.php?module=".$returnmodule."&action=".$return_action."".$rstart."&view=".vtlib_purify($_REQUEST['view'])."&hour=".vtlib_purify($_REQUEST['hour'])."&day=".vtlib_purify($_REQUEST['day'])."&month=".vtlib_purify($_REQUEST['month'])."&year=".vtlib_purify($_REQUEST['year'])."&type=".vtlib_purify($_REQUEST['type'])."&viewOption=".vtlib_purify($_REQUEST['viewOption'])."&subtab=".$subtab."&onlyforuser=".vtlib_purify($_REQUEST['onlyforuser']).$url);
 }
 			
 elseif($returnmodule!='Faq')

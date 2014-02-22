@@ -1,5 +1,4 @@
 <?php
-/** German translation by crm-now: www.crm-now.de **/
 $mod_strings = Array (
 'CustomerPortal' => 'Kundenportal',
 'LBL_BASIC_SETTINGS'=>'Grundeinstellungen',

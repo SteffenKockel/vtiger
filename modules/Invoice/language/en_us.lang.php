@@ -197,6 +197,8 @@ $mod_strings = Array(
 // Added affter 5.0.4 GA
 //Added for Documents module
 'Documents'=>'Documents',
+
+'SINGLE_Invoice'=>'Invoice',
 );
 
 ?>

@@ -307,7 +307,7 @@ $listview_header = array("<th class='tableHeadBg' width='10%'>".$mod_strings['LB
 $listview_entries = array();
 
 $displayed_msgs=0;
-$info = imap_status($MailBox->mbox, "{".$MailBox->imapServerAddress."}".$key, SA_UNSEEN);
+$info = imap_status($MailBox->mbox, "{".$MailBox->imapServerAddress."}", SA_UNSEEN);
 $unread_msgs = $info->unseen;
 //$new_msgs=0;
 if(($numEmails) <= 0)

@@ -192,29 +192,26 @@ function ToolTipExists($fieldname,$tabid){
 function vttooltip_processResult($result, $descObj){
 	global $current_user;
 	foreach($descObj['fields'] as $field){
+		$name = $field['name'];
+		$value = $result[0][$name];
 		if($field['type']['name'] == 'reference'){
 			$name = $field['name'];
-			$value = $result[0][$name];
 			
-		if(!empty($value)){
-			$result[0][$name] = vtws_getName($value,$current_user);
-		}else{
-			$result[0][$name] = '';
-		}
+			if(!empty($value)){
+				$result[0][$name] = vtws_getName($value,$current_user);
+			}else{
+				$result[0][$name] = '';
+			}
 		}elseif($field['type']['name'] == 'owner'){
-			$name = $field['name'];
-			$value = $result[0][$name];
 			list($info, $id) = explode("x",$value);
 			$result[0][$name] = getOwnerName($id);
 		}elseif($field['type']['name'] == 'boolean'){
-			$name = $field['name'];
 			if($result[0][$name] == 1){
 				$result[0][$name] = "on";
 			}else{
 				$result[0][$name] = "off";
 			}
 		}elseif($field['type']['name'] == 'picklist'){
-			$name = $field['name'];
 			$temp = '';
 			foreach($field['type']['picklistValues'] as $value){
 				if(strcmp($value['value'],$result[0][$name])== 0){
@@ -222,6 +219,17 @@ function vttooltip_processResult($result, $descObj){
 				}
 			}
 			$result[0][$name] = $temp;
+		} elseif($field['type']['name'] == 'date') {
+			$result[0][$name] = DateTimeField::convertToUserFormat($value);
+		} elseif($field['type']['name'] == 'datetime') {
+			$date = new DateTimeField($value);
+			$result[0][$name] = $date->getDisplayDateTimeValue();
+		} elseif($field['type']['name'] == 'time') {
+			$date = new DateTimeField($value);
+			$result[0][$name] = $date->getDisplayTime();
+		} elseif($field['type']['name'] == 'currency') {
+			$currencyField = new CurrencyField($value);
+			$result[0][$name] = $currencyField->getDisplayValueWithSymbol();
 		}
 	}
 	return $result;

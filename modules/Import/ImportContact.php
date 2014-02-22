@@ -262,29 +262,6 @@ class ImportContact extends Contacts {
 		$adb->println("Exit map_reports_to. Fetched Contact (Reports To) for '".$contact_name."' and the contactid = $contact_id");
         }
 
-
-	// This is the list of vtiger_fields that can be imported
-	// some of these don't map directly to columns in the db
-
-	//we need to add two or more arrays as the columns are distributed across the vtiger_tables now
-	/*var $importable_fields =  array(
-		"contactid"=>1,
-		"firstname"=>1,
-		"lastname"=>1,
-                "salutation"=>1,
-                "donotcall"=>1,
-                "emailoptout"=>1,
-                "accountid"=>1,
-		"title"=>1,
-		"department"=>1,
-		"phone"=>1,
-		"mobile"=>1,
-		"fax"=>1,
-		"email"=>1,
-		"otheremail"=>1,
-		"yahooid"=>1,
-		);*/
-
 	var $importable_fields = Array();
 		
 	/** Constructor which will set the importable_fields as $this->importable_fields[$key]=1 in this object where key is the fieldname in the field table

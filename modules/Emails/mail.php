@@ -50,21 +50,27 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	$params = array('email');
 	$result = $adb->pquery($query,$params);
 	$from_email_field = $adb->query_result($result,0,'from_email_field');
-	$replyToEmail = $from_email;
+	if(isUserInitiated()) {
+		$replyToEmail = $from_email;
+	} else {
+		$replyToEmail = $from_email_field;
+	}
 	if(isset($from_email_field) && $from_email_field!=''){
 		//setting from _email to the defined email address in the outgoing server configuration
 		$from_email = $from_email_field;
 	}
 
 	if($module != "Calendar")
-                $contents = addSignature($contents,$from_name);	
+		$contents = addSignature($contents,$from_name);
 
 	$mail = new PHPMailer();
 
 	setMailerProperties($mail,$subject,$contents,$from_email,$from_name,trim($to_email,","),$attachment,$emailid,$module,$logo);
 	setCCAddress($mail,'cc',$cc);
 	setCCAddress($mail,'bcc',$bcc);
-	$mail->AddReplyTo($replyToEmail);
+	if(!empty($replyToEmail)) {
+		$mail->AddReplyTo($replyToEmail);
+	}
 	
 	// vtmailscanner customization: If Support Reply to is defined use it.
 	global $HELPDESK_SUPPORT_EMAIL_REPLY_ID;
@@ -103,9 +109,8 @@ function getUserEmailId($name,$val)
 	$adb->println("Inside the function getUserEmailId. --- ".$name." = '".$val."'");
 	if($val != '')
 	{
-		//$sql = "select email1, email2, yahoo_id from vtiger_users where ".$name." = '".$val."'";
 		//done to resolve the PHP5 specific behaviour
-		$sql = "SELECT email1, email2, yahoo_id from vtiger_users WHERE status='Active' AND ". $adb->sql_escape_string($name)." = ?";
+		$sql = "SELECT email1, email2, secondaryemail  from vtiger_users WHERE status='Active' AND ". $adb->sql_escape_string($name)." = ?";
 		$res = $adb->pquery($sql, array($val));
 		$email = $adb->query_result($res,0,'email1');
 		if($email == '')
@@ -113,7 +118,7 @@ function getUserEmailId($name,$val)
 			$email = $adb->query_result($res,0,'email2');
 			if($email == '')
 			{
-				$email = $adb->query_result($res,0,'yahoo_id');
+				$email = $adb->query_result($res,0,'secondaryemail ');
 			}
 		}
 		$adb->println("Email id is selected  => '".$email."'");
@@ -199,7 +204,8 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 		}
 	}
 
-	$mail->AddReplyTo($from_email);
+	//commented so that it does not add from_email in reply to
+	//$mail->AddReplyTo($from_email);
 	$mail->WordWrap = 50;
 
 	//If we want to add the currently selected file only then we will use the following function
@@ -384,7 +390,7 @@ function getParentMailId($parentmodule,$parentid)
                 $tablename = 'vtiger_contactdetails';
                 $idname = 'contactid';
 		$first_email = 'email';
-		$second_email = 'yahooid';
+		$second_email = 'secondaryemail';
         }
         if($parentmodule == 'Accounts')
         {
@@ -532,4 +538,11 @@ function parseEmailErrorString($mail_error_str)
 	$adb->println("Return Error string => ".$errorstr);
 	return $errorstr;
 }
+
+function isUserInitiated() {
+	return (($_REQUEST['module'] == 'Emails' || $_REQUEST['module'] == 'Webmails') && 
+			($_REQUEST['action'] == 'mailsend' || $_REQUEST['action'] == 'webmailsend' || $_REQUEST['action'] == 'Save'));
+}
+
+
 ?>

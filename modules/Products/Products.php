@@ -126,7 +126,7 @@ class Products extends CRMEntity {
 	function save_module($module)
 	{
 		//Inserting into product_taxrel table
-		if($_REQUEST['ajxaction'] != 'DETAILVIEW')
+		if($_REQUEST['ajxaction'] != 'DETAILVIEW' && $_REQUEST['action'] != 'MassEditSave' && $_REQUEST['action'] != 'ProcessDuplicates')
 		{
 			$this->insertTaxInformation('vtiger_producttaxrel', 'Products');
 			$this->insertPriceInformation('vtiger_productcurrencyrel', 'Products');
@@ -224,21 +224,22 @@ class Products extends CRMEntity {
 			$cur_checkname = 'cur_' . $curid . '_check';
 			$cur_valuename = 'curname' . $curid;
 			$base_currency_check = 'base_currency' . $curid;
+			$requestPrice = CurrencyField::convertToDBFormat($_REQUEST['unit_price'], null, true);
+			$actualPrice = CurrencyField::convertToDBFormat($_REQUEST[$cur_valuename], null, true);
 			if($_REQUEST[$cur_checkname] == 'on' || $_REQUEST[$cur_checkname] == 1)
 			{
 				$conversion_rate = $currency_details[$i]['conversionrate'];
 				$actual_conversion_rate = $product_base_conv_rate * $conversion_rate;
-				$converted_price = $actual_conversion_rate * $_REQUEST['unit_price'];
-				$actual_price = $_REQUEST[$cur_valuename];
+				$converted_price = $actual_conversion_rate * $requestPrice;
 				
 				$log->debug("Going to save the Product - $curname currency relationship");
 
 				$query = "insert into vtiger_productcurrencyrel values(?,?,?,?)";
-				$adb->pquery($query, array($this->id,$curid,$converted_price,$actual_price));
+				$adb->pquery($query, array($this->id,$curid,$converted_price,$actualPrice));
 				
 				// Update the Product information with Base Currency choosen by the User.
 				if ($_REQUEST['base_currency'] == $cur_valuename) {
-					$adb->pquery("update vtiger_products set currency_id=?, unit_price=? where productid=?", array($curid, $actual_price, $this->id)); 
+					$adb->pquery("update vtiger_products set currency_id=?, unit_price=? where productid=?", array($curid, $actualPrice, $this->id));
 				}
 			}
 		}
@@ -498,8 +499,15 @@ class Products extends CRMEntity {
 			}
 		} 
 
-		$query = "SELECT vtiger_potential.potentialid, vtiger_crmentity.crmid, vtiger_potential.potentialname, vtiger_account.accountname, vtiger_potential.related_to, vtiger_potential.sales_stage, vtiger_potential.amount, vtiger_potential.closingdate, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name, vtiger_crmentity.smownerid, vtiger_products.productname, vtiger_products.qty_per_unit, vtiger_products.unit_price, vtiger_products.expiry_date
-			FROM vtiger_potential
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
+		$query = "SELECT vtiger_potential.potentialid, vtiger_crmentity.crmid, 
+			vtiger_potential.potentialname, vtiger_account.accountname, vtiger_potential.related_to,
+			vtiger_potential.sales_stage, vtiger_potential.amount, vtiger_potential.closingdate, 
+			case when (vtiger_users.user_name not like '') then $userNameSql else 
+			vtiger_groups.groupname end as user_name, vtiger_crmentity.smownerid, 
+			vtiger_products.productname, vtiger_products.qty_per_unit, vtiger_products.unit_price, 
+			vtiger_products.expiry_date FROM vtiger_potential
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_potential.potentialid
 			INNER JOIN vtiger_seproductsrel ON vtiger_seproductsrel.crmid = vtiger_potential.potentialid
 			INNER JOIN vtiger_products ON vtiger_seproductsrel.productid = vtiger_products.productid
@@ -541,7 +549,7 @@ class Products extends CRMEntity {
 		
 		$button = '';
 				
-		if($actions) {
+		if($actions && getFieldVisibilityPermission($related_module, $current_user->id, 'product_id','readwrite') == '0') {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
 			if(in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
@@ -553,7 +561,9 @@ class Products extends CRMEntity {
 			}
 		} 
 
-		$query = "SELECT  case when (vtiger_users.user_name not like \"\") then vtiger_users.user_name else vtiger_groups.groupname end as user_name, vtiger_users.id,
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
+		$query = "SELECT  case when (vtiger_users.user_name not like \"\") then $userNameSql else vtiger_groups.groupname end as user_name, vtiger_users.id,
 			vtiger_products.productid, vtiger_products.productname,
 			vtiger_troubletickets.ticketid,
 			vtiger_troubletickets.parent_id, vtiger_troubletickets.title,
@@ -606,6 +616,8 @@ class Products extends CRMEntity {
 			$returnset = '&return_module=Products&return_action=CallRelatedList&return_id='.$id;
 
 
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 		$query = "SELECT vtiger_contactdetails.lastname,
 			vtiger_contactdetails.firstname,
 			vtiger_contactdetails.contactid,
@@ -613,7 +625,7 @@ class Products extends CRMEntity {
 			vtiger_seactivityrel.*,
 			vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
 			vtiger_crmentity.modifiedtime,
-			vtiger_users.user_name,
+			$userNameSql,
 			vtiger_recurringevents.recurringtype
 			FROM vtiger_activity
 			INNER JOIN vtiger_seactivityrel
@@ -672,12 +684,14 @@ class Products extends CRMEntity {
 			}
 		} 
 
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 		$query = "SELECT vtiger_crmentity.*,
 			vtiger_quotes.*,
 			vtiger_potential.potentialname,
 			vtiger_account.accountname,
 			vtiger_inventoryproductrel.productid,
-			case when (vtiger_users.user_name not like '') then vtiger_users.user_name 
+			case when (vtiger_users.user_name not like '') then $userNameSql 
 				else vtiger_groups.groupname end as user_name
 			FROM vtiger_quotes
 			INNER JOIN vtiger_crmentity
@@ -740,11 +754,13 @@ class Products extends CRMEntity {
 			}
 		} 
 
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 		$query = "SELECT vtiger_crmentity.*,
 			vtiger_purchaseorder.*,
 			vtiger_products.productname,
 			vtiger_inventoryproductrel.productid,
-			case when (vtiger_users.user_name not like '') then vtiger_users.user_name 
+			case when (vtiger_users.user_name not like '') then $userNameSql 
 				else vtiger_groups.groupname end as user_name
 			FROM vtiger_purchaseorder
 			INNER JOIN vtiger_crmentity
@@ -805,11 +821,13 @@ class Products extends CRMEntity {
 			}
 		} 
 
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 		$query = "SELECT vtiger_crmentity.*,
 			vtiger_salesorder.*,
 			vtiger_products.productname AS productname,
 			vtiger_account.accountname,
-			case when (vtiger_users.user_name not like '') then vtiger_users.user_name 
+			case when (vtiger_users.user_name not like '') then $userNameSql 
 				else vtiger_groups.groupname end as user_name
 			FROM vtiger_salesorder
 			INNER JOIN vtiger_crmentity
@@ -872,11 +890,13 @@ class Products extends CRMEntity {
 			}
 		} 
 
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 		$query = "SELECT vtiger_crmentity.*,
 			vtiger_invoice.*,
 			vtiger_inventoryproductrel.quantity,
 			vtiger_account.accountname,
-			case when (vtiger_users.user_name not like '') then vtiger_users.user_name 
+			case when (vtiger_users.user_name not like '') then $userNameSql 
 				else vtiger_groups.groupname end as user_name
 			FROM vtiger_invoice
 			INNER JOIN vtiger_crmentity
@@ -911,7 +931,7 @@ class Products extends CRMEntity {
 		$log->debug("Entering get_product_pricebooks(".$id.") method ...");
 		
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		checkFileAccess("modules/$related_module/$related_module.php");
+		checkFileAccessForInclusion("modules/$related_module/$related_module.php");
 		require_once("modules/$related_module/$related_module.php");
 		$focus = new $related_module();
 		$singular_modname = vtlib_toSingular($related_module);

@@ -221,7 +221,7 @@ if((isset($_REQUEST['type']) && $_REQUEST['type'] !='') || (isset($_REQUEST['n_t
 		}
 		elseif($type == 'view')
 		{
-			checkFileAccess('modules/Calendar/'.$_REQUEST['file'].'.php');
+			checkFileAccessForInclusion('modules/Calendar/'.$_REQUEST['file'].'.php');
 			require_once('modules/Calendar/'.$_REQUEST['file'].'.php');
 		}
 		else

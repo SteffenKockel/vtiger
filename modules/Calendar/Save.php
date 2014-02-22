@@ -101,15 +101,29 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 }
 else
 {
+	$timeFields = array('time_start', 'time_end');
+	$tabId = getTabid($tab_type);
 	foreach($focus->column_fields as $fieldname => $val)
 	{
+		$fieldInfo = getFieldRelatedInfo($tabId, $fieldname);
+		$uitype = $fieldInfo['uitype'];
+		$typeofdata = $fieldInfo['typeofdata'];
 		if(isset($_REQUEST[$fieldname]))
 		{
 			if(is_array($_REQUEST[$fieldname]))
 				$value = $_REQUEST[$fieldname];
 			else
 				$value = trim($_REQUEST[$fieldname]);
-			$focus->column_fields[$fieldname] = $value;
+
+			if((($typeofdata == 'T~M') || ($typeofdata == 'T~O')) && ($uitype == 2 || $uitype == 70 )) {
+				if(!in_array($fieldname, $timeFields)) {
+					$date = DateTimeField::convertToDBTimeZone($value);
+					$value = $date->format('H:i');
+				}
+				$focus->column_fields[$fieldname] = $value;
+			}else{
+				$focus->column_fields[$fieldname] = $value;
+			}
 			if(($fieldname == 'notime') && ($focus->column_fields[$fieldname]))
 			{	
 				$focus->column_fields['time_start'] = '';
@@ -130,16 +144,36 @@ else
 	} elseif($_REQUEST['assigntype'] == 'T') {
 		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
 	}
+	
+	$dateField = 'date_start';
+	$fieldname = 'time_start';
+	$date = new DateTimeField($_REQUEST[$dateField]. ' ' . $_REQUEST[$fieldname]);
+	$focus->column_fields[$dateField] = $date->getDBInsertDateValue();
+	$focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
+	if(empty($_REQUEST['time_end'])) {
+		$_REQUEST['time_end'] = date('H:i', strtotime('+10 minutes',
+												strtotime($focus->column_fields['date_start'].' '.$_REQUEST['time_start'])));
+	}
+	$dateField = 'due_date';
+	$fieldname = 'time_end';
+	$date = new DateTimeField($_REQUEST[$dateField]. ' ' . $_REQUEST[$fieldname]);
+	$focus->column_fields[$dateField] = $date->getDBInsertDateValue();
+	$focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
+	
 	$focus->save($tab_type);
 	/* For Followup START -- by Minnie */
 	if(isset($_REQUEST['followup']) && $_REQUEST['followup'] == 'on' && $activity_mode == 'Events' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start'] != '')
 	{
 		$heldevent_id = $focus->id;
 		$focus->column_fields['subject'] = '[Followup] '.$focus->column_fields['subject'];
-		$focus->column_fields['date_start'] = $_REQUEST['followup_date'];
-		$focus->column_fields['due_date'] = $_REQUEST['followup_due_date'];
-		$focus->column_fields['time_start'] = $_REQUEST['followup_time_start'];
-		$focus->column_fields['time_end'] = $_REQUEST['followup_time_end'];
+		$startDate = new DateTimeField($_REQUEST['followup_date'].' '.
+				$_REQUEST['followup_time_start']);
+		$endDate = new DateTimeField($_REQUEST['followup_due_date'].' '.
+				$_REQUEST['followup_time_end']);
+		$focus->column_fields['date_start'] = $startDate->getDBInsertDateValue();
+		$focus->column_fields['due_date'] = $endDate->getDBInsertDateValue();
+		$focus->column_fields['time_start'] = $startDate->getDBInsertTimeValue();
+		$focus->column_fields['time_end'] = $endDate->getDBInsertTimeValue();
 		$focus->column_fields['eventstatus'] = 'Planned';
 		$focus->mode = 'create';
 		$focus->save($tab_type);
@@ -198,10 +232,21 @@ function getRequestData($return_id)
 	$start_hour = $value['starthour'].':'.$value['startmin'].''.$value['startfmt'];
 	if($_REQUEST['activity_mode']!='Task')
 		$end_hour = $value['endhour'] .':'.$value['endmin'].''.$value['endfmt'];
-	$mail_data['st_date_time'] = getDisplayDate($_REQUEST['date_start'])." ".$start_hour;
-	$mail_data['end_date_time']=getDisplayDate($_REQUEST['due_date'])." ".$end_hour;
+	$startDate = new DateTimeField($_REQUEST['date_start']." ".$start_hour);
+	$endDate = new DateTimeField($_REQUEST['due_date']." ".$end_hour);
+	$mail_data['st_date_time'] = $startDate->getDBInsertDateTimeValue();
+	$mail_data['end_date_time'] = $endDate->getDBInsertDateTimeValue();
 	$mail_data['location']=vtlib_purify($_REQUEST['location']);
 	return $mail_data;
+}
+
+function getFieldRelatedInfo($tabId, $fieldName){
+	$fieldInfo = VTCacheUtils::lookupFieldInfo($tabId, $fieldName);
+	if($fieldInfo === false) {
+		getColumnFields(getTabModuleName($tabid));
+		$fieldInfo = VTCacheUtils::lookupFieldInfo($tabId, $fieldName);
+	}
+	return $fieldInfo;
 }
 
 if(isset($_REQUEST['contactidlist']) && $_REQUEST['contactidlist'] != '')
@@ -230,7 +275,7 @@ if(isset($_REQUEST['contactidlist']) && $_REQUEST['contactidlist'] != '')
 if(isset($_REQUEST['inviteesid']) && $_REQUEST['inviteesid']!='')
 {
 	$mail_contents = getRequestData($return_id);
-        sendInvitation($_REQUEST['inviteesid'],$_REQUEST['activity_mode'],$_REQUEST['subject'],$mail_contents);
+	sendInvitation($_REQUEST['inviteesid'],$_REQUEST['activity_mode'],$_REQUEST['subject'],$mail_contents);
 }
 
 //to delete contact account relation while editing event
@@ -275,7 +320,7 @@ if(isset($_REQUEST['subtab']) && $_REQUEST['subtab']!='')
 
 if($_REQUEST['recurringcheck']) { 
 	include_once dirname(__FILE__) . '/RepeatEvents.php';
-	Calendar_RepeatEvents::repeat($focus);
+	Calendar_RepeatEvents::repeatFromRequest($focus);
 }
 
 //code added for returning back to the current view after edit from list view

@@ -7,10 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-/**
- * German tranlsation by crm-now [ http://www.crm-now.com ]
- * IMPORTANT: save file with UTF-8 without BOM!
- **/
 $mod_strings = Array(
 
   	'LBL_MODULE_NAME'				=> 'Projekte',
@@ -68,7 +64,6 @@ $mod_strings = Array(
 	'LBL_PROGRESS_CHART' => 'Progress Chart',
 	'Project No' => 'Projektnr.',
 	
-	//added by crm-now for missing entries in en_us.lang
     'ProjectMilestone' => 'Projektmeilenstein',
     'Project MIlestones' => 'Projektmeilensteine',
     'Project Milestones' => 'Projektmeilensteine',

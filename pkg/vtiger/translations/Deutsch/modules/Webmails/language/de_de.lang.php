@@ -10,14 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): www.crm-now.de translation to German
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/E-Mails/language/en_us.lang.php,v 1.17 2005/03/28 06:31:38 rank Exp $
- * Description:  Defines the German language pack for the Account module.
- * Contribution: crm-now, Berlin, www.crm-now.com
- ********************************************************************************/
-
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'E-Mails',
 'LBL_MODULE_TITLE'=>'E-Mails: Home',

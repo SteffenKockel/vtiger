@@ -11,7 +11,7 @@
 
 document.write("<script type='text/javascript' src='include/js/Mail.js'></"+"script>");
 document.write("<script type='text/javascript' src='include/js/Merge.js'></"+"script>");
-function verify_data(form) {
+function verifyConvertLeadData(form) {
 	if(! form.createpotential.checked == true){
         if (trim(form.potential_name.value) == ""){
             alert(alert_arr.OPPORTUNITYNAME_CANNOT_BE_EMPTY);

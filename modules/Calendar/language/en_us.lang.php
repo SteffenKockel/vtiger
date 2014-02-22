@@ -447,6 +447,8 @@ $mod_strings = Array(
 'LBL_SUCCESS'=>'Success!',
 'LBL_NO_IMPORT_TO_UNDO'=>'There was no import to undo.',
 'LBL_FAILURE'=>'Failed!',
+    
+'LBL_ARE_YOU_SURE'=>'Are you sure?',
 );
 
 ?>

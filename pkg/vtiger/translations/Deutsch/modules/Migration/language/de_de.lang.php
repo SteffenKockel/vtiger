@@ -10,10 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): crm-now, Berlin, www.crm-now.de
  ********************************************************************************/
-
-
 $mod_strings = Array(
 'LBL_MIGRATE_INFO'=>'Geben Sie die Werte ein um Daten zu migrieren. Von <b><i> Quelle </i></b> zu <b><i> aktullem (jetzigem) vtigerCRM </i></b>',
 'LBL_CURRENT_VT_MYSQL_EXIST'=>'Aktuelle vtiger\'s MySQL existiert in',

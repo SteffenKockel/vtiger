@@ -4,7 +4,7 @@
 <name>Services</name>
 <label>Services</label>
 <parent>Inventory</parent>
-<version>1.2</version>
+<version>1.6</version>
 <dependencies>
 <vtiger_version>5.1.0</vtiger_version>
 <vtiger_max_version>5.*</vtiger_max_version>
@@ -59,7 +59,7 @@
 <fieldlabel>Service Name</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>1</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~M</typeofdata>
@@ -83,7 +83,7 @@
 <fieldlabel>Service No</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>2</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -103,7 +103,7 @@
 <fieldlabel>Service Active</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>4</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -123,7 +123,7 @@
 <fieldlabel>Sales Start Date</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>9</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>D~O</typeofdata>
@@ -143,7 +143,7 @@
 <fieldlabel>Sales End Date</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>10</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>D~O~OTH~GE~sales_start_date~Sales Start Date</typeofdata>
@@ -163,7 +163,7 @@
 <fieldlabel>Support Start Date</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>11</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>D~O</typeofdata>
@@ -183,7 +183,7 @@
 <fieldlabel>Support Expiry Date</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>12</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>D~O~OTH~GE~start_date~Start Date</typeofdata>
@@ -203,7 +203,7 @@
 <fieldlabel>Website</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>6</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -223,7 +223,7 @@
 <fieldlabel>Created Time</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>13</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>T~O</typeofdata>
@@ -243,7 +243,7 @@
 <fieldlabel>Modified Time</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>14</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>T~O</typeofdata>
@@ -263,7 +263,7 @@
 <fieldlabel>Usage Unit</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>3</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -288,7 +288,7 @@
 <fieldlabel>No of Units</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>5</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>N~O</typeofdata>
@@ -308,7 +308,7 @@
 <fieldlabel>Owner</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>8</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>I~O</typeofdata>
@@ -328,7 +328,7 @@
 <fieldlabel>Service Category</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>7</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -354,14 +354,14 @@
 <fields>
 <field>
 <fieldname>unit_price</fieldname>
-<uitype>71</uitype>
+<uitype>72</uitype>
 <columnname>unit_price</columnname>
 <tablename>vtiger_service</tablename>
 <generatedtype>1</generatedtype>
 <fieldlabel>Price</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>1</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>N~O</typeofdata>
@@ -381,7 +381,7 @@
 <fieldlabel>Tax Class</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>4</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -401,7 +401,7 @@
 <fieldlabel>Commission Rate</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>2</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>N~O</typeofdata>
@@ -429,7 +429,7 @@
 <fieldlabel>Description</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>1</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>

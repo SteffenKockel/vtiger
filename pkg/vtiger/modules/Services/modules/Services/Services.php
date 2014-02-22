@@ -140,7 +140,7 @@ class Services extends CRMEntity {
 	function save_module($module)
 	{
 		//Inserting into service_taxrel table
-		if($_REQUEST['ajxaction'] != 'DETAILVIEW')
+		if($_REQUEST['ajxaction'] != 'DETAILVIEW'&& $_REQUEST['action'] != 'MassEditSave' && $_REQUEST['action'] != 'ProcessDuplicates')
 		{
 			$this->insertTaxInformation('vtiger_producttaxrel', 'Services');
 			$this->insertPriceInformation('vtiger_productcurrencyrel', 'Services');
@@ -211,7 +211,7 @@ class Services extends CRMEntity {
 		$currency_details = getAllCurrencies('all');
 		
 		//Delete the existing currency relationship if any
-		if($this->mode == 'edit'&&  $_REQUEST['action'] != 'MassEditSave')
+		if($this->mode == 'edit' &&  $_REQUEST['action'] != 'MassEditSave' && $_REQUEST['action'] != 'ProcessDuplicates')
 		{
 			for($i=0;$i<count($currency_details);$i++)
 			{
@@ -231,21 +231,22 @@ class Services extends CRMEntity {
 			$cur_checkname = 'cur_' . $curid . '_check';
 			$cur_valuename = 'curname' . $curid;
 			$base_currency_check = 'base_currency' . $curid;
+			$requestPrice = CurrencyField::convertToDBFormat($_REQUEST['unit_price'], null, true);
+			$actualPrice = CurrencyField::convertToDBFormat($_REQUEST[$cur_valuename], null, true);
 			if($_REQUEST[$cur_checkname] == 'on' || $_REQUEST[$cur_checkname] == 1)
 			{
 				$conversion_rate = $currency_details[$i]['conversionrate'];
 				$actual_conversion_rate = $service_base_conv_rate * $conversion_rate;
-				$converted_price = $actual_conversion_rate * $_REQUEST['unit_price'];
-				$actual_price = $_REQUEST[$cur_valuename];
+				$converted_price = $actual_conversion_rate * $requestPrice;
 				
 				$log->debug("Going to save the Product - $curname currency relationship");
 
 				$query = "insert into vtiger_productcurrencyrel values(?,?,?,?)";
-				$adb->pquery($query, array($this->id,$curid,$converted_price,$actual_price));
+				$adb->pquery($query, array($this->id,$curid,$converted_price,$actualPrice));
 				
 				// Update the Product information with Base Currency choosen by the User.
 				if ($_REQUEST['base_currency'] == $cur_valuename) {
-					$adb->pquery("update vtiger_service set currency_id=?, unit_price=? where serviceid=?", array($curid, $actual_price, $this->id)); 
+					$adb->pquery("update vtiger_service set currency_id=?, unit_price=? where serviceid=?", array($curid, $actualPrice, $this->id));
 				}
 			}
 		}
@@ -467,7 +468,7 @@ class Services extends CRMEntity {
 			$from_clause .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
 				      " = $this->table_name.$this->table_index"; 
 		}
-		$from_clause .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.handler";
+		$from_clause .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_service.handler";
 		$where_clause = "	WHERE vtiger_crmentity.deleted = 0";
 		$where_clause .= $this->getListViewSecurityParameter($module);
 					
@@ -549,12 +550,14 @@ class Services extends CRMEntity {
 			}
 		} 
 
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 		$query = "SELECT vtiger_crmentity.*,
 			vtiger_quotes.*,
 			vtiger_potential.potentialname,
 			vtiger_account.accountname,
 			vtiger_inventoryproductrel.productid,
-			case when (vtiger_users.user_name not like '') then vtiger_users.user_name 
+			case when (vtiger_users.user_name not like '') then $userNameSql 
 				else vtiger_groups.groupname end as user_name
 			FROM vtiger_quotes
 			INNER JOIN vtiger_crmentity
@@ -617,11 +620,13 @@ class Services extends CRMEntity {
 			}
 		} 
 
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 		$query = "SELECT vtiger_crmentity.*,
 			vtiger_purchaseorder.*,
 			vtiger_service.servicename,
 			vtiger_inventoryproductrel.productid,
-			case when (vtiger_users.user_name not like '') then vtiger_users.user_name 
+			case when (vtiger_users.user_name not like '') then $userNameSql 
 				else vtiger_groups.groupname end as user_name
 			FROM vtiger_purchaseorder
 			INNER JOIN vtiger_crmentity
@@ -682,11 +687,13 @@ class Services extends CRMEntity {
 			}
 		} 
 
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 		$query = "SELECT vtiger_crmentity.*,
 			vtiger_salesorder.*,
 			vtiger_service.servicename AS servicename,
 			vtiger_account.accountname,
-			case when (vtiger_users.user_name not like '') then vtiger_users.user_name 
+			case when (vtiger_users.user_name not like '') then $userNameSql 
 				else vtiger_groups.groupname end as user_name
 			FROM vtiger_salesorder
 			INNER JOIN vtiger_crmentity
@@ -749,11 +756,13 @@ class Services extends CRMEntity {
 			}
 		} 
 
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 		$query = "SELECT vtiger_crmentity.*,
 			vtiger_invoice.*,
 			vtiger_inventoryproductrel.quantity,
 			vtiger_account.accountname,
-			case when (vtiger_users.user_name not like '') then vtiger_users.user_name 
+			case when (vtiger_users.user_name not like '') then $userNameSql 
 				else vtiger_groups.groupname end as user_name
 			FROM vtiger_invoice
 			INNER JOIN vtiger_crmentity
@@ -787,7 +796,7 @@ class Services extends CRMEntity {
 		$log->debug("Entering get_service_pricebooks(".$id.") method ...");
 		
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		checkFileAccess("modules/$related_module/$related_module.php");
+		checkFileAccessForInclusion("modules/$related_module/$related_module.php");
 		require_once("modules/$related_module/$related_module.php");
 		$focus = new $related_module();
 		$singular_modname = vtlib_toSingular($related_module);
@@ -912,9 +921,9 @@ class Services extends CRMEntity {
 			$entries = Array();
 			$entries[] = textlength_check($adb->query_result($list_result,$i,"servicename"));
 			if(getFieldVisibilityPermission('Services', $current_user->id, 'unit_price') == '0')
-				$entries[] = $unit_price;
+				$entries[] = CurrencyField::convertToUserFormat($unit_price, null, true);
 	
-			$entries[] = $listprice;
+			$entries[] = CurrencyField::convertToUserFormat($listprice, null, true);
 			$action = "";
 			if(isPermitted("PriceBooks","EditView","") == 'yes')
 				$action .= '<img style="cursor:pointer;" src="themes/images/editfield.gif" border="0" onClick="fnvshobj(this,\'editlistprice\'),editProductListPrice(\''.$entity_id.'\',\''.$pricebook_id.'\',\''.$listprice.'\')" alt="'.$app_strings["LBL_EDIT_BUTTON"].'" title="'.$app_strings["LBL_EDIT_BUTTON"].'"/>';
@@ -986,7 +995,8 @@ class Services extends CRMEntity {
 			$query = "from vtiger_service 
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_service.serviceid 
 				left join vtiger_servicecf on vtiger_service.serviceid = vtiger_servicecf.serviceid 
-				left join vtiger_users as vtiger_usersServices on vtiger_usersServices.id = vtiger_service.handler 
+				left join vtiger_users as vtiger_usersServices on vtiger_usersServices.id = vtiger_service.handler
+				left join vtiger_groups as vtiger_groupsServices on vtiger_groupsServices.groupid = vtiger_service.handler
 				left join vtiger_seproductsrel on vtiger_seproductsrel.productid= vtiger_service.serviceid 
 				left join vtiger_crmentity as vtiger_crmentityRelServices on vtiger_crmentityRelServices.crmid = vtiger_seproductsrel.crmid and vtiger_crmentityRelServices.deleted = 0   
 				left join vtiger_account as vtiger_accountRelServices on vtiger_accountRelServices.accountid=vtiger_seproductsrel.crmid

@@ -33,8 +33,7 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 					var responseTextTrimmed = trim(response.responseText);
 					if (responseTextTrimmed.substring(0, 10) == ':#:SUCCESS') {
 						textBoxField.value = '';
-						contentWrapDOM.innerHTML += responseTextTrimmed.substring(10);
-						hndCancel('dtlview_'+domkeyid,'editarea_'+domkeyid,domkeyid);
+						contentWrapDOM.innerHTML = responseTextTrimmed.substring(10)+contentWrapDOM.innerHTML;
 					} else {
 						alert(alert_arr.OPERATION_DENIED);
 					}

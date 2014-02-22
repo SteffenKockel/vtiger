@@ -54,9 +54,8 @@ if(isPermitted('Calendar','index') == 'yes'){
 		" vtiger_activity_reminder_popup.status = 0 and " .
 		" vtiger_activity_reminder_popup.recordid = vtiger_crmentity.crmid " .
 		" and vtiger_crmentity.smownerid = ".$current_user->id." and vtiger_crmentity.deleted = 0 " .
-		" and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date . "')" .
-		" OR ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')" .
-		" AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "')))";
+		" and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') <= '" . $date . "')" .
+		" AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "'))";
 
 		$result = $adb->query($callback_query);
 
@@ -83,6 +82,14 @@ if(isPermitted('Calendar','index') == 'yes'){
 					$cbactivitytype = getTranslatedString($cbmodule, $cbmodule);
 					$cbdate         = $adb->query_result($result, $index, 'date_start');
 					$cbtime         = $adb->query_result($result, $index, 'time_start');
+
+				}
+				if($cbtime != ''){
+					$date = new DateTimeField($cbdate.' '.$cbtime);
+					$cbtime = $date->getDisplayTime();
+					$cbdate = $date->getDisplayDate();
+					$cbtimeArr = getaddEventPopupTime($cbtime, '', 'am/pm');
+					$cbtime = $cbtimeArr['starthour'].':'.$cbtimeArr['startmin'].''.$cbtimeArr['startfmt'];
 				}
 
 				if($cbactivitytype=='Task')

@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * German translation provided by crm-now, www.crm-now.de
  ********************************************************************************/
 	
 	var alert_arr = {       DELETE:'Sind Sie sicher, dass Sie das tun wollen? ',
@@ -301,5 +300,13 @@
 				'LBL_ENTER_WINDOW_TITLE': 'Bitte Titel angeben.',
 				'LBL_SELECT_ONLY_FIELDS': 'Bitte nur zwei Felder auswählen.',
 				'LBL_ENTER_RSS_URL':'Bitte die RSS URL angeben.',
-				'LBL_ADD_HOME_WIDGET': 'Konnte die Operation nicht ausführen! Bitte noch einmal versuchen.'
+				'LBL_ADD_HOME_WIDGET': 'Konnte die Operation nicht ausführen! Bitte noch einmal versuchen.',
+				
+				'LBL_DEFAULT_VALUE_FOR_THIS_FIELD' : 'Standardwert für dieses Feld',
+
+				'RECIPIENTS_CANNOT_BE_EMPTY' : 'Es müssen Empfänger gewählt werden.',
+				'VALID_SCANNER_NAME' : 'Bitte geben Sie einen gültigen Scanner Namen an (Es sollte nur Buchstaben und Nummern enthalten)',
+				'ERR_SAME_SOURCE_AND_TARGET' : 'Quellenfeld und Zielfeld dürfen nicht identisch sein.',
+				'ERR_ATLEAST_ONE_VALUE_FOR' : 'Sie sollten mindestens einen Eintrag auswählen für',
+				'ERR_SELECT_MODULE_FOR_DEPENDENCY' : 'Bitte ein Modul auswählen um Abhängigkeiten hinzuzufügen.'
 			};

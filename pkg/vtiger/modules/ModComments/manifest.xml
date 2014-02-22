@@ -4,7 +4,7 @@
 <name>ModComments</name>
 <label>Comments</label>
 <parent>Tools</parent>
-<version>1.1</version>
+<version>1.6</version>
 <dependencies>
 <vtiger_version>5.1.0</vtiger_version>
 <vtiger_max_version>5.*</vtiger_max_version>
@@ -40,7 +40,7 @@
 <fieldlabel>Comment</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>4</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~M</typeofdata>
@@ -69,7 +69,7 @@
 <fieldlabel>Assigned To</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>1</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~M</typeofdata>
@@ -89,7 +89,7 @@
 <fieldlabel>Created Time</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>5</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>T~O</typeofdata>
@@ -109,7 +109,7 @@
 <fieldlabel>Modified Time</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>6</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>T~O</typeofdata>
@@ -129,7 +129,7 @@
 <fieldlabel>Related To</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>2</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~M</typeofdata>
@@ -154,7 +154,7 @@
 <fieldlabel>Creator</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>4</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
@@ -174,7 +174,7 @@
 <fieldlabel>Related To Comments</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
-<selected>0</selected>
+<defaultvalue></defaultvalue>
 <sequence>7</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>

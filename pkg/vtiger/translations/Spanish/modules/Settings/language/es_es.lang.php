@@ -4,7 +4,7 @@
 *  Language     : ES Spanish
 *  Version      : vt5.0.4
 *  Created Date : 2008-01-18 17:46:07
-*  Author       : rasomu
+*  Author       : JPL TSolucio, S.L.  -  rasomu
 *  Last change  : 2008-09-20
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 ***********************************************************/
@@ -289,7 +289,7 @@ $mod_strings = array (
       'LBL_FILENAME' => 'Nombre del Fichero',
       'LBL_SETTINGS' => 'Configuración',
       'LBL_COMPANY_DETAILS' => 'Información de la Empresa',
-      'LBL_SEVERITY' => 'Gravedad',
+      'LBL_SEVERITY' => 'Urgencia',
       'LBL_FAQ_CATEGORY' => 'Categoría de la FAQ',
       'LBL_VENDOR_FIELD_ACCESS' => 'Acceso a campos de Proveedores',
       'LBL_PB_FIELD_ACCESS' => 'Acceso a campos de Tarifas',
@@ -442,7 +442,7 @@ $mod_strings = array (
       'LBL_DOWNLOAD' => 'Descarga',
       'LBL_ADD_TEMPLATE' => 'Añadir Plantilla',
       'LBL_WORD_TEMPLATES' => 'Plantillas de Mailing',
-      'LBL_TASK_NOTIFICATION' => 'Tarea Restrasada',
+      'LBL_TASK_NOTIFICATION' => 'Tarea Retrasada',
       'LBL_BIG_DEAL' => 'Gran Negocio',
       'LBL_PENDING_TICKETS' => 'Tickets Pendientes',
       'LBL_MANY_TICKETS' => 'Demasiados Tickets',
@@ -859,6 +859,49 @@ $mod_strings = array (
       'PORTAL_EXTENSION_DESCRIPTION'=>'Permite Configurar la Extensión Portal del Cliente',
       'LBL_CUSTOMER_PORTAL'=> 'Portal Cliente',
 
+      'LBL_ADD_CUSTOMFIELD' => 'Añadir Campo Personalizado',
+
+      'ERR_INVALID_PROFILE_ID' => 'Identificador perfil inválido. Por favor, indica un identificador válido',
+
+      // Customization
+      'LBL_PUBLISHER' => 'Publicado por',
+      'LBL_PUBLISHED_ON' => 'Publicado el',
+      'LBL_LICENSE'   => 'Licencia',
+      'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'No se ha podido descargar la extensión!',
+      'LBL_DEFAULT'=>'Por defecto, el servidor de correo saliente SMTP es od1.vtiger.com. Para evitar problemas, recomendamos que utilices una de estas opciones.',
+      'LBL_OPTIONS1'=>'Enviar emails desde tu servidor de correo<br>
+      				- Introducir la configuración (Servidor, Usuario, Contraseña) de la misma cuenta de correo utilizada en la cuenta de respuesta.',
+      'LBL_OPTIONS2'=>"Añadir el servidor od1.vtiger.com como dominio autorizado desde tu dominio.<br>
+      				- Si prefieres mantener el servidor saliente de vtiger, recomendamos que configures el registro SPF de tu dominio para incluir el servidor de vtiger como servidor autorizado.
+      				  Para obtener instrucciones adicionales sobre cómo definir un registro SPF, contact con od-support@vtiger.com .",
+      'LBL_ALREADY_EXISTS' => 'Ya Existe',
+      'LBL_EXTENSION_INCOMPATIBLE' => 'Extensión Incompatible',
+      'LBL_INSTALL' => 'Instalar',
+      'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Reestablecer al Defecto',
+      'LBL_CONFIRM_DEFAULT_SETTINGS' => '¿Estás seguro que quieres cambiar los valores del servidor a sus valores por defecto?',
+      'EXISTING_DEFAULT_VALUES' => 'Los valores del servidor ya están en sus valores por defecto',
+      'LBL_NOTE' => 'Nota:',
+      'LBL_HIDE' => 'Esconder Detalles',
+      'LBL_SHOW' => 'Mostrar Detalles',
+      // END
+      'LBL_USER_ADDITION_INFO'=>"Para añadir un nuevo usuario, haz click en  
+      			   <span style='font-style:italic;color:blue;'>OD-Menú Configuración -> On Demand Admin -> Añadir / Invitar Usuario </span>",
+      
+      'LBL_READ_ONLY_ACCESS_MSG' => 'Acceso Solo-Lectura',
+      'LBL_READ_WRITE_ACCESS_MSG' => 'Acceso Lectura-Escritura',
+      'LBL_DESCRIPTION_Public: Read Only'=>'Usuarios pueden Solo Leer otros usuarios ',
+      'LBL_DESCRIPTION_Public: Read, Create/Edit'=>'Usuarios pueden Leer, Crear/Editar otros usuarios ',
+      'LBL_DESCRIPTION_Public: Read, Create/Edit, Delete'=>'Usuarios pueden Leer, Crear/Editar, Eliminar otros usuarios ',
+
+      'LBL_DEFAULT_VALUE' => 'Valor por Defecto',
+
+      // For Dependency picklist
+      'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Configuración Dependencias entre Listas',
+      'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Establece Dependencias entre los elementos de las listas desplegables en cada módulo',
+
+      'Settings' => 'Configuración',
+      'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Este impuesto ya existe.',
+      'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Algunos impuestos tienen el nombre repetido y no han sido guardados.',
 );
 $mod_list_strings = array (
 );

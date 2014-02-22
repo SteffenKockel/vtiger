@@ -14,7 +14,7 @@ class SMSProvider {
 			$providername = trim($providername);
 
 			$filepath = dirname(__FILE__) . "/providers/{$providername}.php";
-			checkFileAccess($filepath);
+			checkFileAccessForInclusion($filepath);
 			
 			if(!class_exists($providername)) { 
 				include_once $filepath;

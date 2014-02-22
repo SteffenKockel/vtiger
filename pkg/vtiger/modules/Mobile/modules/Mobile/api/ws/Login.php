@@ -45,6 +45,8 @@ class Mobile_WS_Login extends Mobile_WS_Controller {
 			$result = array();
 			$result['login'] = array(
 				'userid' => $current_user->id,
+				'crm_tz' => DateTimeField::getDBTimeZone(),
+				'user_tz' => $current_user->time_zone,
 				'session'=> $sessionid,
 				'vtiger_version' => Mobile_WS_Utils::getVtigerVersion(),
 				'mobile_module_version' => Mobile_WS_Utils::getVersion()

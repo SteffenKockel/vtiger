@@ -22,6 +22,16 @@
 <script type="text/javascript">
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 </script>
+<script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
+<script type="text/javascript">
+	jQuery.noConflict();
+</script>
+{if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
+<script type="text/javascript">
+	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+</script>
+{/if}
 
 {*<!-- Contents -->*}
 <form name="EditView" method="POST" action="index.php" 
@@ -674,7 +684,8 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 									</div>
 								</td>
 							</tr>
-							{/if}
+							{/if}							
+			     			{if $IS_CONTACTS_EDIT_PERMITTED eq 'true'}
 							<tr>
 								<td><b>{$APP.Contacts}</b></td>
 								<td colspan="2">
@@ -689,6 +700,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 							
 								</td>
 							</tr>
+							{/if}
 						</table>
 					</div>
 			</td>
@@ -1019,3 +1031,9 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 	{rdelim}
 
 </script>
+
+{if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
+<script type="text/javascript">
+	Event.observe(window, 'load', function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+</script>
+{/if}

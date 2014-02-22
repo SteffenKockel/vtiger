@@ -31,18 +31,23 @@
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 require_once('include/utils/UserInfoUtil.php');
+require_once 'data/CRMEntity.php';
 require_once('modules/Calendar/Activity.php');
 require_once('modules/Contacts/Contacts.php');
 require_once('data/Tracker.php');
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/Webservices/Utils.php';
+require_once('modules/Users/UserTimeZonesArray.php');
 
 // User is used to store customer information.
  /** Main class for the user module
    *
   */
-class Users {
+class Users extends CRMEntity {
 	var $log;
+	/**
+	 * @var PearDatabase
+	 */
 	var $db;
 	// Stored fields
 	var $id;
@@ -51,48 +56,9 @@ class Users {
 	var $is_admin;
 	var $deleted;
 
-	var $tab_name = Array('vtiger_users','vtiger_attachments','vtiger_user2role','vtiger_asteriskextensions');	
+	var $tab_name = Array('vtiger_users','vtiger_attachments','vtiger_user2role','vtiger_asteriskextensions');
 	var $tab_name_index = Array('vtiger_users'=>'id','vtiger_attachments'=>'attachmentsid','vtiger_user2role'=>'userid','vtiger_asteriskextensions'=>'userid');
-	var $column_fields = Array('user_name'=>'','is_admin' =>'','user_password'=>'','confirm_password'=>'',
-	'first_name' =>'',
-	'last_name' =>'',
-	'roleid' =>'',
-	'email1' =>'',
-	'status' =>'',
-	'activity_view' =>'',
-	'lead_view' =>'',
-	'currency_id' =>'',
-	'currency_name' =>'',
-	'currency_code' =>'',
-	'currency_symbol' =>'',
-	'conv_rate' =>'',
-	'hour_format' =>'',
-	'end_hour' =>'',
-	'start_hour' =>'',
-	'title' =>'',
-	'phone_work' =>'',
-	'department' =>'',
-	'phone_mobile' =>'',
-	'reports_to_id' =>'',
-	'phone_other' =>'',
-	'email2' =>'',
-	'phone_fax' =>'',
-	'yahoo_id' =>'',
-	'phone_home' =>'',
-	'imagename' =>'',
-	'date_format' =>'',
-	'signature' =>'',
-	'description' =>'',
-	'reminder_interval' =>'',
-	'internal_mailer'=>'',
-	'address_street' =>'',
-	'address_city' =>'',
-	'address_state' =>'',
-	'address_postalcode' =>'',
-	'address_country' =>'',
-	'asterisk_extension'=>'',
-	'use_asterisk'=>'',
-);
+	
 	var $table_name = "vtiger_users";
 	var $table_index= 'id';
 
@@ -104,11 +70,13 @@ class Users {
 
 	var $search_fields = Array(
 		'Name'=>Array('vtiger_users'=>'last_name'),
-		'Email'=>Array('vtiger_users'=>'email1')
+		'Email'=>Array('vtiger_users'=>'email1'),
+        'Email2'=>Array('vtiger_users'=>'email2')
 	);
 	var $search_fields_name = Array(
 		'Name'=>'last_name',
-		'Email'=>'email1'
+		'Email'=>'email1',
+        'Email2'=>'email2'
 	);
 
 	var $module_name = "Users";
@@ -122,7 +90,7 @@ class Users {
 	// This is used to retrieve related fields from form posts.
 	var $additional_column_fields = Array('reports_to_name');		
 
-	var $sortby_fields = Array('status','email1','phone_work','is_admin','user_name','last_name');	  
+	var $sortby_fields = Array('status','email1','email2','phone_work','is_admin','user_name','last_name');	 
 
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
@@ -132,6 +100,7 @@ class Users {
 		'User Name'=>Array('vtiger_users'=>'user_name'),
 		'Status'=>Array('vtiger_users'=>'status'), 
 		'Email'=>Array('vtiger_users'=>'email1'),
+        'Email2'=>Array('vtiger_users'=>'email2'),
 		'Admin'=>Array('vtiger_users'=>'is_admin'),
 		'Phone'=>Array('vtiger_users'=>'phone_work')
 	);
@@ -142,13 +111,16 @@ class Users {
 		'User Name'=>'user_name',
 		 'Status'=>'status',
 		'Email'=>'email1',
+        'Email2'=>'email2',
 		'Admin'=>'is_admin',	
 		'Phone'=>'phone_work'	
 	);
 
 	//Default Fields for Email Templates -- Pavani
-	var $emailTemplate_defaultFields = array('first_name','last_name','title','department','phone_home','phone_mobile','signature','email1','address_street','address_city','address_state','address_country','address_postalcode');
-	
+	var $emailTemplate_defaultFields = array('first_name','last_name','title','department','phone_home','phone_mobile','signature','email1','email2','address_street','address_city','address_state','address_country','address_postalcode');
+
+	var $popup_fields = array('last_name');
+        
 	// This is the list of fields that are in the lists.
 	var $default_order_by = "user_name";
 	var $default_sort_order = 'ASC';
@@ -169,6 +141,11 @@ class Users {
 		$this->db = PearDatabase::getInstance();
 		$this->DEFAULT_PASSWORD_CRYPT_TYPE = (version_compare(PHP_VERSION, '5.3.0') >= 0)?
 				'PHP5.3MD5': 'MD5';
+		$this->column_fields = getColumnFields('Users');
+        $this->column_fields['ccurrency_name'] = '';
+        $this->column_fields['currency_code'] = '';
+        $this->column_fields['currency_symbol'] = '';
+        $this->column_fields['conv_rate'] = '';
 		$this->log->debug("Exiting Users() method ...");
 	}
 
@@ -390,7 +367,13 @@ class Users {
 
 			default:
 				$this->log->debug("Using integrated/SQL authentication");
-				$encrypted_password = $this->encrypt_password($user_password);
+				$query = "SELECT crypt_type FROM $this->table_name WHERE user_name=?";
+				$result = $this->db->requirePsSingleResult($query, array($usr_name), false);
+				if (empty($result)) {
+					return false;
+				}
+				$crypt_type = $this->db->query_result($result, 0, 'crypt_type');
+				$encrypted_password = $this->encrypt_password($user_password, $crypt_type);
 				$query = "SELECT * from $this->table_name where user_name=? AND user_password=?";
 				$result = $this->db->requirePsSingleResult($query, array($usr_name, $encrypted_password), false);
 				if (empty($result)) {
@@ -423,15 +406,10 @@ class Users {
 			$this->log->warn("SECURITY: " . $usr_name . " has attempted to login ". 	$_SESSION['loginattempts'] . " times.");
 		}
 		$this->log->debug("Starting user load for $usr_name");
-		$validation = 0;
-		unset($_SESSION['validation']);
+		
 		if( !isset($this->column_fields["user_name"]) || $this->column_fields["user_name"] == "" || !isset($user_password) || $user_password == "")
 			return null;
-
-		if($this->validation_check('aW5jbHVkZS9pbWFnZXMvc3VnYXJzYWxlc19tZC5naWY=','1a44d4ab8f2d6e15e0ff6ac1c2c87e6f', '866bba5ae0a15180e8613d33b0acc6bd') == -1)$validation = -1;
-		if($this->validation_check('aW5jbHVkZS9pbWFnZXMvcG93ZXJlZF9ieV9zdWdhcmNybS5naWY=' , '3d49c9768de467925daabf242fe93cce') == -1)$validation = -1;
-		if($this->authorization_check('aW5kZXgucGhw' , 'PEEgaHJlZj0naHR0cDovL3d3dy5zdWdhcmNybS5jb20nIHRhcmdldD0nX2JsYW5rJz48aW1nIGJvcmRlcj0nMCcgc3JjPSdpbmNsdWRlL2ltYWdlcy9wb3dlcmVkX2J5X3N1Z2FyY3JtLmdpZicgYWx0PSdQb3dlcmVkIEJ5IFN1Z2FyQ1JNJz48L2E+', 1) == -1)$validation = -1;
-
+		
 		$authCheck = false;
 		$authCheck = $this->doLogin($user_password);
 
@@ -446,6 +424,7 @@ class Users {
 		$result = $this->db->requireSingleResult($query, false);
 
 		$row = $this->db->fetchByAssoc($result);
+		$this->column_fields = $row;
 		$this->id = $row['id'];	
 
 		$user_hash = strtolower(md5($user_password));
@@ -510,7 +489,7 @@ class Users {
 	 * All Rights Reserved..
 	 * Contributor(s): ______________________________________..
 	 */
-	function change_password($user_password, $new_password)
+	function change_password($user_password, $new_password, $dieOnError = true)
 	{
 		
 		$usr_name = $this->column_fields["user_name"];
@@ -523,23 +502,21 @@ class Users {
 			return false;
 		}
 
-		$encrypted_password = $this->encrypt_password($user_password);
-
 		if (!is_admin($current_user)) {
-			//check old password first
-			$query = "SELECT user_name,user_password FROM $this->table_name WHERE id=?";
-			$result =$this->db->pquery($query, array($this->id), true);	
-			$row = $this->db->fetchByAssoc($result);
-			$this->log->debug("select old password query: $query");
-			$this->log->debug("return result of $row");
-
-			if($encrypted_password != $this->db->query_result($result,0,'user_password'))
-			{
+			$this->db->startTransaction();
+			if(!$this->verifyPassword($user_password)) {
 				$this->log->warn("Incorrect old password for $usr_name");
 				$this->error_string = $mod_strings['ERR_PASSWORD_INCORRECT_OLD'];
 				return false;
 			}
-		}		
+			if($this->db->hasFailedTransaction()) {
+				if($dieOnError) {
+					die("error verifying old transaction[".$this->db->database->ErrorNo()."] ".
+							$this->db->database->ErrorMsg());
+				}
+				return false;
+			}
+		}
 
 
 		$user_hash = strtolower(md5($new_password));
@@ -548,8 +525,18 @@ class Users {
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		$encrypted_new_password = $this->encrypt_password($new_password, $crypt_type);
 
-		$query = "UPDATE $this->table_name SET user_password=?, user_hash=?, crypt_type=? where id=?";
-		$this->db->pquery($query, array($encrypted_new_password, $user_hash, $crypt_type, $this->id), true, "Error setting new password for $usr_name: ");	
+		$query = "UPDATE $this->table_name SET user_password=?, confirm_password=?, user_hash=?, ".
+				"crypt_type=? where id=?";
+		$this->db->startTransaction();
+		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, 
+				$user_hash, $crypt_type, $this->id));
+		if($this->db->hasFailedTransaction()) {
+			if($dieOnError) {
+				die("error setting new password: [".$this->db->database->ErrorNo()."] ".
+						$this->db->database->ErrorMsg());
+			}
+			return false;
+		}
 		return true;
 	}
 	 
@@ -575,6 +562,18 @@ class Users {
 		return $encrypted_password;
 	}
 
+	function verifyPassword($password) {
+		$query = "SELECT user_name,user_password,crypt_type FROM {$this->table_name} WHERE id=?";
+		$result =$this->db->pquery($query, array($this->id));
+		$row = $this->db->fetchByAssoc($result);
+		$this->log->debug("select old password query: $query");
+		$this->log->debug("return result of $row");
+		$encryptedPassword = $this->encrypt_password($password, $row['crypt_type']);
+		if($encryptedPassword != $row['user_password']) {
+			return false;
+		}
+		return true;
+	}
 
 	function is_authenticated()
 	{
@@ -643,7 +642,7 @@ class Users {
 	function getColumnNames_User()
 	{
 
-		$mergeflds = array("FIRSTNAME","LASTNAME","USERNAME","YAHOOID","TITLE","OFFICEPHONE","DEPARTMENT",
+		$mergeflds = array("FIRSTNAME","LASTNAME","USERNAME","SECONDARYEMAIL","TITLE","OFFICEPHONE","DEPARTMENT",
 				"MOBILE","OTHERPHONE","FAX","EMAIL",
 				"HOMEPHONE","OTHEREMAIL","PRIMARYADDRESS",
 				"CITY","STATE","POSTALCODE","COUNTRY");	
@@ -704,6 +703,17 @@ class Users {
 	{
 		global $current_user;//$adb added by raju for mass mailing
 		$insertion_mode = $this->mode;
+		if(empty($this->column_fields['time_zone'])) {
+			$dbDefaultTimeZone = DateTimeField::getDBTimeZone();
+			$this->column_fields['time_zone'] = $dbDefaultTimeZone;
+			$this->time_zone = $dbDefaultTimeZone;
+		}
+		if(empty($this->column_fields['currency_id'])) {
+			$this->column_fields['currency_id'] = CurrencyField::getDBCurrencyId();
+		}
+		if(empty($this->column_fields['date_format'])) {
+			$this->column_fields['date_format'] = 'yyyy-mm-dd';
+		}
 
 		$this->db->println("TRANS saveentity starts $module");
 		$this->db->startTransaction();
@@ -747,7 +757,7 @@ class Users {
 	{
 		global $log;	
 		$log->info("function insertIntoEntityTable ".$module.' vtiger_table name ' .$table_name);
-		global $adb;
+		global $adb, $current_user;
 		$insertion_mode = $this->mode;
 		//Checkin whether an entry is already is present in the vtiger_table to update
 		if($insertion_mode == 'edit')
@@ -815,23 +825,30 @@ class Users {
 						$fldvalue = 0;
 					}
 
-				}
+				}elseif($uitype == 15)
+                {
+                    if($this->column_fields[$fieldname] == $app_strings['LBL_NOT_ACCESSIBLE'])
+                    {
+						//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
+						$sql="select $columname from  $table_name where ".$this->tab_name_index[$table_name]."=?";
+						$res = $adb->pquery($sql,array($this->id));
+						$pick_val = $adb->query_result($res,0,$columname);
+						$fldvalue = $pick_val;
+                    }
+                    else
+                    {
+						$fldvalue = $this->column_fields[$fieldname];
+                    }
+                }
 				elseif($uitype == 33)
 				{
-					$j = 0;
-					$field_list = '';
-					if(is_array($this->column_fields[$fieldname]) && count($this->column_fields[$fieldname]) > 0)
-					{
-						foreach($this->column_fields[$fieldname] as $key=>$multivalue)
-						{
-							if($j != 0)
-							{
-								$field_list .= ' , ';
-							}
-							$field_list .= $multivalue;
-							$j++;
-						}
-					}
+					if(is_array($this->column_fields[$fieldname]))
+                    {
+						$field_list = implode(' |##| ',$this->column_fields[$fieldname]);
+                    }else
+                    {
+						$field_list = $this->column_fields[$fieldname];
+                    }
 					$fldvalue = $field_list;
 				}
 				elseif($uitype == 99)
@@ -851,6 +868,34 @@ class Users {
 			else
 			{
 				$fldvalue = '';
+			}
+			if($uitype == 31) {
+				$themeList = get_themes();
+				if(!in_array($fldvalue, $themeList) || $fldvalue == '') {
+					global $default_theme;
+					if(!empty($default_theme) && in_array($default_theme, $themeList)) {
+						$fldvalue = $default_theme;
+					} else {
+						$fldvalue = $themeList[0];
+					}
+				}
+				if($current_user->id == $this->id) {
+					$_SESSION['vtiger_authenticated_user_theme'] = $fldvalue;
+				}
+			} elseif($uitype == 32) {
+				$languageList = Vtiger_Language::getAll();
+				$languageList = array_keys($languageList);
+				if(!in_array($fldvalue, $languageList) || $fldvalue == '') {
+					global $default_language;
+					if(!empty($default_language) && in_array($default_language, $languageList)) {
+						$fldvalue = $default_language;
+					} else {
+						$fldvalue = $languageList[0];
+					}
+				}
+				if($current_user->id == $this->id) {
+					$_SESSION['authenticated_user_language'] = $fldvalue;
+				}
 			}
 			if($fldvalue=='') {
 				$fldvalue = $this->get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype);
@@ -1064,10 +1109,29 @@ class Users {
  	 */	
 	function save($module_name) 
 	{
-		global $log;
-	        $log->debug("module name is ".$module_name);
-		//GS Save entity being called with the modulename as parameter
+		global $log, $adb;
+		//Save entity being called with the modulename as parameter
 		$this->saveentity($module_name);
+		
+		// Added for Reminder Popup support
+		$query_prev_interval = $adb->pquery("SELECT reminder_interval from vtiger_users where id=?",
+				array($this->id));
+		$prev_reminder_interval = $adb->query_result($query_prev_interval,0,'reminder_interval');
+
+		//$focus->imagename = $image_upload_array['imagename'];
+		$this->saveHomeStuffOrder($this->id);
+		SaveTagCloudView($this->id);
+
+		// Added for Reminder Popup support
+		$this->resetReminderInterval($prev_reminder_interval);
+		//Creating the Privileges Flat File
+		if(isset($this->column_fields['roleid'])) {
+			updateUser2RoleMapping($this->column_fields['roleid'],$this->id);
+		}
+		require_once('modules/Users/CreateUserPrivilegeFile.php');
+		createUserPrivilegesfile($this->id);
+		createUserSharingPrivilegesfile($this->id);
+
 	}
 
 
@@ -1078,7 +1142,10 @@ class Users {
  	 */
 	function getHomeStuffOrder($id){
 		global $adb;
-		$this->homeorder_array = array('UA', 'PA', 'ALVT','HDB','PLVT','QLTQ','CVLVT','HLT','GRT','OLTSO','ILTI','MNL','OLTPO','LTFAQ');
+		if(!is_array($this->homeorder_array)) {
+			$this->homeorder_array = array('UA', 'PA', 'ALVT','HDB','PLVT','QLTQ','CVLVT','HLT',
+				'GRT','OLTSO','ILTI','MNL','OLTPO','LTFAQ');
+		}
 		$return_array = Array();
 		$homeorder=Array();
 		if($id != ''){
@@ -1104,7 +1171,7 @@ class Users {
 
 	function getDefaultHomeModuleVisibility($home_string,$inVal)
 	{
-		$homeModComptVisibility=1;
+		$homeModComptVisibility=0;
 		if($inVal == 'postinstall')
 		{
 			if($_REQUEST[$home_string] != '')
@@ -1112,8 +1179,6 @@ class Users {
 				$homeModComptVisibility=0;
 			}
 		}
-		else 
-			$homeModComptVisibility=0;		
 		return $homeModComptVisibility;
 		
 	}	
@@ -1197,6 +1262,23 @@ class Users {
 		$visibility=0;
 		$sql="insert into vtiger_homestuff values($tc, 15, 'Tag Cloud', $uid, $visibility, 'Tag Cloud')";
 		$adb->query($sql);
+
+		// Customization
+		global $VTIGER_ONDEMAND_CONFIG;
+		if (isset($VTIGER_ONDEMAND_CONFIG) && isset($VTIGER_ONDEMAND_CONFIG['DEFAULT_NOTEBOOK_WIDGET'])) {
+			$defaultNoteBookWidgetInfo = $VTIGER_ONDEMAND_CONFIG['DEFAULT_NOTEBOOK_WIDGET'];
+			$ntbkid = $adb->getUniqueID("vtiger_homestuff");
+			$visibility = 0;
+			$sql = "INSERT INTO vtiger_homestuff(stuffid, stuffsequence, stufftype, userid, visible, stufftitle) values(?, ?, ?, ?, ?, ?)";			
+			$params = array($ntbkid,16,'Notebook',$uid,$visibility,$defaultNoteBookWidgetInfo['title']);
+			$adb->pquery($sql, $params);
+
+			$sql = "insert into vtiger_notebook_contents(userid, notebookid, contents) values(?,?,?)";
+			$params = array($uid,$ntbkid,$defaultNoteBookWidgetInfo['contents']);
+			$adb->pquery($sql, $params);
+		}
+		// END
+
 
 		$sql="insert into vtiger_homedefault values(".$s1.",'ALVT',5,'Accounts')";
 		$adb->query($sql);
@@ -1370,6 +1452,33 @@ class Users {
 		$adb->pquery($query, array('Inactive', $adb->formatDate($date_var, true),
 			$current_user->id, $id), true,"Error marking record deleted: ");
 	}
+    
+    /**
+	 * Function to get the user if of the active admin user.
+	 * @return Integer - Active Admin User ID
+	 */
+    public static function getActiveAdminId(){
+        global $adb;
+        $sql = "SELECT id FROM vtiger_users WHERE is_admin='On' and status='Active' limit 1";
+        $result = $adb->pquery($sql, array());
+        $adminId = 1;
+        $it = new SqlResultIterator($adb, $result);
+        foreach ($it as $row) {
+            $adminId = $row->id;
+        }
+        return $adminId;
+    }
+
+	/**
+	 * Function to get the active admin user object
+	 * @return Users - Active Admin User Instance
+	 */
+    public static function getActiveAdminUser(){
+        $adminId = self::getActiveAdminId();
+		$user = new Users();
+        $user->retrieveCurrentUserInfoFromFile($adminId);
+        return $user;
+    }
 
 }
 ?>

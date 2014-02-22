@@ -71,7 +71,7 @@ class Vtiger_PackageExport {
 	function __initExport($module, $moduleInstance) {
 		if($moduleInstance->isentitytype) {
 			// We will be including the file, so do a security check.
-			Vtiger_Utils::checkFileAccess("modules/$module/$module.php");
+			Vtiger_Utils::checkFileAccessForInclusion("modules/$module/$module.php");
 		}
 		$this->_export_modulexml_file = fopen($this->__getManifestFilePath(), 'w');
 		$this->__write("<?xml version='1.0'?>\n");
@@ -347,7 +347,7 @@ class Vtiger_PackageExport {
 			$this->outputNode($fieldresultrow['fieldlabel'],    'fieldlabel');
 			$this->outputNode($fieldresultrow['readonly'],      'readonly');
 			$this->outputNode($fieldresultrow['presence'],      'presence');
-			$this->outputNode($fieldresultrow['selected'],      'selected');
+			$this->outputNode($fieldresultrow['defaultvalue'],  'defaultvalue');
 			$this->outputNode($fieldresultrow['sequence'],      'sequence');
 			$this->outputNode($fieldresultrow['maximumlength'], 'maximumlength');
 			$this->outputNode($fieldresultrow['typeofdata'],    'typeofdata');
@@ -606,6 +606,9 @@ class Vtiger_PackageExport {
 				$this->outputNode("<![CDATA[$customlink->linkurl]]>", 'linkurl');
 				$this->outputNode("<![CDATA[$customlink->linkicon]]>", 'linkicon');
 				$this->outputNode($customlink->sequence, 'sequence');
+				$this->outputNode("<![CDATA[$customlink->handler_path]]>", 'handler_path');
+				$this->outputNode("<![CDATA[$customlink->handler_class]]>", 'handler_class');
+				$this->outputNode("<![CDATA[$customlink->handler]]>", 'handler');
 				$this->closeNode('customlink');
 			}
 			$this->closeNode('customlinks');

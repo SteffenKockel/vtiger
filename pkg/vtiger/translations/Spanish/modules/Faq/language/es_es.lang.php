@@ -77,7 +77,7 @@ $mod_strings = Array(
 'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar Envío a Factura',
 'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'¿Está seguro que desea eliminar este registro como miembro de organización?',
 'LBL_DUPLICATE'=>'Posible Faq duplicada',
-'MSG_DUPLICATE'=>'Al crear esta Faq puede crear una Faq duplicada. Puede seleccionar una Faq de la lista inferior o hacer pinchar en \"Crea FAQ Nuevo\" para crear una nueva FAQ con los datos introducidos.',
+'MSG_DUPLICATE'=>'Al crear esta Faq puede crear una Faq duplicada. Puede seleccionar una Faq de la lista inferior o hacer pinchar en "Crea FAQ Nuevo" para crear una nueva FAQ con los datos introducidos.',
 
 'LBL_INVITEE'=>'Contactos',
 'ERR_DELETE_RECORD'=>'Debe especificar un registro para poder eliminar la FAQ.',

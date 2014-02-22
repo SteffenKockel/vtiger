@@ -46,12 +46,11 @@
 	<td class="dvtCellLabel" align="right">
 		{$MOD.LBL_ADD_COMMENT}
 	</td>
-	<td width="100%" colspan="3" class="dvtCellInfo" align="left" id="mouseArea_{$UIKEY}" onmouseover="hndMouseOver(19,'{$UIKEY}');" onmouseout="fnhide('crmspanid');">
-		<span id="dtlview_{$UIKEY}"></span>
-		<div id="editarea_{$UIKEY}" style="display:none;">
+	<td width="100%" colspan="3" class="dvtCellInfo" align="left">
+		<div id="editarea_{$UIKEY}">
 			<textarea id="txtbox_{$UIKEY}" class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8"></textarea>
-			<br><input type="button" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" onclick="ModCommentsCommon.addComment('{$UIKEY}', '{$ID}');fnhide('crmspanid');"/> {$APP.LBL_OR}
-			<a href="javascript:;" onclick="hndCancel('dtlview_{$UIKEY}','editarea_{$UIKEY}','{$UIKEY}')" class="link">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
+			<br><input type="button" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" onclick="ModCommentsCommon.addComment('{$UIKEY}', '{$ID}');"/> {$APP.LBL_OR}
+			<a href="javascript:;" onclick="$('txtbox_{$UIKEY}').value='';" class="link">{$APP.LBL_CLEAR_BUTTON_LABEL}</a>
 		</div>
 	</td>							
 	</tr>

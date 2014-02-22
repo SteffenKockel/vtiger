@@ -57,7 +57,7 @@ $installationStrings = array(
 	'MSG_CONFIG_FILE_CREATED' => 'Configuration file (config.inc.php) was successfully created',
 	'LBL_FINISH' => 'Finish',
 	'LBL_CONFIG_COMPLETED' => 'Configuration Completed',
-	'LBL_PHP_VERSION_GT_5' => 'PHP version >= 5.0',
+	'LBL_PHP_VERSION_GT_5' => 'PHP version >= 5.2',
 	'LBL_YES' => 'Yes',
 	'LBL_NO' => 'No',
 	'LBL_NOT_CONFIGURED' => 'Not Configured',

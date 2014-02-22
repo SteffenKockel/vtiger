@@ -122,6 +122,9 @@ $smarty->assign('PARENTTAB', getParentTab());
 $_SESSION['Users_FORM_TOKEN'] = rand(5, 2000) * rand(2, 7);
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 
+// Gather the help information associated with fields
+$smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
+// END
 $smarty->display('UserEditView.tpl');
 
 ?>

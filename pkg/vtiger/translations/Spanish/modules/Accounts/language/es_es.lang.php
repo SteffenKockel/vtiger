@@ -81,7 +81,7 @@ $mod_strings = array(
 'LBL_DESCRIPTION'=>'Descripcion:',
 'NTC_COPY_BILLING_ADDRESS'=>'Copiar Factura a Envío',
 'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar Envío a Factura',
-'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'¿Está seguro que desea eliminar este registro de \"Miembro\"?',
+'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'¿Está seguro que desea eliminar este registro de "Miembro"?',
 'LBL_DUPLICATE'=>'Posibles cuentas duplicadas',
 'MSG_DUPLICATE'=>'Creando esta cuenta puede duplicar una cuenta existente. Seleccione una cuenta de la lista de abajo o pulse en el boton Crear una Nueva Cuenta para crear una nueva cuenta con los datos introducidos.',
 

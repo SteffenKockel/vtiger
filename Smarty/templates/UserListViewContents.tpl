@@ -22,7 +22,7 @@
 		{$recordListRange}
 	</td>
 	<!-- Page Navigation -->
-	<td nowrap width="30%" align="center">
+	<td nowrap width="100%" align="center">
 		<table border=0 cellspacing=0 cellpadding=0 class="small">
 			<tr>{$NAVIGATION}</tr>
 		</table>

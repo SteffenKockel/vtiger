@@ -22,11 +22,21 @@ class ModComments extends ModCommentsCore {
 	function vtlib_handler($modulename, $event_type) {
 		parent::vtlib_handler($modulename, $event_type);
 		if ($event_type == 'module.postinstall') {
-			self::addWidgetTo(array('Leads', 'Contacts', 'Accounts'));
+			self::addWidgetTo(array('Leads', 'Contacts', 'Accounts', 'Project', 'ProjectTask'));
 			global $adb;
 			// Mark the module as Standard module
 			$adb->pquery('UPDATE vtiger_tab SET customized=0 WHERE name=?', array($modulename));
 		}
+	}
+
+	/**
+	 * Transfer the comment records from one parent record to another.
+	 * @param CRMID Source parent record id
+	 * @param CRMID Target parent record id
+	 */
+	static function transferRecords($currentParentId, $targetParentId) {
+		global $adb;
+		$adb->pquery("UPDATE vtiger_modcomments SET related_to=? WHERE related_to=?", array($targetParentId, $currentParentId));
 	}
 	
 	/**

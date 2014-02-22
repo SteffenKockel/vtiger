@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): www.crm-now.de translation to German
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /cvsroot/vtigercrm/vtiger_crm/modules/Orders/language/en_us.lang.php,v 1.10 2005/06/23 14:42:42 crouchingtiger Exp $
- * Description:  Defines the English language pack
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): crm-now, Berlin, www.crm-now.com
- ********************************************************************************/
-
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Bestellungen',
 'LBL_RELATED_PRODUCTS'=>'Artikel',

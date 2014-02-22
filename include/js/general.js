@@ -28,20 +28,20 @@ var gBrowserAgent = navigator.userAgent.toLowerCase();
 
 function hideSelect()
 {
-        var oselect_array = document.getElementsByTagName('SELECT');
-        for(var i=0;i<oselect_array.length;i++)
-        {
-                oselect_array[i].style.display = 'none';
-        }
+	var oselect_array = document.getElementsByTagName('SELECT');
+	for(var i=0;i<oselect_array.length;i++)
+	{
+		oselect_array[i].style.display = 'none';
+	}
 }
 
 function showSelect()
 {
-        var oselect_array = document.getElementsByTagName('SELECT');
-        for(var i=0;i<oselect_array.length;i++)
-        {
-                oselect_array[i].style.display = 'block';
-        }
+	var oselect_array = document.getElementsByTagName('SELECT');
+	for(var i=0;i<oselect_array.length;i++)
+	{
+		oselect_array[i].style.display = 'block';
+	}
 }
 
 function getObj(n,d) {
@@ -54,7 +54,8 @@ function getObj(n,d) {
    
 	if(n != undefined) {
 		if((p=n.indexOf("?"))>0&&parent.frames.length) {
-			d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);
+			d=parent.frames[n.substring(p+1)].document;
+			n=n.substring(0,p);
 		}
 	}
 
@@ -86,7 +87,7 @@ function getObj(n,d) {
 
 function getOpenerObj(n) {
 
-    return getObj(n,opener.document)
+	return getObj(n,opener.document)
 
 }
 
@@ -154,42 +155,42 @@ function clearTextSelection() {
 
 	if (browser_ie) document.selection.empty();
 
-    else if (browser_nn4 || browser_nn6) window.getSelection().removeAllRanges();
+	else if (browser_nn4 || browser_nn6) window.getSelection().removeAllRanges();
 
 }
 
 // Setting cookies
 function set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
 {
-  var cookie_string = name + "=" + escape ( value );
+	var cookie_string = name + "=" + escape ( value );
 
-  if (exp_y) //delete_cookie(name)
-  {
-    var expires = new Date ( exp_y, exp_m, exp_d );
-    cookie_string += "; expires=" + expires.toGMTString();
-  }
+	if (exp_y) //delete_cookie(name)
+	{
+		var expires = new Date ( exp_y, exp_m, exp_d );
+		cookie_string += "; expires=" + expires.toGMTString();
+	}
 
-  if (path) cookie_string += "; path=" + escape ( path );
-  if (domain) cookie_string += "; domain=" + escape ( domain );
-  if (secure) cookie_string += "; secure";
+	if (path) cookie_string += "; path=" + escape ( path );
+	if (domain) cookie_string += "; domain=" + escape ( domain );
+	if (secure) cookie_string += "; secure";
 
-  document.cookie = cookie_string;
+	document.cookie = cookie_string;
 }
 
 // Retrieving cookies
 function get_cookie(cookie_name)
 {
-  var results = document.cookie.match(cookie_name + '=(.*?)(;|$)');
-  if (results) return (unescape(results[1]));
-  else return null;
+	var results = document.cookie.match(cookie_name + '=(.*?)(;|$)');
+	if (results) return (unescape(results[1]));
+	else return null;
 }
 
 // Delete cookies 
 function delete_cookie( cookie_name )
 {
-  var cookie_date = new Date ( );  // current date & time
-  cookie_date.setTime ( cookie_date.getTime() - 1 );
-  document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
+	var cookie_date = new Date ( );  // current date & time
+	cookie_date.setTime ( cookie_date.getTime() - 1 );
+	document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
 }
 //End of Utility Functions
 
@@ -203,48 +204,44 @@ function emptyCheck(fldName,fldLabel, fldType) {
 			try {
 				currObj.focus()	
 			} catch(error) {
-				// Fix for IE: If element or its wrapper around it is hidden, setting focus will fail
-				// So using the try { } catch(error) { }
+			// Fix for IE: If element or its wrapper around it is hidden, setting focus will fail
+			// So using the try { } catch(error) { }
 			}
-           	return false
+			return false
 		}
-        else{
+		else{
 			return true
 		}
 	} else if((fldType == "textarea")  
 		&& (typeof(CKEDITOR)!=='undefined' && CKEDITOR.intances[fldName] !== 'undefined')) {
- 		var textObj = CKEDITOR.intances[fldName];
- 		var textValue = textObj.getData();
- 		if (trim(textValue) == '' || trim(textValue) == '<br>') { 
- 		   	alert(fldLabel+alert_arr.CANNOT_BE_NONE); 
- 			return false; 
- 			} else{ 
- 		        	return true; 
- 			} 
- 	}	else{
-			if (trim(currObj.value) == '') {
-				alert(fldLabel+alert_arr.CANNOT_BE_NONE)
-        		return false
-      		} else 
-			return true
+		var textObj = CKEDITOR.intances[fldName];
+		var textValue = textObj.getData();
+		if (trim(textValue) == '' || trim(textValue) == '<br>') {
+			alert(fldLabel+alert_arr.CANNOT_BE_NONE);
+			return false;
+		} else{
+			return true;
 		}
+	}	else{
+		if (trim(currObj.value) == '') {
+			alert(fldLabel+alert_arr.CANNOT_BE_NONE)
+			return false
+		} else
+			return true
 	}
+}
 
 
 
 function patternValidate(fldName,fldLabel,type) {
-	var currObj=getObj(fldName)
-	if (type.toUpperCase()=="YAHOO") //Email ID validation
-	{
-		//yahoo Id validation
-		var re=new RegExp(/^[a-z0-9]([a-z0-9_\-\.]*)@([y][a][h][o][o])(\.[a-z]{2,3}(\.[a-z]{2}){0,2})$/)
-	}
+	var currObj=getObj(fldName);
+	
 	if (type.toUpperCase()=="EMAIL") //Email ID validation
 	{
 		/*changes made to fix -- ticket#3278 & ticket#3461
 		  var re=new RegExp(/^.+@.+\..+$/)*/
 		//Changes made to fix tickets #4633, #5111  to accomodate all possible email formats
-		var re=new RegExp(/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/)
+ 	    var re=new RegExp(/^[a-zA-Z0-9]+([!"#$%&'()*+,./:;<=>?@\^_`{|}~-]?[a-zA-Z0-9])*@[a-zA-Z0-9]+([\_\-\.]?[a-zA-Z0-9]+)*\.([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)?$/);
 	}
 
 	if (type.toUpperCase()=="DATE") {//DATE validation 
@@ -256,17 +253,17 @@ function patternValidate(fldName,fldLabel,type) {
 		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{2}\1\d{1,2}$/ 
 		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{4}\1\d{1,2}$/ 
 	   
-	   //DMY
+		//DMY
 		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{2}$/ 
 		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
 
 		switch (userDateFormat) {
-			case "yyyy-mm-dd" : 
-								var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/
-								break;
+			case "yyyy-mm-dd" :
+				var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/
+				break;
 			case "mm-dd-yyyy" : 
-			case "dd-mm-yyyy" : 
-								var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/								
+			case "dd-mm-yyyy" :
+				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
 		}
 	}
 	
@@ -280,8 +277,8 @@ function patternValidate(fldName,fldLabel,type) {
 		try {
 			currObj.focus()	
 		} catch(error) {
-			// Fix for IE: If element or its wrapper around it is hidden, setting focus will fail
-			// So using the try { } catch(error) { }
+		// Fix for IE: If element or its wrapper around it is hidden, setting focus will fail
+		// So using the try { } catch(error) { }
 		}
 		return false
 	}
@@ -297,20 +294,20 @@ function splitDateVal(dateval) {
 	else if (dateval.indexOf("/")>=0) datesep="/"
 	
 	switch (userDateFormat) {
-		case "yyyy-mm-dd" : 
-							dateelements[0]=dateval.substr(dateval.lastIndexOf(datesep)+1,dateval.length) //dd
-							dateelements[1]=dateval.substring(dateval.indexOf(datesep)+1,dateval.lastIndexOf(datesep)) //mm
-							dateelements[2]=dateval.substring(0,dateval.indexOf(datesep)) //yyyyy
-							break;
-		case "mm-dd-yyyy" : 
-							dateelements[0]=dateval.substring(dateval.indexOf(datesep)+1,dateval.lastIndexOf(datesep))
-							dateelements[1]=dateval.substring(0,dateval.indexOf(datesep))
-							dateelements[2]=dateval.substr(dateval.lastIndexOf(datesep)+1,dateval.length)
-							break;
-		case "dd-mm-yyyy" : 
-							dateelements[0]=dateval.substring(0,dateval.indexOf(datesep))
-							dateelements[1]=dateval.substring(dateval.indexOf(datesep)+1,dateval.lastIndexOf(datesep))
-							dateelements[2]=dateval.substr(dateval.lastIndexOf(datesep)+1,dateval.length)
+		case "yyyy-mm-dd" :
+			dateelements[0]=dateval.substr(dateval.lastIndexOf(datesep)+1,dateval.length) //dd
+			dateelements[1]=dateval.substring(dateval.indexOf(datesep)+1,dateval.lastIndexOf(datesep)) //mm
+			dateelements[2]=dateval.substring(0,dateval.indexOf(datesep)) //yyyyy
+			break;
+		case "mm-dd-yyyy" :
+			dateelements[0]=dateval.substring(dateval.indexOf(datesep)+1,dateval.lastIndexOf(datesep))
+			dateelements[1]=dateval.substring(0,dateval.indexOf(datesep))
+			dateelements[2]=dateval.substr(dateval.lastIndexOf(datesep)+1,dateval.length)
+			break;
+		case "dd-mm-yyyy" :
+			dateelements[0]=dateval.substring(0,dateval.indexOf(datesep))
+			dateelements[1]=dateval.substring(dateval.indexOf(datesep)+1,dateval.lastIndexOf(datesep))
+			dateelements[2]=dateval.substr(dateval.lastIndexOf(datesep)+1,dateval.length)
 	}
 	
 	return dateelements;
@@ -319,31 +316,36 @@ function splitDateVal(dateval) {
 function compareDates(date1,fldLabel1,date2,fldLabel2,type) {
 	var ret=true
 	switch (type) {
-		case 'L'	:	if (date1>=date2) {//DATE1 VALUE LESS THAN DATE2
-							alert(fldLabel1+ alert_arr.SHOULDBE_LESS +fldLabel2)
-							ret=false
-						}
-						break;
-		case 'LE'	:	if (date1>date2) {//DATE1 VALUE LESS THAN OR EQUAL TO DATE2
-							alert(fldLabel1+alert_arr.SHOULDBE_LESS_EQUAL+fldLabel2)
-							ret=false
-						}
-						break;
-		case 'E'	:	if (date1!=date2) {//DATE1 VALUE EQUAL TO DATE
-							alert(fldLabel1+alert_arr.SHOULDBE_EQUAL+fldLabel2)
-							ret=false
-						}
-						break;
-		case 'G'	:	if (date1<=date2) {//DATE1 VALUE GREATER THAN DATE2
-							alert(fldLabel1+alert_arr.SHOULDBE_GREATER+fldLabel2)
-							ret=false
-						}
-						break;	
-		case 'GE'	:	if (date1<date2) {//DATE1 VALUE GREATER THAN OR EQUAL TO DATE2
-							alert(fldLabel1+alert_arr.SHOULDBE_GREATER_EQUAL+fldLabel2)
-							ret=false
-						}
-						break;
+		case 'L'	:
+			if (date1>=date2) {//DATE1 VALUE LESS THAN DATE2
+			alert(fldLabel1+ alert_arr.SHOULDBE_LESS +fldLabel2)
+			ret=false
+		}
+		break;
+		case 'LE'	:
+			if (date1>date2) {//DATE1 VALUE LESS THAN OR EQUAL TO DATE2
+			alert(fldLabel1+alert_arr.SHOULDBE_LESS_EQUAL+fldLabel2)
+			ret=false
+		}
+		break;
+		case 'E'	:
+			if (date1!=date2) {//DATE1 VALUE EQUAL TO DATE
+			alert(fldLabel1+alert_arr.SHOULDBE_EQUAL+fldLabel2)
+			ret=false
+		}
+		break;
+		case 'G'	:
+			if (date1<=date2) {//DATE1 VALUE GREATER THAN DATE2
+			alert(fldLabel1+alert_arr.SHOULDBE_GREATER+fldLabel2)
+			ret=false
+		}
+		break;
+		case 'GE'	:
+			if (date1<date2) {//DATE1 VALUE GREATER THAN OR EQUAL TO DATE2
+			alert(fldLabel1+alert_arr.SHOULDBE_GREATER_EQUAL+fldLabel2)
+			ret=false
+		}
+		break;
 	}
 	
 	if (ret==false) return false
@@ -363,19 +365,25 @@ function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 	
 	if (dd<1 || dd>31 || mm<1 || mm>12 || yyyy<1 || yyyy<1000) {
 		alert(alert_arr.ENTER_VALID+fldLabel)
-		try { getObj(dateFldName).focus() } catch(error) { }
+		try {
+			getObj(dateFldName).focus()
+		} catch(error) { }
 		return false
 	}
 	
 	if ((mm==2) && (dd>29)) {//checking of no. of days in february month
 		alert(alert_arr.ENTER_VALID+fldLabel)
-		try { getObj(dateFldName).focus() } catch(error) { }
+		try {
+			getObj(dateFldName).focus()
+		} catch(error) { }
 		return false
 	}
 	
 	if ((mm==2) && (dd>28) && ((yyyy%4)!=0)) {//leap year checking
 		alert(alert_arr.ENTER_VALID+fldLabel)
-		try { getObj(dateFldName).focus() } catch(error) { }
+		try {
+			getObj(dateFldName).focus()
+		} catch(error) { }
 		return false
 	}
 
@@ -384,11 +392,14 @@ function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 		case 4 : 
 		case 6 : 
 		case 9 : 
-		case 11 :	if (dd>30) {
-						alert(alert_arr.ENTER_VALID+fldLabel)
-						try { getObj(dateFldName).focus() } catch(error) { }
-						return false
-					}	
+		case 11 :
+			if (dd>30) {
+			alert(alert_arr.ENTER_VALID+fldLabel)
+			try {
+				getObj(dateFldName).focus()
+			} catch(error) { }
+			return false
+		}
 	}
 	
 	if (patternValidate(timeFldName,fldLabel,"TIME")==false)
@@ -401,7 +412,9 @@ function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 	
 	if (hourval>23 || minval>59) {
 		alert(alert_arr.ENTER_VALID+fldLabel)
-		try { currObj.focus() } catch(error) { }
+		try {
+			currObj.focus()
+		} catch(error) { }
 		return false
 	}
 	
@@ -416,7 +429,9 @@ function dateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 	
 	if (type!="OTH") {
 		if (!compareDates(chkdate,fldLabel,currdate,"current date & time",type)) {
-			try { getObj(dateFldName).focus() } catch(error) { }
+			try {
+				getObj(dateFldName).focus()
+			} catch(error) { }
 			return false
 		} else return true;
 	} else return true;
@@ -463,7 +478,9 @@ function dateTimeComparison(dateFldName1,timeFldName1,fldLabel1,dateFldName2,tim
 	
 	if (type!="OTH") {
 		if (!compareDates(date1,fldLabel1,date2,fldLabel2,type)) {
-			try { getObj(dateFldName1).focus() } catch(error) { }
+			try {
+				getObj(dateFldName1).focus()
+			} catch(error) { }
 			return false
 		} else return true;
 	} else return true;
@@ -482,19 +499,25 @@ function dateValidate(fldName,fldLabel,type) {
 	
 	if (dd<1 || dd>31 || mm<1 || mm>12 || yyyy<1 || yyyy<1000) {
 		alert(alert_arr.ENTER_VALID+fldLabel)
-		try { getObj(fldName).focus() } catch(error) { }
+		try {
+			getObj(fldName).focus()
+		} catch(error) { }
 		return false
 	}
 	
 	if ((mm==2) && (dd>29)) {//checking of no. of days in february month
 		alert(alert_arr.ENTER_VALID+fldLabel)
-		try { getObj(fldName).focus() } catch(error) { }
+		try {
+			getObj(fldName).focus()
+		} catch(error) { }
 		return false
 	}
 	
 	if ((mm==2) && (dd>28) && ((yyyy%4)!=0)) {//leap year checking
 		alert(alert_arr.ENTER_VALID+fldLabel)
-		try { getObj(fldName).focus() } catch(error) { }
+		try {
+			getObj(fldName).focus()
+		} catch(error) { }
 		return false
 	}
 
@@ -503,11 +526,14 @@ function dateValidate(fldName,fldLabel,type) {
 		case 4 : 
 		case 6 : 
 		case 9 : 
-		case 11 :	if (dd>30) {
-						alert(alert_arr.ENTER_VALID+fldLabel)
-						try { getObj(fldName).focus() } catch(error) { }
-						return false
-					}	
+		case 11 :
+			if (dd>30) {
+			alert(alert_arr.ENTER_VALID+fldLabel)
+			try {
+				getObj(fldName).focus()
+			} catch(error) { }
+			return false
+		}
 	}
 	
 	var currdate=new Date()
@@ -519,7 +545,9 @@ function dateValidate(fldName,fldLabel,type) {
 	
 	if (type!="OTH") {
 		if (!compareDates(chkdate,fldLabel,currdate,"current date",type)) {
-			try { getObj(fldName).focus() } catch(error) { }
+			try {
+				getObj(fldName).focus()
+			} catch(error) { }
 			return false
 		} else return true;
 	} else return true;
@@ -553,7 +581,9 @@ function dateComparison(fldName1,fldLabel1,fldName2,fldLabel2,type) {
 	
 	if (type!="OTH") {
 		if (!compareDates(date1,fldLabel1,date2,fldLabel2,type)) {
-			try { getObj(fldName1).focus() } catch(error) { }
+			try {
+				getObj(fldName1).focus()
+			} catch(error) { }
 			return false
 		} else return true;
 	} else return true
@@ -570,7 +600,9 @@ function timeValidate(fldName,fldLabel,type) {
 	
 	if (hourval>23 || minval>59) {
 		alert(alert_arr.ENTER_VALID+fldLabel)
-		try { currObj.focus() } catch(error) { }
+		try {
+			currObj.focus()
+		} catch(error) { }
 		return false
 	}
 	
@@ -582,7 +614,9 @@ function timeValidate(fldName,fldLabel,type) {
 	
 	if (type!="OTH") {
 		if (!compareDates(chktime,fldLabel,currtime,"current time",type)) {
-			try { getObj(fldName).focus() } catch(error) { }
+			try {
+				getObj(fldName).focus()
+			} catch(error) { }
 			return false
 		} else return true;
 	} else return true
@@ -635,120 +669,147 @@ function timeComparison(fldName1,fldLabel1,fldName2,fldLabel2,type) {
 	time2.setMinutes(min2)
 	if (type!="OTH") {	
 		if (!compareDates(time1,fldLabel1,time2,fldLabel2,type)) {
-			try { getObj(fldName1).focus() } catch(error) { }
+			try {
+				getObj(fldName1).focus()
+			} catch(error) { }
 			return false
 		} else return true;
 	} else return true;
 }
 
 function numValidate(fldName,fldLabel,format,neg) {
-   var val=getObj(fldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '')
-   if (format!="any") {
-       if (isNaN(val)) {
-           var invalid=true
-       } else {
-           var format=format.split(",")
-           var splitval=val.split(".")
-           if (neg==true) {
-               if (splitval[0].indexOf("-")>=0) {
-                   if (splitval[0].length-1>format[0])
-                       invalid=true
-               } else {
-                   if (splitval[0].length>format[0])
-                       invalid=true
-               }
-           } else {
-               if (val<0)
-                   invalid=true
-	       else if (format[0]==2 && splitval[0]==100 && (!splitval[1] || splitval[1]==0))
-		   invalid=false
-               else if (splitval[0].length>format[0])
-                   invalid=true
-           }
-                      if (splitval[1])
-               if (splitval[1].length>format[1])
-                   invalid=true
-       }
-              if (invalid==true) {
-           alert(alert_arr.INVALID+fldLabel)
-           try { getObj(fldName).focus() } catch(error) { }
-           return false
-       } else return true
-   } else {
-	   // changes made -- to fix the ticket#3272
-	   var splitval=val.split(".")
-	   var arr_len = splitval.length;
-           var len = 0;
-	   if(fldName == "probability" || fldName == "commissionrate")
-           {
-                   if(arr_len > 1)
-                           len = splitval[1].length;
-                   if(isNaN(val))
-                   {
-                        alert(alert_arr.INVALID+fldLabel)
-                        try { getObj(fldName).focus() } catch(error) { }
-                        return false
-                   }
-                   else if(splitval[0] > 100 || len > 3 || (splitval[0] >= 100 && splitval[1] > 0))
-                   {
-                        alert( fldLabel + alert_arr.EXCEEDS_MAX);
-                        return false;
-                   }
-           }
-	   else if(splitval[0]>18446744073709551615)
-           {
-                   alert( fldLabel + alert_arr.EXCEEDS_MAX);
-                   return false;
-           }
+	var val=getObj(fldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	if(typeof userCurrencySeparator != 'undefined') {
+		while(val.indexOf(userCurrencySeparator) != -1) {
+			val = val.replace(userCurrencySeparator,'');
+		}
+	}
+	if(typeof userDecimalSeparator != 'undefined') {
+		if(val.indexOf(userDecimalSeparator) != -1) {
+			val = val.replace(userDecimalSeparator,'.');
+		}
+	}
+	if (format!="any") {
+		if (isNaN(val)) {
+			var invalid=true
+		} else {
+			var format=format.split(",")
+			var splitval=val.split(".")
+			if (neg==true) {
+				if (splitval[0].indexOf("-")>=0) {
+					if (splitval[0].length-1>format[0])
+						invalid=true
+				} else {
+					if (splitval[0].length>format[0])
+						invalid=true
+				}
+			} else {
+				if (val<0)
+					invalid=true
+				else if (format[0]==2 && splitval[0]==100 && (!splitval[1] || splitval[1]==0))
+					invalid=false
+				else if (splitval[0].length>format[0])
+					invalid=true
+			}
+			if (splitval[1])
+				if (splitval[1].length>format[1])
+					invalid=true
+		}
+		if (invalid==true) {
+			alert(alert_arr.INVALID+fldLabel)
+			try {
+				getObj(fldName).focus()
+			} catch(error) { }
+			return false
+		} else return true
+	} else {
+		// changes made -- to fix the ticket#3272
+		var splitval=val.split(".")
+		var arr_len = splitval.length;
+		var len = 0;
+		if(fldName == "probability" || fldName == "commissionrate")
+		{
+			if(arr_len > 1)
+				len = splitval[1].length;
+			if(isNaN(val))
+			{
+				alert(alert_arr.INVALID+fldLabel)
+				try {
+					getObj(fldName).focus()
+				} catch(error) { }
+				return false
+			}
+			else if(splitval[0] > 100 || len > 3 || (splitval[0] >= 100 && splitval[1] > 0))
+			{
+				alert( fldLabel + alert_arr.EXCEEDS_MAX);
+				return false;
+			}
+		}
+		else if(splitval[0]>18446744073709551615)
+		{
+			alert( fldLabel + alert_arr.EXCEEDS_MAX);
+			return false;
+		}
 
 
-       if (neg==true)
-           var re=/^(-|)(\d)*(\.)?\d+(\.\d\d*)*$/
-       else
-	   var re=/^(\d)*(\.)?\d+(\.\d\d*)*$/
-   }
+		if (neg==true)
+			var re=/^(-|)(\d)*(\.)?\d+(\.\d\d*)*$/
+		else
+			var re=/^(\d)*(\.)?\d+(\.\d\d*)*$/
+	}
 
 	//for precision check. ie.number must contains only one "."	
 	var dotcount=0;
 	for (var i = 0; i < val.length; i++)
 	{   
-	  	if (val.charAt(i) == ".")
-			 dotcount++;
+		if (val.charAt(i) == ".")
+			dotcount++;
 	}	
 
 	if(dotcount>1)
 	{
-       		alert(alert_arr.INVALID+fldLabel)
-		try { getObj(fldName).focus() } catch(error) { }
+		alert(alert_arr.INVALID+fldLabel)
+		try {
+			getObj(fldName).focus()
+		} catch(error) { }
 		return false;
 	}
 
 	if (!re.test(val)) {
-       alert(alert_arr.INVALID+fldLabel)
-       try { getObj(fldName).focus() } catch(error) { }
-       return false
-   } else return true
+		alert(alert_arr.INVALID+fldLabel)
+		try {
+			getObj(fldName).focus()
+		} catch(error) { }
+		return false
+	} else return true
 }
 
 
 function intValidate(fldName,fldLabel) {
-	var val=getObj(fldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '')
+	var val=getObj(fldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	if(typeof userCurrencySeparator != 'undefined') {
+		while(val.indexOf(userCurrencySeparator) != -1) {
+			val = val.replace(userCurrencySeparator,'');
+		}
+	}
 	if (isNaN(val) || (val.indexOf(".")!=-1 && fldName != 'potential_amount' && fldName != 'list_price')) 
 	{
 		alert(alert_arr.INVALID+fldLabel)
-		try { getObj(fldName).focus() } catch(error) { }
+		try {
+			getObj(fldName).focus()
+		} catch(error) { }
 		return false
 	} 
-        else if((fldName != 'employees' || fldName != 'noofemployees') && (val < -2147483648 || val > 2147483647))
-        {
-                alert(fldLabel +alert_arr.OUT_OF_RANGE);
-                return false;
-        }
+	else if((fldName != 'employees' || fldName != 'noofemployees') && (val < -2147483648 || val > 2147483647))
+	{
+		alert(fldLabel +alert_arr.OUT_OF_RANGE);
+		return false;
+	}
 	else if((fldName == 'employees' || fldName != 'noofemployees') && (val < 0 || val > 2147483647))
-        {
-                alert(fldLabel +alert_arr.OUT_OF_RANGE);
-                return false;
-        }
+	{
+		alert(fldLabel +alert_arr.OUT_OF_RANGE);
+		return false;
+	}
 	else
 	{
 		return true
@@ -761,83 +822,91 @@ function numConstComp(fldName,fldLabel,type,constval) {
 
 	var ret=true
 	switch (type) {
-		case "L"  : if (val>=constval) {
-						alert(fldLabel+alert_arr.SHOULDBE_LESS+constval)
-						ret=false
-					}
-					break;
-		case "LE" :	if (val>constval) {
-					alert(fldLabel+alert_arr.SHOULDBE_LESS_EQUAL+constval)
-			        ret=false
-					}
-					break;
-		case "E"  :	if (val!=constval) {
-                                        alert(fldLabel+alert_arr.SHOULDBE_EQUAL+constval)
-                                        ret=false
-                                }
-                                break;
-		case "NE" : if (val==constval) {
-						 alert(fldLabel+alert_arr.SHOULDNOTBE_EQUAL+constval)
-							ret=false
-					}
-					break;
-		case "G"  :	if (val<=constval) {
-							alert(fldLabel+alert_arr.SHOULDBE_GREATER+constval)
-							ret=false
-					}
-					break;
-		case "GE" : if (val<constval) {
-							alert(fldLabel+alert_arr.SHOULDBE_GREATER_EQUAL+constval)
-							ret=false
-					}
-					break;
+		case "L"  :
+			if (val>=constval) {
+			alert(fldLabel+alert_arr.SHOULDBE_LESS+constval)
+			ret=false
+		}
+		break;
+		case "LE" :
+			if (val>constval) {
+			alert(fldLabel+alert_arr.SHOULDBE_LESS_EQUAL+constval)
+			ret=false
+		}
+		break;
+		case "E"  :
+			if (val!=constval) {
+			alert(fldLabel+alert_arr.SHOULDBE_EQUAL+constval)
+			ret=false
+		}
+		break;
+		case "NE" :
+			if (val==constval) {
+			alert(fldLabel+alert_arr.SHOULDNOTBE_EQUAL+constval)
+			ret=false
+		}
+		break;
+		case "G"  :
+			if (val<=constval) {
+			alert(fldLabel+alert_arr.SHOULDBE_GREATER+constval)
+			ret=false
+		}
+		break;
+		case "GE" :
+			if (val<constval) {
+			alert(fldLabel+alert_arr.SHOULDBE_GREATER_EQUAL+constval)
+			ret=false
+		}
+		break;
 	}
 	
 	if (ret==false) {
-		try { getObj(fldName).focus() } catch(error) { }
+		try {
+			getObj(fldName).focus()
+		} catch(error) { }
 		return false
 	} else return true;
 }
 
 /* To get only filename from a given complete file path */
 function getFileNameOnly(filename) {
-  var onlyfilename = filename;
-  // Normalize the path (to make sure we use the same path separator)
-  var filename_normalized = filename.replace(/\\/g, '/');
-  if(filename_normalized.lastIndexOf("/") != -1) {
-    onlyfilename = filename_normalized.substring(filename_normalized.lastIndexOf("/") + 1);
-  }
-  return onlyfilename;
+	var onlyfilename = filename;
+	// Normalize the path (to make sure we use the same path separator)
+	var filename_normalized = filename.replace(/\\/g, '/');
+	if(filename_normalized.lastIndexOf("/") != -1) {
+		onlyfilename = filename_normalized.substring(filename_normalized.lastIndexOf("/") + 1);
+	}
+	return onlyfilename;
 }
 
 /* Function to validate the filename */
 function validateFilename(form_ele) {
-        if (form_ele.value == '') return true;
-        var value = getFileNameOnly(form_ele.value);
+	if (form_ele.value == '') return true;
+	var value = getFileNameOnly(form_ele.value);
 
-        // Color highlighting logic
-        var err_bg_color = "#FFAA22";
+	// Color highlighting logic
+	var err_bg_color = "#FFAA22";
 
-        if (typeof(form_ele.bgcolor) == "undefined") {
-                form_ele.bgcolor = form_ele.style.backgroundColor;
-        }
+	if (typeof(form_ele.bgcolor) == "undefined") {
+		form_ele.bgcolor = form_ele.style.backgroundColor;
+	}
 
-        // Validation starts here
-        var valid = true;
+	// Validation starts here
+	var valid = true;
 
-        /* Filename length is constrained to 255 at database level */
-        if (value.length > 255) {
-                alert(alert_arr.LBL_FILENAME_LENGTH_EXCEED_ERR);
-                valid = false;
-        }
+	/* Filename length is constrained to 255 at database level */
+	if (value.length > 255) {
+		alert(alert_arr.LBL_FILENAME_LENGTH_EXCEED_ERR);
+		valid = false;
+	}
 
-        if (!valid) {
-                form_ele.style.backgroundColor = err_bg_color;
-                return false;
-        }
-        form_ele.style.backgroundColor = form_ele.bgcolor;
-        form_ele.form[form_ele.name + '_hidden'].value = value;
-        return true;
+	if (!valid) {
+		form_ele.style.backgroundColor = err_bg_color;
+		return false;
+	}
+	form_ele.style.backgroundColor = form_ele.bgcolor;
+	form_ele.form[form_ele.name + '_hidden'].value = value;
+	return true;
 }
 
 function formValidate(){
@@ -857,10 +926,10 @@ function doformValidation(edit_type) {
 		if(edit_type=='')
 		{
 			if(getObj('existing_portal') != null 
-   				&& ((getObj('existing_portal').value == 0 && getObj('portal').checked && 
-          				(getObj('email') == null || trim(getObj('email').value) == '')) ||
-       				(getObj('existing_portal').value == 1 && getObj('portal').checked && 
-         		 		getObj('email') != null && trim(getObj('email').value) == ''))) {
+				&& ((getObj('existing_portal').value == 0 && getObj('portal').checked &&
+					(getObj('email') == null || trim(getObj('email').value) == '')) ||
+				(getObj('existing_portal').value == 1 && getObj('portal').checked &&
+					getObj('email') != null && trim(getObj('email').value) == ''))) {
 				
 				alert(alert_arr.PORTAL_PROVIDE_EMAILID);
 				return false;
@@ -885,16 +954,16 @@ function doformValidation(edit_type) {
 			if (getObj('enable_recurring_mass_edit_check') != null 
 				&& getObj('enable_recurring_mass_edit_check').checked
 				&& getObj('enable_recurring') != null) {
-					if(getObj('enable_recurring').checked && (getObj('recurring_frequency') == null 
-						|| trim(getObj('recurring_frequency').value) == '--None--' || getObj('recurring_frequency_mass_edit_check').checked==false)) {
-						alert(alert_arr.RECURRING_FREQUENCY_NOT_PROVIDED);
-						return false;
-					}
-					if(getObj('enable_recurring').checked == false && getObj('recurring_frequency_mass_edit_check').checked
-						&& getObj('recurring_frequency') != null && trim(getObj('recurring_frequency').value) !=  '--None--') {
-						alert(alert_arr.RECURRING_FREQNECY_NOT_ENABLED);
-						return false;
-					}	
+				if(getObj('enable_recurring').checked && (getObj('recurring_frequency') == null
+					|| trim(getObj('recurring_frequency').value) == '--None--' || getObj('recurring_frequency_mass_edit_check').checked==false)) {
+					alert(alert_arr.RECURRING_FREQUENCY_NOT_PROVIDED);
+					return false;
+				}
+				if(getObj('enable_recurring').checked == false && getObj('recurring_frequency_mass_edit_check').checked
+					&& getObj('recurring_frequency') != null && trim(getObj('recurring_frequency').value) !=  '--None--') {
+					alert(alert_arr.RECURRING_FREQNECY_NOT_ENABLED);
+					return false;
+				}
 			}
 		} else if(getObj('enable_recurring') != null && getObj('enable_recurring').checked) {
 			if(getObj('recurring_frequency') == null || getObj('recurring_frequency').value == '--None--') {
@@ -905,27 +974,30 @@ function doformValidation(edit_type) {
 			var end_period = getObj('end_period');
 			if (trim(start_period.value) == '' || trim(end_period.value) == '') {
 				alert(alert_arr.START_PERIOD_END_PERIOD_CANNOT_BE_EMPTY);
-        		return false;
-      		}
+				return false;
+			}
 		}
 	}
 	for (var i=0; i<fieldname.length; i++) {
 		if(edit_type == 'mass_edit') {
 			if(fieldname[i]!='salutationtype')	
-			var obj = getObj(fieldname[i]+"_mass_edit_check");
+				var obj = getObj(fieldname[i]+"_mass_edit_check");
 			if(obj == null || obj.checked == false) continue;
 		}
 		if(getObj(fieldname[i]) != null)
 		{
 			var type=fielddatatype[i].split("~")
-				if (type[1]=="M") {
-					if (!emptyCheck(fieldname[i],fieldlabel[i],getObj(fieldname[i]).type))
-						return false;
-				}
-				switch (type[0]) {
-				case "O"  : break;
-				case "V"  : break;
-				case "C"  : break;
+			if (type[1]=="M") {
+				if (!emptyCheck(fieldname[i],fieldlabel[i],getObj(fieldname[i]).type))
+					return false;
+			}
+			switch (type[0]) {
+				case "O"  :
+					break;
+				case "V"  :
+					break;
+				case "C"  :
+					break;
 				case "DT" :
 					if (getObj(fieldname[i]) != null && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0)
 					{	 
@@ -933,18 +1005,18 @@ function doformValidation(edit_type) {
 							if (!emptyCheck(fieldname[2],fieldlabel[i],getObj(type[2]).type))
 								return false
 
-									if(typeof(type[3])=="undefined") var currdatechk="OTH"
-									else var currdatechk=type[3]
+						if(typeof(type[3])=="undefined") var currdatechk="OTH"
+						else var currdatechk=type[3]
 
-										if (!dateTimeValidate(fieldname[i],type[2],fieldlabel[i],currdatechk))
-											return false
-												if (type[4]) {
-													if (!dateTimeComparison(fieldname[i],type[2],fieldlabel[i],type[5],type[6],type[4]))
-														return false
+						if (!dateTimeValidate(fieldname[i],type[2],fieldlabel[i],currdatechk))
+							return false
+						if (type[4]) {
+							if (!dateTimeComparison(fieldname[i],type[2],fieldlabel[i],type[5],type[6],type[4]))
+								return false
 
-												}
+						}
 					}		
-				break;
+					break;
 				case "D"  :
 					if (getObj(fieldname[i]) != null && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0)
 					{	
@@ -962,21 +1034,21 @@ function doformValidation(edit_type) {
 								return false
 						}
 					}	
-				break;
+					break;
 				case "T"  :
 					if (getObj(fieldname[i]) != null && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0)
 					{	 
 						if(typeof(type[2])=="undefined") var currtimechk="OTH"
 						else var currtimechk=type[2]
 
-							if (!timeValidate(fieldname[i],fieldlabel[i],currtimechk))
+						if (!timeValidate(fieldname[i],fieldlabel[i],currtimechk))
+							return false
+						if (type[3]) {
+							if (!timeComparison(fieldname[i],fieldlabel[i],type[4],type[5],type[3]))
 								return false
-									if (type[3]) {
-										if (!timeComparison(fieldname[i],fieldlabel[i],type[4],type[5],type[3]))
-											return false
-									}
+						}
 					}
-				break;
+					break;
 				case "I"  :
 					if (getObj(fieldname[i]) != null && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0)
 					{	
@@ -984,15 +1056,15 @@ function doformValidation(edit_type) {
 						{
 							if (!intValidate(fieldname[i],fieldlabel[i]))
 								return false
-									if (type[2]) {
-										if (!numConstComp(fieldname[i],fieldlabel[i],type[2],type[3]))
-											return false
-									}
+							if (type[2]) {
+								if (!numConstComp(fieldname[i],fieldlabel[i],type[2],type[3]))
+									return false
+							}
 						}
 					}
-				break;
+					break;
 				case "N"  :
-					case "NN" :
+				case "NN" :
 					if (getObj(fieldname[i]) != null && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0)
 					{
 						if (getObj(fieldname[i]).value.length!=0)
@@ -1002,7 +1074,7 @@ function doformValidation(edit_type) {
 							if(type[0]=="NN")
 							{
 								if (!numValidate(fieldname[i],fieldlabel[i],numformat,true))
-								return false
+									return false
 							}
 							else if (!numValidate(fieldname[i],fieldlabel[i],numformat))
 								return false
@@ -1012,22 +1084,18 @@ function doformValidation(edit_type) {
 							}
 						}
 					}
-				break;
+					break;
 				case "E"  :
 					if (getObj(fieldname[i]) != null && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0)
 					{
 						if (getObj(fieldname[i]).value.length!=0)
 						{
-							var etype = "EMAIL"
-							if(fieldname[i] == "yahooid" || fieldname[i] == "yahoo_id")
-							{
-								etype = "YAHOO";
-							}
+							var etype = "EMAIL";
 							if (!patternValidate(fieldname[i],fieldlabel[i],etype))
 								return false;
 						}
 					}
-				break;
+					break;
 			}
 			//start Birth day date validation
 			if(fieldname[i] == "birthday" && getObj(fieldname[i]).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0 )
@@ -1037,10 +1105,12 @@ function doformValidation(edit_type) {
 				var datelabel = fieldlabel[i]
 				var datefield = fieldname[i]
 				var datevalue =getObj(datefield).value.replace(/^\s+/g, '').replace(/\s+$/g, '')
-                        	if (!dateValidate(fieldname[i],fieldlabel[i],currdatechk))
+				if (!dateValidate(fieldname[i],fieldlabel[i],currdatechk))
 				{
-		        	        try { getObj(datefield).focus() } catch(error) { }
-                        		return false
+					try {
+						getObj(datefield).focus()
+					} catch(error) { }
+					return false
 				}
 				else
 				{
@@ -1049,49 +1119,51 @@ function doformValidation(edit_type) {
 					mm=datearr[1]
 					yyyy=datearr[2]
 					var datecheck = new Date()
-        				datecheck.setYear(yyyy)
-				        datecheck.setMonth(mm-1)
-        				datecheck.setDate(dd)
-                			if (!compareDates(datecheck,datelabel,now,"Current Date","L"))
+					datecheck.setYear(yyyy)
+					datecheck.setMonth(mm-1)
+					datecheck.setDate(dd)
+					if (!compareDates(datecheck,datelabel,now,"Current Date","L"))
 					{
-		                	        try { getObj(datefield).focus() } catch(error) { }
-                			        return false
-                			}
+						try {
+							getObj(datefield).focus()
+						} catch(error) { }
+						return false
+					}
 				}
 			}
-		      //End Birth day	
+		//End Birth day
 		}
 		
 	}
 	if(gVTModule == 'Contacts')
-        {
-                if(getObj('imagename'))
-                {
-                        if(getObj('imagename').value != '')
-                        {
-                                var image_arr = new Array();
-                                image_arr = (getObj('imagename').value).split(".");
-								var image_arr_last_index = image_arr.length - 1;
-								if(image_arr_last_index < 0) {
-									alert(alert_arr.LBL_WRONG_IMAGE_TYPE);
-                                    return false;
-								}
-                                var image_ext = image_arr[image_arr_last_index].toLowerCase();
-                                if(image_ext ==  "jpeg" || image_ext ==  "png" || image_ext ==  "jpg" || image_ext ==  "pjpeg" || image_ext ==  "x-png" || image_ext ==  "gif")
-                                {
-                                        return true;
-                                }
-                                else
-                                {
-                                        alert(alert_arr.LBL_WRONG_IMAGE_TYPE);
-                                        return false;
-                                }
-                        }
-                }
-        }
+	{
+		if(getObj('imagename'))
+		{
+			if(getObj('imagename').value != '')
+			{
+				var image_arr = new Array();
+				image_arr = (getObj('imagename').value).split(".");
+				var image_arr_last_index = image_arr.length - 1;
+				if(image_arr_last_index < 0) {
+					alert(alert_arr.LBL_WRONG_IMAGE_TYPE);
+					return false;
+				}
+				var image_ext = image_arr[image_arr_last_index].toLowerCase();
+				if(image_ext ==  "jpeg" || image_ext ==  "png" || image_ext ==  "jpg" || image_ext ==  "pjpeg" || image_ext ==  "x-png" || image_ext ==  "gif")
+				{
+					return true;
+				}
+				else
+				{
+					alert(alert_arr.LBL_WRONG_IMAGE_TYPE);
+					return false;
+				}
+			}
+		}
+	}
 
-       //added to check Start Date & Time,if Activity Status is Planned.//start
-        for (var j=0; j<fieldname.length; j++)
+	//added to check Start Date & Time,if Activity Status is Planned.//start
+	for (var j=0; j<fieldname.length; j++)
 	{
 		if(getObj(fieldname[j]) != null)
 		{
@@ -1115,35 +1187,35 @@ function doformValidation(edit_type) {
 		}
 	}
 	if(statusvalue == "Planned")
-        {
-                var dateelements=splitDateVal(startdatevalue)
+	{
+		var dateelements=splitDateVal(startdatevalue)
 
-                var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")))
-                var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length))
+		var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")))
+		var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length))
 
 
-               dd=dateelements[0]
-               mm=dateelements[1]
-               yyyy=dateelements[2]
+		dd=dateelements[0]
+		mm=dateelements[1]
+		yyyy=dateelements[2]
 
-               var chkdate=new Date()
-               chkdate.setYear(yyyy)
-               chkdate.setMonth(mm-1)
-               chkdate.setDate(dd)
-               chkdate.setMinutes(minval)
-               chkdate.setHours(hourval)
+		var chkdate=new Date()
+		chkdate.setYear(yyyy)
+		chkdate.setMonth(mm-1)
+		chkdate.setDate(dd)
+		chkdate.setMinutes(minval)
+		chkdate.setHours(hourval)
 		if(!comparestartdate(chkdate)) return false;
-	 }//end
+	}//end
 	 
-	 // We need to enforce fileupload for internal type
-	 if(gVTModule == 'Documents') {
-	 	if(getObj('filelocationtype').value == 'I') {
+	// We need to enforce fileupload for internal type
+	if(gVTModule == 'Documents') {
+		if(getObj('filelocationtype').value == 'I') {
 			if(getObj('filename_hidden').value == '') {
 				alert(alert_arr.LBL_PLEASE_SELECT_FILE_TO_UPLOAD);
 				return false;				
 			}
 		}
-	 }
+	}
 
 	return true
 }
@@ -1156,30 +1228,9 @@ function clearId(fldName) {
 
 }
 
-function comparestartdate(chkdate)
-{
-	var datObj = [];
-        var ajxdate = "test";
-        var url = "module=Calendar&action=CalendarAjax&file=CalendarCommon&fieldval="+ajxdate
-        var currdate = new Date();
-        new Ajax.Request(
-            'index.php',
-             {
-                     queue: {position: 'end', scope: 'command'},
-                     method: 'post',
-                     postBody:url,
-                     onComplete: function(response)
-                     {
-                          datObj = eval(response.responseText);
-              	          currdate.setFullYear(datObj[0].YEAR)
-             	 	  currdate.setMonth(datObj[0].MONTH-1)
-             	 	  currdate.setDate(datObj[0].DAY)
-             	 	  currdate.setHours(datObj[0].HOUR)
-             	 	  currdate.setMinutes(datObj[0].MINUTE)
-                     }
-             }
-                        );
-                return compareDates(chkdate,alert_arr.START_DATE_TIME,currdate,alert_arr.DATE_SHOULDNOT_PAST,"GE");
+function comparestartdate(chkdate) {
+	var currdate = new Date();
+	return compareDates(chkdate,alert_arr.START_DATE_TIME,currdate,alert_arr.DATE_SHOULDNOT_PAST,"GE");
 }
 
 function showCalc(fldName) {
@@ -1268,10 +1319,10 @@ function toggleSelectAll(relCheckName,selectAllName) {
 function expandCont(bn)
 {
 	var leftTab = document.getElementById(bn);
-       	leftTab.style.display = (leftTab.style.display == "block")?"none":"block";
-       	img = document.getElementById("img_"+bn);
-      	img.src=(img.src.indexOf("images/toggle1.gif")!=-1)?"themes/images/toggle2.gif":"themes/images/toggle1.gif";
-      	set_cookie_gen(bn,leftTab.style.display)
+	leftTab.style.display = (leftTab.style.display == "block")?"none":"block";
+	img = document.getElementById("img_"+bn);
+	img.src=(img.src.indexOf("images/toggle1.gif")!=-1)?"themes/images/toggle2.gif":"themes/images/toggle1.gif";
+	set_cookie_gen(bn,leftTab.style.display)
 
 }
 
@@ -1304,49 +1355,49 @@ function toggleDiv(id) {
 	}else{
 		listTableObj.style.display="block"
 	}
-	//set_cookie(id,listTableObj.style.display)
+//set_cookie(id,listTableObj.style.display)
 }
 
 //Setting cookies
 function set_cookie_gen ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
 {
-  var cookie_string = name + "=" + escape ( value );
+	var cookie_string = name + "=" + escape ( value );
 
-  if ( exp_y )
-  {
-    var expires = new Date ( exp_y, exp_m, exp_d );
-    cookie_string += "; expires=" + expires.toGMTString();
-  }
+	if ( exp_y )
+	{
+		var expires = new Date ( exp_y, exp_m, exp_d );
+		cookie_string += "; expires=" + expires.toGMTString();
+	}
 
-  if ( path )
-        cookie_string += "; path=" + escape ( path );
+	if ( path )
+		cookie_string += "; path=" + escape ( path );
 
-  if ( domain )
-        cookie_string += "; domain=" + escape ( domain );
+	if ( domain )
+		cookie_string += "; domain=" + escape ( domain );
   
-  if ( secure )
-        cookie_string += "; secure";
+	if ( secure )
+		cookie_string += "; secure";
   
-  document.cookie = cookie_string;
+	document.cookie = cookie_string;
 }
 
 // Retrieving cookies
 function get_cookie_gen ( cookie_name )
 {
-  var results = document.cookie.match ( cookie_name + '=(.*?)(;|$)' );
+	var results = document.cookie.match ( cookie_name + '=(.*?)(;|$)' );
 
-  if ( results )
-    return ( unescape ( results[1] ) );
-  else
-    return null;
+	if ( results )
+		return ( unescape ( results[1] ) );
+	else
+		return null;
 }
 
 // Delete cookies 
 function delete_cookie_gen ( cookie_name )
 {
-  var cookie_date = new Date ( );  // current date & time
-  cookie_date.setTime ( cookie_date.getTime() - 1 );
-  document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
+	var cookie_date = new Date ( );  // current date & time
+	cookie_date.setTime ( cookie_date.getTime() - 1 );
+	document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
 }
 //end added for show/hide 10July
 
@@ -1355,37 +1406,37 @@ function delete_cookie_gen ( cookie_name )
   */
 function toggleAssignType(currType)
 {
-        if (currType=="U")
-        {
-                getObj("assign_user").style.display="block"
-                getObj("assign_team").style.display="none"
-        }
-        else
-        {
-                getObj("assign_user").style.display="none"
-                getObj("assign_team").style.display="block"
-        }
+	if (currType=="U")
+	{
+		getObj("assign_user").style.display="block"
+		getObj("assign_team").style.display="none"
+	}
+	else
+	{
+		getObj("assign_user").style.display="none"
+		getObj("assign_team").style.display="block"
+	}
 }
 //to display type of address for google map
 function showLocateMapMenu()
-    {
-            getObj("dropDownMenu").style.display="block"
-            getObj("dropDownMenu").style.left=findPosX(getObj("locateMap"))
-            getObj("dropDownMenu").style.top=findPosY(getObj("locateMap"))+getObj("locateMap").offsetHeight
-    }
+{
+	getObj("dropDownMenu").style.display="block"
+	getObj("dropDownMenu").style.left=findPosX(getObj("locateMap"))
+	getObj("dropDownMenu").style.top=findPosY(getObj("locateMap"))+getObj("locateMap").offsetHeight
+}
 
 
 function hideLocateMapMenu(ev)
-    {
-            if (browser_ie)
-                    currElement=window.event.srcElement
-            else if (browser_nn4 || browser_nn6)
-                    currElement=ev.target
+{
+	if (browser_ie)
+		currElement=window.event.srcElement
+	else if (browser_nn4 || browser_nn6)
+		currElement=ev.target
 
-            if (currElement.id!="locateMap")
-                    if (getObj("dropDownMenu").style.display=="block")
-                            getObj("dropDownMenu").style.display="none"
-    }
+	if (currElement.id!="locateMap")
+		if (getObj("dropDownMenu").style.display=="block")
+			getObj("dropDownMenu").style.display="none"
+}
 /*
 * javascript function to display the div tag
 * @param divId :: div tag ID
@@ -1406,8 +1457,8 @@ function show(divId)
 */
 function showBlock(divId)
 {
-    var id = document.getElementById(divId);
-    id.style.display = 'block';
+	var id = document.getElementById(divId);
+	id.style.display = 'block';
 }
 
 
@@ -1418,26 +1469,26 @@ function showBlock(divId)
 function hide(divId)
 {
 
-    var id = document.getElementById(divId);
+	var id = document.getElementById(divId);
 
-    id.style.display = 'none';
+	id.style.display = 'none';
 
 }
 function fnhide(divId)
 {
 
-    var id = document.getElementById(divId);
+	var id = document.getElementById(divId);
 
-    id.style.display = 'none';
+	id.style.display = 'none';
 }
 
 function fnLoadValues(obj1,obj2,SelTab,unSelTab,moduletype,module){
 	
    
 	var oform = document.forms['EditView'];
-   oform.action.value='Save';	
-   //global variable to check the validation calling function to avoid validating when tab change
-   gValidationCall = 'tabchange'; 
+	oform.action.value='Save';
+	//global variable to check the validation calling function to avoid validating when tab change
+	gValidationCall = 'tabchange';
    	
 	/*var tabName1 = document.getElementById(obj1);
 	var tabName2 = document.getElementById(obj2);
@@ -1452,95 +1503,95 @@ function fnLoadValues(obj1,obj2,SelTab,unSelTab,moduletype,module){
 	tagName2.style.display='none';*/
 	gValidationCall = 'tabchange'; 
 	
-  // if((moduletype == 'inventory' && validateInventory(module)) ||(moduletype == 'normal') && formValidate())	
-  // if(formValidate())
-  // {	
-	   var tabName1 = document.getElementById(obj1);
+	// if((moduletype == 'inventory' && validateInventory(module)) ||(moduletype == 'normal') && formValidate())
+	// if(formValidate())
+	// {
+	var tabName1 = document.getElementById(obj1);
 
-	   var tabName2 = document.getElementById(obj2);
+	var tabName2 = document.getElementById(obj2);
 
-	   var tagName1 = document.getElementById(SelTab);
+	var tagName1 = document.getElementById(SelTab);
 
-	   var tagName2 = document.getElementById(unSelTab);
+	var tagName2 = document.getElementById(unSelTab);
 
-	   if(tabName1.className == "dvtUnSelectedCell")
+	if(tabName1.className == "dvtUnSelectedCell")
 
-		   tabName1.className = "dvtSelectedCell";
+		tabName1.className = "dvtSelectedCell";
 
-	   if(tabName2.className == "dvtSelectedCell")
+	if(tabName2.className == "dvtSelectedCell")
 
-		   tabName2.className = "dvtUnSelectedCell";   
-	   tagName1.style.display='block';
+		tabName2.className = "dvtUnSelectedCell";
+	tagName1.style.display='block';
 
-	   tagName2.style.display='none';
-  // }
+	tagName2.style.display='none';
+	// }
 	
-   gValidationCall = ''; 	
+	gValidationCall = '';
 }
 
 function fnCopy(source,design){
 
-   document.getElementById(source).value=document.getElementById(design).value;
+	document.getElementById(source).value=document.getElementById(design).value;
 
-   document.getElementById(source).disabled=true;
+	document.getElementById(source).disabled=true;
 
 }
 
 function fnClear(source){
 
-   document.getElementById(source).value=" ";
+	document.getElementById(source).value=" ";
 
-   document.getElementById(source).disabled=false;
+	document.getElementById(source).disabled=false;
 
 }
 
 function fnCpy(){
 
-   var tagName=document.getElementById("cpy");
+	var tagName=document.getElementById("cpy");
 
-   if(tagName.checked==true){   
-       fnCopy("shipaddress","address");
+	if(tagName.checked==true){
+		fnCopy("shipaddress","address");
 
-       fnCopy("shippobox","pobox");
+		fnCopy("shippobox","pobox");
 
-       fnCopy("shipcity","city");
+		fnCopy("shipcity","city");
 
-       fnCopy("shipcode","code");
+		fnCopy("shipcode","code");
 
-       fnCopy("shipstate","state");
+		fnCopy("shipstate","state");
 
-       fnCopy("shipcountry","country");
+		fnCopy("shipcountry","country");
 
-   }
+	}
 
-   else{
+	else{
 
-       fnClear("shipaddress");
+		fnClear("shipaddress");
 
-       fnClear("shippobox");
+		fnClear("shippobox");
 
-       fnClear("shipcity");
+		fnClear("shipcity");
 
-       fnClear("shipcode");
+		fnClear("shipcode");
 
-       fnClear("shipstate");
+		fnClear("shipstate");
 
-       fnClear("shipcountry");
+		fnClear("shipcountry");
 
-   }
+	}
 
 }
 function fnDown(obj){
-        var tagName = document.getElementById(obj);
-        var tabName = document.getElementById("one");
-        if(tagName.style.display == 'none'){
-                tagName.style.display = 'block';
-                tabName.style.display = 'block';
-        }
-        else{
-                tabName.style.display = 'none';
-                tagName.style.display = 'none';
-        }
+	var tagName = document.getElementById(obj);
+	var tabName = document.getElementById("one");
+	if(tagName.style.display == 'none'){
+		tagName.style.display = 'block';
+		tabName.style.display = 'block';
+	}
+	else{
+		tabName.style.display = 'none';
+		tagName.style.display = 'none';
+	}
 }
 
 /*
@@ -1551,25 +1602,25 @@ var count = 0;
 var rowCnt = 1;
 function fnAddSrch(){
 
-    var tableName = document.getElementById('adSrc');
+	var tableName = document.getElementById('adSrc');
 
-    var prev = tableName.rows.length;
+	var prev = tableName.rows.length;
 
-    var count = prev;
+	var count = prev;
 
-    var row = tableName.insertRow(prev);
+	var row = tableName.insertRow(prev);
 
-    if(count%2)
+	if(count%2)
 
-        row.className = "dvtCellLabel";
+		row.className = "dvtCellLabel";
 
-    else
+	else
 
-        row.className = "dvtCellInfo";
+		row.className = "dvtCellInfo";
         
-    var fieldObject = document.getElementById("Fields0");
-    var conditionObject = document.getElementById("Condition0");
-    var searchValueObject = document.getElementById("Srch_value0");
+	var fieldObject = document.getElementById("Fields0");
+	var conditionObject = document.getElementById("Condition0");
+	var searchValueObject = document.getElementById("Srch_value0");
 
 	var columnone = document.createElement('td');
 	var colone = fieldObject.cloneNode(true);
@@ -1577,8 +1628,8 @@ function fnAddSrch(){
 	colone.setAttribute('name','Fields'+count);
 	colone.setAttribute('value','');
 	colone.onchange = function() {
-							updatefOptions(colone, 'Condition'+count);
-						}
+		updatefOptions(colone, 'Condition'+count);
+	}
 	columnone.appendChild(colone);
 	row.appendChild(columnone);
 	
@@ -1615,156 +1666,156 @@ function totalnoofrows()
 function delRow()
 {
 
-    var tableName = document.getElementById('adSrc');
+	var tableName = document.getElementById('adSrc');
 
-    var prev = tableName.rows.length;
+	var prev = tableName.rows.length;
 
-    if(prev > 1)
+	if(prev > 1)
 
-    document.getElementById('adSrc').deleteRow(prev-1);
+		document.getElementById('adSrc').deleteRow(prev-1);
 
 }
 
 function fnVis(obj){
 
-   var profTag = document.getElementById("prof");
+	var profTag = document.getElementById("prof");
 
-   var moreTag = document.getElementById("more");
+	var moreTag = document.getElementById("more");
 
-   var addrTag = document.getElementById("addr");
-
-  
-   if(obj == 'prof'){
-
-       document.getElementById('mnuTab').style.display = 'block';
-
-       document.getElementById('mnuTab1').style.display = 'none';
-
-       document.getElementById('mnuTab2').style.display = 'none';
-
-       profTag.className = 'dvtSelectedCell';
-
-       moreTag.className = 'dvtUnSelectedCell';
-
-       addrTag.className = 'dvtUnSelectedCell';
-
-   }
+	var addrTag = document.getElementById("addr");
 
   
-   else if(obj == 'more'){
+	if(obj == 'prof'){
 
-       document.getElementById('mnuTab1').style.display = 'block';
+		document.getElementById('mnuTab').style.display = 'block';
 
-       document.getElementById('mnuTab').style.display = 'none';
+		document.getElementById('mnuTab1').style.display = 'none';
 
-       document.getElementById('mnuTab2').style.display = 'none';
+		document.getElementById('mnuTab2').style.display = 'none';
 
-       moreTag.className = 'dvtSelectedCell';
+		profTag.className = 'dvtSelectedCell';
 
-       profTag.className = 'dvtUnSelectedCell';
+		moreTag.className = 'dvtUnSelectedCell';
 
-       addrTag.className = 'dvtUnSelectedCell';
+		addrTag.className = 'dvtUnSelectedCell';
 
-   }
+	}
 
   
-   else if(obj == 'addr'){
+	else if(obj == 'more'){
 
-       document.getElementById('mnuTab2').style.display = 'block';
+		document.getElementById('mnuTab1').style.display = 'block';
 
-       document.getElementById('mnuTab').style.display = 'none';
+		document.getElementById('mnuTab').style.display = 'none';
 
-       document.getElementById('mnuTab1').style.display = 'none';
+		document.getElementById('mnuTab2').style.display = 'none';
 
-       addrTag.className = 'dvtSelectedCell';
+		moreTag.className = 'dvtSelectedCell';
 
-       profTag.className = 'dvtUnSelectedCell';
+		profTag.className = 'dvtUnSelectedCell';
 
-       moreTag.className = 'dvtUnSelectedCell';
+		addrTag.className = 'dvtUnSelectedCell';
 
-   }
+	}
+
+  
+	else if(obj == 'addr'){
+
+		document.getElementById('mnuTab2').style.display = 'block';
+
+		document.getElementById('mnuTab').style.display = 'none';
+
+		document.getElementById('mnuTab1').style.display = 'none';
+
+		addrTag.className = 'dvtSelectedCell';
+
+		profTag.className = 'dvtUnSelectedCell';
+
+		moreTag.className = 'dvtUnSelectedCell';
+
+	}
 
 }
 
 function fnvsh(obj,Lay){
-    var tagName = document.getElementById(Lay);
-    var leftSide = findPosX(obj);
-    var topSide = findPosY(obj);
-    tagName.style.left= leftSide + 175 + 'px';
-    tagName.style.top= topSide + 'px';
-    tagName.style.visibility = 'visible';
+	var tagName = document.getElementById(Lay);
+	var leftSide = findPosX(obj);
+	var topSide = findPosY(obj);
+	tagName.style.left= leftSide + 175 + 'px';
+	tagName.style.top= topSide + 'px';
+	tagName.style.visibility = 'visible';
 }
 
 function fnvshobj(obj,Lay){
 	var tagName = document.getElementById(Lay);
-    var leftSide = findPosX(obj);
-    var topSide = findPosY(obj);
-    var maxW = tagName.style.width;
-    var widthM = maxW.substring(0,maxW.length-2);
-    if(Lay == 'editdiv') 
-    {
-        leftSide = leftSide - 225;
-        topSide = topSide - 125;
-    }else if(Lay == 'transferdiv')
+	var leftSide = findPosX(obj);
+	var topSide = findPosY(obj);
+	var maxW = tagName.style.width;
+	var widthM = maxW.substring(0,maxW.length-2);
+	if(Lay == 'editdiv')
+	{
+		leftSide = leftSide - 225;
+		topSide = topSide - 125;
+	}else if(Lay == 'transferdiv')
 	{
 		leftSide = leftSide - 10;
-	        topSide = topSide;
+		topSide = topSide;
 	}
-    var IE = document.all?true:false;
-    if(IE)
-   {
-    if($("repposition1"))
-    {
-	if(topSide > 1200)
+	var IE = document.all?true:false;
+	if(IE)
 	{
-		topSide = topSide-250;
+		if($("repposition1"))
+		{
+			if(topSide > 1200)
+			{
+				topSide = topSide-250;
+			}
+		}
 	}
-    }
-   }
 	
-    var getVal = eval(leftSide) + eval(widthM);
-    if(getVal  > document.body.clientWidth ){
-        leftSide = eval(leftSide) - eval(widthM);
-        tagName.style.left = leftSide + 34 + 'px';
-    }
-    else
-        tagName.style.left= leftSide + 'px';
-    tagName.style.top= topSide + 'px';
-    tagName.style.display = 'block';
-    tagName.style.visibility = "visible";
+	var getVal = eval(leftSide) + eval(widthM);
+	if(getVal  > document.body.clientWidth ){
+		leftSide = eval(leftSide) - eval(widthM);
+		tagName.style.left = leftSide + 34 + 'px';
+	}
+	else
+		tagName.style.left= leftSide + 'px';
+	tagName.style.top= topSide + 'px';
+	tagName.style.display = 'block';
+	tagName.style.visibility = "visible";
 }
 
 function posLay(obj,Lay){
-    var tagName = document.getElementById(Lay);
-    var leftSide = findPosX(obj);
-    var topSide = findPosY(obj);
-    var maxW = tagName.style.width;
-    var widthM = maxW.substring(0,maxW.length-2);
-    var getVal = eval(leftSide) + eval(widthM);
-    if(getVal  > document.body.clientWidth ){
-        leftSide = eval(leftSide) - eval(widthM);
-        tagName.style.left = leftSide + 'px';
-    }
-    else
-        tagName.style.left= leftSide + 'px';
-    tagName.style.top= topSide + 'px';
+	var tagName = document.getElementById(Lay);
+	var leftSide = findPosX(obj);
+	var topSide = findPosY(obj);
+	var maxW = tagName.style.width;
+	var widthM = maxW.substring(0,maxW.length-2);
+	var getVal = eval(leftSide) + eval(widthM);
+	if(getVal  > document.body.clientWidth ){
+		leftSide = eval(leftSide) - eval(widthM);
+		tagName.style.left = leftSide + 'px';
+	}
+	else
+		tagName.style.left= leftSide + 'px';
+	tagName.style.top= topSide + 'px';
 }
 
 function fninvsh(Lay){
-    var tagName = document.getElementById(Lay);
-    tagName.style.visibility = 'hidden';
-    tagName.style.display = 'none';
+	var tagName = document.getElementById(Lay);
+	tagName.style.visibility = 'hidden';
+	tagName.style.display = 'none';
 }
 
 function fnvshNrm(Lay){
-    var tagName = document.getElementById(Lay);
-    tagName.style.visibility = 'visible';
-    tagName.style.display = 'block';
+	var tagName = document.getElementById(Lay);
+	tagName.style.visibility = 'visible';
+	tagName.style.display = 'block';
 }
 
 function cancelForm(frm)
 {
-	    window.history.back();
+	window.history.back();
 }
 
 function trim(str)
@@ -1787,98 +1838,107 @@ function clear_form(form)
 
 function ActivateCheckBox()
 {
-        var map = document.getElementById("saved_map_checkbox");
-        var source = document.getElementById("saved_source");
+	var map = document.getElementById("saved_map_checkbox");
+	var source = document.getElementById("saved_source");
 
-        if(map.checked == true)
-        {
-                source.disabled = false;
-        }
-        else
-        {
-                source.disabled = true;
-        }
+	if(map.checked == true)
+	{
+		source.disabled = false;
+	}
+	else
+	{
+		source.disabled = true;
+	}
 }
 
 //wipe for Convert Lead  
 
 function fnSlide2(obj,inner)
 {
-  var buff = document.getElementById(obj).height;
-  closeLimit = buff.substring(0,buff.length);
-  menu_max = eval(closeLimit);
-  var tagName = document.getElementById(inner);
-  document.getElementById(obj).style.height=0 + "px"; menu_i=0;
-  if (tagName.style.display == 'none')
-          fnexpanLay2(obj,inner);
-  else
-        fncloseLay2(obj,inner);
- }
+	var buff = document.getElementById(obj).height;
+	closeLimit = buff.substring(0,buff.length);
+	menu_max = eval(closeLimit);
+	var tagName = document.getElementById(inner);
+	document.getElementById(obj).style.height=0 + "px";
+	menu_i=0;
+	if (tagName.style.display == 'none')
+		fnexpanLay2(obj,inner);
+	else
+		fncloseLay2(obj,inner);
+}
 
 function fnexpanLay2(obj,inner)
 {
-    // document.getElementById(obj).style.display = 'run-in';
-   var setText = eval(closeLimit) - 1;
-   if (menu_i<=eval(closeLimit))
-   {
-            if (menu_i>setText){document.getElementById(inner).style.display='block';}
-       document.getElementById(obj).style.height=menu_i + "px";
-           setTimeout(function() { fnexpanLay2(obj,inner); },5);
-        menu_i=menu_i+5;
-   }
+	// document.getElementById(obj).style.display = 'run-in';
+	var setText = eval(closeLimit) - 1;
+	if (menu_i<=eval(closeLimit))
+	{
+		if (menu_i>setText){
+			document.getElementById(inner).style.display='block';
+		}
+		document.getElementById(obj).style.height=menu_i + "px";
+		setTimeout(function() {
+			fnexpanLay2(obj,inner);
+		},5);
+		menu_i=menu_i+5;
+	}
 }
 
- function fncloseLay2(obj,inner)
+function fncloseLay2(obj,inner)
 {
-  if (menu_max >= eval(openLimit))
-   {
-            if (menu_max<eval(closeLimit)){document.getElementById(inner).style.display='none';}
-       document.getElementById(obj).style.height=menu_max +"px";
-          setTimeout(function() { fncloseLay2(obj,inner); }, 5);
-       menu_max = menu_max -5;
-   }
+	if (menu_max >= eval(openLimit))
+	{
+		if (menu_max<eval(closeLimit)){
+			document.getElementById(inner).style.display='none';
+		}
+		document.getElementById(obj).style.height=menu_max +"px";
+		setTimeout(function() {
+			fncloseLay2(obj,inner);
+		}, 5);
+		menu_max = menu_max -5;
+	}
 }
 
 function addOnloadEvent(fnc){
-  if ( typeof window.addEventListener != "undefined" )
-    window.addEventListener( "load", fnc, false );
-  else if ( typeof window.attachEvent != "undefined" ) {
-    window.attachEvent( "onload", fnc );
-  }
-  else {
-    if ( window.onload != null ) {
-      var oldOnload = window.onload;
-      window.onload = function ( e ) {
-        oldOnload( e );
-        window[fnc]();
-      };
-    }
-    else
-      window.onload = fnc;
-  }
+	if ( typeof window.addEventListener != "undefined" )
+		window.addEventListener( "load", fnc, false );
+	else if ( typeof window.attachEvent != "undefined" ) {
+		window.attachEvent( "onload", fnc );
+	}
+	else {
+		if ( window.onload != null ) {
+			var oldOnload = window.onload;
+			window.onload = function ( e ) {
+				oldOnload( e );
+				window[fnc]();
+			};
+		}
+		else
+			window.onload = fnc;
+	}
 }
 function InternalMailer(record_id,field_id,field_name,par_module,type) {
-        var url;
-        switch(type) {
-                case 'record_id':
-                        url = 'index.php?module=Emails&action=EmailsAjax&internal_mailer=true&type='+type+'&field_id='+field_id+'&rec_id='+record_id+'&fieldname='+field_name+'&file=EditView&par_module='+par_module;//query string field_id added for listview-compose email issue
-                break;
-                case 'email_addy':
-                        url = 'index.php?module=Emails&action=EmailsAjax&internal_mailer=true&type='+type+'&email_addy='+record_id+'&file=EditView';
-                break;
+	var url;
+	switch(type) {
+		case 'record_id':
+			url = 'index.php?module=Emails&action=EmailsAjax&internal_mailer=true&type='+type+'&field_id='+field_id+'&rec_id='+record_id+'&fieldname='+field_name+'&file=EditView&par_module='+par_module;//query string field_id added for listview-compose email issue
+			break;
+		case 'email_addy':
+			url = 'index.php?module=Emails&action=EmailsAjax&internal_mailer=true&type='+type+'&email_addy='+record_id+'&file=EditView';
+			break;
 
-        }
+	}
 
-        var opts = "menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes";
-        openPopUp('xComposeEmail',this,url,'createemailWin',830,662,opts);
+	var opts = "menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes";
+	openPopUp('xComposeEmail',this,url,'createemailWin',830,662,opts);
 }
 
 function fnHide_Event(obj){
-        document.getElementById(obj).style.visibility = 'hidden';
+	document.getElementById(obj).style.visibility = 'hidden';
 }
 function ReplyCompose(id,mode)
 {
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&reply=true';
+	url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&reply=true';
 	
 	openPopUp('xComposeEmail',this,url,'createemailWin',820,689,'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');	
 }
@@ -1896,19 +1956,19 @@ function OpenCompose(id,mode)
 			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&forward=true';
 			break;
 		case 'Invoice':
-            url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
 			break;
 		case 'PurchaseOrder':
-            url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
 			break;
 		case 'SalesOrder':
-            url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
 			break;
 		case 'Quote':
-            url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
 			break; 
 		case 'Documents':
-            url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+id+'';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+id+'';
 			break;
 		case 'print':
 			url = 'index.php?module=Emails&action=EmailsAjax&file=PrintEmail&record='+id+'&print=true'; 	 			
@@ -1919,178 +1979,178 @@ function OpenCompose(id,mode)
 //Function added for Mass select in Popup - Philip
 function SelectAll(mod,parmod)
 {
-    if(document.selectall.selected_id != undefined)
-    {
-        x = document.selectall.selected_id.length;
-	var y=0;
-	if(parmod != 'Calendar')
-        {
-                var module = window.opener.document.getElementById('RLreturn_module').value
-                var entity_id = window.opener.document.getElementById('RLparent_id').value
-		 var parenttab = window.opener.document.getElementById('parenttab').value
-        }
-        idstring = "";
-	namestr = "";
-
-        if ( x == undefined)
-        {
-
-                if (document.selectall.selected_id.checked)
-                {
-			idstring = document.selectall.selected_id.value;
-			if(parmod == 'Calendar')
-                                namestr = document.getElementById('calendarCont'+idstring).innerHTML;
-                        y=1;
-                }
-                else
+	if(document.selectall.selected_id != undefined)
+	{
+		x = document.selectall.selected_id.length;
+		var y=0;
+		if(parmod != 'Calendar')
 		{
-                        alert(alert_arr.SELECT);
-                        return false;
-                }
-        }
-        else
-        {
-                y=0;
-                for(i = 0; i < x ; i++)
-                {
-                        if(document.selectall.selected_id[i].checked)
-                        {
-                                idstring = document.selectall.selected_id[i].value +";"+idstring;
-				if(parmod == 'Calendar')
-                                {
-                                        idval = document.selectall.selected_id[i].value;
-                                        namestr = document.getElementById('calendarCont'+idval).innerHTML+"\n"+namestr;
-                                }
-                  		y=y+1;
-                        }
-                }
-	}
-	if (y != 0)
-        {
-        	document.selectall.idlist.value=idstring;
-        }
-        else
-        {
-                alert(alert_arr.SELECT);
-                return false;
-        }
-        if(confirm(alert_arr.ADD_CONFIRMATION+y+alert_arr.RECORDS))
-        {
-		if(parmod == 'Calendar')
-                {
-			//this blcok has been modified to provide delete option for contact in Calendar
-			idval = window.opener.document.EditView.contactidlist.value;
-			if(idval != '')
+			var module = window.opener.document.getElementById('RLreturn_module').value
+			var entity_id = window.opener.document.getElementById('RLparent_id').value
+			var parenttab = window.opener.document.getElementById('parenttab').value
+		}
+		idstring = "";
+		namestr = "";
+
+		if ( x == undefined)
+		{
+
+			if (document.selectall.selected_id.checked)
 			{
-				var avalIds = new Array();
-				avalIds = idstring.split(';');
-
-				var selectedIds = new Array();	
-				selectedIds = idval.split(';');
-
-				for(i=0; i < (avalIds.length-1); i++)
-				{
-					var rowFound=false;
-					for(k=0; k < selectedIds.length; k++)
-					{
-						if (selectedIds[k]==avalIds[i])
-						{
-							rowFound=true;
-							break;
-						}
-
-					}
-					if(rowFound != true)
-					{
-						idval = idval+';'+avalIds[i];
-						window.opener.document.EditView.contactidlist.value = idval;
-                                        	var str=document.getElementById('calendarCont'+avalIds[i]).innerHTML;
-						window.opener.addOption(avalIds[i],str);
-					}
-				}
+				idstring = document.selectall.selected_id.value;
+				if(parmod == 'Calendar')
+					namestr = document.getElementById('calendarCont'+idstring).innerHTML;
+				y=1;
 			}
 			else
 			{
-				window.opener.document.EditView.contactidlist.value = idstring;
-				var temp = new Array();
-				temp = namestr.split('\n');
-
-				var tempids = new Array();
-				tempids = idstring.split(';');
-
-				for(k=0; k < temp.length; k++)
+				alert(alert_arr.SELECT);
+				return false;
+			}
+		}
+		else
+		{
+			y=0;
+			for(i = 0; i < x ; i++)
+			{
+				if(document.selectall.selected_id[i].checked)
 				{
-					window.opener.addOption(tempids[k],temp[k]);
+					idstring = document.selectall.selected_id[i].value +";"+idstring;
+					if(parmod == 'Calendar')
+					{
+						idval = document.selectall.selected_id[i].value;
+						namestr = document.getElementById('calendarCont'+idval).innerHTML+"\n"+namestr;
+					}
+					y=y+1;
 				}
 			}
-			//end
-                }
-                else
-                {
-			opener.document.location.href="index.php?module="+module+"&parentid="+entity_id+"&action=updateRelations&destination_module="+mod+"&idlist="+idstring+"&parenttab="+parenttab;
 		}
-                self.close();
-        }
-	else
-        {
-                return false;
-        }
-    }
+		if (y != 0)
+		{
+			document.selectall.idlist.value=idstring;
+		}
+		else
+		{
+			alert(alert_arr.SELECT);
+			return false;
+		}
+		if(confirm(alert_arr.ADD_CONFIRMATION+y+alert_arr.RECORDS))
+		{
+			if(parmod == 'Calendar')
+			{
+				//this blcok has been modified to provide delete option for contact in Calendar
+				idval = window.opener.document.EditView.contactidlist.value;
+				if(idval != '')
+				{
+					var avalIds = new Array();
+					avalIds = idstring.split(';');
+
+					var selectedIds = new Array();
+					selectedIds = idval.split(';');
+
+					for(i=0; i < (avalIds.length-1); i++)
+					{
+						var rowFound=false;
+						for(k=0; k < selectedIds.length; k++)
+						{
+							if (selectedIds[k]==avalIds[i])
+							{
+								rowFound=true;
+								break;
+							}
+
+						}
+						if(rowFound != true)
+						{
+							idval = idval+';'+avalIds[i];
+							window.opener.document.EditView.contactidlist.value = idval;
+							var str=document.getElementById('calendarCont'+avalIds[i]).innerHTML;
+							window.opener.addOption(avalIds[i],str);
+						}
+					}
+				}
+				else
+				{
+					window.opener.document.EditView.contactidlist.value = idstring;
+					var temp = new Array();
+					temp = namestr.split('\n');
+
+					var tempids = new Array();
+					tempids = idstring.split(';');
+
+					for(k=0; k < temp.length; k++)
+					{
+						window.opener.addOption(tempids[k],temp[k]);
+					}
+				}
+			//end
+			}
+			else
+			{
+				opener.document.location.href="index.php?module="+module+"&parentid="+entity_id+"&action=updateRelations&destination_module="+mod+"&idlist="+idstring+"&parenttab="+parenttab;
+			}
+			self.close();
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
 function ShowEmail(id)
 {
-       url = 'index.php?module=Emails&action=EmailsAjax&file=DetailView&record='+id;
-       openPopUp('xComposeEmail',this,url,'createemailWin',820,695,'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
+	url = 'index.php?module=Emails&action=EmailsAjax&file=DetailView&record='+id;
+	openPopUp('xComposeEmail',this,url,'createemailWin',820,695,'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 }
 
 var bSaf = (navigator.userAgent.indexOf('Safari') != -1);
 var bOpera = (navigator.userAgent.indexOf('Opera') != -1);
 var bMoz = (navigator.appName == 'Netscape');
 function execJS(node) {
-    var st = node.getElementsByTagName('SCRIPT');
-    var strExec;
-    for(var i=0;i<st.length; i++) {
-      if (bSaf) {
-        strExec = st[i].innerHTML;
-      }
-      else if (bOpera) {
-        strExec = st[i].text;
-      }
-      else if (bMoz) {
-        strExec = st[i].textContent;
-      }
-      else {
-        strExec = st[i].text;
-      }
-      try {
-        eval(strExec);
-      } catch(e) {
-        alert(e);
-      }
-    }
+	var st = node.getElementsByTagName('SCRIPT');
+	var strExec;
+	for(var i=0;i<st.length; i++) {
+		if (bSaf) {
+			strExec = st[i].innerHTML;
+		}
+		else if (bOpera) {
+			strExec = st[i].text;
+		}
+		else if (bMoz) {
+			strExec = st[i].textContent;
+		}
+		else {
+			strExec = st[i].text;
+		}
+		try {
+			eval(strExec);
+		} catch(e) {
+			alert(e);
+		}
+	}
 }
 
 //Function added for getting the Tab Selected Values (Standard/Advanced Filters) for Custom View - Ahmed
 function fnLoadCvValues(obj1,obj2,SelTab,unSelTab){
 
-   var tabName1 = document.getElementById(obj1);
+	var tabName1 = document.getElementById(obj1);
 
-   var tabName2 = document.getElementById(obj2);
+	var tabName2 = document.getElementById(obj2);
 
-   var tagName1 = document.getElementById(SelTab);
+	var tagName1 = document.getElementById(SelTab);
 
-   var tagName2 = document.getElementById(unSelTab);
+	var tagName2 = document.getElementById(unSelTab);
 
-   if(tabName1.className == "dvtUnSelectedCell")
+	if(tabName1.className == "dvtUnSelectedCell")
 
-       tabName1.className = "dvtSelectedCell";
+		tabName1.className = "dvtSelectedCell";
 
-   if(tabName2.className == "dvtSelectedCell")
+	if(tabName2.className == "dvtSelectedCell")
 
-       tabName2.className = "dvtUnSelectedCell";   
-   tagName1.style.display='block';
+		tabName2.className = "dvtUnSelectedCell";
+	tagName1.style.display='block';
 
-   tagName2.style.display='none';
+	tagName2.style.display='none';
 
 }
 
@@ -2099,21 +2159,21 @@ function fnLoadCvValues(obj1,obj2,SelTab,unSelTab){
 
 
 function fnDropDown(obj,Lay){
-    var tagName = document.getElementById(Lay);
-    var leftSide = findPosX(obj);
-    var topSide = findPosY(obj);
-    var maxW = tagName.style.width;
-    var widthM = maxW.substring(0,maxW.length-2);
-    var getVal = eval(leftSide) + eval(widthM);
-    if(getVal  > document.body.clientWidth ){
-        leftSide = eval(leftSide) - eval(widthM);
-        tagName.style.left = leftSide + 34 + 'px';
-    }
-    else
-        tagName.style.left= leftSide + 'px';
-    tagName.style.top= topSide + 28 +'px';
-    tagName.style.display = 'block';
- }
+	var tagName = document.getElementById(Lay);
+	var leftSide = findPosX(obj);
+	var topSide = findPosY(obj);
+	var maxW = tagName.style.width;
+	var widthM = maxW.substring(0,maxW.length-2);
+	var getVal = eval(leftSide) + eval(widthM);
+	if(getVal  > document.body.clientWidth ){
+		leftSide = eval(leftSide) - eval(widthM);
+		tagName.style.left = leftSide + 34 + 'px';
+	}
+	else
+		tagName.style.left= leftSide + 'px';
+	tagName.style.top= topSide + 28 +'px';
+	tagName.style.display = 'block';
+}
 
 function fnShowDrop(obj){
 	document.getElementById(obj).style.display = 'block';
@@ -2125,17 +2185,22 @@ function fnHideDrop(obj){
 
 function getCalendarPopup(imageid,fieldid,dateformat)
 {
-        Calendar.setup ({
-                inputField : fieldid, ifFormat : dateformat, showsTime : false, button : imageid, singleClick : true, step : 1
-        });
+	Calendar.setup ({
+		inputField : fieldid,
+		ifFormat : dateformat,
+		showsTime : false,
+		button : imageid,
+		singleClick : true,
+		step : 1
+	});
 }
 
 //Added to check duplicate account creation
 
 function AjaxDuplicateValidate(module,fieldname,oform)
 {
-      var fieldvalue = encodeURIComponent(trim(getObj(fieldname).value));
-      var recordid = getObj('record').value;
+	var fieldvalue = encodeURIComponent(trim(getObj(fieldname).value));
+	var recordid = getObj('record').value;
 	if(fieldvalue == '')
 	{
 		alert(alert_arr.ACCOUNTNAME_CANNOT_EMPTY);
@@ -2143,26 +2208,30 @@ function AjaxDuplicateValidate(module,fieldname,oform)
 	}
 	VtigerJS_DialogBox.block();
 	
-      var url = "module="+module+"&action="+module+"Ajax&file=Save&"+fieldname+"="+fieldvalue+"&dup_check=true&record="+recordid;
-      new Ajax.Request(
-                            'index.php',
-                              {queue: {position: 'end', scope: 'command'},
-                                      method: 'post',
-                                      postBody:url,
-                                      onComplete: function(response) {
-                                              var str = response.responseText
-                                              if(str.indexOf('SUCCESS') > -1)
-                                              {
-                                                      oform.submit();
-                                              }else
-                                              {
-													  VtigerJS_DialogBox.unblock();
-                                                      alert(str);
-                                                      return false;
-                                              }
-                                      }
-                              }
-                              );
+	var url = "module="+module+"&action="+module+"Ajax&file=Save&"+fieldname+"="+fieldvalue+"&dup_check=true&record="+recordid;
+	new Ajax.Request(
+		'index.php',
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
+			method: 'post',
+			postBody:url,
+			onComplete: function(response) {
+				var str = response.responseText
+				if(str.indexOf('SUCCESS') > -1)
+				{
+					oform.submit();
+				}else
+				{
+					VtigerJS_DialogBox.unblock();
+					alert(str);
+					return false;
+				}
+			}
+		}
+		);
 }
 
 /**to get SelectContacts Popup
@@ -2173,8 +2242,8 @@ check->to check select options enable or disable
 function selectContact(check,type,frmName)
 {
 	var record = document.getElementsByName("record")[0].value;
-        if($("single_accountid"))
-        {
+	if($("single_accountid"))
+	{
 		var potential_id = '';
 		if($("potential_id"))
 			potential_id = frmName.potential_id.value;
@@ -2190,36 +2259,36 @@ function selectContact(check,type,frmName)
 			module_string = "&parent_module=Accounts";
 		}
 		if(record_id != '')
-	                window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView"+module_string+"&relmod_id="+record_id,"test","width=640,height=602,resizable=0,scrollbars=0");
+			window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView"+module_string+"&relmod_id="+record_id,"test","width=640,height=602,resizable=0,scrollbars=0");
 		else
-			 window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView","test","width=640,height=602,resizable=0,scrollbars=0");	
-        }
-        else if(($("parentid")) && type != 'task')
-        {
-			if(getObj("parent_type")){
-	                	rel_parent_module = frmName.parent_type.value;
-				record_id = frmName.parent_id.value;
-	        	        module = rel_parent_module.split("&");	
-				if(record_id != '' && module[0] == "Leads")
-				{
-					alert(alert_arr.CANT_SELECT_CONTACTS);
-				}
-				else
-				{
-					if(check == 'true')
-						search_string = "&return_module=Calendar&select=enable&popuptype=detailview&form_submit=false";
-					else
-						search_string="&popuptype=specific";
-					if(record_id != '')
-						window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView"+search_string+"&relmod_id="+record_id+"&parent_module="+module[0],"test","width=640,height=602,resizable=0,scrollbars=0");
-					else
-						window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView"+search_string,"test","width=640,height=602,resizable=0,scrollbars=0");
-					
-				}
-			}else{
-				window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false","test","width=640,height=602,resizable=0,scrollbars=0");
+			window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView","test","width=640,height=602,resizable=0,scrollbars=0");
+	}
+	else if(($("parentid")) && type != 'task')
+	{
+		if(getObj("parent_type")){
+			rel_parent_module = frmName.parent_type.value;
+			record_id = frmName.parent_id.value;
+			module = rel_parent_module.split("&");
+			if(record_id != '' && module[0] == "Leads")
+			{
+				alert(alert_arr.CANT_SELECT_CONTACTS);
 			}
-        }
+			else
+			{
+				if(check == 'true')
+					search_string = "&return_module=Calendar&select=enable&popuptype=detailview&form_submit=false";
+				else
+					search_string="&popuptype=specific";
+				if(record_id != '')
+					window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView"+search_string+"&relmod_id="+record_id+"&parent_module="+module[0],"test","width=640,height=602,resizable=0,scrollbars=0");
+				else
+					window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView"+search_string,"test","width=640,height=602,resizable=0,scrollbars=0");
+					
+			}
+		}else{
+			window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false","test","width=640,height=602,resizable=0,scrollbars=0");
+		}
+	}
 	else if(($("contact_name")) && type == 'task')
 	{
 		var formName = frmName.name;
@@ -2227,7 +2296,7 @@ function selectContact(check,type,frmName)
 		if(formName == 'EditView')
 		{
 			if($("parent_type"))
-                        {
+			{
 				task_parent_module = frmName.parent_type.value;
 				task_recordid = frmName.parent_id.value;
 				task_module = task_parent_module.split("&");
@@ -2237,7 +2306,7 @@ function selectContact(check,type,frmName)
 		else
 		{
 			if($("task_parent_type"))
-                        {
+			{
 				task_parent_module = frmName.task_parent_type.value;
 				task_recordid = frmName.task_parent_id.value;
 				task_module = task_parent_module.split("&");
@@ -2257,10 +2326,10 @@ function selectContact(check,type,frmName)
 		}
 
 	}
-        else
-        {
-                window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&recordid="+record,"test","width=640,height=602,resizable=0,scrollbars=0");
-        }
+	else
+	{
+		window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&recordid="+record,"test","width=640,height=602,resizable=0,scrollbars=0");
+	}
 }
 //to get Select Potential Popup
 function selectPotential()
@@ -2324,90 +2393,90 @@ function selectSalesOrder()
 		window.open("index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView","test","width=640,height=602,resizable=0,scrollbars=0");
 }
 
-function checkEmailid(parent_module,emailid,yahooid)
- {
-       var check = true;
-       if(emailid == '' && yahooid == '')
-       {
-               alert(alert_arr.LBL_THIS+parent_module+alert_arr.DOESNOT_HAVE_MAILIDS);
-               check=false;
-       }
-       return check;
- }
+function checkEmailid(parent_module,emailid,secondaryemail)
+{
+	var check = true;
+	if(emailid == '' && secondaryemail == '')
+	{
+		alert(alert_arr.LBL_THIS+parent_module+alert_arr.DOESNOT_HAVE_MAILIDS);
+		check=false;
+	}
+	return check;
+}
 
 function calQCduedatetime()
 {
-        var datefmt = document.QcEditView.dateFormat.value;
-        var type = document.QcEditView.activitytype.value;
-        var dateval1=getObj('date_start').value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-        var dateelements1=splitDateVal(dateval1);
-        dd1=parseInt(dateelements1[0],10);
-        mm1=dateelements1[1];
-        yyyy1=dateelements1[2];
-        var date1=new Date();
-        date1.setYear(yyyy1);
-        date1.setMonth(mm1-1,dd1+1);
-        var yy = date1.getFullYear();
-        var mm = date1.getMonth() + 1;
-        var dd = date1.getDate();
-        var date = document.QcEditView.date_start.value;
-        var starttime = document.QcEditView.time_start.value;
-        if (!timeValidate('time_start',' Start Date & Time','OTH'))
-                return false;
-        var timearr = starttime.split(":");
-        var hour = parseInt(timearr[0],10);
-        var min = parseInt(timearr[1],10);
-        dd = _2digit(dd);
-        mm = _2digit(mm);
-        var tempdate = yy+'-'+mm+'-'+dd;
-        if(datefmt == '%d-%m-%Y')
-                var tempdate = dd+'-'+mm+'-'+yy;
-        else if(datefmt == '%m-%d-%Y')
-                var tempdate = mm+'-'+dd+'-'+yy;
-        if(type == 'Meeting')
-        {
-                hour = hour + 1;
-                if(hour == 24)
-                {
-                        hour = 0;
-                        date =  tempdate;
-                }
-                hour = _2digit(hour);
+	var datefmt = document.QcEditView.dateFormat.value;
+	var type = document.QcEditView.activitytype.value;
+	var dateval1=getObj('date_start').value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	var dateelements1=splitDateVal(dateval1);
+	dd1=parseInt(dateelements1[0],10);
+	mm1=dateelements1[1];
+	yyyy1=dateelements1[2];
+	var date1=new Date();
+	date1.setYear(yyyy1);
+	date1.setMonth(mm1-1,dd1+1);
+	var yy = date1.getFullYear();
+	var mm = date1.getMonth() + 1;
+	var dd = date1.getDate();
+	var date = document.QcEditView.date_start.value;
+	var starttime = document.QcEditView.time_start.value;
+	if (!timeValidate('time_start',' Start Date & Time','OTH'))
+		return false;
+	var timearr = starttime.split(":");
+	var hour = parseInt(timearr[0],10);
+	var min = parseInt(timearr[1],10);
+	dd = _2digit(dd);
+	mm = _2digit(mm);
+	var tempdate = yy+'-'+mm+'-'+dd;
+	if(datefmt == '%d-%m-%Y')
+		var tempdate = dd+'-'+mm+'-'+yy;
+	else if(datefmt == '%m-%d-%Y')
+		var tempdate = mm+'-'+dd+'-'+yy;
+	if(type == 'Meeting')
+	{
+		hour = hour + 1;
+		if(hour == 24)
+		{
+			hour = 0;
+			date =  tempdate;
+		}
+		hour = _2digit(hour);
 		min = _2digit(min);
-                document.QcEditView.due_date.value = date;
-                document.QcEditView.time_end.value = hour+':'+min;
-        }
-        if(type == 'Call')
-        {
-                if(min >= 55)
-                {
-                        min = min%55;
-                        hour = hour + 1;
-                }else min = min + 5;
-                if(hour == 24)
-                {
-                        hour = 0;
-                        date =  tempdate;
-                }
-                hour = _2digit(hour);
+		document.QcEditView.due_date.value = date;
+		document.QcEditView.time_end.value = hour+':'+min;
+	}
+	if(type == 'Call')
+	{
+		if(min >= 55)
+		{
+			min = min%55;
+			hour = hour + 1;
+		}else min = min + 5;
+		if(hour == 24)
+		{
+			hour = 0;
+			date =  tempdate;
+		}
+		hour = _2digit(hour);
 		min = _2digit(min);
-                document.QcEditView.due_date.value = date;
-                document.QcEditView.time_end.value = hour+':'+min;
-        }
+		document.QcEditView.due_date.value = date;
+		document.QcEditView.time_end.value = hour+':'+min;
+	}
 
 }
 
 function _2digit( no ){
-        if(no < 10) return "0" + no;
-        else return "" + no;
+	if(no < 10) return "0" + no;
+	else return "" + no;
 }
 
 function confirmdelete(url)
 {
-if(confirm(alert_arr.ARE_YOU_SURE))
-       {
-            document.location.href=url;
-       }
+	if(confirm(alert_arr.ARE_YOU_SURE))
+	{
+		document.location.href=url;
+	}
 }
 
 //function modified to apply the patch ref : Ticket #4065
@@ -2438,8 +2507,7 @@ function CharValidation(s,type)
 
 
 /** Check Upload file is in specified format(extension).
-  * @param fldname -- name of the file field
-  * @param fldLabel -- Lable of the file field
+  * @param fldName -- name of the file field
   * @param filter -- List of file extensions to allow. each extension must be seperated with a | sybmol.
   * Example: upload_filter("imagename","Image", "jpg|gif|bmp|png") 
   * @returns true -- if the extension is IN  specified extension.
@@ -2454,8 +2522,8 @@ function upload_filter(fldName, filter)
 	if(currObj.value !="")
 	{
 		var file=currObj.value;
-		var type=file.split(".");
-		var valid_extn=filter.split("|");	
+		var type=file.toLowerCase().split(".");
+		var valid_extn=filter.toLowerCase().split("|");	
 	
 		if(valid_extn.indexOf(type[type.length-1]) == -1)
 		{
@@ -2463,10 +2531,10 @@ function upload_filter(fldName, filter)
 			try {
 				currObj.focus()	
 			} catch(error) {
-				// Fix for IE: If element or its wrapper around it is hidden, setting focus will fail
-				// So using the try { } catch(error) { }
+			// Fix for IE: If element or its wrapper around it is hidden, setting focus will fail
+			// So using the try { } catch(error) { }
 			}
-		 	return false;
+			return false;
 		}
 	}	
 	return true
@@ -2480,9 +2548,9 @@ function validateUrl(name)
 
 	var oRegex = new Object();
 	oRegex.UriProtocol = new RegExp('');
-	oRegex.UriProtocol.compile( '^(((http|https|ftp|news):\/\/)|mailto:)', 'gi' );
+	oRegex.UriProtocol.compile( '^(((http):\/\/)|mailto:)', 'gi' );
 	oRegex.UrlOnChangeProtocol = new RegExp('') ;
-	oRegex.UrlOnChangeProtocol.compile( '^(http|https|ftp|news)://(?=.)', 'gi' );
+	oRegex.UrlOnChangeProtocol.compile( '^(http)://(?=.)', 'gi' );
 
 	wUrl = Url.value;
 	wProtocol=oRegex.UrlOnChangeProtocol.exec( wUrl ) ;
@@ -2496,19 +2564,19 @@ function validateUrl(name)
 function LTrim( value )
 {
 
-        var re = /\s*((\S+\s*)*)/;
-        return value.replace(re, "$1");
+	var re = /\s*((\S+\s*)*)/;
+	return value.replace(re, "$1");
 
 }
 
 function selectedRecords(module,category)
 {
-    var allselectedboxes = document.getElementById("allselectedboxes");
+	var allselectedboxes = document.getElementById("allselectedboxes");
 	var idstring  =  (allselectedboxes == null)? '' : allselectedboxes.value;
-        if(idstring != '')
-                window.location.href="index.php?module="+module+"&action=ExportRecords&parenttab="+category+"&idstring="+idstring;
-        else
-                window.location.href="index.php?module="+module+"&action=ExportRecords&parenttab="+category;
+	if(idstring != '')
+		window.location.href="index.php?module="+module+"&action=ExportRecords&parenttab="+category+"&idstring="+idstring;
+	else
+		window.location.href="index.php?module="+module+"&action=ExportRecords&parenttab="+category;
 	return false;
 }
 
@@ -2524,28 +2592,32 @@ function record_export(module,category,exform,idstring)
 		if(exportData[i].checked == true)
 			var exp_type = exportData[i].value;
 	}
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: "module="+module+"&action=ExportAjax&export_record=true&search_type="+sel_type+"&export_data="+exp_type+"&idstring="+idstring,
-                        onComplete: function(response) {
-                                if(response.responseText == 'NOT_SEARCH_WITHSEARCH_ALL')
+	new Ajax.Request(
+		'index.php',
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
+			method: 'post',
+			postBody: "module="+module+"&action=ExportAjax&export_record=true&search_type="+sel_type+"&export_data="+exp_type+"&idstring="+idstring,
+			onComplete: function(response) {
+				if(response.responseText == 'NOT_SEARCH_WITHSEARCH_ALL')
 				{
-                                        $('not_search').style.display = 'block';
+					$('not_search').style.display = 'block';
 					$('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_ALL+" "+module+"</b></font>";
 					setTimeout(hideErrorMsg1,6000);
 	
 					exform.submit();
 				}
 				else if(response.responseText == 'NOT_SEARCH_WITHSEARCH_CURRENTPAGE')
-                                {
-                                        $('not_search').style.display = 'block';
-                                        $('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_CURRENTPAGE+" "+module+"</b></font>";
-                                        setTimeout(hideErrorMsg1,7000);
+				{
+					$('not_search').style.display = 'block';
+					$('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_CURRENTPAGE+" "+module+"</b></font>";
+					setTimeout(hideErrorMsg1,7000);
 
-                                        exform.submit();
-                                }
+					exform.submit();
+				}
 				else if(response.responseText == 'NO_DATA_SELECTED')
 				{	
 					$('not_search').style.display = 'block';	
@@ -2553,65 +2625,65 @@ function record_export(module,category,exform,idstring)
 					setTimeout(hideErrorMsg1,3000);
 				}
 				else if(response.responseText == 'SEARCH_WITHOUTSEARCH_ALL')
-                                {
+				{
 					if(confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_ALL))
 					{
 						exform.submit();
 					}					
-                                }
-				else if(response.responseText == 'SEARCH_WITHOUTSEARCH_CURRENTPAGE')
-                                {
-                                        if(confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE))
-                                        {
-                                                exform.submit();
-                                        }
-                                }
-	                        else
-				{
-                                       exform.submit(); 
 				}
-                        }
-                }
-        );
+				else if(response.responseText == 'SEARCH_WITHOUTSEARCH_CURRENTPAGE')
+				{
+					if(confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE))
+					{
+						exform.submit();
+					}
+				}
+				else
+				{
+					exform.submit();
+				}
+			}
+		}
+		);
 
 }
 
 
 function hideErrorMsg1()
 {
-        $('not_search').style.display = 'none';
+	$('not_search').style.display = 'none';
 }
 
 // Replace the % sign with %25 to make sure the AJAX url is going wel.
 function escapeAll(tagValue)
 {
-        //return escape(tagValue.replace(/%/g, '%25'));
+	//return escape(tagValue.replace(/%/g, '%25'));
 	if(default_charset.toLowerCase() == 'utf-8')
-        	return encodeURIComponent(tagValue.replace(/%/g, '%25'));
+		return encodeURIComponent(tagValue.replace(/%/g, '%25'));
 	else
 		return escape(tagValue.replace(/%/g, '%25'));
 }
 
 function removeHTMLFormatting(str) {
-        str = str.replace(/<([^<>]*)>/g, " ");
-        str = str.replace(/&nbsp;/g, " ");
-        return str;
+	str = str.replace(/<([^<>]*)>/g, " ");
+	str = str.replace(/&nbsp;/g, " ");
+	return str;
 }
 function get_converted_html(str)
 {
-        var temp = str.toLowerCase();
-        if(temp.indexOf('<') != '-1' || temp.indexOf('>') != '-1')
-        {
-                str = str.replace(/</g,'&lt;');
-                str = str.replace(/>/g,'&gt;');
-        }
+	var temp = str.toLowerCase();
+	if(temp.indexOf('<') != '-1' || temp.indexOf('>') != '-1')
+	{
+		str = str.replace(/</g,'&lt;');
+		str = str.replace(/>/g,'&gt;');
+	}
 	if( temp.match(/(script).*(\/script)/))
-        {
-                str = str.replace(/&/g,'&amp;');
-        }
-        else if(temp.indexOf('&') != '-1')
-        {
-                str = str.replace(/&/g,'&amp;');
+	{
+		str = str.replace(/&/g,'&amp;');
+	}
+	else if(temp.indexOf('&') != '-1')
+	{
+		str = str.replace(/&/g,'&amp;');
 	}
 	return str;
 }
@@ -2640,63 +2712,63 @@ function default_togglestate(obj_id,elementId)
 
 function rel_check_object(sel_id,module)
 {
-        var selected;
-        var select_global=new Array();
-        var cookie_val=get_cookie(module+"_all");
-        if(cookie_val == null)
-                selected=sel_id.value+";";
-        else
-                selected=trim(cookie_val);
-        select_global=selected.split(";");
-        var box_value=sel_id.checked;
-        var id= sel_id.value;
-        var duplicate=select_global.indexOf(id);
-        var size=select_global.length-1;
-        var result="";
-        if(box_value == true)
-        {
-                if(duplicate == "-1")
-                {
-                        select_global[size]=id;
-                }
+	var selected;
+	var select_global=new Array();
+	var cookie_val=get_cookie(module+"_all");
+	if(cookie_val == null)
+		selected=sel_id.value+";";
+	else
+		selected=trim(cookie_val);
+	select_global=selected.split(";");
+	var box_value=sel_id.checked;
+	var id= sel_id.value;
+	var duplicate=select_global.indexOf(id);
+	var size=select_global.length-1;
+	var result="";
+	if(box_value == true)
+	{
+		if(duplicate == "-1")
+		{
+			select_global[size]=id;
+		}
 
-                size=select_global.length-1;
-                var i=0;
-                for(i=0;i<=size;i++)
-                {
-                        if(trim(select_global[i])!='')
-                                result=select_global[i]+";"+result;
-                }
-                rel_default_togglestate(module);
+		size=select_global.length-1;
+		var i=0;
+		for(i=0;i<=size;i++)
+		{
+			if(trim(select_global[i])!='')
+				result=select_global[i]+";"+result;
+		}
+		rel_default_togglestate(module);
 
-        }
-        else
-        {
-                if(duplicate != "-1")
+	}
+	else
+	{
+		if(duplicate != "-1")
 		 
 			select_global.splice(duplicate,1)
 
-                size=select_global.length-1;
-                var i=0;
-                for(i=size;i>=0;i--)
-                {
-                        if(trim(select_global[i])!='')
-                                result=select_global[i]+";"+result;
-                }
-                        getObj(module+"_selectall").checked=false;
+		size=select_global.length-1;
+		var i=0;
+		for(i=size;i>=0;i--)
+		{
+			if(trim(select_global[i])!='')
+				result=select_global[i]+";"+result;
+		}
+		getObj(module+"_selectall").checked=false;
 
-        }
-        set_cookie(module+"_all",result);
+	}
+	set_cookie(module+"_all",result);
 }
 
 //Function to select all the items in the current page for Campaigns related list:.
 function rel_toggleSelect(state,relCheckName,module) {
 	var obj = document.getElementsByName(relCheckName);
 	if (obj) {
-        for (var i=0;i<obj.length;i++) {
-            obj[i].checked=state;
+		for (var i=0;i<obj.length;i++) {
+			obj[i].checked=state;
 			rel_check_object(obj[i],module);
-        }
+		}
 	}
 }
 //To select the select all check box(if all the items are selected) when the form loads for Campaigns related list:.
@@ -2737,20 +2809,20 @@ function clear_checked_all(module)
 }
 //groupParentElementId is added as there are multiple groups in Documents listview.
 function toggleSelect_ListView(state,relCheckName,groupParentElementId) {
-    var obj = document.getElementsByName(relCheckName);
+	var obj = document.getElementsByName(relCheckName);
 	if (obj) {
-        for (var i=0;i<obj.length;i++) {
-          	obj[i].checked=state;
+		for (var i=0;i<obj.length;i++) {
+			obj[i].checked=state;
 			if(typeof(check_object) == 'function') {
 				// This function is defined in ListView.js (check for existence)
 				check_object(obj[i],groupParentElementId);
 			}
-        }
-    }
+		}
+	}
 }
 function gotourl(url)
 {
-                document.location.href=url;
+	document.location.href=url;
 }
 
 // Function to display the element with id given by showid and hide the element with id given by hideid
@@ -2785,33 +2857,41 @@ function fnpriceValidation(txtObj) {
 function delimage(id) {
 	new Ajax.Request(
 		'index.php',
-		{queue: {position: 'end', scope: 'command'},
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
 			method: 'post',
 			postBody: 'module=Contacts&action=ContactsAjax&file=DelImage&recordid='+id,
 			onComplete: function(response) {
-					if(response.responseText.indexOf("SUCCESS")>-1)
-						$("replaceimage").innerHTML=alert_arr.LBL_IMAGE_DELETED;
-					else
-						alert(alert_arr.ERROR_WHILE_EDITING);
+				if(response.responseText.indexOf("SUCCESS")>-1)
+					$("replaceimage").innerHTML=alert_arr.LBL_IMAGE_DELETED;
+				else
+					alert(alert_arr.ERROR_WHILE_EDITING);
 			}
 		}
-	);
+		);
 }
 
 function delUserImage(id) {
 	new Ajax.Request(
 		'index.php',
-		{queue: {position: 'end', scope: 'command'},
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
 			method: 'post',
 			postBody: 'module=Users&action=UsersAjax&file=Save&deleteImage=true&recordid='+id,
 			onComplete: function(response) {
-					if(response.responseText.indexOf("SUCCESS")>-1)
-						$("replaceimage").innerHTML=alert_arr.LBL_IMAGE_DELETED;
-					else
-						alert(alert_arr.ERROR_WHILE_EDITING);
+				if(response.responseText.indexOf("SUCCESS")>-1)
+					$("replaceimage").innerHTML=alert_arr.LBL_IMAGE_DELETED;
+				else
+					alert(alert_arr.ERROR_WHILE_EDITING);
 			}
 		}
-	);
+		);
 }
 
 // Function to enable/disable related elements based on whether the current object is checked or not
@@ -2828,35 +2908,43 @@ function fnenableDisable(currObj,enableId) {
 // Update current value with current value of base currency and the conversion rate
 function updateCurrencyValue(currObj,txtObj,base_curid,conv_rate) {
 	var unit_price = $(base_curid).value;
-	//if(currObj.checked == true)
-	//{
-		document.getElementById(txtObj).value = unit_price * conv_rate;
-	//}
+
+	if(typeof userCurrencySeparator != 'undefined') {
+		while(unit_price.indexOf(userCurrencySeparator) != -1) {
+			unit_price = unit_price.replace(userCurrencySeparator,'');
+		}
+	}
+	if(typeof userDecimalSeparator != 'undefined') {
+		if(unit_price.indexOf(userDecimalSeparator) != -1) {
+			unit_price = unit_price.replace(userDecimalSeparator,'.');
+		}
+	}
+	document.getElementById(txtObj).value = unit_price * conv_rate;
 }
 
 // Synchronize between Unit price and Base currency value.
 function updateUnitPrice(from_cur_id, to_cur_id) {
-    var from_ele = document.getElementById(from_cur_id);
-    if (from_ele == null) return;
+	var from_ele = document.getElementById(from_cur_id);
+	if (from_ele == null) return;
     
-    var to_ele = document.getElementById(to_cur_id);
-    if (to_ele == null) return;
+	var to_ele = document.getElementById(to_cur_id);
+	if (to_ele == null) return;
 
-    to_ele.value = from_ele.value;
+	to_ele.value = from_ele.value;
 }
 
 // Update hidden base currency value, everytime the base currency value is changed in multi-currency UI
 function updateBaseCurrencyValue() {
-    var cur_list = document.getElementsByName('base_currency_input');
-    if (cur_list == null) return;
+	var cur_list = document.getElementsByName('base_currency_input');
+	if (cur_list == null) return;
     
-    var base_currency_ele = document.getElementById('base_currency');
-    if (base_currency_ele == null) return;
+	var base_currency_ele = document.getElementById('base_currency');
+	if (base_currency_ele == null) return;
     
-    for(var i=0; i<cur_list.length; i++) {
+	for(var i=0; i<cur_list.length; i++) {
 		var cur_ele = cur_list[i];
 		if (cur_ele != null && cur_ele.checked == true)
-    		base_currency_ele.value = cur_ele.value;
+			base_currency_ele.value = cur_ele.value;
 	}
 }	
 // END
@@ -2873,18 +2961,23 @@ function ActivityReminderSetupCallback(cbmodule, cbrecord) {
 
 		ActivityReminderProgressIndicator(true);
 		new Ajax.Request(
-    		'index.php',
-	        {queue: {position: 'end', scope: 'command'},
-        		method: 'post',
-                postBody:"module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbmodule="+ 
-					encodeURIComponent(cbmodule) + "&cbrecord=" + encodeURIComponent(cbrecord),
-                onComplete: function(response) {
-                $("ActivityReminder_callbacksetupdiv").innerHTML=response.responseText;
+			'index.php',
+			{
+				queue: {
+					position: 'end',
+					scope: 'command'
+				},
+				method: 'post',
+				postBody:"module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbmodule="+
+				encodeURIComponent(cbmodule) + "&cbrecord=" + encodeURIComponent(cbrecord),
+				onComplete: function(response) {
+					$("ActivityReminder_callbacksetupdiv").innerHTML=response.responseText;
 				
-				ActivityReminderProgressIndicator(false);
+					ActivityReminderProgressIndicator(false);
 
-                }});
-	}
+				}
+			});
+}
 }
 
 function ActivityReminderSetupCallbackSave(form) {
@@ -2899,15 +2992,23 @@ function ActivityReminderSetupCallbackSave(form) {
 		ActivityReminderProgressIndicator(true);
 
 		new Ajax.Request("index.php", 
-			{ queue:{position:"end", scope:"command"}, method:"post", 
-				postBody:"module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax" + 
-				"&cbaction=" + encodeURIComponent(cbaction) +
-				"&cbmodule="+ encodeURIComponent(cbmodule) + 
-				"&cbrecord=" + encodeURIComponent(cbrecord) + 
-				"&cbdate=" + encodeURIComponent(cbdate) + 
-				"&cbtime=" + encodeURIComponent(cbtime),
-				onComplete:function (response) {ActivityReminderSetupCallbackSaveProcess(response.responseText);}}); 
-	}
+		{
+			queue:{
+				position:"end",
+				scope:"command"
+			},
+			method:"post",
+			postBody:"module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax" +
+			"&cbaction=" + encodeURIComponent(cbaction) +
+			"&cbmodule="+ encodeURIComponent(cbmodule) +
+			"&cbrecord=" + encodeURIComponent(cbrecord) +
+			"&cbdate=" + encodeURIComponent(cbdate) +
+			"&cbtime=" + encodeURIComponent(cbtime),
+			onComplete:function (response) {
+				ActivityReminderSetupCallbackSaveProcess(response.responseText);
+			}
+		});
+}
 }
 function ActivityReminderSetupCallbackSaveProcess(message) {
 	ActivityReminderProgressIndicator(false);
@@ -2919,11 +3020,19 @@ function ActivityReminderPostponeCallback(cbmodule, cbrecord, cbreminderid) {
 
 		ActivityReminderProgressIndicator(true);
 		new Ajax.Request("index.php", 
-			{ queue:{position:"end", scope:"command"}, method:"post", 
-				postBody:"module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbaction=POSTPONE&cbmodule="+ 
-				encodeURIComponent(cbmodule) + "&cbrecord=" + encodeURIComponent(cbrecord) + "&cbreminderid=" + encodeURIComponent(cbreminderid), 
-				onComplete:function (response) {ActivityReminderPostponeCallbackProcess(response.responseText);}}); 
-	}
+		{
+			queue:{
+				position:"end",
+				scope:"command"
+			},
+			method:"post",
+			postBody:"module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbaction=POSTPONE&cbmodule="+
+			encodeURIComponent(cbmodule) + "&cbrecord=" + encodeURIComponent(cbrecord) + "&cbreminderid=" + encodeURIComponent(cbreminderid),
+			onComplete:function (response) {
+				ActivityReminderPostponeCallbackProcess(response.responseText);
+			}
+		});
+}
 }
 function ActivityReminderPostponeCallbackProcess(message) {
 	ActivityReminderProgressIndicator(false);
@@ -2957,9 +3066,17 @@ function ActivityReminderCallback() {
 		ActivityReminder_regcallback_timer = null;
 	}
 	new Ajax.Request("index.php", 
-			{ queue:{position:"end", scope:"command"}, method:"post", 
-			postBody:"module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true", 
-			onComplete:function (response) {ActivityReminderCallbackProcess(response.responseText);}}); 
+	{
+		queue:{
+			position:"end",
+			scope:"command"
+		},
+		method:"post",
+		postBody:"module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true",
+		onComplete:function (response) {
+			ActivityReminderCallbackProcess(response.responseText);
+		}
+	});
 }
 function ActivityReminderCallbackProcess(message) {
 	ActivityReminder_callback = document.getElementById("ActivityRemindercallback");
@@ -2997,12 +3114,16 @@ function ActivityReminderCallbackProcess(message) {
 	}
 			
 	if(message != "") ActivityReminderCallbackRollout(ActivityReminder_popup_maxheight, ActivityReminder_callback_win); 
-	else { ActivityReminderCallbackReset(0, ActivityReminder_callback_win); }
+	else {
+		ActivityReminderCallbackReset(0, ActivityReminder_callback_win);
+	}
 }
 function ActivityReminderCallbackRollout(z, ActivityReminder_callback_win) {
 	ActivityReminder_callback_win = $(ActivityReminder_callback_win);
 
-	if (ActivityReminder_timer) { window.clearTimeout(ActivityReminder_timer); } 
+	if (ActivityReminder_timer) {
+		window.clearTimeout(ActivityReminder_timer);
+	}
 	if (ActivityReminder_callback_win && parseInt(ActivityReminder_callback_win.style.height) < z) { 
 		ActivityReminder_callback_win.style.height = parseInt(ActivityReminder_callback_win.style.height) + ActivityReminder_progressive_height + "px"; 
 		ActivityReminder_timer = setTimeout("ActivityReminderCallbackRollout(" + z + ",'" + ActivityReminder_callback_win.id + "')", 1);
@@ -3015,7 +3136,9 @@ function ActivityReminderCallbackRollout(z, ActivityReminder_callback_win) {
 function ActivityReminderCallbackRollin(z, ActivityReminder_callback_win) {
 	ActivityReminder_callback_win = $(ActivityReminder_callback_win);
 
-	if (ActivityReminder_timer) { window.clearTimeout(ActivityReminder_timer); } 
+	if (ActivityReminder_timer) {
+		window.clearTimeout(ActivityReminder_timer);
+	}
 	if (parseInt(ActivityReminder_callback_win.style.height) > z) { 
 		ActivityReminder_callback_win.style.height = parseInt(ActivityReminder_callback_win.style.height) - ActivityReminder_progressive_height + "px"; 
 		ActivityReminder_timer = setTimeout("ActivityReminderCallbackRollin(" + z + ",'" + ActivityReminder_callback_win.id + "')", 1); 
@@ -3066,17 +3189,17 @@ function movefieldsStep1()
 	var count=0;
 	for(i=0;i<availListObj.length;i++)
 	{
-			if (availListObj.options[i].selected==true) 
-			{
-				count++;
-			}
+		if (availListObj.options[i].selected==true)
+		{
+			count++;
+		}
 
 	}
 	var total_fields=count+selectedColumnsObj.length;	
 	if (total_fields >4 )
 	{
 		alert(alert_arr.MAX_RECORDS)
-			return false
+		return false
 	}		
 	if (availListObj.options.selectedIndex > -1)
 	{
@@ -3227,7 +3350,7 @@ function moveFieldUp()
 		selectedColumnsObj.options[currpos].value=temp
 		selectedColumnsObj.options[prevpos].selected=true
 		selectedColumnsObj.options[currpos].selected=false
-		}
+	}
 		
 }
 
@@ -3292,67 +3415,67 @@ function lastImport(module,req_module)
 function merge_fields(selectedNames,module,parent_tab)
 {
 			
-		var select_options=document.getElementsByName(selectedNames);
-		var x= select_options.length;
-		var req_module=module;
-		var num_group=$("group_count").innerHTML;
-		var pass_url="";
-		var flag=0;
-		//var i=0;		
-		var xx = 0;
-		for(i = 0; i < x ; i++)
+	var select_options=document.getElementsByName(selectedNames);
+	var x= select_options.length;
+	var req_module=module;
+	var num_group=$("group_count").innerHTML;
+	var pass_url="";
+	var flag=0;
+	//var i=0;
+	var xx = 0;
+	for(i = 0; i < x ; i++)
+	{
+		if(select_options[i].checked)
 		{
-			if(select_options[i].checked)
-			{
-				pass_url = pass_url+select_options[i].value +","
-				xx++
-			}
+			pass_url = pass_url+select_options[i].value +","
+			xx++
 		}
-		var tmp = 0
-		if ( xx != 0)
-		{
+	}
+	var tmp = 0
+	if ( xx != 0)
+	{
 			
-			if(xx > 3)
+		if(xx > 3)
+		{
+			alert(alert_arr.MAX_THREE)
+			return false;
+		}
+		if(xx > 0)
+		{
+			for(j=0;j<num_group;j++)
 			{
-				alert(alert_arr.MAX_THREE)
-					return false;
-			}
-			if(xx > 0)
-			{
-				for(j=0;j<num_group;j++)
+				flag = 0
+				var group_options=document.getElementsByName("group"+j);
+				for(i = 0; i < group_options.length ; i++)
 				{
-					flag = 0
-					var group_options=document.getElementsByName("group"+j);
-					for(i = 0; i < group_options.length ; i++)
-						{
-							if(group_options[i].checked)
-							{
-								flag++
-							}
-						}
-					if(flag > 0)
-					tmp++;
+					if(group_options[i].checked)
+					{
+						flag++
+					}
 				}
-				if (tmp > 1)
-				{
+				if(flag > 0)
+					tmp++;
+			}
+			if (tmp > 1)
+			{
 				alert(alert_arr.SAME_GROUPS)
 				return false;
-				}
-				if(xx <2)
-				{
-					alert(alert_arr.ATLEAST_TWO)
-					return false;
-				}
+			}
+			if(xx <2)
+			{
+				alert(alert_arr.ATLEAST_TWO)
+				return false;
+			}
 				
-			}			
-					
-			window.open("index.php?module="+req_module+"&action=ProcessDuplicates&mergemode=mergefields&passurl="+pass_url+"&parenttab="+parent_tab,"Merge","width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes");	
 		}
-		else
-		{
-			alert(alert_arr.ATLEAST_TWO);			
-			return false;
-		}		
+					
+		window.open("index.php?module="+req_module+"&action=ProcessDuplicates&mergemode=mergefields&passurl="+pass_url+"&parenttab="+parent_tab,"Merge","width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes");
+	}
+	else
+	{
+		alert(alert_arr.ATLEAST_TWO);
+		return false;
+	}
 }
 
 function delete_fields(module)
@@ -3366,35 +3489,39 @@ function delete_fields(module)
 	{
 		if(select_options[i].checked)
 		{
-		url_rec=url_rec+select_options[i].value +","
-		xx++
+			url_rec=url_rec+select_options[i].value +","
+			xx++
 		}	
 	}			
 	if($("current_action"))
 		cur_action = $("current_action").innerHTML		
 	if (xx == 0)
-        {
-            alert(alert_arr.SELECT);
-            return false;
-        } 
-        var alert_str = alert_arr.DELETE + xx +alert_arr.RECORDS;
+	{
+		alert(alert_arr.SELECT);
+		return false;
+	}
+	var alert_str = alert_arr.DELETE + xx +alert_arr.RECORDS;
 	if(module=="Accounts")
-	alert_str = alert_arr.DELETE_ACCOUNT + xx +alert_arr.RECORDS;
+		alert_str = alert_arr.DELETE_ACCOUNT + xx +alert_arr.RECORDS;
 	if(confirm(alert_str))
-		{
-			$("status").style.display="inline";
-			new Ajax.Request(
-          	  	      'index.php',
-			      	{queue: {position: 'end', scope: 'command'},
-		                        method: 'post',
-                		        postBody:"module="+module+"&action="+module+"Ajax&file=FindDuplicateRecords&del_rec=true&ajax=true&return_module="+module+"&idlist="+url_rec+"&current_action="+cur_action+"&"+dup_start,
-		                        onComplete: function(response) {
-        	        	                $("status").style.display="none";
-                	        	        $("duplicate_ajax").innerHTML= response.responseText;
-						}
-              			 }
-       			);
-		}
+	{
+		$("status").style.display="inline";
+		new Ajax.Request(
+			'index.php',
+			{
+				queue: {
+					position: 'end',
+					scope: 'command'
+				},
+				method: 'post',
+				postBody:"module="+module+"&action="+module+"Ajax&file=FindDuplicateRecords&del_rec=true&ajax=true&return_module="+module+"&idlist="+url_rec+"&current_action="+cur_action+"&"+dup_start,
+				onComplete: function(response) {
+					$("status").style.display="none";
+					$("duplicate_ajax").innerHTML= response.responseText;
+				}
+			}
+			);
+	}
 	else
 		return false;	
 }
@@ -3436,7 +3563,7 @@ function select_All(fieldnames,cnt,module)
 		for(j=0;j<fld_len;j++)
 		{
 			value[cnt].checked='true'
-			//	alert(value[j].checked)
+		//	alert(value[j].checked)
 		}	
 				
 	}
@@ -3444,40 +3571,40 @@ function select_All(fieldnames,cnt,module)
 
 function selectAllDel(state,checkedName)
 {
-		var selectedOptions=document.getElementsByName(checkedName);
-		var length=document.getElementsByName(checkedName).length;
-		if(typeof(length) == 'undefined')
-		{
-			return false;
-		}	
-		for(var i=0;i<length;i++)
-		{
-			selectedOptions[i].checked=state;
-		}	
+	var selectedOptions=document.getElementsByName(checkedName);
+	var length=document.getElementsByName(checkedName).length;
+	if(typeof(length) == 'undefined')
+	{
+		return false;
+	}
+	for(var i=0;i<length;i++)
+	{
+		selectedOptions[i].checked=state;
+	}
 }
 
 function selectDel(ThisName,CheckAllName)
+{
+	var ThisNameOptions=document.getElementsByName(ThisName);
+	var CheckAllNameOptions=document.getElementsByName(CheckAllName);
+	var len1=document.getElementsByName(ThisName).length;
+	var flag = true;
+	if (typeof(document.getElementsByName(ThisName).length)=="undefined")
 	{
-		var ThisNameOptions=document.getElementsByName(ThisName);
-		var CheckAllNameOptions=document.getElementsByName(CheckAllName);
-		var len1=document.getElementsByName(ThisName).length;
-		var flag = true;
-		if (typeof(document.getElementsByName(ThisName).length)=="undefined")
-	       	{
-			flag=true;
-		}
-	       	else 
+		flag=true;
+	}
+	else
+	{
+		for (var j=0;j<len1;j++)
 		{
-			for (var j=0;j<len1;j++) 
+			if (ThisNameOptions[j].checked==false)
 			{
-				if (ThisNameOptions[j].checked==false)
-		       		{
-					flag=false
-					break;
-				}
+				flag=false
+				break;
 			}
 		}
-		CheckAllNameOptions[0].checked=flag
+	}
+	CheckAllNameOptions[0].checked=flag
 }
 
 // Added for page navigation in duplicate-listview
@@ -3487,34 +3614,42 @@ function getDuplicateListViewEntries_js(module,url)
 	dup_start = url;
 	$("status").style.display="block";
 	new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:"module="+module+"&action="+module+"Ajax&file=FindDuplicateRecords&ajax=true&"+dup_start,
-				onComplete: function(response) {
-					$("status").style.display="none";
-					$("duplicate_ajax").innerHTML = response.responseText;
-				}
+		'index.php',
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
+			method: 'post',
+			postBody:"module="+module+"&action="+module+"Ajax&file=FindDuplicateRecords&ajax=true&"+dup_start,
+			onComplete: function(response) {
+				$("status").style.display="none";
+				$("duplicate_ajax").innerHTML = response.responseText;
 			}
-	);
+		}
+		);
 }
 
-function getUnifiedSearchEntries_js(module,url){
-   var qryStr = document.getElementsByName('search_criteria')[0].value;
-   $("status").style.display="block";
-   var recordCount = document.getElementById(module+'RecordCount').value;
-   new Ajax.Request(
-           'index.php',
-           {queue: {position: 'end', scope: 'command'},
-                   method: 'post',
-                   postBody:"module="+module+"&action="+module+"Ajax&file=UnifiedSearch&ajax=true&"+url+
-                           '&query_string='+qryStr+'&search_onlyin='+encodeURIComponent('--USESELECTED--')+'&recordCount='+recordCount,
-                   onComplete: function(response) {
-                           $("status").style.display="none";
-                           $('global_list_'+module).innerHTML = response.responseText;
-                   }
-           }
-   );
+function getUnifiedSearchEntries_js(search,module,url){
+	var qryStr = document.getElementsByName('search_criteria')[0].value;
+	$("status").style.display="block";
+	var recordCount = document.getElementById(module+'RecordCount').value;
+	new Ajax.Request(
+		'index.php',
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
+			method: 'post',
+			postBody:"module="+module+"&search_tag="+search+"&action="+module+"Ajax&file=UnifiedSearch&ajax=true&"+url+
+			'&query_string='+qryStr+'&search_onlyin='+encodeURIComponent('--USESELECTED--')+'&recordCount='+recordCount,
+			onComplete: function(response) {
+				$("status").style.display="none";
+				$('global_list_'+module).innerHTML = response.responseText;
+			}
+		}
+		);
 }
 
 /* End */
@@ -3539,7 +3674,7 @@ function getViewPortDimension()
 {
 	if(!document.all)
 	{
-	  	XX = self.innerWidth;
+		XX = self.innerWidth;
 		YY = self.innerHeight;
 	}
 	else if(document.all)
@@ -3551,16 +3686,16 @@ function getViewPortDimension()
 
 function toggleTable(id) {
 
-    var listTableObj=getObj(id);
-    if(listTableObj.style.display=="none")
-    {
+	var listTableObj=getObj(id);
+	if(listTableObj.style.display=="none")
+	{
 		listTableObj.style.display="";
-    }
-    else 
-    {
+	}
+	else
+	{
 		listTableObj.style.display="none";
-    }
-    //set_cookie(id,listTableObj.style.display)
+	}
+//set_cookie(id,listTableObj.style.display)
 }
 
 function FileAdd(obj,Lay,return_action){
@@ -3573,14 +3708,18 @@ function FileAdd(obj,Lay,return_action){
 function dldCntIncrease(fileid)
 {
 	new Ajax.Request(
-            'index.php',
-            {queue: {position: 'end', scope: 'command'},
-             method: 'post',
-             postBody: 'action=DocumentsAjax&mode=ajax&file=SaveFile&module=Documents&file_id='+fileid+"&act=updateDldCnt",
-             onComplete: function(response) {
-                }
-    		}
-  		);
+		'index.php',
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
+			method: 'post',
+			postBody: 'action=DocumentsAjax&mode=ajax&file=SaveFile&module=Documents&file_id='+fileid+"&act=updateDldCnt",
+			onComplete: function(response) {
+			}
+		}
+		);
 }
 //End Documents Module
 
@@ -3604,7 +3743,9 @@ function placeAtCenter(node){
 	if(rightvalue < 0) rightvalue = 0;
 	
 	node.style.top = topvalue + "px";
-	node.style.right =rightvalue + "px";	
+	node.style.right =rightvalue + "px";
+	node.style.left = '';
+	node.style.bottom = '';
 	
 }
 
@@ -3622,7 +3763,10 @@ function getDimension(node){
 		ht = Math.max(nodeChildren[index].offsetHeight, ht);
 		wdth = Math.max(nodeChildren[index].offsetWidth,wdth);
 	}
-	return {x: wdth,y: ht};
+	return {
+		x: wdth,
+		y: ht
+	};
 }
 
 /**
@@ -3648,7 +3792,10 @@ function getViewPortCenter(){
 		height += document.body.clientHeight;
 		width += document.body.clientWidth;
 	}
-	return {x: width,y: height};
+	return {
+		x: width,
+		y: height
+	};
 }
 
 /**
@@ -3665,18 +3812,22 @@ function startCall(number, recordid){
 	//var ASTERISK_DIV_TIMEOUT = 6000;
 	new Ajax.Request(
 		'index.php',
-		{	queue: {position: 'end', scope: 'command'},
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
 			method: 'post',
 			postBody: 'action=PBXManagerAjax&mode=ajax&file=StartCall&ajax=true&module=PBXManager&number='+encodeURIComponent(number)+'&recordid='+recordid,
 			onComplete: function(response) {
-							if(response.responseText == ''){
-								//successfully called
-							}else{
-								alert(response.responseText);
-							}
-						}
+				if(response.responseText == ''){
+				//successfully called
+				}else{
+					alert(response.responseText);
+				}
+			}
 		}
-	);
+		);
 }
 //asterisk integration :: ends
 
@@ -3736,8 +3887,8 @@ function ToolTipManager(){
 				div.style.display = "none";
 			}else{
 				setTimeout(function(){	
-				if(!state){
-					div.style.display = "none";
+					if(!state){
+						div.style.display = "none";
 					}
 				}, 700);
 			}
@@ -3785,7 +3936,13 @@ function ToolTipManager(){
 		tooltip.style.top= topSide + 'px';
 	}
 	
-	return {tip:tip, untip:unTip,'exists': exists,'show': show,'getDivId':getDivId};
+	return {
+		tip:tip,
+		untip:unTip,
+		'exists': exists,
+		'show': show,
+		'getDivId':getDivId
+	};
 }
 if(!tooltip){
 	var tooltip = ToolTipManager();
@@ -3825,7 +3982,9 @@ VtigerJS_DialogBox = {
 			if(olayer.style.zIndex < 0) olayer.style.zIndex *= -1; 
 			if (browser_ie) { 
 				olayer.style.height = document.body.offsetHeight + (document.body.scrollHeight - document.body.offsetHeight) + "px"; 
-			} else if (browser_nn4 || browser_nn6) { olayer.style.height = document.body.offsetHeight + "px"; } 
+			} else if (browser_nn4 || browser_nn6) {
+				olayer.style.height = document.body.offsetHeight + "px";
+			}
 			olayer.style.width = "100%";
 			document.body.appendChild(olayer);
 			
@@ -3902,16 +4061,16 @@ VtigerJS_DialogBox = {
 			dlgbxnode.innerHTML = 
 			'<table cellspacing="0" cellpadding="18" border="0" class="options small">' +
 			'<tbody>' +
-				'<tr>' +
-				'<td nowrap="" align="center" style="color: rgb(255, 255, 255); font-size: 15px;">' +
-				'<b>'+ msg + '</b></td>' +
-				'</tr>' +
-				'<tr>' +
-				'<td align="center">' +
-				'<input type="button" style="text-transform: capitalize;" onclick="$(\''+ dlgbxid + '\').hide();VtigerJS_DialogBox._olayer(false);VtigerJS_DialogBox._confirm_handler();" value="'+ alert_arr.YES + '"/>' +  
-				'<input type="button" style="text-transform: capitalize;" onclick="$(\''+ dlgbxid + '\').hide();VtigerJS_DialogBox._olayer(false)" value="' + alert_arr.NO + '"/>' +
-				'</td>'+
-				'</tr>' +
+			'<tr>' +
+			'<td nowrap="" align="center" style="color: rgb(255, 255, 255); font-size: 15px;">' +
+			'<b>'+ msg + '</b></td>' +
+			'</tr>' +
+			'<tr>' +
+			'<td align="center">' +
+			'<input type="button" style="text-transform: capitalize;" onclick="$(\''+ dlgbxid + '\').hide();VtigerJS_DialogBox._olayer(false);VtigerJS_DialogBox._confirm_handler();" value="'+ alert_arr.YES + '"/>' +
+			'<input type="button" style="text-transform: capitalize;" onclick="$(\''+ dlgbxid + '\').hide();VtigerJS_DialogBox._olayer(false)" value="' + alert_arr.NO + '"/>' +
+			'</td>'+
+			'</tr>' +
 			'</tbody>' +
 			'</table>';
 			document.body.appendChild(dlgbxnode);
@@ -3929,4 +4088,202 @@ VtigerJS_DialogBox = {
 			}
 		}
 	}	
+}
+
+function validateInputData(value, fieldLabel, typeofdata) {
+	
+	var typeinfo = typeofdata.split('~');
+	var type = typeinfo[0];
+	
+	if(type == 'T') {   
+		var datime = value.split(" ");
+		if(!re_dateValidate(datime[0],fieldLabel+" (Current User Date Time Format)","OTH"))
+			return false;
+		if(datime.length > 1)	
+			if(!re_patternValidate(datime[1],fieldLabel+" (Time)","TIMESECONDS"))
+				return false;
+	} else if(type == 'D' || type == 'DT') {        
+		if(!re_dateValidate(value,fieldLabel+" (Current User Date Format)","OTH"))
+			return false
+	} else if(type == 'I') {
+		if(isNaN(value) || value.indexOf(".")!=-1) {         
+			alert(alert_arr.INVALID+fieldLabel);
+			return false
+		}
+	} else if(type == 'N' || type == 'NN') {  
+		
+		if(typeof(typeinfo[2]) == "undefined") {
+			var numformat = "any";
+		} else {
+			var numformat = typeinfo[2]
+		}
+		
+		if(type == 'NN') {
+			var negativeallowed = true;
+		} else {
+			var negativeallowed = false;
+		}
+		
+		if(numformat != "any") {
+			if (isNaN(value)) {
+				var invalid=true
+			} else {
+				var format = numformat.split(",")
+				var splitval = value.split(".")
+				
+				if (negativeallowed == true) {
+					if (splitval[0].indexOf("-") >= 0) {
+						if (splitval[0].length-1 > format[0]) {
+							invalid=true
+						}
+					} else {
+						if (splitval[0].length > format[0]) {
+							invalid=true
+						}
+					}
+				} else {
+					if (value < 0) {
+						invalid=true
+					} else if (format[0] == 2 && splitval[0] == 100 && (!splitval[1] || splitval[1]==0)) {
+						invalid=false
+					} else if (splitval[0].length > format[0]) {
+						invalid=true
+					}
+				}
+	            
+				if (splitval[1]) {
+					if (splitval[1].length > format[1]) {
+						invalid=true
+					}
+				}
+			}
+			
+			if (invalid==true) {
+				alert(alert_arr.INVALID + fieldLabel)
+				return false;
+			} else {
+				return true;
+			}
+		} else {
+			var splitval = value.split(".")
+			var arr_len = splitval.length;
+			var len = 0;
+			if(splitval[0] > 18446744073709551615) {
+				alert( fieldLabel + alert_arr.EXCEEDS_MAX);
+				return false;
+			}
+			if(negativeallowed == true) {
+				var re=/^(-|)(\d)*(\.)?\d+(\.\d\d*)*$/
+			} else {
+				var re=/^(\d)*(\.)?\d+(\.\d\d*)*$/	
+			}
+		}
+
+		//for precision check. ie.number must contains only one "."	
+		var dotcount=0;
+		for (var i = 0; i < value.length; i++) {   
+			if (value.charAt(i) == ".")
+				dotcount++;
+		}	
+
+		if(dotcount>1) {
+			alert(alert_arr.INVALID+fieldLabel)
+			return false;
+		}
+
+		if (!re.test(value)) {
+			alert(alert_arr.INVALID+fieldLabel)
+			return false
+		}
+	} else if(type == 'E') {
+		if (!re_patternValidate(value,fieldLabel+" (Email Id)","EMAIL"))
+			return false
+	}
+	
+	return true;
+}
+
+function re_dateValidate(fldval,fldLabel,type) {
+	if(re_patternValidate(fldval,fldLabel,"DATE")==false)
+		return false;
+	dateval=fldval.replace(/^\s+/g, '').replace(/\s+$/g, '') 
+
+	var dateelements=splitDateVal(dateval)
+	
+	dd=dateelements[0]
+	mm=dateelements[1]
+	yyyy=dateelements[2]
+	
+	if (dd<1 || dd>31 || mm<1 || mm>12 || yyyy<1 || yyyy<1000) {
+		alert(alert_arr.ENTER_VALID+fldLabel)
+		return false
+	}
+	
+	if ((mm==2) && (dd>29)) {//checking of no. of days in february month
+		alert(alert_arr.ENTER_VALID+fldLabel)
+		return false
+	}
+	
+	if ((mm==2) && (dd>28) && ((yyyy%4)!=0)) {//leap year checking
+		alert(alert_arr.ENTER_VALID+fldLabel)
+		return false
+	}
+
+	switch (parseInt(mm)) {
+		case 2 : 
+		case 4 : 
+		case 6 : 
+		case 9 : 
+		case 11 :
+			if (dd>30) {
+			alert(alert_arr.ENTER_VALID+fldLabel)
+			return false
+		}
+	}
+	
+	var currdate=new Date()
+	var chkdate=new Date()
+	
+	chkdate.setYear(yyyy)
+	chkdate.setMonth(mm-1)
+	chkdate.setDate(dd)
+	
+	if (type!="OTH") {
+		if (!compareDates(chkdate,fldLabel,currdate,"current date",type)) {
+			return false
+		} else return true;
+	} else return true;
+}
+
+//Copied from general.js and altered some lines. becos we cant send vales to function present in general.js. it accept only field names.
+function re_patternValidate(fldval,fldLabel,type) {
+		
+	if (type.toUpperCase()=="EMAIL") {
+		/*changes made to fix -- ticket#3278 & ticket#3461
+		  var re=new RegExp(/^.+@.+\..+$/)*/
+		//Changes made to fix tickets #4633, #5111  to accomodate all possible email formats
+		var re=new RegExp(/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/)
+	}
+	
+	if (type.toUpperCase()=="DATE") {//DATE validation 
+
+		switch (userDateFormat) {
+			case "yyyy-mm-dd" :
+				var re = /^\d{4}(-)\d{1,2}\1\d{1,2}$/
+				break;
+			case "mm-dd-yyyy" : 
+			case "dd-mm-yyyy" :
+				var re = /^\d{1,2}(-)\d{1,2}\1\d{4}$/
+		}
+	}
+	
+
+	if (type.toUpperCase()=="TIMESECONDS") {//TIME validation
+		var re = new RegExp("^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$");
+	}
+	if (!re.test(fldval)) {
+		alert(alert_arr.ENTER_VALID + fldLabel)
+		return false
+	}
+	else return true
 }

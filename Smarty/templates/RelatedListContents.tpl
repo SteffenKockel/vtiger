@@ -49,7 +49,7 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
                 postBody: urldata,
                 onComplete: function(response) {
 					var responseData = trim(response.responseText);
-      				target_element.innerHTML = responseData;
+      				target_element.update(responseData);
 					target_element.show();
       				showdata_element.hide();
       				hidedata_element.show();

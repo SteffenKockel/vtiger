@@ -21,10 +21,11 @@
  ********************************************************************************/
 
 $mod_strings = Array(
-'LBL_MODULE_NAME'=>'Órdenes de Compra',
+'LBL_MODULE_NAME'=>'Ordenes de Compra',
+'SINGLE_PurchaseOrder'=>'Orden de Compra',
 'LBL_RELATED_PRODUCTS'=>'Detalles',
 'LBL_MODULE_TITLE'=>'Ordenes de Compra: Inicio',
-'LBL_SEARCH_FORM_TITLE'=>'Buscar Órdenes de Compra',
+'LBL_SEARCH_FORM_TITLE'=>'Buscar Ordenes de Compra',
 'LBL_LIST_FORM_TITLE'=>'Lista de las Ordenes de Compra',
 'LBL_NEW_FORM_TITLE'=>'Nueva Orden de Compra',
 'LBL_MEMBER_ORG_FORM_TITLE'=>'Organizaciones Miembro',
@@ -160,7 +161,7 @@ $mod_strings = Array(
 
  //Added for 4.2 GA
 'LBL_SO_FORM_TITLE'=>'Pedidos',
-'LBL_PO_FORM_TITLE'=>'Órdenes de Compras',
+'LBL_PO_FORM_TITLE'=>'Ordenes de Compras',
 'LBL_SUBJECT_TITLE'=>'Referencia',
 'LBL_VENDOR_NAME_TITLE'=>'Nombre del Proveedor',
 'LBL_TRACKING_NO_TITLE'=>'Nº de seguimiento:',
@@ -170,7 +171,7 @@ $mod_strings = Array(
 'Order No'=>'Referencia de la Orden',
 'Status'=>'Estado',
 'PurchaseOrder'=>'Orden de Compra',
-'LBL_MY_TOP_PO'=>'Mis Principales Órdenes de Compra',
+'LBL_MY_TOP_PO'=>'Mis Principales Ordenes de Compra',
 
 //Added for existing Picklist Entries
 

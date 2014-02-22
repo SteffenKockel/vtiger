@@ -97,13 +97,23 @@ function getPendingActivities($mode,$view=''){
 		$noofrows = $adb->num_rows($res);
 		if (count($res)>0){
 			for($i=0;$i<$noofrows;$i++){
+				$dateValue = $adb->query_result($res,$i,'date_start') . ' ' . 
+						$adb->query_result($res,$i,'time_start');
+				$endDateValue = $adb->query_result($res,$i,'due_date') . ' ' . 
+						$adb->query_result($res,$i,'time_end');
+				$recurringDateValue = $adb->query_result($res,$i,'due_date') . ' ' . 
+						$adb->query_result($res,$i,'time_start');
+				$date = new DateTimeField($dateValue);
+				$endDate = new DateTimeField($endDateValue);
+				$recurringDate = new DateTimeField($recurringDateValue);
+				
 				$open_activity_list[] = Array('name' => $adb->query_result($res,$i,'subject'),
 						'id' => $adb->query_result($res,$i,'activityid'),
 						'type' => $adb->query_result($res,$i,'activitytype'),
 						'module' => $adb->query_result($res,$i,'setype'),
-						'date_start' => getDisplayDate($adb->query_result($res,$i,'date_start')),
-						'due_date' => getDisplayDate($adb->query_result($res,$i,'due_date')),
-						'recurringdate' => getDisplayDate($adb->query_result($res,$i,'recurringdate')),
+						'date_start' => $date->getDisplayDate(),
+						'due_date' => $endDate->getDisplayDate(),
+						'recurringdate' => $recurringDate->getDisplayDate(),
 						'priority' => $adb->query_result($res,$i,'priority'), // Armando L�scher 04.07.2005 -> �priority -> Desc: Get vtiger_priority from db
 						);
 			}
@@ -169,7 +179,7 @@ function getActivityview($activity_view)
 {	
 	global $log;
 	$log->debug("Entering getActivityview(".$activity_view.") method ...");
-	$today = date("Y-m-d", time());
+	$today = DateTimeField::convertToUserFormat(date("Y-m-d"));
 
 	if($activity_view == 'Today')
 	{	

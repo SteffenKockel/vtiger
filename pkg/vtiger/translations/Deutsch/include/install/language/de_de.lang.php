@@ -10,19 +10,19 @@
 
 $optionalModuleStrings = array(
 	'CustomerPortal_description'=>'Management Interface zur Kontrolle des Kundenportals',
-	'FieldFormulas_description'=>'Definiere Regeln für benutzerdefinierte Felder um die Werte beim Speichern eines Datensatzes zu setzen',
-	'RecycleBin_description'=>'Modul zur Wiederherstellung oder entgültigem Entfernen von gelöschten Datensätzen',
-	'Tooltip_description'=>'Konfiguriere Kurzinfos für ein Feld in Bezug auf andere Felder',
-	'Webforms_description'=>'Server seitige Unterstützung für die Konfiguration von Webforms',
+	'FieldFormulas_description'=>'Definiere Regeln fÃ¼r benutzerdefinierte Felder um die Werte beim Speichern eines Datensatzes zu setzen',
+	'RecycleBin_description'=>'Modul zur Wiederherstellung oder entgÃ¼ltigem Entfernen von gelÃ¶schten DatensÃ¤tzen',
+	'Tooltip_description'=>'Konfiguriere Kurzinfos fÃ¼r ein Feld in Bezug auf andere Felder',
+	'Webforms_description'=>'Server seitige UnterstÃ¼tzung fÃ¼r die Konfiguration von Webforms',
 	'SMSNotifier_description'=>'Sendet SMS Nachrichten zu Organisationen, Personen und Leads',
-	'Assets_description'=>'Fügt eine Bestandverwaltung von Proukten hinzu',
-	'ModComments_description' => 'Fügt die Möglichkeit zur Kommentierung von referenzierenden Modulen hinzu',
-	'Projects_description' => 'Fügt die Möglichkeit zum Projektmanagement zum CRM hinzu',
-	'NL-Dutch_description' => 'Niederländisches Sprachpaket',
-	'Pack de langue Francais_description' => 'Französiches Sprachpaket',
+	'Assets_description'=>'FÃ¼gt eine Bestandverwaltung von Proukten hinzu',
+	'ModComments_description' => 'FÃ¼die MÃ¶glichkeit zur Kommentierung von referenzierenden Modulen hinzu',
+	'Projects_description' => 'FÃ¼gt die MÃ¶glichkeit zum Projektmanagement zum CRM hinzu',
+	'NL-Dutch_description' => 'NiederlÃ¤ndisches Sprachpaket',
+	'Pack de langue Francais_description' => 'FranzÃ¶siches Sprachpaket',
 	'Magyar nyelvi csomag a VTiger 5.2.0 rendszerhez_description' => 'Ungarisches Sprachpaket',
 	'Spanish_description' => 'Spanisches Sprachpaket',
-	'German_description' => 'Deutsches Sprachpaket von crm-now',
+	'German_description' => 'Deutsches Sprachpaket',
 );
 
 $installationStrings = array(
@@ -57,7 +57,7 @@ $installationStrings = array(
 	'MSG_CONFIG_FILE_CREATED' => 'Configuration file (config.inc.php) was successfully created',
 	'LBL_FINISH' => 'Finish',
 	'LBL_CONFIG_COMPLETED' => 'Configuration Completed',
-	'LBL_PHP_VERSION_GT_5' => 'PHP version >= 5.0',
+	'LBL_PHP_VERSION_GT_5' => 'PHP version >= 5.2',
 	'LBL_YES' => 'Yes',
 	'LBL_NO' => 'No',
 	'LBL_NOT_CONFIGURED' => 'Not Configured',

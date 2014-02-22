@@ -7,10 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-/**
- * German translation by crm-now [ http://www.crm-now.com ]
- * IMPORTANT: save file with UTF-8 without BOM!
- **/
 $mod_strings = Array (
 'SMSNotifier'                 => 'SMS',
 'SINGLE_SMSNotifier'          => 'SMS Info',

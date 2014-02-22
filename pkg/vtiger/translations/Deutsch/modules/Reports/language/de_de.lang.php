@@ -10,14 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): www.crm-now.de translation to German
- ********************************************************************************/
-/*********************************************************************************
- * $Header: 
- * Description:  Defines the German language pack for the Report module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): crm-now, Berlin, www.crm-now.com
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -233,6 +225,44 @@ $mod_strings = Array(
 'LBL_ACTION' => 'Aktion',
 'LBL_VIEW_DETAILS' => 'Details ansehen',
 'LBL_SHOW_STANDARD_FILTERS' => 'zeige Standardfilter',
-)
+
+'LBL_YEAR' => 'Jahr',
+'LBL_MONTH'=> 'Monat',
+'LBL_QUARTER'=> 'Quartal',
+'LBL_NONE'=> 'Keine',
+
+'LBL_ROLES'=>'Rollen',
+'LBL_ROLES_SUBORDINATES'=>'Rollen und Unterrollen',
+'LBL_SCHEDULE_EMAIL'=>'Email Versandplanung',
+'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Zeitplan nach dem der Bericht an ausgewählte Email Empfänger gesendet werden soll.',
+'LBL_USERS_AVAILABEL'=> 'Empfänger',
+'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
+'LBL_REPORT_FORMAT_BOTH'=> 'Beides',
+'LBL_REPORT_FORMAT'=> 'Berichtsformat',
+'LBL_USERS_SELECTED'=>'Ausgewählte Empfänger',
+'LBL_SELECT'=>'Selektieren',
+'Hourly'=>'Stündlich',
+'Daily'=>'Täglich',
+'Weekly'=>'Wöchentlich',
+'BiWeekly'=>'alle zwei Wochen',
+'Monthly'=>'Monatlich',
+'Annually'=>'Jährlich',
+'LBL_SCHEDULE_REPORT'=>'Zeitplanung',
+'LBL_SCHEDULE_FREQUENCY'=>'Frequenz',
+'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Wählen ..... ',
+'LBL_SCHEDULE_EMAIL_TIME'=>'Uhrzeit',
+'LBL_SCHEDULE_EMAIL_DOW'=>'Wochentag',
+'LBL_SCHEDULE_EMAIL_DAY'=>'Tag',
+'LBL_SCHEDULE_EMAIL_MONTH'=>'Monat',
+'WEEKDAY_STRINGS' => array('Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'),
+'MONTH_STRINGS' => array('Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'),
+
+'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Dies ist eine automatisch generierte E-Mail aufgrund eines Bericht-Zeitplans.',
+'LBL_TIME_FORMAT_MSG' => 'hh:mm (24 Stunden Format)',
+
+'LBL_SAVE_REPORT' => 'Speichern',
+'LBL_SAVE_REPORT_AS' => 'Bericht Speichern als...',
+);
 
 ?>

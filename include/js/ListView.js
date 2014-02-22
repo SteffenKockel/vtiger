@@ -72,25 +72,9 @@ function mass_edit_formload(idstring,module,parenttab) {
 				onComplete: function(response) {
                 	$("status").style.display="none";
                	    var result = response.responseText;
-                    $("massedit_form_div").innerHTML= result;
+                    $("massedit_form_div").update(result);
 					$("massedit_form")["massedit_recordids"].value = idstring;
 					$("massedit_form")["massedit_module"].value = module;
-					
-					var jscripts = $('massedit_javascript');
-					if(jscripts) { 
-						eval(jscripts.innerHTML); 
-						// Updating global variables
-						fieldname = mass_fieldname;
-						for(var i=0;i<fieldname.length;i++){
-							calendar_jscript = $('massedit_calendar_'+fieldname[i]);			
-							if(calendar_jscript){
-								eval(calendar_jscript.innerHTML);
-							}
-						}
-						fieldlabel = mass_fieldlabel;
-						fielddatatype = mass_fielddatatype;
-						count = mass_count;
-					}
 				}
 		}
 	);
@@ -461,8 +445,12 @@ function getListViewCount(module,element,parentElement,url){
 		}
 	}else if(document.getElementById('globalSearchText') != null && 
 			typeof document.getElementById('globalSearchText') != 'undefined'){
-		var searchText = document.getElementById('globalSearchText').value;
-		searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText);
+            var searchText = document.getElementById('globalSearchText').value;
+            searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText);
+            if(document.getElementById('tagSearchText') != null && typeof document.getElementById('tagSearchText') != 'undefined'){
+                var tagSearch = document.getElementById('tagSearchText').value;
+                searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText)+'&tagSearchText='+encodeURIComponent(tagSearch);
+            }
 	}
 	if(module != 'Documents'){
 		searchURL += (url);

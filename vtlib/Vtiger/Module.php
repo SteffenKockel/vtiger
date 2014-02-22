@@ -108,8 +108,8 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 	 * NOTE: $url can have variables like $MODULE (module for which link is associated), 
 	 * $RECORD (record on which link is dispalyed)
 	 */
-	function addLink($type, $label, $url, $iconpath='', $sequence=0) {
-		Vtiger_Link::addLink($this->id, $type, $label, $url, $iconpath, $sequence);
+	function addLink($type, $label, $url, $iconpath='', $sequence=0, $handlerInfo=null) {
+		Vtiger_Link::addLink($this->id, $type, $label, $url, $iconpath, $sequence, $handlerInfo);
 	}
 
 	/**
@@ -134,6 +134,13 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 	 */
 	function initWebservice() {
 		Vtiger_Webservice::initialize($this);
+	}
+
+	/**
+	 * De-Initialize webservice setup for this module instance.
+	 */
+	function deinitWebservice() {
+		Vtiger_Webservice::uninitialize($this);
 	}
 
 	/**
@@ -167,7 +174,7 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 
 		$instance = false;
 		$filepath = "modules/$modulename/$modulename.php";
-		if(Vtiger_Utils::checkFileAccess($filepath, false)) {
+		if(Vtiger_Utils::checkFileAccessForInclusion($filepath, false)) {
 			include_once($filepath);
 			if(class_exists($modulename)) {
 				$instance = new $modulename();

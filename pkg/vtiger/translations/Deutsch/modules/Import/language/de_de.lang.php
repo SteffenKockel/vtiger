@@ -12,13 +12,6 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * Description:  Defines the German (Germany) language pack for the base application.
- * Contributor(s): 4net AG, Schoretshuebstr. 26 , CH-9015 St.Gallen
- *                 starting with v5.0.4 by crm-now, Berlin, www.crm-now.com
- ********************************************************************************/
-
-
 $mod_strings = Array(
 'LBL_IMPORT_MODULE_NO_DIRECTORY'=>'Das Verzeichnis ',
 'LBL_IMPORT_MODULE_NO_DIRECTORY_END'=>' existiert nicht oder ist schreibgeschützt',
@@ -139,7 +132,7 @@ $mod_strings = Array(
 'LBL_FINISHED'=>'Fertig',
 'LBL_UNDO_LAST_IMPORT'=>'Letzten Import rückgängig machen',
 
-'LBL_SUCCESS_1' => 'Anzahl der Datensätze, die erfolgreich importiert wurden : ',
+'LBL_SUCCESS_1' => 'Anzahl der Datensätze, die erfolgreich importiert / akualisiert wurden : ',
 'LBL_SKIPPED_1' => 'Anzahl der Datensätze, die nicht importiert wurden, da Feldangaben fehlten : ',
 
 //Added for patch2 - Products Import Notes
@@ -188,54 +181,15 @@ $mod_strings = Array(
 
 'LBL_DELIMITER' => 'Trennzeichen:',
 'LBL_FORMAT' => 'Format:',
+
+'LBL_MAX_FILE_SIZE' => ' ist die maximale Dateigröße',
+
+'LBL_MERGE_FIELDS_DUPLICATE' => 'Zusammenführung von importierten Duplikaten',
+'Customer Portal Login Details' => 'Kundenportal Login Informationen',
 );
 
-/*$mod_list_strings = Array(
-	"id"=>"Kontakt ID"
-	,"first_name"=>"Vorname"
-	,"last_name"=>"Nachname"
-	,"salutation"=>"Anrede"
-	,"lead_source"=>"Lead Quelle"
-	,"birthdate"=>"Geburtstag"
-	,"do_not_call"=>"Nicht Anrufen"
-	,"email_opt_out"=>"E-Mail Opt Aus"
-	,"primary_address_street_2"=>"Hauptadresse Straße 2"
-	,"primary_address_street_3"=>"Hauptadresse Straße 3"
-	,"alt_address_street_2"=>"Weitere Addresse Straße 2"
-	,"alt_address_street_3"=>"Weitere Addresse Straße 3"
-	,"full_name"=>"Voller Name"
-	,"account_name"=>"Organisation"
-	,"account_id"=>"Organisations ID"
-	,"title"=>"Titel"
-	,"department"=>"Abteilung"
-	,"birthdate"=>"Geburtstag"
-	,"do_not_call"=>"Nicht Anrufen"
-	,"phone_home"=>"Telefon (Privat)"
-	,"phone_mobile"=>"Telefon (Mobil)"
-	,"phone_work"=>"Telefon (Arbeit)"
-	,"phone_other"=>"Telefon (Weitere)"
-	,"phone_fax"=>"Fax"
-	,"email1"=>"E-Mail"
-	,"email2"=>"E-Mail (Weitere)"
-	,"yahoo_id"=>"Yahoo! ID"
-	,"assistant"=>"Assistent"
-	,"assistant_phone"=>"Assistent Telefon"
-	,"primary_address_street"=>"Hauptadresse Straße"
-	,"primary_address_city"=>"Hauptadresse Ort"
-	,"primary_address_state"=>"Hauptadresse Bundesland"
-	,"primary_address_postalcode"=>"Hauptadresse PLZ"
-	,"primary_address_country"=>"Hauptadresse Land"
-	,"alt_address_street"=>"Weitere Addresse Straße"
-	,"alt_address_city"=>"Weitere Addresse Ort"
-	,"alt_address_state"=>"Weitere Addresse Bundesland"
-	,"alt_address_postalcode"=>"Weitere Addresse PLZ"
-	,"alt_address_country"=>"Weitere Addresse Land"
-	,"description"=>"Beschreibung"
-
-	),*/
 $mod_list_strings = Array(
 'contacts_import_fields' => Array(
-	//"id"=>"Kontakt ID"
 	"firstname"=>"Vorname"
 	,"lastname"=>"Nachname"
 	,"salutationtype"=>"Anrede"
@@ -243,17 +197,9 @@ $mod_list_strings = Array(
 	,"birthday"=>"Geburtstag"
 	,"donotcall"=>"Nicht Anrufen"
 	,"emailoptout"=>"E-Mail Opt Aus"
-	//,"primary_address_street_2"=>"Hauptadresse Straße 2"
-	//,"primary_address_street_3"=>"Hauptadresse Straße 3"
-	//,"alt_address_street_2"=>"Weitere Addresse Straße 2"
-	//,"alt_address_street_3"=>"Weitere Addresse Straße 3"
-	//,"full_name"=>"Voller Name"
-	//,"account_name"=>"Account Name"
 	,"account_id"=>"Organisationsname"
 	,"title"=>"Funktion"
 	,"department"=>"Abteilung"
-	//,"birthdate"=>"Birthdate"
-	//,"do_not_call"=>"Do Not Call"
 	,"homephone"=>"Telefon (Privat)"
 	,"mobile"=>"Telefon (Mobil)"
 	,"phone"=>"Telefon (Arbeit)"
@@ -278,11 +224,10 @@ $mod_list_strings = Array(
 	,"othercountry"=>"Weitere Addresse Land"
 	,"description"=>"Beschreibung"
 	,"assigned_user_id"=>"Zuständig"
-
+	,"secondaryemail"=>"Zweite E-Mail-Adresse"
 	),
 
 'accounts_import_fields' => Array(
-	//"id"=>"Organisations ID",
 	"accountname"=>"Organisationsname",
 	"website"=>"Webseite",
 	"industry"=>"Branche",
@@ -300,18 +245,12 @@ $mod_list_strings = Array(
 	"siccode"=>"Börsencode",
 	"annual_revenue"=>"Jahresumsatz",
 	"bill_street"=>"Rechnungsadresse Straße",
-	//"billing_address_street_2"=>"Rechnungsadresse Street 2",
-	//"billing_address_street_3"=>"Billing Address Street 3",
-	//"billing_address_street_4"=>"Billing Address Street 4",
 	"bill_pobox"=>"Rechnungsadresse Postfach",
 	"bill_city"=>"Rechnungsadresse Ort",
 	"bill_state"=>"Rechnungsadresse Bundesland",
 	"bill_code"=>"Rechnungsadresse PLZ",
 	"bill_country"=>"Rechnungsadresse Land",
 	"ship_street"=>"Lieferadresse Straße",
-	//"shipping_address_street_2"=>"Shipping Address Street 2",
-	//"shipping_address_street_3"=>"Shipping Address Street 3",
-	//"shipping_address_street_4"=>"Shipping Address Street 4",
 	"ship_pobox"=>"Lieferadresse Postfach",
 	"ship_city"=>"Lieferadresse Ort",
 	"ship_state"=>"Lieferadresse Bundesland",
@@ -322,7 +261,6 @@ $mod_list_strings = Array(
 	),
 
 'potentials_import_fields' => Array(
-		//"id"=>"Account ID"
                  "potentialname"=>"Potentialname"
                 , "account_id"=>"Organisationsname"
                 , "opportunity_type"=>"Potentialtyp"
@@ -362,7 +300,8 @@ $mod_list_strings = Array(
 		"country"=>"Land",
 		"state"=>"Bundesland",
 		"description"=>"Beschreibung",
-		"assigned_user_id"=>"zuständig"
+		"assigned_user_id"=>"zuständig",
+		"secondaryemail"=>"Zweite E-Mail-Adresse"
     ),
 
  'products_import_fields' => Array(

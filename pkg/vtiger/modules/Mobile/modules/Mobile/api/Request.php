@@ -12,14 +12,14 @@ class Mobile_API_Request {
 	private $rawvaluemap;
 	private $defaultmap = array();
 	
-	function __construct($values, $rawvalues = array()) {
+	function __construct($values = array(), $rawvalues = array()) {
 		$this->valuemap = $values;
 		$this->rawvaluemap = $rawvalues;
 	}
 
 	function get($key, $defvalue = '') {
 		if(isset($this->valuemap[$key])) {
-			return $this->valuemap[$key];
+			return vtlib_purify($this->valuemap[$key]);
 		}
 		if($defvalue === '' && isset($this->defaultmap[$key])) {
 			$defvalue = $this->defaultmap[$key];

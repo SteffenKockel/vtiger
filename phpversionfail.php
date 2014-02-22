@@ -36,8 +36,15 @@
 	<table border=0 cellspacing=0 cellpadding=10 width=80% align=center>
 	<tr>
 		<td class="small" bgcolor="#FFFFFF" align=center>
-			PHP 5.0.x or above is required. Your current PHP version is <?php echo phpversion() ?> <br/>
-			Kindly upgrade the PHP installation, any try again! <br/>
+			PHP 5.0.x or above is required. Your current PHP version is
+			<?php
+				if(isset($serverPhpVersion)) {
+					echo $serverPhpVersion;
+				} else  {
+					echo '???';
+				}
+			?> <br/>
+			Kindly upgrade the PHP installation, and try again! <br/>
 		</td>
 	</tr>
 	</table>

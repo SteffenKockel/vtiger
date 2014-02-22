@@ -55,7 +55,7 @@ abstract class Vtiger_BackupZip {
 		if(empty($time)) {
 			$time = gmmktime();
 		}
-		return self::$filePrefix.gmdate('d M Y H_i_s T',$time).'.zip';
+		return self::$filePrefix.gmdate('d_M_Y-H_i_s-T',$time).'.zip';
 	}
 
 	public static function getDefaultFolderPath() {

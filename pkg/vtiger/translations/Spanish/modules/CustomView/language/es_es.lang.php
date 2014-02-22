@@ -97,7 +97,7 @@ $mod_strings = array (
 'Related to'=>'Relacionado con',
 'Priority'=>'Prioridad',
 'Product Name'=>'Producto',
-'Severity'=>'Importancia',
+'Severity'=>'Urgencia',
 'Status'=>'Estado',
 'Category'=>'Categoria',
 'Created Time'=>'Creado',
@@ -277,6 +277,8 @@ $mod_strings = array (
 'LBL_NEW'=>'Nuevo',
 'LBL_EDIT'=>'Editar',
 'LBL_STATUS_PUBLIC_APPROVE'=>'Aprobar',
-'LBL_STATUS_PUBLIC_DENY'=>'Denegar'
+'LBL_STATUS_PUBLIC_DENY'=>'Denegar',
+
+'LBL_ADVANCED_FILTER' => 'Regla',
 ); 
 ?>

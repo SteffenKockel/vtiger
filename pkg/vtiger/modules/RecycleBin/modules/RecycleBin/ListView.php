@@ -74,11 +74,11 @@ $focus = CRMEntity::getInstance($select_module);
 if(count($module_name) > 0)
 {
 	$cur_mod_view = new CustomView($select_module);
-	$viewid = $cur_mod_view->getViewId($select_module);	
+	$viewid = $cur_mod_view->getViewIdByName('All', $select_module);
 	
 	global $current_user;
 	$queryGenerator = new QueryGenerator($select_module, $current_user);
-	$queryGenerator->initForDefaultCustomView();
+	$queryGenerator->initForCustomViewById($viewid);
 	// Enabling Module Search
 	$url_string = '';
 	if($_REQUEST['query'] == 'true') {

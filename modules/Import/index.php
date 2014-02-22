@@ -246,7 +246,7 @@ if (! isset($_REQUEST['step'] ) )
 
 $mod_list_strings = return_mod_list_strings_language($current_language,"Import");
 
-checkFileAccess('modules/Import/ImportStep'. $_REQUEST['step']. '.php');
+checkFileAccessForInclusion('modules/Import/ImportStep'. $_REQUEST['step']. '.php');
 include_once('modules/Import/ImportStep'. $_REQUEST['step']. '.php');
 
 ?>

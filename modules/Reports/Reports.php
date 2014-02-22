@@ -11,6 +11,7 @@
 require_once('include/database/PearDatabase.php');
 require_once('data/CRMEntity.php');
 require_once('include/utils/UserInfoUtil.php');
+require_once 'modules/Reports/ReportUtils.php';
 global $calpath;
 global $app_strings,$mod_strings;
 global $app_list_strings;
@@ -526,24 +527,47 @@ class Reports extends CRMEntity{
 			{
 				//$this->updateModuleList($secmodule[$i]);
 				if($this->module_list[$secmodule[$i]]){
-					foreach($this->module_list[$secmodule[$i]] as $key=>$value)
-					{
-						$temp = $this->getColumnsListbyBlock($secmodule[$i],$key);
-						if(!empty($ret_module_list[$secmodule[$i]][$value])){
-							if(!empty($temp)){
-								$ret_module_list[$secmodule[$i]][$value] = array_merge($ret_module_list[$secmodule[$i]][$value],$temp);
-							}
-						} else {
-							$ret_module_list[$secmodule[$i]][$value] = $this->getColumnsListbyBlock($secmodule[$i],$key);
+					$this->sec_module_columnslist[$secmodule[$i]] = $this->getModuleFieldList(
+							$secmodule[$i]);
+					if($this->module_list[$secmodule[$i]] == 'Calendar') {
+						if($this->module_list['Events']){
+							$this->sec_module_columnslist['Events'] = $this->getModuleFieldList(
+									'Events');
 						}
 					}
-					$this->sec_module_columnslist[$secmodule[$i]] = $ret_module_list[$secmodule[$i]];
 				}
 			}
 		}
 		return true;
 	}
 
+	/**
+	 *
+	 * @param String $module
+	 * @param type $blockIdList
+	 * @param Array $currentFieldList
+	 * @return Array 
+	 */
+	public function getBlockFieldList($module, $blockIdList, $currentFieldList) {
+		if(!empty($currentFieldList)){
+			$temp = $this->getColumnsListbyBlock($module,$blockIdList);
+			if(!empty($temp)){
+				$currentFieldList = array_merge($currentFieldList,$temp);
+			}
+		} else {
+			$currentFieldList = $this->getColumnsListbyBlock($module,$blockIdList);
+		}
+		return $currentFieldList;
+	}
+	
+	public function getModuleFieldList($module) {
+		foreach($this->module_list[$module] as $key=>$value) {
+			$ret_module_list[$module][$value] = $this->getBlockFieldList(
+					$module, $key, $ret_module_list[$module][$value]);
+		}
+		return $ret_module_list[$module];
+	}
+	
 	/** Function to get vtiger_fields for the given module and block
 	 *  This function gets the vtiger_fields for the given module
 	 *  It accepts the module and the block as arguments and 
@@ -575,7 +599,7 @@ class Reports extends CRMEntity{
 			if($module == "Calendar")
 				$sql.=" group by vtiger_field.fieldlabel order by sequence";
 			else
-				$sql.=" order by sequence";
+			$sql.=" order by sequence";
 		}
 		else
 		{
@@ -589,7 +613,7 @@ class Reports extends CRMEntity{
 
 			//fix for Ticket #4016
 			if($module == "Calendar")
-				$sql.=" group by vtiger_field.fieldid,vtiger_field.fieldlabel order by sequence";
+				$sql.=" group by vtiger_field.fieldlabel order by sequence";
 			else
 				$sql.=" group by vtiger_field.fieldid order by sequence";			
 		}
@@ -940,153 +964,153 @@ class Reports extends CRMEntity{
 				if( type == "today" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($today).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($today).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($today).'";
 				}
 				else if( type == "yesterday" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($yesterday).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($yesterday).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($yesterday).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($yesterday).'";
 				}
 				else if( type == "tomorrow" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($tomorrow).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($tomorrow).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($tomorrow).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($tomorrow).'";
 				}        
 				else if( type == "thisweek" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($thisweek0).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($thisweek1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($thisweek0).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($thisweek1).'";
 				}                
 				else if( type == "lastweek" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($lastweek0).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($lastweek1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($lastweek0).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($lastweek1).'";
 				}                
 				else if( type == "nextweek" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($nextweek0).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($nextweek1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($nextweek0).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($nextweek1).'";
 				}                
 
 				else if( type == "thismonth" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($currentmonth0).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($currentmonth1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($currentmonth0).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($currentmonth1).'";
 				}                
 
 				else if( type == "lastmonth" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($lastmonth0).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($lastmonth1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($lastmonth0).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($lastmonth1).'";
 				}             
 				else if( type == "nextmonth" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($nextmonth0).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($nextmonth1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($nextmonth0).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($nextmonth1).'";
 				}           
 				else if( type == "next7days" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($today).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($next7days).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($next7days).'";
 				}                
 				else if( type == "next30days" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($today).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($next30days).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($next30days).'";
 				}                
 				else if( type == "next60days" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($today).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($next60days).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($next60days).'";
 				}                
 				else if( type == "next90days" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($today).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($next90days).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($next90days).'";
 				}        
 				else if( type == "next120days" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($today).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($next120days).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($today).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($next120days).'";
 				}        
 				else if( type == "last7days" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($last7days).'";
-					document.NewReport.enddate.value =  "'.getDisplayDate($today).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($last7days).'";
+					document.NewReport.enddate.value =  "'.DateTimeField::convertToUserFormat($today).'";
 				}                        
 				else if( type == "last30days" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($last30days).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($today).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($last30days).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($today).'";
 				}                
 				else if( type == "last60days" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($last60days).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($today).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($last60days).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($today).'";
 				}        
 				else if( type == "last90days" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($last90days).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($today).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($last90days).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($today).'";
 				}        
 				else if( type == "last120days" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($last120days).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($today).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($last120days).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($today).'";
 				}        
 				else if( type == "thisfy" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($currentFY0).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($currentFY1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($currentFY0).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($currentFY1).'";
 				}                
 				else if( type == "prevfy" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($lastFY0).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($lastFY1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($lastFY0).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($lastFY1).'";
 				}                
 				else if( type == "nextfy" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($nextFY0).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($nextFY1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($nextFY0).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($nextFY1).'";
 				}                
 				else if( type == "nextfq" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($nFq).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($nFq1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($nFq).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($nFq1).'";
 				}                        
 				else if( type == "prevfq" )
 				{
 
-					document.NewReport.startdate.value = "'.getDisplayDate($pFq).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($pFq1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($pFq).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($pFq1).'";
 				}                
 				else if( type == "thisfq" )
 				{
-					document.NewReport.startdate.value = "'.getDisplayDate($cFq).'";
-					document.NewReport.enddate.value = "'.getDisplayDate($cFq1).'";
+					document.NewReport.startdate.value = "'.DateTimeField::convertToUserFormat($cFq).'";
+					document.NewReport.enddate.value = "'.DateTimeField::convertToUserFormat($cFq1).'";
 				}                
 				else
 				{
@@ -1289,15 +1313,39 @@ function getEscapedColumns($selectedfields)
 				$criteria['comparator'] = $relcriteriarow["comparator"];
 				$advfilterval = $relcriteriarow["value"];
 				$col = explode(":",$relcriteriarow["columnname"]);
+
+				$moduleFieldLabel = $col[2];
+				$fieldName = $col[3];
+
+				list($module, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
+				$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
+				$fieldType = null;
+				if(!empty($fieldInfo)) {
+					$field = WebserviceField::fromArray($adb, $fieldInfo);
+					$fieldType = $field->getFieldDataType();
+				}
+				if($fieldType == 'currency') {
+					if($field->getUIType() == '71') {
+						$advfilterval = CurrencyField::convertToUserFormat($advfilterval, null, true);
+					} else {
+						$advfilterval = CurrencyField::convertToUserFormat($advfilterval);
+					}
+				}
+
 				$temp_val = explode(",",$relcriteriarow["value"]);
 				if($col[4] == 'D' || ($col[4] == 'T' && $col[1] != 'time_start' && $col[1] != 'time_end') || ($col[4] == 'DT')) {
 					$val = Array();
 					for($x=0;$x<count($temp_val);$x++) {
-						list($temp_date,$temp_time) = explode(" ",$temp_val[$x]);
-						$temp_date = getDisplayDate(trim($temp_date));
-						if(trim($temp_time) != '')
-							$temp_date .= ' '.$temp_time;
-						$val[$x]=$temp_date;
+                        if($col[4] == 'D') {
+							$date = new DateTimeField(trim($temp_val[$x]));
+							$val[$x] = $date->getDisplayDate();
+						} elseif($col[4] == 'DT') {
+							$date = new DateTimeField(trim($temp_val[$x]));
+							$val[$x] = $date->getDisplayDateTimeValue();
+						} else {
+							$date = new DateTimeField(trim($temp_val[$x]));
+							$val[$x] = $date->getDisplayTime();
+						}
 					}
 					$advfilterval = implode(",",$val);
 				}
@@ -1310,6 +1358,8 @@ function getEscapedColumns($selectedfields)
 			}
 			$i++;
 		}
+		// Clear the condition (and/or) for last group, if any.
+		if(!empty($advft_criteria[$i-1]['condition'])) $advft_criteria[$i-1]['condition'] = '';
 		$this->advft_criteria = $advft_criteria;
 		$log->info("Reports :: Successfully returned getAdvancedFilterList");
 		return true;
@@ -1558,6 +1608,24 @@ function getEscapedColumns($selectedfields)
 		$log->info("Reports :: Successfully returned sgetColumnstoTotalHTML");
 		return $options_list;
 	}
+
+	/** Function to get the  advanced filter criteria for an option
+	 *  This function accepts The option in the advenced filter as an argument
+	 *  This generate filter criteria for the advanced filter
+	 *  It returns a HTML string of combo values
+	 */
+	public static function getAdvCriteriaHTML($selected="") {
+		global $adv_filter_options;
+
+		foreach($adv_filter_options as $key=>$value) {
+			if($selected == $key) {
+				$shtml .= "<option selected value=\"".$key."\">".$value."</option>";
+			} else {
+				$shtml .= "<option value=\"".$key."\">".$value."</option>";
+			}
+		}
+		return $shtml;
+	}
 }
 
 /** Function to get the primary module list in vtiger_reports
@@ -1609,5 +1677,87 @@ function getReportRelatedModules($module,$focus)
 	return $optionhtml;
 }
 
+function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_groups) {	
 
+	global $adb, $log;
+	
+	$idelrelcriteriasql = "delete from vtiger_relcriteria where queryid=?";
+	$idelrelcriteriasqlresult = $adb->pquery($idelrelcriteriasql, array($reportid));
+
+	$idelrelcriteriagroupsql = "delete from vtiger_relcriteria_grouping where queryid=?";
+	$idelrelcriteriagroupsqlresult = $adb->pquery($idelrelcriteriagroupsql, array($reportid));
+	
+	if(empty($advft_criteria)) return;
+
+	foreach($advft_criteria as $column_index => $column_condition) {
+				
+		if(empty($column_condition)) continue;
+				
+		$adv_filter_column = $column_condition["columnname"];
+		$adv_filter_comparator = $column_condition["comparator"];
+		$adv_filter_value = $column_condition["value"];
+		$adv_filter_column_condition = $column_condition["columncondition"];
+		$adv_filter_groupid = $column_condition["groupid"];
+	
+		$column_info = explode(":",$adv_filter_column);
+		$moduleFieldLabel = $column_info[2];
+		$fieldName = $column_info[3];
+
+		list($module, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
+		$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
+		$fieldType = null;
+		if(!empty($fieldInfo)) {
+			$field = WebserviceField::fromArray($adb, $fieldInfo);
+			$fieldType = $field->getFieldDataType();
+		}
+		if($fieldType == 'currency') {
+			// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
+			if($field->getUIType() == '72') {
+				$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
+			} else {
+				$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);
+			}
+		}
+		
+		$temp_val = explode(",",$adv_filter_value);
+		if(($column_info[4] == 'D' || ($column_info[4] == 'T' && $column_info[1] != 'time_start' && $column_info[1] != 'time_end') || ($column_info[4] == 'DT')) && ($column_info[4] != '' && $adv_filter_value != '' ))
+		{
+			$val = Array();
+			for($x=0;$x<count($temp_val);$x++) {
+				if(trim($temp_val[$x]) != '') {
+					$date = new DateTimeField(trim($temp_val[$x]));
+					if($column_info[4] == 'D') {
+						$val[$x] = DateTimeField::convertToUserFormat(
+								trim($temp_val[$x]));
+					} elseif($column_info[4] == 'DT') {
+						$val[$x] = $date->getDBInsertDateTimeValue();
+					} else {
+						$val[$x] = $date->getDBInsertTimeValue();
+					}
+				}
+			}
+			$adv_filter_value = implode(",",$val);
+		}
+
+		$irelcriteriasql = "insert into vtiger_relcriteria(QUERYID,COLUMNINDEX,COLUMNNAME,COMPARATOR,VALUE,GROUPID,COLUMN_CONDITION) values (?,?,?,?,?,?,?)";
+		$irelcriteriaresult = $adb->pquery($irelcriteriasql, array($reportid, $column_index, $adv_filter_column, $adv_filter_comparator, $adv_filter_value, $adv_filter_groupid, $adv_filter_column_condition));
+	
+		// Update the condition expression for the group to which the condition column belongs
+		$groupConditionExpression = '';
+		if(!empty($advft_criteria_groups[$adv_filter_groupid]["conditionexpression"])) {
+			$groupConditionExpression = $advft_criteria_groups[$adv_filter_groupid]["conditionexpression"];
+		}
+		$groupConditionExpression = $groupConditionExpression .' '. $column_index .' '. $adv_filter_column_condition;
+		$advft_criteria_groups[$adv_filter_groupid]["conditionexpression"] = $groupConditionExpression;
+	}
+	
+	foreach($advft_criteria_groups as $group_index => $group_condition_info) {				
+				
+		if(empty($group_condition_info)) continue;
+		if(empty($group_condition_info["conditionexpression"])) continue; // Case when the group doesn't have any column criteria
+							
+		$irelcriteriagroupsql = "insert into vtiger_relcriteria_grouping(GROUPID,QUERYID,GROUP_CONDITION,CONDITION_EXPRESSION) values (?,?,?,?)";
+		$irelcriteriagroupresult = $adb->pquery($irelcriteriagroupsql, array($group_index, $reportid, $group_condition_info["groupcondition"], $group_condition_info["conditionexpression"]));
+	}
+}
 ?>

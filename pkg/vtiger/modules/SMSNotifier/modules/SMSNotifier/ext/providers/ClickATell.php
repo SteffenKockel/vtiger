@@ -17,7 +17,7 @@ class ClickATell implements ISMSProvider {
 	private $_parameters = array();
 	
 	const SERVICE_URI = 'http://api.clickatell.com';
-	private static $REQUIRED_PARAMETERS = array('api_id');
+	private static $REQUIRED_PARAMETERS = array('api_id', 'from', 'mo');
 	
 	function __construct() {		
 	}
@@ -51,23 +51,28 @@ class ClickATell implements ISMSProvider {
 			}
 		}
 		return false;
-	}	
+	}
+	
+	protected function prepareParameters() {
+		$params = array('user' => $this->_username, 'password' => $this->_password);
+		foreach (self::$REQUIRED_PARAMETERS as $key) {
+			$params[$key] = $this->getParameter($key);
+		}
+		return $params;
+	}
 	
 	public function send($message, $tonumbers) {
 		if(!is_array($tonumbers)) {
 			$tonumbers = array($tonumbers);
 		}
+		
+		$params = $this->prepareParameters();
+		$params['text'] = $message;
+		$params['to'] = implode(',', $tonumbers);
+						
 		$serviceURL = $this->getServiceURL(self::SERVICE_SEND);
-
 		$httpClient = new Vtiger_Net_Client($serviceURL);
-		$response = $httpClient->doPost(array(
-			'user' => $this->_username,
-			'password' => $this->_password,
-			'api_id' => $this->getParameter('api_id'),
-			
-			'text' => $message,
-			'to'   => implode(',', $tonumbers)
-		));
+		$response = $httpClient->doPost($params);
 		$responseLines = split("\n", $response);		
 
 		$results = array();
@@ -99,14 +104,12 @@ class ClickATell implements ISMSProvider {
 	
 	public function query($messageid) {
 
+		$params = $this->prepareParameters();
+		$params['apimsgid'] = $messageid;
+
 		$serviceURL = $this->getServiceURL(self::SERVICE_QUERY);
-		$httpClient = new Vtiger_Net_Client($serviceURL);
-		$response = $httpClient->doPost(array(
-			'user' => $this->_username,
-			'password'  => $this->_password,
-			'api_id' => $this->getParameter('api_id'),		
-			'apimsgid' => $messageid
-		));
+		$httpClient = new Vtiger_Net_Client($serviceURL);					
+		$response = $httpClient->doPost($params);
 		
 		$response = trim($response);
 

@@ -933,8 +933,8 @@ function getPriceDetailsForProduct($productid, $unit_price, $available='availabl
 			} else {
 				$price_details[$i]['check_value'] = true;
 			}
-			$price_details[$i]['curvalue'] = $cur_value;
-			$price_details[$i]['conversionrate'] = $actual_conversion_rate;		
+			$price_details[$i]['curvalue'] = CurrencyField::convertToUserFormat($cur_value, null, true);
+			$price_details[$i]['conversionrate'] = $actual_conversion_rate;
 			
 			$is_basecurrency = false;
 			if ($currency_id == $product_currency_id) {

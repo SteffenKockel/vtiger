@@ -106,7 +106,7 @@ if(isPermitted("Emails","EditView",'') == 'yes')
         $smarty->assign("HIDDEN_PARENTS_LIST",$parent_email);
 	$smarty->assign("SENDMAILBUTTON","permitted");
 	$smarty->assign("EMAIL1",$focus->column_fields['email']);
-	$smarty->assign("EMAIL2",$focus->column_fields['yahooid']);
+	$smarty->assign("EMAIL2",$focus->column_fields['secondaryemail']);
       
 }
 

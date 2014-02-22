@@ -190,78 +190,20 @@ elseif($activity_mode == 'Events')
 	else
 		$data['set_reminder'] = $mod_strings['LBL_NO'];
 	//To set recurring details
-	$query = 'select vtiger_recurringevents.recurringfreq,vtiger_recurringevents.recurringinfo from vtiger_recurringevents where vtiger_recurringevents.activityid = ?';
+	$query = 'SELECT vtiger_recurringevents.*, vtiger_activity.date_start, vtiger_activity.time_start, vtiger_activity.due_date, vtiger_activity.time_end
+				FROM vtiger_recurringevents
+					INNER JOIN vtiger_activity ON vtiger_activity.activityid = vtiger_recurringevents.activityid
+					WHERE vtiger_recurringevents.activityid = ?';
 	$res = $adb->pquery($query, array($focus->id));
 	$rows = $adb->num_rows($res);
-	if($rows != 0)
-	{
-		$data['recurringcheck'] = $mod_strings['LBL_YES'];
-		$data['repeat_frequency'] = $adb->query_result($res,0,'recurringfreq');
-		$recurringinfo =  explode("::",$adb->query_result($res,0,'recurringinfo'));
-		$data['recurringtype'] = $recurringinfo[0];
-		if($recurringinfo[0] == 'Weekly')
-		{
-			$weekrpt_str = '';
-			if(count($recurringinfo) > 1)
-			{
-				$weekrpt_str .= 'on ';
-				for($i=1;$i<count($recurringinfo);$i++)
-				{
-					$label = 'LBL_DAY'.$recurringinfo[$i];
-					if($i != 1)
-						$weekrpt_str .= ', ';
-					$weekrpt_str .= $mod_strings[$label];
-				}
-			}
-			$data['repeat_str'] = $weekrpt_str;
-		}
-		elseif($recurringinfo[0] == 'Monthly')
-		{   
-			$monthrpt_str = '';
-			$data['repeatMonth'] = $recurringinfo[1];  
-			if($recurringinfo[1] == 'date')
-			{
-				$data['repeatMonth_date'] = $recurringinfo[2];
-				$monthrpt_str .= $mod_strings['on'].'&nbsp;'.$recurringinfo[2].'&nbsp;'.$mod_strings['day of the month'];
-			}
-			else 
-			{ 
-				$data['repeatMonth_daytype'] = $recurringinfo[2];
-				$data['repeatMonth_day'] = $recurringinfo[3];
-				switch($data['repeatMonth_day'])
-				{
-					case 0 :
-						$day = $mod_strings['LBL_DAY0'];
-						break;
-					case 1 :
-						$day = $mod_strings['LBL_DAY1'];
-						break;
-					case 2 :
-						$day = $mod_strings['LBL_DAY2'];
-						break;
-					case 3 :
-						$day = $mod_strings['LBL_DAY3'];
-						break;
-					case 4 :
-						$day = $mod_strings['LBL_DAY4'];
-						break;
-					case 5 :
-						$day = $mod_strings['LBL_DAY5'];
-						break;
-					case 6 :
-						$day = $mod_strings['LBL_DAY6'];
-						break;
-				}
+	if($rows > 0) {
+		$recurringObject = RecurringType::fromDBRequest($adb->query_result_rowdata($res, 0));
+		$recurringInfoDisplayData = $recurringObject->getDisplayRecurringInfo();
+		$data = array_merge($data, $recurringInfoDisplayData);
 
-				$monthrpt_str .= 'on '.$mod_strings[$recurringinfo[2]].' '.$day;
-			}
-			$data['repeat_str'] = $monthrpt_str;
-		}
-	}
-	else 
-	{   
-		$data['recurringcheck'] = $mod_strings['LBL_NO'];
-		$data['repeat_month_str'] = '';
+	} else  {
+		$data['recurringcheck'] = getTranslatedString('LBL_NO', $currentModule);
+		$data['repeat_str'] = '';
 	}
 	$sql = 'select vtiger_users.user_name,vtiger_invitees.* from vtiger_invitees left join vtiger_users on vtiger_invitees.inviteeid=vtiger_users.id where activityid=?';
 	$result = $adb->pquery($sql, array($focus->id));

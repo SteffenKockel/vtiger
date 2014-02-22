@@ -162,7 +162,7 @@ class SMSNotifierBase extends CRMEntity {
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
 			
-			checkFileAccess("modules/$related_module/$related_module.php");
+			checkFileAccessForInclusion("modules/$related_module/$related_module.php");
 			require_once("modules/$related_module/$related_module.php");
 			$other = new $related_module();
 			vtlib_setup_modulevars($related_module, $other);
@@ -259,7 +259,7 @@ class SMSNotifierBase extends CRMEntity {
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
 			
-			checkFileAccess("modules/$related_module/$related_module.php");
+			checkFileAccessForInclusion("modules/$related_module/$related_module.php");
 			require_once("modules/$related_module/$related_module.php");
 			$other = new $related_module();
 			vtlib_setup_modulevars($related_module, $other);

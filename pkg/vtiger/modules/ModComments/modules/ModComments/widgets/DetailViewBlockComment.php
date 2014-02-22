@@ -72,9 +72,9 @@ class ModComments_DetailViewBlockCommentWidget {
 			
 			$queryCriteria  = '';
 			switch($criteria) {
-				case 'All': $queryCriteria = ''; break;
-				case 'Last5': $queryCriteria = sprintf(" ORDER BY %s.%s DESC LIMIT 5", $entityInstance->table_name, $entityInstance->table_index); break;
-				case 'Mine': $queryCriteria = ' AND vtiger_crmentity.smownerid=' . $current_user->id; break;
+				case 'All': $queryCriteria = sprintf(" ORDER BY %s.%s DESC ", $entityInstance->table_name, $entityInstance->table_index); break;
+				case 'Last5': $queryCriteria =  sprintf(" ORDER BY %s.%s DESC LIMIT 5", $entityInstance->table_name, $entityInstance->table_index) ;break;
+				case 'Mine': $queryCriteria = ' AND vtiger_crmentity.smownerid=' . $current_user->id.sprintf(" ORDER BY %s.%s DESC ", $entityInstance->table_name, $entityInstance->table_index); break;
 			}
 			
 			$query = $entityInstance->getListQuery($moduleName, sprintf(" AND %s.related_to=?", $entityInstance->table_name));

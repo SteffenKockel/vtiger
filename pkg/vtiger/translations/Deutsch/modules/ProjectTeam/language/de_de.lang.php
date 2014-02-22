@@ -7,11 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-/**
- * German tranlsation by crm-now [ http://www.crm-now.com ]
- * IMPORTANT: save file with UTF-8 without BOM!
- **/
-
 $mod_strings = Array(
 	'LBLPROJECTTEAMFUNCTION'=>'Funktion',
     'LBLTEAMRELPROJECT'=>'bezogenes Projekt',
@@ -23,8 +18,7 @@ $mod_strings = Array(
     'SINGLE_ProjectTeam'=>'Projekt Team',
     'ProjectTeam'=>'Projekt Team',
     'LBLPROJECTTEAMNOTE'=>'Beschreibung',
-
-	//added by crm-now for missing entries in en_us.lang
+	
     'Project Manager' => 'Projektmanager',
     '--None--' => '--ohne--',
     'Other' => 'andere',

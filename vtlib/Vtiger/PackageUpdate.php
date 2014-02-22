@@ -69,11 +69,47 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * @param Boolean True for overwriting existing module
 	 */
 	function update($moduleInstance, $zipfile, $overwrite=true) {
-		$module = $this->initUpdate($moduleInstance, $zipfile, $overwrite);
 
-		if($module) {
-			// Call module update function
-			$this->update_Module($moduleInstance);
+		$module = $this->getModuleNameFromZip($zipfile);
+
+		if($module != null) {
+			// If data is not yet available
+			if(empty($this->_modulexml)) {
+				$this->__parseManifestFile($unzip);
+			}
+
+			$buildModuleArray = array();
+			$installSequenceArray = array();
+			$moduleBundle = (boolean)$this->_modulexml->modulebundle;
+			if($moduleBundle == true) {
+				$moduleList = (Array)$this->_modulexml->modulelist;
+				foreach($moduleList as $moduleInfos) {
+					foreach($moduleInfos as $moduleInfo) {
+						$moduleInfo = (Array)$moduleInfo;
+						$buildModuleArray[] = $moduleInfo;
+						$installSequenceArray[] = $moduleInfo['install_sequence'];
+					}
+				}
+				sort($installSequenceArray);
+				$unzip = new Vtiger_Unzip($zipfile);
+				$unzip->unzipAllEx($this->getTemporaryFilePath());
+				foreach ($installSequenceArray as $sequence) {
+					foreach ($buildModuleArray as $moduleInfo) {
+						if($moduleInfo['install_sequence'] == $sequence) {
+							$moduleInstance = Vtiger_Module::getInstance($moduleInfo['name']);
+							$this->update($moduleInstance, $this->getTemporaryFilePath($moduleInfo['filepath']), $overwrite);
+						}
+					}
+				}
+			} else {
+				if(!$moduleInstance || $moduleInstance->name != $module) {
+					self::log('Module name mismatch!');
+					return false;
+				}
+				$module = $this->initUpdate($moduleInstance, $zipfile, $overwrite);
+				// Call module update function
+				$this->update_Module($moduleInstance);
+			}
 		}
 	}
 
@@ -112,6 +148,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 		$this->update_Events($this->_modulexml, $moduleInstance);
 		$this->update_Actions($this->_modulexml, $moduleInstance);
 		$this->update_RelatedLists($this->_modulexml, $moduleInstance);
+		$this->update_CustomLinks($this->_modulexml, $moduleInstance);
 
 		$moduleInstance->__updateVersion($tabversion);
 
@@ -345,6 +382,12 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 			$moduleInstance->setRelatedList($relModuleInstance, "$label", $actions, "$relatedlistnode->function");
 		}
 		return $relModuleInstance;
-	}		
+	}
+
+	function update_CustomLinks($modulenode, $moduleInstance) {
+		if(empty($modulenode->customlinks) || empty($modulenode->customlinks->customlink)) return;
+		$moduleInstance->deleteLinks();
+		$this->import_CustomLinks($modulenode, $moduleInstance);
+	}
 }			
 ?>

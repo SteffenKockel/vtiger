@@ -3,7 +3,7 @@
 *  Language     : ES Spanish
 *  Version      : vt5.0.4
 *  Created Date : 2008-01-18 17:46:07
-*  Author       : rasomu
+*  Author       : JPL TSolucio, S.L.  -  rasomu
 *  Last change  : 2008-01-18
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 ***********************************************************/
@@ -291,5 +291,19 @@ var alert_arr = {
 
       BETWEEN: 'entre',
       BEFORE: 'antes',
-      AFTER: 'después'
+      AFTER: 'después',
+      'ERROR_DELETING_TRY_AGAIN': 'Error eliminando. Por favor inténtalo otra vez.',
+      'LBL_ENTER_WINDOW_TITLE': 'Introduce el título de la ventana.',
+      'LBL_SELECT_ONLY_FIELDS': 'Selecciona solo dos campos.',
+      'LBL_ENTER_RSS_URL':'Introduce la URL del RSS',
+      'LBL_ADD_HOME_WIDGET': 'No se ha podido añadir elementos a la portada! Por favor inténtalo otra vez.',
+
+      'LBL_DEFAULT_VALUE_FOR_THIS_FIELD' : 'Valor por defecto de este campo',
+
+      'RECIPIENTS_CANNOT_BE_EMPTY' : 'Los destinatarios no puede quedar vacío',
+      'VALID_SCANNER_NAME' : 'Introduce un nombre de clasificador válido (Solo Caracteres y Números)',
+      'ERR_SAME_SOURCE_AND_TARGET' : 'El campo origen y destino no pueden ser el mismo',
+      'ERR_ATLEAST_ONE_VALUE_FOR' : 'Has de seleccionar al menos un valor para',
+      'ERR_SELECT_MODULE_FOR_DEPENDENCY' : 'Selecciona un módulo para añadir Dependencia'
+
 };

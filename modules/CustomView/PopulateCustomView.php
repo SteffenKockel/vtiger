@@ -355,8 +355,8 @@ $cvcolumns = Array(Array('vtiger_leaddetails:lead_no:lead_no:Leads_Lead_No:V',
 		       'vtiger_faq:question:question:Faq_Question:V',
 		       'vtiger_faq:category:faqcategories:Faq_Category:V',
 		       'vtiger_faq:product_id:product_id:Faq_Product_Name:I',
-		       'vtiger_crmentity:createdtime:createdtime:Faq_Created_Time:D',
-                       'vtiger_crmentity:modifiedtime:modifiedtime:Faq_Modified_Time:D'),
+		       'vtiger_crmentity:createdtime:createdtime:Faq_Created_Time:DT',
+                       'vtiger_crmentity:modifiedtime:modifiedtime:Faq_Modified_Time:DT'),
 		      //this sequence has to be maintained 
 		 Array('vtiger_campaign:campaign_no:campaign_no:Campaigns_Campaign_No:V',
 		 		'vtiger_campaign:campaignname:campaignname:Campaigns_Campaign_Name:V',
@@ -376,14 +376,14 @@ $cvcolumns = Array(Array('vtiger_leaddetails:lead_no:lead_no:Leads_Lead_No:V',
 		 	'vtiger_faq:status:faqstatus:Faq_Status:V',
 			'vtiger_faq:product_id:product_id:Faq_Product_Name:I',
 			'vtiger_faq:category:faqcategories:Faq_Category:V',
-			'vtiger_crmentity:createdtime:createdtime:Faq_Created_Time:T'),
+			'vtiger_crmentity:createdtime:createdtime:Faq_Created_Time:DT'),
 
 		 Array( 'vtiger_faq:question:question:Faq_Question:V',
 			 'vtiger_faq:answer:faq_answer:Faq_Answer:V',
 			 'vtiger_faq:status:faqstatus:Faq_Status:V',
 			 'vtiger_faq:product_id:product_id:Faq_Product_Name:I',
 			 'vtiger_faq:category:faqcategories:Faq_Category:V',
-			 'vtiger_crmentity:createdtime:createdtime:Faq_Created_Time:T'),
+			 'vtiger_crmentity:createdtime:createdtime:Faq_Created_Time:DT'),
 
 		 Array(	 'vtiger_purchaseorder:subject:subject:PurchaseOrder_Subject:V',
 			 'vtiger_purchaseorder:postatus:postatus:PurchaseOrder_Status:V',
@@ -404,7 +404,7 @@ $cvcolumns = Array(Array('vtiger_leaddetails:lead_no:lead_no:Leads_Lead_No:V',
 			 'vtiger_invoice:salesorderid:salesorder_id:Invoice_Sales_Order:I',
 			 'vtiger_invoice:invoicestatus:invoicestatus:Invoice_Status:V',
 			 'vtiger_crmentity:smownerid:assigned_user_id:Invoice_Assigned_To:V',
-			 'vtiger_crmentity:createdtime:createdtime:Invoice_Created_Time:T'),
+			 'vtiger_crmentity:createdtime:createdtime:Invoice_Created_Time:DT'),
 		 
 		 Array(	 'vtiger_invoice:invoice_no:invoice_no:Invoice_Invoice_No:V',
 			 'vtiger_invoice:subject:subject:Invoice_Subject:V',
@@ -633,12 +633,15 @@ function insertCvAdvFilter($CVid,$filters)
 	global $adb;
 	if($CVid != "")
 	{
+		$columnIndexArray = array();
 		foreach($filters as $i=>$filter)
 		{
 			$advfiltersql = "insert into vtiger_cvadvfilter(cvid,columnindex,columnname,comparator,value) values (?,?,?,?,?)";
 			$advfilterparams = array($CVid, $i, $filter['columnname'], $filter['comparator'], $filter['value']);
 			$advfilterresult = $adb->pquery($advfiltersql, $advfilterparams);
 		}
+		$conditionExpression = implode(' and ', $columnIndexArray);
+		$adb->pquery('INSERT INTO vtiger_cvadvfilter_grouping VALUES(?,?,?,?)', array(1, $CVid, '', $conditionExpression));
 	}
 }
 ?>

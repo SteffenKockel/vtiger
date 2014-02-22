@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): www.crm-now.de translation to German
  ********************************************************************************/
 
 $mod_strings = Array(

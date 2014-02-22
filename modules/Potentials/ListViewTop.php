@@ -86,7 +86,7 @@ function getTopPotentials($maxval,$calCnt)
 			$value=array();
 			$value[]='<a href="index.php?action=DetailView&module=Potentials&record='.$potentialid.'">'.$Top_Potential.'</a>';
 
-			$value[]=convertFromDollar($adb->query_result($list_result,$i,'amount'),$rate);
+			$value[] = CurrencyField::convertToUserFormat($adb->query_result($list_result,$i,'amount'));
 			$entries[$potentialid]=$value;
 		}
 	}

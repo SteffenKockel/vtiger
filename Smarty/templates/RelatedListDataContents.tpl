@@ -64,3 +64,7 @@
 		<tr style="height: 25px;" bgcolor="white"><td><i>{$APP.LBL_NONE_INCLUDED}</i></td></tr>
 	{/foreach}
 </table>
+{if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads' || $RELATED_MODULE eq 'Accounts')
+			&& $RELATEDLISTDATA.entries|@count > 0 && $RESET_COOKIE eq 'true'}
+			<script type='text/javascript'>set_cookie('{$RELATED_MODULE}_all', '');</script>
+{/if}

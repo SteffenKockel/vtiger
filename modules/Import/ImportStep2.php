@@ -177,7 +177,7 @@ if(isset($_REQUEST['module']) && $_REQUEST['module'] != '')
 	// vtlib customization: Hook added to enable import for un-mapped modules
 	$module = $_REQUEST['module'];	
 	if($object_name == null) {
-		checkFileAccess("modules/$module/$module.php");
+		checkFileAccessForInclusion("modules/$module/$module.php");
 		require_once("modules/$module/$module.php");
 		$object_name = $module;
 		$callInitImport = true;		

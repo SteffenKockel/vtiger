@@ -4,7 +4,7 @@
 *  Language     : ES Spanish
 *  Version      : vt5.0.4
 *  Created Date : 2008-01-18 17:46:07 Last change : 2008-01-18 18:28:41
-*  Author       : rasomu
+*  Author       : JPL TSolucio, S.L.  -  rasomu
 *  License      : 
 
 ***********************************************************/
@@ -97,11 +97,11 @@ $mod_strings = array (
       'LBL_ROW' => 'Fila',
       'LBL_SAVE_AS_CUSTOM' => 'Salvar como asignación personalizada:',
       'LBL_CONTACTS_NOTE_1' => 'Apellido o nombre completo deben asignarse.',
-      'LBL_CONTACTS_NOTE_2' => 'Si asigna \"nombre completo\", \"nombre\" y \"apellido\" seran ignorados.',
-      'LBL_CONTACTS_NOTE_3' => 'Si asigna \"nombre completo\", los datos se distribuirán en \"Nombre\" y \"Apellidos\" una vez insertada la información en la base de datos.',
-      'LBL_CONTACTS_NOTE_4' => 'Los Campos terminados en Dirección 2 y Dirección 3 son concatenados juntos en el campo \"Dirección principal\" al insertarse en la base de datos.',
+      'LBL_CONTACTS_NOTE_2' => 'Si asigna "nombre completo", "nombre" y "apellido" seran ignorados.',
+      'LBL_CONTACTS_NOTE_3' => 'Si asigna "nombre completo", los datos se distribuirán en "Nombre" y "Apellidos" una vez insertada la información en la base de datos.',
+      'LBL_CONTACTS_NOTE_4' => 'Los Campos terminados en Dirección 2 y Dirección 3 son concatenados juntos en el campo "Dirección principal" al insertarse en la base de datos.',
       'LBL_ACCOUNTS_NOTE_1' => 'El nombre de cuanta debe asignarse.',
-      'LBL_ACCOUNTS_NOTE_2' => 'Campos terminados en Dirección 2 y Dirección 3 se concatenan en el campo \"Dirección principal\" al ser insertados en la base de datos.',
+      'LBL_ACCOUNTS_NOTE_2' => 'Campos terminados en Dirección 2 y Dirección 3 se concatenan en el campo "Dirección principal" al ser insertados en la base de datos.',
       'LBL_POTENTIALS_NOTE_1' => 'Oportunidad, Cuenta, Fecha de cierre, y estado de ventas son campos requeridos.',
       'LBL_OPPORTUNITIES_NOTE_1' => 'Oportunidad, Cuenta, Fecha de cierre, y estado de ventas son campos requeridos.',
       'LBL_LEADS_NOTE_1' => 'El Apellido debe Asignarse.',
@@ -123,7 +123,7 @@ $mod_strings = array (
       'LBL_IMPORT_MORE' => 'Importar Más',
       'LBL_FINISHED' => 'Finalizado',
       'LBL_UNDO_LAST_IMPORT' => 'Deshacer última importación',
-      'LBL_SUCCESS_1' => 'Número de Elementos Importados Satisfactoriamente : ',
+      'LBL_SUCCESS_1' => 'Número de Elementos Importados/Actualizados Satisfactoriamente : ',
       'LBL_SKIPPED_1' => 'Número de Elementos Descartados ya que no tenían uno más campos requeridos : ',
       'LBL_PRODUCTS_NOTE_1' => 'El Nombre de Producto debe asignarse',
       'LBL_PRODUCTS_NOTE_2' => 'Antes de importar, compruebe que una columna no ha sido asignada dos veces',
@@ -141,7 +141,7 @@ $mod_strings = array (
       'LBL_MAPPING_RESULTS' => 'Resultados de Asignación',
       'LBL_LAST_IMPORTED' => 'Última Importación',
       'PLEASE_CHECK_MAPPING' => '\' está asignado más de una vez. Compruebe las asignaciones.',
-      'MAP_MANDATORY_FIELD' => 'Asigne el campo requerido \"',
+      'MAP_MANDATORY_FIELD' => 'Asigne el campo requerido "',
       'ENTER_SAVEMAP_NAME' => 'Introduzca un nombre para la asignación',
       'to' => 'para',
       'of' => 'de',
@@ -165,6 +165,10 @@ $mod_strings = array (
 
       'LBL_DELIMITER' => 'Separador:',
       'LBL_FORMAT' => 'Formato:',
+      'LBL_MAX_FILE_SIZE' => ' es el tamaño máximo permitdo',
+
+      'LBL_MERGE_FIELDS_DUPLICATE' => 'Campos de búsqueda para la detección de duplicados al importar.',
+      'Customer Portal Login Details' => 'Detalles de Acceso al Portal del Cliente',
 );
 $mod_list_strings = array (
       'contacts_import_fields' => array(
@@ -185,7 +189,7 @@ $mod_list_strings = array (
             'fax' => 'Fax',
             'email' => 'Email',
             'otheremail' => 'Email (Otro)',
-            'yahooid' => 'Mensajería instantanea',
+            'secondaryemail' => 'Email Alternativo',
             'assistant' => 'Asistente',
             'assistantphone' => 'Teléfono de Secretaria',
             'mailingstreet' => 'Dirección (Envío)',
@@ -266,7 +270,7 @@ $mod_list_strings = array (
             'rating' => 'Importancia',
             'noofemployees' => 'Nº de empleados',
             'assigned_user_id' => 'Asignado a',
-            'yahooid' => 'Mensajería instantánea',
+            'secondaryemail' => 'Email Alternativo',
             'lane' => 'Dirección',
             'pobox' => 'Apdo. Correos',
             'code' => 'Código Postal',
@@ -310,7 +314,7 @@ $mod_list_strings = array (
       'helpdesk_import_fields' => array(
             'ticketid' => 'Ticket Id',
             'priority' => 'Prioridad',
-            'severity' => 'Gravedad',
+            'severity' => 'Urgencia',
             'status' => 'Status',
             'category' => 'Categoría',
             'title' => 'Cargo',

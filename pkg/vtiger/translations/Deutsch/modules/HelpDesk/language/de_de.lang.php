@@ -12,14 +12,6 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * Description:  Defines the German language pack for the base application.
- * All Rights Reserved.
- * Contributor(s): 4net AG, Schoretshuebstr. 26 , CH-9015 St.Gallen
- *                  crm-now, Berlin, www.crm-now.com
- ********************************************************************************/
 $mod_strings = Array(
 // Added in release 4.0
 'LBL_MODULE_NAME'=>'Trouble Tickets',
@@ -219,6 +211,10 @@ $mod_strings = Array(
 
 'Hours' => 'Stunden',
 'Days' => 'Tage',
+
+'The comments are' => 'Die Kommentare sind',
+'Ticket Title' => 'Ticket Titel',
+'Re' => 'Re :',
 );
 
 ?>

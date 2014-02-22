@@ -169,9 +169,11 @@ if(isset($order_by) && $order_by != '')
 {
 	if($order_by == 'smownerid')
 	{
+		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
+			'vtiger_users.last_name'));
 		if( $adb->dbType == "pgsql")
- 		    $list_query .= ' GROUP BY vtiger_users.user_name';
-		$list_query .= " ORDER BY case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end ".$sorder;
+ 		    $list_query .= ' GROUP BY '.$userNameSql;
+		$list_query .= " ORDER BY case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end ".$sorder;
 	}
 	else
 	{

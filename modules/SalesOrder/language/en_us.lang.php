@@ -209,6 +209,7 @@ $mod_strings = Array(
 'Payment Duration' => 'Payment Duration',
 'Invoice Status' => 'Invoice Status',
 
+'SINGLE_SalesOrder'=>'Sales Order',
 );
 
 ?>

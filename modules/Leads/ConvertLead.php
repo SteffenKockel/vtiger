@@ -200,6 +200,20 @@ foreach($fields_list as $mod=>$fields){
 	}
 }
 
+$convertlead .= '<tr>
+					<td align="right" class="dvtCellLabel">'.$mod_strings['LBL_TRANSFER_RELATED_RECORDS_TO'].'</td>
+					<td class="dvtCellInfo">
+						<select class="small" name="transfer_related_records_to">';
+							if(vtlib_isModuleActive('Contacts') && (isPermitted('Contacts','EditView')== 'yes')) {
+								$convertlead .= '<option value="Contacts">'.getTranslatedString('Contacts','Contacts').'</option>';
+							}
+							if(vtlib_isModuleActive('Accounts') && (isPermitted('Accounts','EditView')== 'yes') && !empty($company)) {
+								$convertlead .= '<option value="Accounts">'.getTranslatedString('Accounts','Accounts').'</option>';
+							}
+		$convertlead .= '</select>
+					</td>
+				</tr>';
+
 $convertlead .='<tr>
 			<td align="right" class="dvtCellLabel">'.$mod_strings['LBL_DO_NOT_CREATE_NEW_POTENTIAL'].'</td>
 			<td class="dvtCellInfo"><input type="checkbox" name="createpotential" onClick="if(this.checked) { $(\'ch\').hide(); } else { $(\'ch\').show(); }"></td>
@@ -261,7 +275,7 @@ $convertlead .='</table>
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 	<tr>
 			<td align="center">
-				<input name="Save" value=" '.$app_strings['LBL_SAVE_BUTTON_LABEL'].' " onclick="this.form.action.value=\'LeadConvertToEntities\'; return verify_data(ConvertLead)" type="submit"  class="crmbutton save small">&nbsp;&nbsp;
+				<input name="Save" value=" '.$app_strings['LBL_SAVE_BUTTON_LABEL'].' " onclick="this.form.action.value=\'LeadConvertToEntities\'; return verifyConvertLeadData(ConvertLead)" type="submit"  class="crmbutton save small">&nbsp;&nbsp;
 				<input type="button" name=" Cancel " value=" '.$app_strings['LBL_CANCEL_BUTTON_LABEL'].' " onClick="hide(\'orgLay\')" class="crmbutton cancel small">
 			</td>
 		</tr>

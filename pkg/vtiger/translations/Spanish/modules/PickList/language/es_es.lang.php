@@ -29,6 +29,22 @@ $mod_strings = array(
 	'LBL_ADD_TO_OTHER_ROLES'=>'Añade a otros roles',
 	'LBL_OK_BUTTON_LABEL'=>'Vale',
 	'LBL_SELECT_ROLES'=>'Selecciona roles',
-        'LBL_DISPLAYED_VALUES'=>'Los valores accesibles por el rol están abajo',
+	'LBL_DISPLAYED_VALUES'=>'Los valores accesibles por el rol están abajo',
+
+	// For Dependency picklist
+	'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Configuración Dependencias entre Listas',
+	'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Establece Dependencias entre los elementos de las listas desplegables en cada módulo',
+	'LBL_NEW_DEPENDENCY' => 'Nueva Dependencia entre Listas',
+	'LBL_TOOLS' => 'Herramientas',
+	'LBL_SOURCE_FIELD' => 'Campo Origen',
+	'LBL_TARGET_FIELD' => 'Campo Destino',
+	'LBL_BUTTON_SELECTED_SOURCE_VALUES' => 'Selecciona Valores Origen',
+	'LBL_SELECTED_SOURCE_VALUES_MSG' => 'Selecciona Valores origen para configurar la dependencia',
+	'LBL_ERR_CYCLIC_DEPENDENCY' => 'Esta dependencia no esta permitida ya que produce una dependencia cíclica',
+	'LBL_SELECTED_VALUES' => 'Valores Seleccionados',
+	'LBL_CONFIGURE_DEPENDENCY_HELP_1' => 'Solo se muestran valores asignados (salvo la primera vez)',
+	'LBL_CONFIGURE_DEPENDENCY_HELP_2' => "Si quieres ver o cambiar la asignación de los otros valores de la lista origen, <br/>
+                                          puedes seleccionar los valores pulsando el botón <b>'Selecciona Valores Origen'</b> en el lateral derecho",
+	'LBL_CONFIGURE_DEPENDENCY_HELP_3' => 'Valores seleccionados del campo destino, se muestran como',
 );
 ?>

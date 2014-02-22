@@ -220,7 +220,7 @@ function SMSTask($){
 				
 				}));
 			}));
-			validator.mandatoryFields.push('save_recepient');
+			validator.mandatoryFields.push('sms_recepient');
 		});
 	}
 	

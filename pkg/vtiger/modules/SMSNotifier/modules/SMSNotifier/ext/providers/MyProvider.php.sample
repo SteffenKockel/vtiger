@@ -53,24 +53,28 @@ class MyProvider implements ISMSProvider {
 			}
 		}
 		return false;
-	}	
+	}
+	
+	protected function prepareParameters() {
+		$params = array('user' => $this->_username, 'pwd' => $this->_password);
+		foreach (self::$REQUIRED_PARAMETERS as $key) {
+			$params[$key] = $this->getParameter($key);
+		}
+		return $params;
+	}
 	
 	public function send($message, $tonumbers) {
 		if(!is_array($tonumbers)) {
 			$tonumbers = array($tonumbers);
 		}
-		$serviceURL = $this->getServiceURL(self::SERVICE_SEND);
 		
+		$params = $this->prepareParameters();
+		$params['text'] = $message;
+		$params['to'] = implode(',', $tonumbers);
+		
+		$serviceURL = $this->getServiceURL(self::SERVICE_SEND);		
 		$httpClient = new Vtiger_Net_Client($serviceURL);
-		$response = $httpClient->doPost(array(
-			'user' => $this->_username,
-			'pwd' => $this->_password,
-			'app_id' => $this->getParameter('app_id'),
-			
-			'text' => $message,
-			'to'   => implode(',', $tonumbers)
-		));
-		
+		$response = $httpClient->doPost($params);		
 		
 		$responseLines = split("\n", $response);		
 		
@@ -102,15 +106,12 @@ class MyProvider implements ISMSProvider {
 	
 	public function query($messageid) {
 		
+		$params = $this->prepareParameters();
+		$params['apimsgid'] = $messageid;
+		
 		$serviceURL = $this->getServiceURL(self::SERVICE_QUERY);
 		$httpClient = new Vtiger_Net_Client($serviceURL);
-		$response = $httpClient->doPost(array(
-			'user' => $this->_username,
-			'pwd'  => $this->_password,
-			'app_id' => $this->getParameter('app_id'),
-		
-			'apimsgid' => $messageid
-		));
+		$response = $httpClient->doPost($params);
 		
 		$response = trim($response);
 		

@@ -22,6 +22,7 @@
 
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Presupuestos',
+'SINGLE_Quotes'=>'Presupuesto',
 'LBL_MODULE_TITLE'=>'Presupuestos: Inicio',
 'LBL_SEARCH_FORM_TITLE'=>'Buscar Presupuestos',
 'LBL_LIST_FORM_TITLE'=>'Lista de Presupuestos',

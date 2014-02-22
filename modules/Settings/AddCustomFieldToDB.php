@@ -215,8 +215,8 @@ if($adb->num_rows($checkresult) > 0) {
 		else if($_REQUEST['fieldid'] == '')
 		{
 			$query = "insert into vtiger_field (tabid,fieldid,columnname,tablename,generatedtype,uitype,fieldname,fieldlabel,
-				readonly,presence,selected,maximumlength,sequence,block,displaytype,typeofdata,quickcreate,quickcreatesequence,info_type) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-			$qparams = array($tabid,$custfld_fieldid,$columnName,$tableName,2,$uitype,$columnName,$fldlabel,0,0,0,100,$custfld_sequece,$blockid,1,$uichekdata,1,0,'BAS');
+				readonly,presence,defaultvalue,maximumlength,sequence,block,displaytype,typeofdata,quickcreate,quickcreatesequence,info_type) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			$qparams = array($tabid,$custfld_fieldid,$columnName,$tableName,2,$uitype,$columnName,$fldlabel,0,0,'',100,$custfld_sequece,$blockid,1,$uichekdata,1,0,'BAS');
 			$adb->pquery($query, $qparams);
 			$adb->alterTable($tableName, $columnName." ".$type, "Add_Column");
 			
@@ -228,7 +228,7 @@ if($adb->num_rows($checkresult) > 0) {
 			{
 				$profileid = $adb->query_result($sql1_result,$i,"profileid");
 				$sql2 = "insert into vtiger_profile2field values(?,?,?,?,?)";
-				$adb->pquery($sql2, array($profileid, $tabid, $custfld_fieldid, 0, 1));	 	
+				$adb->pquery($sql2, array($profileid, $tabid, $custfld_fieldid, 0, 0));	 	
 			}
 
 			//Inserting values into def_org vtiger_tables

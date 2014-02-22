@@ -30,7 +30,7 @@ class Mobile_WS_LoginAndFetchModules extends Mobile_WS_Login {
 		// Calendar & Events module will be merged
 		unset($modulewsids['Events']);
 
-		$listresult = vtws_listtypes($user);
+		$listresult = vtws_listtypes(null,$user);
 		
 		$listing = array();
 		foreach($listresult['types'] as $index => $modulename) {

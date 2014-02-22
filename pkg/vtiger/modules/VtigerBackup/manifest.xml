@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <module>
-	<version>1.0</version>
+	<version>1.2</version>
 	<type>extension</type>
 	<name>VtigerBackup</name>
 	<label>Vtiger Backup</label>

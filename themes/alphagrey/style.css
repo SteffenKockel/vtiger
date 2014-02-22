@@ -2328,3 +2328,124 @@ a.drop_down:Hover{
 }
 
 /* feedback or help message end here*/
+
+.selectedCell {
+	background-color: #80E5FF;
+	cursor: pointer;
+	border: 2px inset #EEEEEE;
+	white-space: nowrap;
+}
+
+.selectedCellIndex {
+	background-color: #80E5FF;
+	border: 2px dashed #EEEEEE;
+	padding: .5em;
+	white-space: nowrap;
+}
+
+.unselectedCell {
+	background-color: #EEEEEE;
+	color: #666666;
+	cursor: pointer;
+	border: 2px outset #EEEEEE;
+	white-space : nowrap;
+}
+
+.fixedHeight18px {
+	white-space: nowrap;
+	height: 18px;
+}
+
+/* Mail Manager starts*/
+.mm_blur {
+	color: lightgrey;
+}
+.mm_bold {
+	padding: .3em;
+	font-weight: bold;
+}
+.mm_normal {
+	padding: .3em;
+	font-weight: normal;
+}
+.mm_normal td {
+	padding: .3em;
+	border-bottom: 1px solid #CCCCEE;
+}
+.mm_bold td {
+	padding: .3em;
+	border-bottom: 1px solid #CCCCEE;
+}
+input {
+	vertical-align: middle;
+}
+.mm_clickable {
+	cursor: pointer;
+}
+.mm_disabled {
+	background-color: #EFEFEF;
+}
+
+.mm_error p {
+	border: 1px solid yellow;
+	padding: 2px;
+    position: fixed;
+	left: 50%;
+	margin: 0;
+	color: rgb(255, 250, 191);
+	background-color: red;
+	display: inline;
+	font-weight: bold;
+}
+.mm_message p {
+    border: 2px solid #AAAAAA;;
+	padding: 2px;
+    position: fixed;
+	left: 50%;
+	margin: 0;
+	color: black;
+	background-color: #DADADA;
+	display: inline;
+	font-weight: bold;
+}
+.mm_folder {
+	display: block;
+	padding: 0 2px;
+    color : black
+}
+.mm_folder_selected {
+	color: black;
+    font-weight: bold;
+}
+.mm_body {
+	border-top: 1px solid #CCCCEE;
+}
+.mm_mailwrapper {
+	border-collapse:collapse;
+}
+.mm_folder_selected_background {
+    background-color: #DADADA
+}
+.mm_folder_unselected_background {
+    background-color: white
+}
+.mm_tableHeadBg{
+  background-color:#DADADA;
+  height:25px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:11px;
+  color:#000066;
+}
+.mm_lvtColData {
+	background-color:#FFFFFF;
+	color:#000;
+}
+.mm_lvtColDataHover {
+	background-color:#EEEEEE;
+	color:#000;
+}
+.mm_outerborder{
+    border: 2px solid #AAAAAA;
+    padding: 5px;
+}
+/* Mail Manager ends */

@@ -5,7 +5,6 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved. German Version created by crm-now www.crm-now.com
  ************************************************************************************/
 $mod_strings = array(
 'VTEmailTask' => 'Sende E-Mail',
@@ -38,6 +37,39 @@ $mod_strings = array(
 'LBL_NO_TEMPLATES'=>'keine Vorlagen verfügbar',
 'LBL_SELECT'=>'Wähle',
 'LBL_MESSAGE'=>'Nachricht',
+
+'LBL_SET_FIELD_VALUES'=>'Werte für das Feld setzen',
+'LBL_ADD_FIELD'=>'Feld hinzufügen',
+
+'LBL_USE_FIELD_VALUE_DASHDASH'=>'-- benutze Feldwert --',
+'LBL_USE_FUNCTION_DASHDASH'=>'-- Funktion benutzen --',
+
+'LBL_RAW_TEXT'=>'Rohtext',
+'LBL_FIELD'=>'Feld',
+'LBL_EXPRESSION'=>'Bedingung',
+'LBL_SET_EXPRESSION'=>'Bedingung setzen',
+
+'LBL_MANUAL'=>'System',
+
+'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Neue Bedingungs-Gruppe',
+
+'VTUpdateFieldsTask' => 'Felder aktualisieren',
+
+
+'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Selbes Feld wurde mehrmals ausgewählt.',
+'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Ungültiger Wert',
+'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Hinweis: Ausdrücke werden in der selben Reihenfolge geprüft, wie sie gesetzt werden.
+										   Stellen Sie sicher, dass ein Wert für ein Feld gesetzt wird, bevor Sie es als Ausdruck verwenden.',
+'LBL_SET_VALUE' => 'Wert setzen',
+
+'LBL_EMAIL_RECIPIENT' => 'Empfänger',
+'LBL_EMAIL_CC' => 'CC',
+'LBL_EMAIL_BCC' => 'BCC',
+'LBL_EMAIL_SUBJECT' => 'Betreff',
+
+'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Hinweis: Alle Datums, Zeit und wiederkehrende Informationen, welche für das Ereignis konfiguriert wurden, 
+											sind abhängig der gesetzten Zeitzone, welche in der config.inc.php festgelegt wurde.',
+	
 );
 
 

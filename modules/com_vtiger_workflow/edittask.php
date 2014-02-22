@@ -70,7 +70,11 @@ require_once("VTWorkflowUtils.php");
 		$smarty->assign("entityType", $et);
 		$smarty->assign('entityName', $workflow->moduleName);
 		$smarty->assign("fieldNames", $et->getFieldNames());
-		
+		$repeat_date = $task->calendar_repeat_limit_date;
+		if(!empty ($repeat_date)){
+		    $repeat_date = DateTimeField::convertToUserFormat($repeat_date);
+		}
+		$smarty->assign('REPEAT_DATE',$repeat_date);
 		$dateFields = array();
 		$fieldTypes = $et->getFieldTypes();
 		$fieldLabels = $et->getFieldLabels();
@@ -97,9 +101,13 @@ require_once("VTWorkflowUtils.php");
 		}
 		$curr_date="(general : (__VtigerMeta__) date)";
 		$curr_time='(general : (__VtigerMeta__) time)';
-				
+		
+		$date = new DateTimeField(null);
+		$time = substr($date->getDisplayTime(), 0, 5);
 		$smarty->assign("DATE",$curr_date);
 		$smarty->assign("TIME",$curr_time);
+		$smarty->assign("USER_TIME",$task->formatTimeForTimePicker($time));
+		$smarty->assign("USER_DATE", $date->getDisplayDate());
 		$smarty->assign("MOD", array_merge(
 			return_module_language($current_language,'Settings'),
 			return_module_language($current_language, 'Calendar'),

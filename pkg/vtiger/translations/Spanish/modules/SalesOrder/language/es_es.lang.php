@@ -22,13 +22,14 @@
  ********************************************************************************/
 
 $mod_strings = Array(
-'LBL_MODULE_NAME'=>'Pedidos',
-'LBL_SO_MODULE_NAME'=>'Pedidos',
+'LBL_MODULE_NAME'=>'Ordenes de Venta',
+'SINGLE_SalesOrder'=>'Orden de Venta',
+'LBL_SO_MODULE_NAME'=>'Ordenes de Venta',
 'LBL_RELATED_PRODUCTS'=>'Elementos',
-'LBL_MODULE_TITLE'=>'Pedidos: Inicio',
-'LBL_SEARCH_FORM_TITLE'=>'Buscar Pedidos',
-'LBL_LIST_SO_FORM_TITLE'=>'Lista de los Pedidos',
-'LBL_NEW_FORM_SO_TITLE'=>'Nuevo Pedido',
+'LBL_MODULE_TITLE'=>'Orden de Venta: Inicio',
+'LBL_SEARCH_FORM_TITLE'=>'Buscar Ordenes de Venta',
+'LBL_LIST_SO_FORM_TITLE'=>'Lista de Ordenes de Venta',
+'LBL_NEW_FORM_SO_TITLE'=>'Nueva Orden de Venta',
 'LBL_MEMBER_ORG_FORM_TITLE'=>'Organizaciones Miembro',
 
 'LBL_LIST_ACCOUNT_NAME'=>'Nombre de la Cuenta',
@@ -118,7 +119,7 @@ $mod_strings = Array(
 'Subject'=>'Referencia',
 'Quote Name'=>'Referencia del Presupuesto',
 'Vendor Name'=>'Nombre del Proveedor',
-'Requisition No'=>'Referencia del pedido',
+'Requisition No'=>'Referencia de la orden',
 'Tracking Number'=>'Nº de seguimiento',
 'Contact Name'=>'Persona de Contacto',
 'Due Date'=>'Fecha de vencimiento',
@@ -157,20 +158,20 @@ $mod_strings = Array(
 'Account Name'=>'Nombre de Cuenta',
 'Terms & Conditions'=>'Condiciones Generales',
 //Quote Info
-'LBL_SO_INFORMATION'=>'Información del Pedido',
-'LBL_SO'=>'Pedido:',
+'LBL_SO_INFORMATION'=>'Información de la Orden',
+'LBL_SO'=>'Orden de Venta:',
 
  //Added for 5.0 GA
 'LBL_SO_FORM_TITLE'=>'Ventas',
 'LBL_SUBJECT_TITLE'=>'Referencia',
 'LBL_VENDOR_NAME_TITLE'=>'Nombre del Proveedor',
 'LBL_TRACKING_NO_TITLE'=>'Nº de seguimiento:',
-'LBL_SO_SEARCH_TITLE'=>'Buscar Pedido',
+'LBL_SO_SEARCH_TITLE'=>'Buscar Orden de Venta',
 'LBL_QUOTE_NAME_TITLE'=>'Referencia del presupuesto',
 'Order No'=>'Referencia de la Orden de Venta',//Order Id
-'LBL_MY_TOP_SO'=>'Mis Pedidos Pendientes',
+'LBL_MY_TOP_SO'=>'Mis Ordenes de Venta Pendientes',
 'Status'=>'Estado',
-'SalesOrder'=>'Pedidos',
+'SalesOrder'=>'Ordenes de Venta',
 
 //Added for existing Picklist Entries
 
@@ -188,7 +189,7 @@ $mod_strings = Array(
 'Sub Total'=>'Sub Total',
 'AutoCreated'=>'Automática',
 'Sent'=>'Enviada',
-'Credit Invoice'=>'Abono',
+'Credit Invoice'=>'Rectificativa',
 'Paid'=>'Pagada',
 
 //Added for Reports (5.0.4)
@@ -199,7 +200,7 @@ $mod_strings = Array(
 'S&H Amount'=>'Importe Envío y Manipulado',
 
 //Added after 5.0.4 GA
-'SalesOrder No'=>'No Pedido',
+'SalesOrder No'=>'No Orden de Venta',
 
 'Recurring Invoice Information' => 'Información Facturación Recurrente',
 'Enable Recurring' => 'Habilitar facturación recurrente',

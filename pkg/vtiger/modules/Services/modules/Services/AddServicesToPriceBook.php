@@ -152,14 +152,14 @@ for($i=0; $i<count($new_prod_array); $i++)
 	$list_body .= '<tr class="lvtColData" onmouseover="this.className=\'lvtColDataHover\'" onmouseout="this.className=\'lvtColData\'" bgcolor="white">';
 	$unit_price = $prod_price_list[$entity_id];
 	$field_name = $entity_id."_listprice";
-	$unit_price_array[]="'".$unit_price."'";
+	$unit_price_array[]='"'.CurrencyField::convertToUserFormat($unit_price, null, true).'"';
 	$field_name_array[]="'".$field_name."'";
 
-	$list_body .= '<td><INPUT type=checkbox NAME="selected_id" id="check_'.$entity_id.'" value= '.$entity_id.' onClick=\'toggleSelectAll(this.name,"selectall");updateListPrice("'.$unit_price.'","'.$field_name.'",this)\'></td>';
+	$list_body .= '<td><INPUT type=checkbox NAME="selected_id" id="check_'.$entity_id.'" value= '.$entity_id.' onClick=\'toggleSelectAll(this.name,"selectall");updateListPriceForField("'.$field_name.'",this)\'></td>';
 	$list_body .= '<td>'.$adb->query_result($list_result,$entity_id_array[$entity_id],"servicename").'</td>';
 		
 	if(getFieldVisibilityPermission('Services', $current_user->id, 'unit_price') == '0')
-		$list_body .= '<td>'.$unit_price.'</td>';
+		$list_body .= '<td>'.CurrencyField::convertToUserFormat($unit_price, null, true).'</td>';
 		
 	$list_body .='<td>';		
 	if(isPermitted("PriceBooks","EditView","") == 'yes')
