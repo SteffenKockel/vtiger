@@ -25,9 +25,12 @@ custom/working/*
 custom/modules/*/Ext/
 custom/application/Ext/*
 # Custom configuration should also be ignored.
-/config.php
-/config_override.php
+#/config.php
+/config.inc.php
 # The silent upgrade scripts aren't needed.
 silentUpgrade*.php
 # Logs files can safely be ignored.
 *.log
+import.sh
+.svn
+nohup.out
