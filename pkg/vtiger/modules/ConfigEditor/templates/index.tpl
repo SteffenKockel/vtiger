@@ -58,6 +58,13 @@
 			var maxtext = document.getElementById('key_listview_max_textlength');
 			var reg1 = /^([0-9]*)$/;
 			name.value = trim(name.value);
+			if ((name.value).indexOf("\"") != -1 || (name.value).indexOf("'") != -1 || (name.value).indexOf(";") != -1){
+				var invalidSupportName = document.getElementById('invalidSupportName').value;
+				document.getElementById('msg_HELPDESK_SUPPORT_NAME').innerHTML = invalidSupportName;
+				name.focus();
+				return false;
+			}
+
 			maxEntries.value = trim(maxEntries.value);
 			size.value = trim(size.value);
 			history1.value = trim(history1.value);
@@ -88,7 +95,7 @@
 				document.getElementById('msg_history_max_viewed').innerHTML=maxHistory;
 				history1.focus();
 				return false;
-			}else if((reg1.test(maxtext.value) == false) || (maxtext.value <= 0) || (maxtext.value > 100)){
+			}else if((reg1.test(maxtext.value) == false) || (maxtext.value < 0) || (maxtext.value > 100) || (maxtext.value === "")){
 				document.getElementById('msg_listview_max_textlength').innerHTML=maxTextLength;
 				maxtext.focus();
 				return false;
@@ -103,6 +110,7 @@
 <body onload="replaceUploadSize();">
 <input type="hidden" value="{$MOD.LBL_MAX_UPLOAD_SIZE_MSG}" id="uploadSize"></input>
 <input type="hidden" value="{$MOD.LBL_INVALID_EMAIL_MSG}" id="invalidEmail"></input>
+<input type="hidden" value="{$MOD.LBL_RESTRICTED_CHARACTERS}" id="invalidSupportName"></input>
 <input type="hidden" value="{$MOD.LBL_MAX_LISTVIEW_ENTRIES_MSG}" id="maxListEntries"></input>
 <input type="hidden" value="{$MOD.LBL_MAX_HISTORY_VIEWED_MSG}" id="maxHistory"></input>
 <input type="hidden" value="{$MOD.LBL_MAX_TEXTLENGTH_LISTVIEW_MSG}" id="maxTextLength"></input>
@@ -132,7 +140,7 @@
 			&nbsp;
 		</td>
 	</tr>
-	<tr>	
+	<tr>
 		<td valign=top align=right width=8><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 		<td class="showPanelBg" valign="top" width="100%" >
 

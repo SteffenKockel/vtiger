@@ -6,6 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ *
  ********************************************************************************/
 /**
  * this file can be used to internationalise the strings present in the picklist
@@ -45,5 +46,9 @@ $mod_strings = array(
 	'LBL_CONFIGURE_DEPENDENCY_HELP_2' => "Wenn Sie Abhängigkeiten anderer Werte von Auswahllisten des Quellfeldes sehen oder ändern wollen, <br/>
 										  müssen Sie die Werte durch einen Klick auf den <b>'Wählen Sie Quellwerte'</b>-Button, auf der rechten Seite, auswählen",
 	'LBL_CONFIGURE_DEPENDENCY_HELP_3' => 'Selektierte Werte der Zielfeld-Werte werden hevorgehoben als',
+	'LBL_ADD_BUTTON' => 'Wert hinzufügen',
+	'LBL_EDIT_BUTTON' => 'Wert umbenennen',
+	'LBL_DELETE_BUTTON' => 'Wert löschen',
+	'NTC_DELETE_CONFIRMATION'=>'Sind Sie sicher, dass Sie diese Auswahllistabhängigkeit löschen wollen?',     
 );
 ?>

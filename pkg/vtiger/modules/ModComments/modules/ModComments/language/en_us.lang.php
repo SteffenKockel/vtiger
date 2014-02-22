@@ -29,7 +29,7 @@ $mod_strings = Array (
 'LBL_ON' => 'on',
 'LBL_MINE' => 'Mine',
 'LBL_LAST5'=> 'Last 5',
-
+'ModComments ID' => 'Comments ID ',
 );
 
 ?>

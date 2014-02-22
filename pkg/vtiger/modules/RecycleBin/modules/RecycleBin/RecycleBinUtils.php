@@ -152,5 +152,34 @@ function basicRBsearch($module,$search_field,$search_string)
 	return $where;
 
 }
+function getSelectedRecordIds($input,$module,$idstring,$excludedRecords){
 
+    global $current_user, $adb;
+
+	if($idstring=='all'){
+
+		$queryGenerator = new QueryGenerator($module, $current_user);
+
+		if($input['query'] == 'true') {
+			$queryGenerator->addUserSearchConditions($input);
+		}
+
+		$queryGenerator->setFields(array('id'));
+		$query = $queryGenerator->getQuery();
+		$query = preg_replace("/vtiger_crmentity.deleted\s*=\s*0/i", 'vtiger_crmentity.deleted = 1', $query);
+		$result = $adb->pquery($query, array());
+		$storearray = array();
+
+		for ($i = 0; $i < $adb->num_rows($result); $i++) {
+			$storearray[] = $adb->query_result($result, $i);
+		}
+
+		$excludedRecords=explode(';',$excludedRecords);
+		$storearray=array_merge(array_diff($storearray,$excludedRecords));
+        
+    } else {
+        $storearray = explode(";",$idstring);
+    }
+    return $storearray;
+}
 ?>

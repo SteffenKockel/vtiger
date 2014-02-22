@@ -1,7 +1,7 @@
 <?php
 /*********************************************************************************
  * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the 
+ * ("License"); You may not use this file except in compliance with the
  * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
  * Software distributed under the License is distributed on an  "AS IS"  basis,
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
@@ -52,7 +52,7 @@ if (isset ($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$currencyid = $quote_focus->column_fields['currency_id'];
 		$rate = $quote_focus->column_fields['conversion_rate'];
 
-		//Added to display the Quote's associated vtiger_products -- when we create vtiger_invoice from Quotes DetailView 
+		//Added to display the Quote's associated vtiger_products -- when we create vtiger_invoice from Quotes DetailView
 		$associated_prod = getAssociatedProducts("Quotes", $quote_focus);
 		$txtTax = (($quote_focus->column_fields['txtTax'] != '') ? $quote_focus->column_fields['txtTax'] : '0.000');
 		$txtAdj = (($quote_focus->column_fields['txtAdjustment'] != '') ? $quote_focus->column_fields['txtAdjustment'] : '0.000');
@@ -231,19 +231,8 @@ $image_path = $theme_path . "images/";
 
 $disp_view = getView($focus->mode);
 $mode = $focus->mode;
-if ($disp_view == 'edit_view')
 	$smarty->assign("BLOCKS", getBlocks($currentModule, $disp_view, $mode, $focus->column_fields));
-else {
-	$bas_block = getBlocks($currentModule, $disp_view, $mode, $focus->column_fields, 'BAS');
-	$adv_block = getBlocks($currentModule, $disp_view, $mode, $focus->column_fields, 'ADV');
 
-	$blocks['basicTab'] = $bas_block;
-	if (is_array($adv_block))
-		$blocks['moreTab'] = $adv_block;
-
-	$smarty->assign("BLOCKS", $blocks);
-	$smarty->assign("BLOCKS_COUNT", count($blocks));
-}
 
 $smarty->assign("OP_MODE", $disp_view);
 
@@ -382,6 +371,7 @@ if ($focus->mode == 'edit') {
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
 $smarty->assign("DUPLICATE",vtlib_purify($_REQUEST['isDuplicate']));
+$smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
 
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
 $smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDependencyDatasource));

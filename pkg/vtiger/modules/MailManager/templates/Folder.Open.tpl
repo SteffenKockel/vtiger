@@ -6,14 +6,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-
-<div class="mailClientBg mm_outerborder">
+<span class="moduleName" id="mail_fldrname">{$FOLDER->name()}</span>
+<div class="mailClientBg mm_outerborder" id="email_con" name="email_con">
 <table width="100%" cellpadding=3 cellspacing=0 border=0 class="small">
 	
 {if $FOLDER->mails()}
 <tr>
 	<td>
-		<span class="moduleName" >{$FOLDER->name()}</span>
+		
 	</td>
 	<td align="right" colspan="4">
 		<table>
@@ -41,14 +41,14 @@
 	<table class="mm_tableHeadBg small" width="100%" cellspacing="0" border="0" cellpadding="2px" >
 		<tr>
 			<td align="left" style="width: 10%;" nowrap="nowrap">
-				<input align="left" type="checkbox" class='small'  name="selectall" onClick='MailManager.toggleSelect(this.checked,"mc_box");'/>&nbsp;&nbsp;
+				<input align="left" type="checkbox" class='small'  name="selectall" id="parentCheckBox" onClick='MailManager.toggleSelect(this.checked,"mc_box");'/>&nbsp;&nbsp;
 				<input type=button class='crmbutton small delete' onclick="MailManager.massMailDelete('{$FOLDER->name()}');" value="{'LBL_Delete'|@getTranslatedString}"/>
 			</td>
 			<td align="left">
 				<select class='small' id="moveFolderList" onchange="MailManager.moveMail(this);">
 					<option value="">{'LBL_MOVE_TO'|@getTranslatedString:$MODULE}</option>
 					{foreach item=folder from=$FOLDERLIST}
-						<option value="{$folder}" >{$folder}</option>
+						<option value="{$folder|@htmlentities}" >{$folder|@htmlentities}</option>
 					{/foreach}
 				</select>
 			</td>

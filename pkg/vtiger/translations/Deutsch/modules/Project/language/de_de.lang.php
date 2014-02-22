@@ -64,12 +64,10 @@ $mod_strings = Array(
 	'LBL_PROGRESS_CHART' => 'Progress Chart',
 	'Project No' => 'Projektnr.',
 	
-    'ProjectMilestone' => 'Projektmeilenstein',
-    'Project MIlestones' => 'Projektmeilensteine',
-    'Project Milestones' => 'Projektmeilensteine',
-    'Project Tasks' => 'Projektaufgaben',
-    'ProjectTask' => 'Projektaufgaben',
-    'ProjectTeam' => 'Projekt Team',
+	'Project Milestones' => 'Projektmeilensteine',
+	'Project Tasks' => 'Projektaufgaben',
+	'Project Team' => 'Projekt Team',
+	'Project ID' => 'Projekt ID',
 );
 
 ?>

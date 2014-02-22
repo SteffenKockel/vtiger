@@ -28,7 +28,7 @@ class VTScheduledReport extends Reports {
 	static $SCHEDULED_BIWEEKLY = 4;
 	static $SCHEDULED_MONTHLY = 5;
 	static $SCHEDULED_ANNUALLY = 6;
-	
+
 	public function  __construct($adb, $user, $reportid="") {
 		$this->db	= $adb;
 		$this->user = $user;
@@ -71,7 +71,7 @@ class VTScheduledReport extends Reports {
 
 	public function getRecipientEmails() {
 		$recipientsInfo = $this->scheduledRecipients;
-		
+
 		$recipientsList = array();
 		if(!empty($recipientsInfo)) {
 			if(!empty($recipientsInfo['users'])) {
@@ -109,7 +109,7 @@ class VTScheduledReport extends Reports {
 		$recipientsEmails = array();
 		if(!empty($recipientsList) && count($recipientsList) > 0) {
 			foreach($recipientsList as $userId) {
-				$userName = getUserName($userId);
+				$userName = getUserFullName($userId);
 				$userEmail = getUserEmail($userId);
 				if(!in_array($userEmail, $recipientsEmails)) {
 					$recipientsEmails[$userName] = $userEmail;
@@ -118,7 +118,7 @@ class VTScheduledReport extends Reports {
 		}
 		return $recipientsEmails;
 	}
-	
+
 	public function sendEmail() {
 		global $currentModule;
 		require_once 'vtlib/Vtiger/Mailer.php';
@@ -146,41 +146,43 @@ class VTScheduledReport extends Reports {
 		$oReportRun = new ReportRun($this->id);
 		$reportFormat = $this->scheduledFormat;
 		$attachments = array();
-		
+
 		if($reportFormat == 'pdf' || $reportFormat == 'both') {
 			$fileName = $baseFileName.'.pdf';
 			$filePath = 'storage/'.$fileName;
-			$attachements[$fileName] = $filePath;
+			$attachments[$fileName] = $filePath;
 			$pdf = $oReportRun->getReportPDF();
 			$pdf->Output($filePath,'F');
 		}
 		if ($reportFormat == 'excel' || $reportFormat == 'both') {
 			$fileName = $baseFileName.'.xls';
 			$filePath = 'storage/'.$fileName;
-			$attachements[$fileName] = $filePath;
+			$attachments[$fileName] = $filePath;
 			$oReportRun->writeReportToExcelFile($filePath);
 		}
 
-		foreach($attachements as $attachmentName => $path) {
+		foreach($attachments as $attachmentName => $path) {
 			$vtigerMailer->AddAttachment($path, $attachmentName);
 		}
-		
+
 		$vtigerMailer->Send(true);
 
-		foreach($attachements as $attachmentName => $path) {
+		foreach($attachments as $attachmentName => $path) {
 			unlink($path);
 		}
 	}
 
 	public function getNextTriggerTime() {
 		$scheduleInfo = $this->scheduledInterval;
-		
+
 		$scheduleType		= $scheduleInfo['scheduletype'];
 		$scheduledMonth		= $scheduleInfo['month'];
 		$scheduledDayOfMonth= $scheduleInfo['date'];
 		$scheduledDayOfWeek = $scheduleInfo['day'];
 		$scheduledTime		= $scheduleInfo['time'];
-		if(stripos(':', $scheduledTime) === false) {
+		if(empty($scheduledTime)) {
+			$scheduledTime = '10:00';
+		} elseif(stripos(':', $scheduledTime) === false) {
 			$scheduledTime = $scheduledTime .':00';
 		}
 
@@ -244,7 +246,7 @@ class VTScheduledReport extends Reports {
 
 	public function updateNextTriggerTime() {
 		$adb = $this->db;
-		
+
 		$currentTime = date('Y-m-d H:i:s');
 		$scheduledInterval = $this->scheduledInterval;
 		$nextTriggerTime = $this->getNextTriggerTime(); // Compute based on the frequency set
@@ -254,7 +256,7 @@ class VTScheduledReport extends Reports {
 
 	public static function generateRecipientOption($type, $value, $name='') {
 		switch($type) {
-			case "users"	:	if(empty($name)) $name = getUserName($value);
+			case "users"	:	if(empty($name)) $name = getUserFullName($value);
 								$optionName = 'User::'.addslashes(decode_html($name));
 								$optionValue = 'users::'.$value;
 								break;
@@ -342,28 +344,28 @@ class VTScheduledReport extends Reports {
 
 			$scheduledInterval = (!empty($reportScheduleInfo['schedule']))?Zend_Json::decode($reportScheduleInfo['schedule']):array();
 			$scheduledRecipients = (!empty($reportScheduleInfo['recipients']))?Zend_Json::decode($reportScheduleInfo['recipients']):array();
-			
+
 			$vtScheduledReport = new VTScheduledReport($adb, $user, $reportScheduleInfo['reportid']);
 			$vtScheduledReport->isScheduled			= true;
 			$vtScheduledReport->scheduledFormat		= $reportScheduleInfo['format'];
 			$vtScheduledReport->scheduledInterval	= $scheduledInterval;
 			$vtScheduledReport->scheduledRecipients = $scheduledRecipients;
 			$vtScheduledReport->scheduledTime		= $reportScheduleInfo['next_trigger_time'];
-			
+
 			$scheduledReports[] = $vtScheduledReport;
 		}
 		return $scheduledReports;
 	}
 
 	public static function runScheduledReports($adb) {
-		require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';		
+		require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 		$util = new VTWorkflowUtils();
 		$adminUser = $util->adminUser();
 
 		global $currentModule, $current_language;
 		if(empty($currentModule)) $currentModule = 'Reports';
 		if(empty($current_language)) $current_language = 'en_us';
-		
+
 		$scheduledReports = self::getScheduledReports($adb, $adminUser);
 		foreach($scheduledReports as $scheduledReport) {
 			$scheduledReport->sendEmail();

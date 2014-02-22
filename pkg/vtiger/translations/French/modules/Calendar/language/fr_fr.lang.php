@@ -1,14 +1,11 @@
 <?php
 /***********************************************************
 *  Module       : Calendar
-*  Language     : Francais
-*  Version      : 5.1.0 GA*  Created Date : 2009-06-23 21:36:13 
-*  Last change  : 2009-07-21 00:49:17
-*  Author       : french-vtiger.fr 
+*  Language     : French
+*  Version      : 5.4.0 
 *  License      : GPL
-
+*  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
-
 
 $mod_strings = array (
 		'LBL_MODULE_NAME' => 'Agenda',
@@ -17,7 +14,7 @@ $mod_strings = array (
 		'LBL_MODULE_APPOINTMENT_DETAIL' => 'Agenda : détail rendez-vous',
 		'LBL_SAVE' => 'Sauver',
 		'LBL_RESET' => 'Annuler',
-		'LBL_LIST_USER_NAME' => 'Nom d\'utilisateur',
+		'LBL_LIST_USER_NAME' => 'Nom utilisateur',
 		'LBL_LIST_NAME' => 'Nom',
 		'LBL_CALENDAR_SHARED' => 'Votre agenda est partagé avec',
 		'LBL_CALENDAR_SHARING' => 'Partager votre agenda avec',
@@ -311,7 +308,7 @@ $mod_strings = array (
 		'LBL_NOTIFICATION' => 'Notification ',
 		'LBL_SENDNOTIFICATION' => 'Envoyer rappel',
 		'LBL_RMD_ON' => 'Rappel ',
-		'LBL_REPEATEVENT' => 'Répéter tout les',
+		'LBL_REPEATEVENT' => 'Répéter tous les',
 		'LBL_TIMEDATE' => 'Heure & Date',
 		'LBL_HR' => 'H',
 		'LBL_MIN' => 'min ',
@@ -358,6 +355,28 @@ $mod_strings = array (
 		'LBL_CREATED' => 'crée',
 		'LBL_UPDATED' => 'Mis à jour',
 		'LBL_BUSY' => 'Occupé',
+	//Custom Fields support for Calendar
+	'LBL_CUSTOM_INFORMATION'=>' Information personnalisée',
+
+	// Repeat Event support for Calendar
+	'LBL_UNTIL' => 'jusqu\'à',
+	'LBL_SET_DATE'=>'définir date',
+
+	'LBL_MINE' =>'Les miens',
+	'LBL_SUCCESS_CALENDAR_1' => 'Nb. de tâches importées avec succès : ',
+	'LBL_SKIPPED_CALENDAR_1' => 'Nb. de tâches ignorées car contenant des champs obligatoires manquants : ',
+	'LBL_SUCCESS_EVENTS_1' => 'Nb. d\'activités importées avec succès : ',
+	'LBL_SKIPPED_EVENTS_1' => 'No. d\'activités ignorées car contenant des champs obligatoires manquants : ',
+	'LBL_FINISHED'=>'Terminé',
+	'LBL_UNDO_LAST_IMPORT'=>'Annuler le dernier import',
+	'LBL_LAST_IMPORT'=>'Dernièrement importés',
+	'LBL_LAST_IMPORT_UNDONE'=>'Le dernier import n\'a pas été réalisé',
+	'LBL_SUCCESS'=>'Succès !',
+	'LBL_NO_IMPORT_TO_UNDO'=>'Aucun import à annuler.',
+	'LBL_FAILURE'=>'Erreur !',
+		
+	'LBL_ARE_YOU_SURE'=>'Etes-vous sûr?',
+	'Calendar ID' => 'Activité ID',	                             
 );
 $mod_list_strings = array (
 );

@@ -14,6 +14,8 @@
 		/* EventTrigger cache management */
 		private static $cache = array();
 		private static $cacheLookupType = '';
+
+		private static $mandatoryEventClass = array('VTEntityDelta', 'ModTrackerHandler');
 		
 		const CACHE_LOOKUP_TYPE_ALL = 'ALL';
 				
@@ -76,6 +78,10 @@
 					$query .= " AND event_name = ?";
 				}
 				$params[] = $name;
+			}
+			if(CRMEntity::isBulkSaveMode()) {
+				$query .= " AND handler_class IN (" . generateQuestionMarks(self::$mandatoryEventClass) . ")";
+				array_push($params, self::$mandatoryEventClass);
 			}
 			
 			$evtinfosbyname = array();

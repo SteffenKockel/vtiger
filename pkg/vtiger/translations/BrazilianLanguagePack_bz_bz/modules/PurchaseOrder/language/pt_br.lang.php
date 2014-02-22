@@ -14,10 +14,10 @@
  ********************************************************************************/
 /*********************************************************************************
  * $Header$
- * Description:  Defines the English language pack
+ * Description:  Defines the English language pack for Puchase Order
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -29,7 +29,7 @@ $mod_strings = Array(
 'LBL_NEW_FORM_TITLE'=>'Novo Pedido de Compra',
 'LBL_MEMBER_ORG_FORM_TITLE'=>'Organizações Membro',
 
-'LBL_LIST_ACCOUNT_NAME'=>'Nome da Conta',
+'LBL_LIST_ACCOUNT_NAME'=>'Nome da Organização',
 'LBL_LIST_CITY'=>'Cidade',
 'LBL_LIST_WEBSITE'=>'Website',
 'LBL_LIST_STATE'=>'Estado',
@@ -44,8 +44,8 @@ $mod_strings = Array(
 
 //END DON'T CONVERT
 
-'LBL_ACCOUNT'=>'Conta:',
-'LBL_ACCOUNT_NAME'=>'Nome Conta:',
+'LBL_ACCOUNT'=>'Organização:',
+'LBL_ACCOUNT_NAME'=>'Nome Organização:',
 'LBL_PHONE'=>'Fone:',
 'LBL_WEBSITE'=>'Website:',
 'LBL_FAX'=>'Fax:',
@@ -64,7 +64,7 @@ $mod_strings = Array(
 'LBL_TYPE'=>'Tipo:',
 'LBL_ANNUAL_REVENUE'=>'Receita Anual:',
 'LBL_ADDRESS_INFORMATION'=>'Dados do Endereço',
-'LBL_Quote_INFORMATION'=>'Dados da Conta',
+'LBL_Quote_INFORMATION'=>'Dados da Organização',
 'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
 'LBL_BILLING_ADDRESS'=>'Endereço Faturamento:',
 'LBL_SHIPPING_ADDRESS'=>'Endereço Entrega:',
@@ -79,13 +79,13 @@ $mod_strings = Array(
 'NTC_COPY_BILLING_ADDRESS'=>'Copiar endereço de Cobrança para endereço de Entrega',
 'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar endereço de Entrega para endereço de Cobrança',
 'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Você tem certeza que deseja remover este registro como um membro da organização?',
-'LBL_DUPLICATE'=>'Possibilidade Duplicação de Contas',
-'MSG_DUPLICATE' => 'Criando esta Conta poderá duplicá-la. Você pode selecionar também uma Conta da lista abaixo ou clicar sobre Criar Nova Conta para continuar criando uma nova Conta com os dados inseridos anteriormente.',
+'LBL_DUPLICATE'=>'Possibilidade Duplicação de Organizações',
+'MSG_DUPLICATE' => 'Criando esta Organização poderá duplicá-la. Você pode selecionar também uma Organização da lista abaixo ou clicar sobre Criar Nova Organização para continuar criando uma nova Organização com os dados inseridos anteriormente.',
 
 'LBL_INVITEE'=>'Contatos',
-'ERR_DELETE_RECORD'=>"Um registro deve ser especificado para deletar a Contat.",
+'ERR_DELETE_RECORD'=>"Um registro deve ser especificado para deletar uma vtiger_account.",
 
-'LBL_SELECT_ACCOUNT'=>'Selecione a Conta',
+'LBL_SELECT_ACCOUNT'=>'Selecione a Organização',
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
 //for v4 release added
@@ -111,7 +111,7 @@ $mod_strings = Array(
 'LBL_PARTNER'=>'Parceiro',
 
 // Added for 4GA
-'LBL_TOOL_FORM_TITLE'=>'Ferramentas Conta',
+'LBL_TOOL_FORM_TITLE'=>'Ferramentas Organização',
 //Added for 4GA
 'Subject'=>'Assunto',
 'Quote Name'=>'Nome Cotação',
@@ -152,7 +152,7 @@ $mod_strings = Array(
 'Purchase Order'=>'Pedido Compra',
 'Vendor Terms'=>'Condições Pagamento Fornecedor',
 'Pending'=>'Pendente',
-'Account Name'=>'Nome Conta',
+'Account Name'=>'Nome Organização',
 'Terms & Conditions'=>'Prazos & Condições',
 //Quote Info
 'LBL_PO_INFORMATION'=>'Informação Pedido Compra',
@@ -190,7 +190,6 @@ $mod_strings = Array(
 'Tax Type'=>'Tipo Imposto',
 'Discount Percent'=>'Percentual Desconto',
 'Discount Amount'=>'Total Desconto',
-'Terms & Conditions'=>'Prazos & Condições',
 'Adjustment'=>'Ajuste',
 'Sub Total'=>'Sub-Total',
 'S&H Amount'=>'Total Frete',
@@ -199,6 +198,7 @@ $mod_strings = Array(
 'PurchaseOrder No'=>'No. Pedido Compra',
 
 'SINGLE_PurchaseOrder'=>'Pedido Compra',
+'PurchaseOrder ID'=>'ID Pedido Compra',
 );
 
 ?>

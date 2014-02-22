@@ -1,14 +1,11 @@
 <?php
 /***********************************************************
 *  Module       : Users
-*  Language     : Francais
-*  Version      : 5.1.0 GA*  Created Date : 2009-06-23 21:36:13 
-*  Last change  : 2009-07-21 00:49:17
-*  Author       : french-vtiger.fr 
-*  License      : GPL 
-
+*  Language     : French
+*  Version      : 5.4.0 
+*  License      : GPL
+*  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
-
 
 $mod_strings = array (
 		'LBL_MODULE_NAME' => 'Collaborateurs',
@@ -33,7 +30,7 @@ $mod_strings = array (
 		'LBL_LIST_NO' => '#',
 		'LBL_ADMINS' => 'Administrateurs',
 		'LBL_STD_USERS' => 'Utilisateur standard',
-		'UserName' => 'Nom d\'utilisateur',
+		'UserName' => 'Nom utilisateur',
 		'Name' => 'Nom',
 		'Tools' => 'Outils',
 		'LBL_GROUP' => 'Equipe',
@@ -44,7 +41,7 @@ $mod_strings = array (
 		'LBL_DATE_FORMAT' => 'Format date',
 		'LBL_ERROR' => 'Erreur :',
 		'LBL_PASSWORD' => 'Mot de passe :',
-		'LBL_USER_NAME' => 'Nom d\'utilisateur :',
+		'LBL_USER_NAME' => 'Nom utilisateur :',
 		'LBL_CRM_ID' => 'CRM ID',
 		'LBL_FIRST_NAME' => 'Prénom :',
 		'LBL_LAST_NAME' => 'Nom :',
@@ -547,7 +544,7 @@ $mod_strings = array (
 		'LBL_NOTIFICATION_EMAIL_INFO' => 'Information de notification email',
 		'LBL_GOTO_LISTVIEW_BUTTON' => 'Aller à la liste',
 		'LBL_SSL' => 'SSL',
-		'LBL_USERNAME_EXIST' => 'Nom d\'utilisateurs existant',
+		'LBL_USERNAME_EXIST' => 'Nom d\'utilisateur déjà existant',
 		'LBL_UNAUTHORIZED_ACCESS' => 'Administration des utilisateurs non autorisée',
 		'LBL_TAGCLOUD_DISPLAY' => 'Affichage mots clés',
 		'INTERNAL_MAIL_COMPOSER' => 'Composeur interne d\'email',
@@ -555,10 +552,30 @@ $mod_strings = array (
 		'LBL_TO_LOGIN' => 'Vers le login',
 		'LBL_USER_ADV_OPTIONS' => 'Options avancées de l\'utilisateur',
 		'Reminder Interval' => 'Délai de rappel',
-		'Webservice Access Key' => 'Cl&eacute d\'utilisateur',
+		'Webservice Access Key' => 'Clé d\'accès personnelle au webservice',
 		'LBL_USER_ASTERISK_OPTIONS' => 'Configuration d\'Asterisk',
-		'Asterisk Extension' => 'Extension d\'Asterisk',
+		'Asterisk Extension' => 'Extension Asterisk',
 		'Use Asterisk' => 'Utiliser Asterisk',
+
+		' Receive Incoming Calls' => 'Recevoir les appels entrants',
+
+		// Added for Create Custom Fields 
+		'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Champs personnalisés pour les collaborateurs',
+		'LBL_USER_CUSTOMFIELDS' => 'Champs personnalisés des collaborateurs',	
+		
+		'LBL_CURRENCY_CONFIGURATION' => 'Configuration des devises et monnaies',
+		'Digit Grouping Pattern' => 'Patterne de groupe',
+		'Decimal Separator' => 'Séparateur de décimales',
+		'Digit Grouping Separator' => 'Séparateur de groupe',
+		'Symbol Placement' => 'Position du symbole monétaire',
+		'Secondary Email' => 'Email secondaire',
+		'Time Zone' => 'Fuseau horaire',
+		'Theme' => 'Thème graphique',
+		
+		//user-group fixes
+		'LBL_GROUPNAME_EXIST' => 'un groupe avec ce nom existe déjà!',
+		'LBL_PROFILENAME_EXIST' => 'Un profil avec ce nom existe déjà!',
+
 );
 $mod_list_strings = array (
 );

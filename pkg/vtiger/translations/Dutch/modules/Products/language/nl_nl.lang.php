@@ -1,12 +1,35 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
+
+/*******************************************************************************
+ * The contents of this file are subject to the following licences:
+ * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
+ * - vtiger CRM Public License Version 1.0 
+ * You may not use this file except in compliance with the License
+ * Software distributed under the License is distributed on an  "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+ * the specific language governing rights and limitations under the License.
+ * The Original Code is: SugarCRM Open Source
+ * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Contributor(s): Vertaling door: Weltevree.org  www.weltevree.org
-********************************************************************************/
+ * Feel free to use / redistribute these languagefiles under the VPL 1.0.
+ * This translations is based on earlier work of: 
+ * - IT-Online.nl <www.it-online.nl>
+ * - Weltevree.org <www.Weltevree.org>
+ ********************************************************************************/
+
+/*******************************************************************************
+ * Vicus eBusiness Solutions Version Control
+ * @package 	NL-Dutch
+ * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * @author	$Author: luuk $
+ * @version 	$Revision: 1.5 $ $Date: 2012/02/28 23:40:22 $
+ * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Products/language/nl_nl.lang.php,v $
+ * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license	vtiger CRM Public License Version 1.0 (by definition)
+ ********************************************************************************/
 
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Producten',
@@ -15,13 +38,13 @@ $mod_strings = Array(
 'LBL_TOOL_FORM_TITLE'=>'Product gereedschap',
 'LBL_SEARCH_FORM_TITLE'=>'Zoek Product ',
 'LBL_PRODUCT_NAME'=>'Productnaam:',
-'LBL_VENDOR_NAME'=>'Leveranciers naam:',
+'LBL_VENDOR_NAME'=>'Leveranciersnaam:',
 'LBL_PRICEBOOK_NAME'=>'Prijslijst naam:',
 'LBL_VENDOR'=>'Leverancier',
 'LBL_PRICEBOOK'=>'Prijslijst:',
 'LBL_VENDOR_INFORMATION'=>'Leveranciers informatie:',
 'LBL_PRICEBOOK_INFORMATION'=>'Prijslijst informatie:',
-'LBL_VENDOR_ADDRESS_INFORMATION'=>'Adres informatie:',
+'LBL_VENDOR_ADDRESS_INFORMATION'=>'Adresinformatie:',
 'LBL_DESCRIPTION_INFORMATION'=>'Omschrijving naam:',
 'LBL_PRICING_INFORMATION'=>'Prijs informatie:',
 'LBL_STOCK_INFORMATION'=>'Voorraad informatie:',
@@ -33,16 +56,16 @@ $mod_strings = Array(
 'LBL_PRODUCT_CODE'=>'Product code',
 'LBL_LIST_PRODUCT_CODE'=>'Product code:',
 'LBL_PRODUCT_ACTIVE'=>'Product actief',
-'LBL_PRODUCT_COMMISSION_RATE'=>'Commissie toeslag',
-'LBL_PRODUCT_QTY_PER_UNIT'=>'Hoeveelheid p/st',
-'LBL_PRODUCT_UNIT_PRICE'=>'Prijs p/st',
+'LBL_PRODUCT_COMMISSION_RATE'=>'Commissie (%)',
+'LBL_PRODUCT_QTY_PER_UNIT'=>'Hoeveelheid / Eenheid',
+'LBL_PRODUCT_UNIT_PRICE'=>'Prijs / Eenheid',
 'LBL_PB_LIST_PRICE'=>'Adviesprijs',
 'LBL_PRODUCT_DESCRIPTION'=>'Omschrijving',
-'LBL_PRODUCT_IMAGE'=>'Product foto',
+'LBL_PRODUCT_IMAGE'=>'Productafbeelding',
 'LBL_NEW_FORM_TITLE'=>'Nieuw Product',
-'LBL_PRODUCT_INFORMATION'=>'Product informatie',
-'LBL_CUSTOM_INFORMATION'=>'Klant informatie',
-'LBL_DESCRIPTION_INFORMATION'=>'Omschrijving informatie',
+'LBL_PRODUCT_INFORMATION'=>'Productinformatie',
+'LBL_CUSTOM_INFORMATION'=>'Klantinformatie',
+'LBL_DESCRIPTION_INFORMATION'=>'Omschrijving',
 
 //New entry
 'LBL_UPLOAD'=>'Verstuur bestand',
@@ -52,9 +75,10 @@ $mod_strings = Array(
 'LBL_COLON'=>':',
 
 'LBL_ATTACHMENTS'=>'Bijlagen',
-'LBL_ATTACH_FILE'=>'Bestands bijlage',
+'LBL_ATTACH_FILE'=>'Bestandsbijlage',
 'LBL_DESCRIPTION'=>'Omschrijving',
 'LBL_FILE'=>'Bestandsnaam',
+
 
 //for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nieuwe verkoopkans',
@@ -75,53 +99,53 @@ $mod_strings = Array(
 //Added fields after RC1 - Release
 'LBL_MANUFACTURER'=>'Producent',
 'LBL_PRODUCTCATEGORY'=>'Product categorie',
-'LBL_SUPPORT_START_DATE'=>'Support startdatum',
-'LBL_SUPPORT_EXPIRY_DATE'=>'Support einddatum',
+'LBL_SUPPORT_START_DATE'=>'Ondersteuning startdatum',
+'LBL_SUPPORT_EXPIRY_DATE'=>'Ondersteuning einddatum',
 'LBL_PURCHASE_DATE'=>'Inkoopdatum',
 
 //Added for 4GA
 'Product Name'=>'Productnaam',
 //'Product Code'=>'Product code',
-'Part Number'=>'Onderdeelnummer',
+'Part Number'=>'Partnummer',
 'Product Active'=>'Product actief',
-'Commission Rate'=>'Commissie toeslag (%)',
-'Qty/Unit'=>'Hoeveelheid p/st',
-'Unit Price'=>'Prijs p/st',
+'Commission Rate'=>'Commissie (%)',
+'Qty/Unit'=>'Hoeveelheid / Eenheid',
+'Unit Price'=>'Prijs per Eenheid',
 'Manufacturer'=>'Producent',
 'Product Category'=>'Product categorie',
-'Support Start Date'=>'Support startdatum',
-'Support Expiry Date'=>'Support einddatum',
-'Purchase Date'=>'Inkoop datum',
+'Support Start Date'=>'Ondersteuning startdatum',
+'Support Expiry Date'=>'Ondersteuning einddatum',
+'Purchase Date'=>'Inkoopdatum',
 'Sales Start Date'=>'Verkoop startdatum',
 'Sales End Date'=>'Verkoop einddatum',
 'Created Time'=>'Gemaakt',
-'Modified Time'=>'Veranderd',
+'Modified Time'=>'Gewijzigd',
 'Related To'=>'Gerelateerd aan',
-'Usage Unit'=>'Gebruik p/st',
-'Handler'=>'Uitvoerder',
+'Usage Unit'=>'Gebruikseenheid',
+'Handler'=>'Productmanager',
 'Contact Name'=>'Contactnaam',
 'Currency'=>'Valuta',
-'Reorder Level'=>'Nabestellings niveau',
-'Tax Class'=>'',
+'Reorder Level'=>'Nabestellingsniveau',
+'Tax Class'=>'Belastingklasse',
 'Mfr PartNo'=>'Artikelnummer',
-'Vendor PartNo'=>'Leveranciers nummer',
+'Vendor PartNo'=>'Leveranciersnummer',
 'Serial No'=>'Serienummer',
-'Qty In Stock'=>'Hoeveelheid op voorraad',
-'Product Sheet'=>'Product informatie',
-'Qty In Demand'=>'Nabestelling',
-'GL Account'=>'Grootboek rekening',
-'Vendor Name'=>'Leveranciers naam',
+'Qty In Stock'=>'Aantal op voorraad',
+'Product Sheet'=>'Productinformatie',
+'Qty In Demand'=>'Aantal in bestelling',
+'GL Account'=>'Grootboekrekening',
+'Vendor Name'=>'Leveranciersnaam',
 
 //Mapping for Name
 'Name'=>'Naam',
 'Company Name'=>'Bedrijfsnaam',
 'Phone'=>'Telefoon',
-'Email'=>'e-Mail',
+'Email'=>'E-mail',
 'Website'=>'Website',
-'GL Account'=>'Grootboek rekening',
+'GL Account'=>'Grootboekrekening',
 'Category'=>'Categorie',
 'Street'=>'Straat',
-'City'=>'Stad',
+'City'=>'Plaats',
 'State'=>'Provincie',
 'Postal Code'=>'Postcode',
 'Country'=>'Land',
@@ -129,7 +153,7 @@ $mod_strings = Array(
 'Po Box'=>'Postbus',
 
 //Mapping for price book
-'Price Book Name'=>'Prijslijst naam',
+'Price Book Name'=>'Naam prijslijst',
 'Product Name'=>'Productnaam',
 'Active'=>'Actief',
 
@@ -143,23 +167,23 @@ $mod_strings = Array(
 'LBL_COMPANY_NAME'=>'Bedrijfsnaam',
 'LBL_CATEGORY_TITLE'=>'Categorie',
 'LBL_ACTIVE_TITLE'=>'Actief',
-'LBL_LIST_VENDOR_NAME'=>'Leveranciers naam',
-'LBL_IMAGE_INFORMATION'=>'Product foto informatie:',
-'Product Image'=>'Product foto',
+'LBL_LIST_VENDOR_NAME'=>'Leveranciersnaam',
+'LBL_IMAGE_INFORMATION'=>'Productafbeeldingen:',
+'Product Image'=>'Productafbeelding',
 'LBL_ADD_PRICEBOOK_BUTTON_TITLE'=>'Toevoegen aan prijslijst [Alt+B]',
 'LBL_ADD_PRICEBOOK_BUTTON_KEY'=>'B',
 'LBL_ADD_PRICEBOOK_BUTTON_LABEL'=>'Toevoegen aan prijslijst',
-'LBL_ADD_PRODUCT_PRICEBOOKS'=>'Toevoegen Producten aan prijslijst',
-'LBL_ADD_PRODUCTS_PRICEBOOK'=>'Toevoegen Producten aan prijslijst',
+'LBL_ADD_PRODUCT_PRICEBOOKS'=>'Voeg Product toe aan prijslijst',
+'LBL_ADD_PRODUCTS_PRICEBOOK'=>'Voeg Producten toe aan prijslijst',
 
 //Added for 4.2 patch2 release
 'LBL_MAXIMUM_LIMIT_ERROR'=>'Uw bestand is te groot. Probeer opnieuw a.u.b. Probeer een bestand kleiner dan 800000 bytes',
 'LBL_UPLOAD_ERROR'=>'Problemen met het versturen van uw bestand. Probeer opnieuw a.u.b.!',
 'LBL_IMAGE_ERROR'=>'Dit bestand is geen foto(.gif/.jpg/.png)',
 'LBL_INVALID_IMAGE'=>'Dit bestand bevat geen data',
-'LBL_EMAIL'=>'e-Mail',
+'LBL_EMAIL'=>'E-mail',
 'Product'=>'Product',
-'LBL_EDITLISTPRICE'=>'Verander prijs',
+'LBL_EDITLISTPRICE'=>'Bewerk prijs',
 
 //Added for existing picklist entries
 
@@ -181,17 +205,17 @@ $mod_strings = Array(
 
 'Box'=>'Doos',
 'Carton'=>'Kartonnen doos',
-'Caton'=>'Kartonnen doos',
+'Caton'=>'Kartonnen doos', // what is this?? maybe a typo in the code?
 'Dozen'=>'Dozijn',
 'Each'=>'Elk',
 'Hours'=>'Uren',
-'Impressions'=>'Impressies',
+'Impressions'=>'Vertoningen',
 'Lb'=>'Lb',
 'M'=>'M',
 'Pack'=>'Pak',
-'Pages'=>'Paginas',
+'Pages'=>'Pagina\'s',
 'Pieces'=>'Stuks',
-'Quantity'=>'Hoeveelheid',
+'Quantity'=>'Aantal',
 'Reams'=>'Riemen',
 'Sheet'=>'Vel',
 'Spiral Binder'=>'Spiraal Map',
@@ -208,13 +232,16 @@ $mod_strings = Array(
 
 // Added after 5.0.4 GA
 
-'LBL_PRODUCT_PRICES'=>'Product Prijzen',
-'Member Of'=>'Lid van',
+'LBL_PRODUCT_PRICES'=>'Productprijzen',
+'Member Of'=>'Onderdeel van',
 
 // Module Sequence Numbering
 'Product No' => 'Product Nr',
 // END
-'LBL_NO_TAXES_ASSOCIATED'=>'Geen BTW gedefinieerd voor dit produkt',
+
+'LBL_NO_TAXES_ASSOCIATED'=>'Er is geen BTW-tarief aan dit product gekoppeld',
+
+'Parent Product' => 'Hoofdproduct',
 );
 
 ?>

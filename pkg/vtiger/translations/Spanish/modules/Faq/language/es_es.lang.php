@@ -14,9 +14,10 @@
  ********************************************************************************
 *  Module       : Faq
 *  Language     : Español
-*  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
-*  Author       : Rafael Soler
+*  Version      : 5.4.0
+*  Created Date : 2007-03-30
+*  Last change  : 2012-02-28
+*  Author       : JPL TSolucio, S.L. Joe Bordes
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -63,7 +64,7 @@ $mod_strings = Array(
 'LBL_TYPE'=>'Tipo:',
 'LBL_ANNUAL_REVENUE'=>'Facturación Anual:',
 'LBL_ADDRESS_INFORMATION'=>'Información de la Dirección',
-'LBL_ACCOUNT_INFORMATION'=>'Informaciaón de Faq',
+'LBL_ACCOUNT_INFORMATION'=>'Información de Faq',
 'LBL_BILLING_ADDRESS'=>'Dirección (Factura):',
 'LBL_SHIPPING_ADDRESS'=>'Dirección (Envío):',
 'LBL_ANY_ADDRESS'=>'Dirección (Alternativa):',
@@ -138,6 +139,7 @@ $mod_strings = Array(
 'Faq No' => 'Núm. FAQ',
 // END
 
+'Faq ID' => 'Id FAQ',
 );
 
 ?>

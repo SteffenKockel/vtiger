@@ -13,8 +13,8 @@
  ********************************************************************************
 *  Module       : Helpdesk
 *  Language     : Español
-*  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
+*  Version      : 5.4.0.
+*  Created Date : 2007-03-30 Last change : 2012-02-28
 *  Author       : Rafael Soler
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
@@ -218,7 +218,8 @@ $mod_strings = Array(
 // Module Sequence Numbering
 'Ticket No' => 'Núm. Caso',
 // END
-
+'From Portal' => 'Proviene del Portal',
+'HelpDesk ID' => 'Id Incidencia',
 );
 
 ?>

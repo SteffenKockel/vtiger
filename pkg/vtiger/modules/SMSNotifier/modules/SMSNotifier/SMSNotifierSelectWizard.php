@@ -24,9 +24,10 @@ $smarty->assign("IS_ADMIN", is_admin($current_user));
 
 if(SMSNotifier::checkServer()) {
 	
-	$idstring = vtlib_purify($_REQUEST['idstring']);
+	$excludedRecords=vtlib_purify($_REQUEST['excludedRecords']);
+    $idstring = vtlib_purify($_REQUEST['idstring']);
 	$idstring = trim($idstring, ';');
-	$idlist = explode(';', $idstring);
+	$idlist = getSelectedRecords($_REQUEST,$_REQUEST['sourcemodule'],$idstring,$excludedRecords);//explode(';', $idstring);
 	
 	$sourcemodule = vtlib_purify($_REQUEST['sourcemodule']);
 	
@@ -64,6 +65,9 @@ if(SMSNotifier::checkServer()) {
 	$smarty->assign('FIELDVALUES', $capturedFieldValues);
 	$smarty->assign('IDSTRING', $idstring);
 	$smarty->assign('SOURCEMODULE', $sourcemodule);
+    $smarty->assign('excludedRecords',$excludedRecords);
+    $smarty->assign('VIEWID',$_REQUEST['viewname']);
+    $smarty->assign('SEARCHURL',$_REQUEST['searchurl']);
 
 	$smarty->display(vtlib_getModuleTemplate($currentModule, 'SMSNotifierSelectWizard.tpl'));
 	

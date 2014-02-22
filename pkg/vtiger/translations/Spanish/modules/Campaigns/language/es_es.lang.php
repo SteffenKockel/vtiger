@@ -13,11 +13,10 @@
  ********************************************************************************
 *  Module       : Campaigns
 *  Language     : Español
-*  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
-*  Author       : Rafael Soler
-
-
+*  Version      : 5.4.0
+*  Created Date : 2007-03-30
+*  Author       : JPL TSolucio, S.L.
+*  Last change  : 2012-02-28
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -90,8 +89,8 @@ $mod_strings = Array(
 '--None--'=>'--Ninguno--',
 'Contacted - Successful' => 'Respuesta - Satisfactoria',
 'Contacted - Unsuccessful' => 'Respuesta - Insatisfactoria',
-'Contacted - Never Contact Again' => 'Respuesta - No volver a contactar'
-
+'Contacted - Never Contact Again' => 'Respuesta - No volver a contactar',
+'Campaigns ID' => 'Id Campaña',
 );
 
 ?>

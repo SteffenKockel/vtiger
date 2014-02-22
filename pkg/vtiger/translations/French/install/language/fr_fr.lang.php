@@ -7,7 +7,6 @@
 *  Last change  : 2009-09-08 17:22:04
 *  Author       : french-vtiger.fr 
 *  License      : GPL
-
 ***********************************************************/
 
 $optionalModuleStrings = array(

@@ -6,24 +6,24 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-
-<div class="mm_outerborder">
+<form action="javascript:void(0)" method="POST" id="_mail_replyfrm_" ENCTYPE="multipart/form-data" name='submit'>
+<span class="moduleName" id="send_mail_fldrname" name="send_mail_fldrname">{'LBL_Compose'|@getTranslatedString}</span>
+<div class="mm_outerborder"  id="send_email_con" name="send_email_con">
     <div id="_popupsearch_" style="display:none;position:absolute;width:500px;z-index:80000;"></div>
-    <form action="javascript:void(0)" method="POST" id="_mail_replyfrm_" ENCTYPE="multipart/form-data" name='submit'>
-
         <input type="hidden" name="emailid" class="detailedViewTextBox" id="emailid"/>
         <input type="hidden" name="docids" class="detailedViewTextBox" id="docids"/>
         <input type="hidden" name="attachmentCount" class="detailedViewTextBox" id="attachmentCount"/>
         <table width="100%" cellpadding=2 cellspacing=0 border=0 class="small" style='clear: both;'>
 {strip}
+            
+
             <tr valign=top>
                 <td>
                     <a href="javascript:void(0);"onclick="MailManager.mail_reply_close();" style="font-size:14px">&#171;
                         <b>{'LBL_Cancel'|@getTranslatedString}</b></a>&nbsp;
                 </td>
             </tr>
-
-            <tr valign=top>
+			<tr valign=top>
                 <td>
                     <table width="100%" cellpadding=2 cellspacing=0 border=0 class="small">
                         <tr>

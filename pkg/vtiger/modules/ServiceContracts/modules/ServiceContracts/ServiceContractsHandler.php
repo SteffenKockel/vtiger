@@ -54,8 +54,13 @@ class ServiceContractsHandler extends VTEventHandler {
 						} else {
 							$op = '+';
 						}
-						$contract_tktresult = $adb->pquery("SELECT crmid FROM vtiger_crmentityrel WHERE module = 'ServiceContracts'" .
-								" AND relmodule = 'HelpDesk' AND relcrmid = ?", array($ticketId));
+						$contract_tktresult = $adb->pquery("SELECT crmid FROM vtiger_crmentityrel
+																WHERE module = 'ServiceContracts'
+																AND relmodule = 'HelpDesk' AND relcrmid = ?
+															UNION
+																SELECT relcrmid FROM vtiger_crmentityrel
+																WHERE relmodule = 'ServiceContracts'
+																AND module = 'HelpDesk' AND crmid = ?", array($ticketId,$ticketId));
 						$noOfContracts = $adb->num_rows($contract_tktresult);
 						if($noOfContracts > 0) {
 							for($i=0;$i<$noOfContracts;$i++) {

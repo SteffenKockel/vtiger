@@ -9,6 +9,10 @@
  *************************************************************************************/
 	
 	function vtws_listtypes($fieldTypeList, $user){
+		// Bulk Save Mode: For re-using information
+		static $webserviceEntities = false;
+		// END
+
 		static $types = array();
 		if(!empty($fieldTypeList)) {
 			$fieldTypeList = array_map(strtolower, $fieldTypeList);
@@ -72,7 +76,11 @@
 				}
 			}
 			//get All the CRM entity names.
-			$webserviceEntities = vtws_getWebserviceEntities();
+			if($webserviceEntities === false || !CRMEntity::isBulkSaveMode()) {
+				// Bulk Save Mode: For re-using information
+				$webserviceEntities = vtws_getWebserviceEntities();
+			}
+
 			$accessibleModules = array_values(array_intersect($webserviceEntities['module'],$allModuleNames));
 			$entities = $webserviceEntities['entity'];
 			$accessibleEntities = array();

@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
- 
+
 {if empty($smarty.request.ajax)}
 <table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tr>
@@ -16,7 +16,7 @@
 	<a href="javascript:showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');"><img id="aid{$UIKEY}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid rgb(0, 0, 0);" alt="Hide" title="Hide"></a>
 	</div><b>&nbsp;{$WIDGET_TITLE}</b></div>
 	<span style="float: right;">
-		<img src="themes/images/vtbusy.gif" border=0 id="indicator{$UIKEY}" style="display:none;">
+		<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border=0 id="indicator{$UIKEY}" style="display:none;">
 		{$APP.LBL_SHOW} <select class="small" onchange="ModCommentsCommon.reloadContentWithFiltering('{$WIDGET_NAME}', '{$ID}', this.value, 'tbl{$UIKEY}', 'indicator{$UIKEY}');">
 			<option value="All" {if $CRITERIA eq 'All'}selected{/if}>{$APP.LBL_ALL}</option>
 			<option value="Last5" {if $CRITERIA eq 'Last5'}selected{/if}>{$MOD.LBL_LAST5}</option>
@@ -29,9 +29,9 @@
 {/if}
 
 <div id="tbl{$UIKEY}">
-	
+
 	<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
-	
+
 	<tr style="height: 25px;">
 		<td colspan="4" align="left" class="dvtCellInfo" >
 		<div id="contentwrap_{$UIKEY}" style="overflow: auto; height: 250px; width: 100%;">
@@ -41,7 +41,7 @@
 		</div>
 		</td>
 	</tr>
-	
+
 	<tr style="height: 25px;">
 	<td class="dvtCellLabel" align="right">
 		{$MOD.LBL_ADD_COMMENT}
@@ -52,8 +52,8 @@
 			<br><input type="button" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" onclick="ModCommentsCommon.addComment('{$UIKEY}', '{$ID}');"/> {$APP.LBL_OR}
 			<a href="javascript:;" onclick="$('txtbox_{$UIKEY}').value='';" class="link">{$APP.LBL_CLEAR_BUTTON_LABEL}</a>
 		</div>
-	</td>							
+	</td>
 	</tr>
-	
+
 	</table>
 </div>

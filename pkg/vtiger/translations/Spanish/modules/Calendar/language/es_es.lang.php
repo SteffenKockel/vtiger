@@ -13,10 +13,10 @@
  ********************************************************************************
 *  Module       : Calendar
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-28
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
@@ -133,22 +133,22 @@ $mod_strings = array (
 ),
 
 'cal_weekdays_short'=>array(
-"Dom",
 "Lun",
 "Mar",
 "Mie",
 "Jue",
 "Vie",
 "Sab",
+"Dom",
 ),
 'cal_weekdays_long'=>array(
-"Domingo",
 "Lunes",
 "Martes",
 "Miércoles",
 "Jueves",
 "Viernes",
 "Sabado",
+"Domingo",
 ),
 'cal_month_short'=>array(
 "",
@@ -251,7 +251,7 @@ $mod_strings = array (
 'LBL_DEL'=>'Borrar',
 
 //Added for actvity merge with calendar
-'LBL_SEARCH_FORM_TITLE'=>'Búscar Tarea',
+'LBL_SEARCH_FORM_TITLE'=>'Buscar Tarea',
 'LBL_LIST_FORM_TITLE'=>'Listado de Tareas',
 'LBL_NEW_FORM_TITLE'=>'Nueva Tarea',
 'LBL_TASK_INFORMATION'=>'Información de Tarea',
@@ -259,10 +259,10 @@ $mod_strings = array (
 'LBL_CALENDAR_INFORMATION'=>'Información de Calendario',
 
 'LBL_NAME'=>'Asunto:',
-'LBL_ACTIVITY_NOTIFICATION'=>'Se te ha asignado una tarea y ha sido',
-'LBL_ACTIVITY_INVITATION'=>'Has sido invitado a una tarea que ha sido',
+'LBL_ACTIVITY_NOTIFICATION'=>'Se te ha asignado una tarea. Estado:',
+'LBL_ACTIVITY_INVITATION'=>'Has sido invitado a una tarea. Estado:',
 'LBL_DETAILS_STRING'=>'Los detalles son',
-'LBL_REGARDS_STRING'=>'Gracias y Recuerdos',
+'LBL_REGARDS_STRING'=>'Un saludo',
 'LBL_CONTACT_NAME'=>'Contacto',
 'LBL_OPEN_ACTIVITIES'=>'Tareas Pendientes',
 'LBL_ACTIVITY'=>'Tarea:',
@@ -449,6 +449,7 @@ $mod_strings = array (
 'LBL_FAILURE'=>'Fallido!',
 
 'LBL_ARE_YOU_SURE'=>'¿Estás seguro?',
+'Calendar ID' => 'Id Calendario',
 );
 
 ?>

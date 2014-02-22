@@ -1,8 +1,13 @@
-// Vertaling: Weltevree.org
-// Feel free to use / redistribute under the GNU LGPL.
-// ** I18N
-
-
+/*******************************************************************************
+ * Vicus eBusiness Solutions Version Control
+ * @package 	NL-Dutch
+ * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * @author	$Author: luuk $
+ * @version 	$Revision: 1.2 $ $Date: 2011/11/13 08:02:24 $
+ * @source	$Source: /var/lib/cvs/vtiger530/Dutch/jscalendar/lang/calendar-nl.js,v $
+ * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license	vtiger CRM Public License Version 1.0 (by definition)
+ ********************************************************************************/
 
 // full day names
 Calendar._DN = new Array

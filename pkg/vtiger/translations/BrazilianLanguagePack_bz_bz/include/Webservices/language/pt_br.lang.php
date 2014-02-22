@@ -6,7 +6,7 @@
   * The Initial Developer of the Original Code is vtiger.
   * Portions created by vtiger are Copyright (C) vtiger.
   * All Rights Reserved.
-  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|20/08/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|03/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
   ********************************************************************************/
 $app_strings = array (
 	'Groups'=>'Grupos',

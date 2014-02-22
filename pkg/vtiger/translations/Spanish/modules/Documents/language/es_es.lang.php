@@ -11,11 +11,12 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  ********************************************************************************
-*  Module       : Notes
+*  Module       : Documents
 *  Language     : Español
-*  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
+*  Version      : 5.4.0
+*  Created Date : 2007-03-30 Last change : 2012-02-27
 *  Author       : Rafael Soler
+*  Author       : Joe Bordes
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -136,7 +137,8 @@ $mod_strings = Array(
 
 'Document No'=>'Número Documento',
 'Folder Name'=>"Nombre de carpeta",
-
+'Documents' => 'Documentos',
+'Documents ID'=>'Id Documento',
 );
 
 ?>

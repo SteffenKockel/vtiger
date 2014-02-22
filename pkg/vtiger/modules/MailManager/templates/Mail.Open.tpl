@@ -6,15 +6,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-
-<div class="mm_outerborder">
+<span class="moduleName" id="mail_fldrname">{$FOLDER->name()}</span>
+<div class="mm_outerborder" id="open_email_con" name="open_email_con">
 <table width="100%" cellpadding=2 cellspacing=0 border=0 class="small" style='clear: both;'>
 	<tr class="mailSubHeader" valign="top">
-		<td><a href='javascript:void(0);' onclick="MailManager.mail_close();"><b style="font-size:14px">&#171; {'LBL_Go_Back'|@getTranslatedString}</b></a>&nbsp;&nbsp;&nbsp;
-			<span class="big dvHeaderText" id="_mailopen_subject">{$MAIL->subject()}</span>
-		</td>
+		
 		<td align=left>
-			
+			<a href='javascript:void(0);' onclick="MailManager.mail_close();"><b style="font-size:14px">&#171; {'LBL_Go_Back'|@getTranslatedString}</b></a>&nbsp;&nbsp;&nbsp;
+			<span class="dvHeaderText" id="_mailopen_subject">{$MAIL->subject()}</span>
 		</td>
 		<td align="right" nowrap="nowrap">
 			{if $MAIL->msgno() < $FOLDER->count()}
@@ -105,7 +104,7 @@
 		
 		<tr>
 			<td width="100px" align=right>{'LBL_Date'|@getTranslatedString}:</td>
-			<td id="_mailopen_date">{"Y-m-d H:i:s O"|@date:$MAIL->date()}</td>
+			<td id="_mailopen_date">{$MAIL->date()}</td>
 		</tr>
 		
 		{if $MAIL->attachments(false)}

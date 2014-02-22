@@ -19,7 +19,7 @@ global $adb, $log, $list_max_entries_per_page;
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
-require_once($theme_path.'layout_utils.php');
+require_once('modules/Vtiger/layout_utils.php');
 
 require("user_privileges/user_privileges_".$current_user->id.".php");
 
@@ -97,7 +97,8 @@ if(count($module_name) > 0)
 	}
 	$count_result = $adb->query( mkCountQuery($list_query));
 	$noofrows = $adb->query_result($count_result,0,"count");
-	
+	$smarty->assign("NUMOFROWS", $noofrows);
+
 	$controller = new ListViewController($adb, $current_user, $queryGenerator);
 	$rb_listview_header = $controller->getListViewHeader($focus,$select_module,$url_string,$sorder,
 			$order_by, true);
@@ -138,22 +139,25 @@ if(count($module_name) > 0)
 
 $smarty->assign("NAVIGATION", $navigationOutput);
 $smarty->assign("RECORD_COUNTS", $record_string);
+$smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
 
 //to get the field name that mentions the module
-$query = "select fieldname from vtiger_entityname where modulename =?";
-$module_fielaname = $adb->query_result($adb->pquery($query, array($select_module)),0,'fieldname');
+$query = "SELECT fieldname,tablename FROM vtiger_entityname WHERE modulename =?";
+$queryResult = $adb->pquery($query, array($select_module));
+$moduleColumnName = $adb->query_result($queryResult,0,'fieldname');
+$moduleTableName = $adb->query_result($queryResult,0,'tablename');
 
-if(strpos($module_fielaname,','))
+if(strpos($moduleColumnName,','))
 {
-	$field_array = explode(',',$module_fielaname);
-	$index_field = $field_array[0];
-}
-else
-{
-	$index_field = $module_fielaname;
+	$field_array = explode(',',$moduleColumnName);
+	$moduleColumnName = $field_array[0];
 }
 
-$alphabetical = AlphabeticalSearch($currentModule,'index',$index_field,'true','basic',"","","","",$viewid);
+$query = "SELECT fieldname FROM vtiger_field WHERE tablename=? and columnname=?";
+$moduleFieldName = $adb->query_result($adb->pquery($query, array($moduleTableName,$moduleColumnName)),0,'fieldname');
+$indexField = $moduleFieldName;
+
+$alphabetical = AlphabeticalSearch($currentModule,'index',$indexField,'true','basic',"","","","",$viewid);
 
 $category = getParentTab();;
 
@@ -174,6 +178,8 @@ $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("CMOD", return_module_language($current_language,$select_module));
 $smarty->assign("lvEntries", $lvEntries);
+$smarty->assign("ALLSELECTEDIDS", vtlib_purify($_REQUEST['allselobjs']));
+$smarty->assign("CURRENT_PAGE_BOXES", implode(array_keys($lvEntries),";"));
 
 $smarty->assign("IS_ADMIN", $is_admin);
 

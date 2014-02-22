@@ -44,6 +44,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->id = $recordId;
 			$focus->mode = 'edit';
 			$focus->retrieve_entity_info($recordId, $moduleName);
+			$focus->clearSingletonSaveFields();
 
 			$util->loggedInUser();
 			foreach ($fieldValueMapping as $fieldInfo) {

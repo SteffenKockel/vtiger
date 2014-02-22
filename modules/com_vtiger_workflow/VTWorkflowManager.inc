@@ -9,60 +9,69 @@
  ************************************************************************************/
 	require_once("VTJsonCondition.inc");
 	require_once 'include/utils/ConfigReader.php';
-	
+
 	class VTWorkflowManager{
-		
+
 		static $ON_FIRST_SAVE = 1;
 		static $ONCE = 2;
 		static $ON_EVERY_SAVE = 3;
 		static $ON_MODIFY = 4;
         // Reserving 5 & 6 for ON_DELETE and ON_SCHEDULED types.
 		static $MANUAL = 7;
-		
+
 		function __construct($adb){
 			$this->adb = $adb;
 		}
-		
+
 		function save($workflow){
 			$adb=$this->adb;
 			if(isset($workflow->id)){
 				$wf=$workflow;
 				$adb->pquery("update com_vtiger_workflows set
-								module_name=?, summary=?, test=?, execution_condition=?
-								where workflow_id=?", 
-					array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, $wf->id));
+								module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?
+								where workflow_id=?",
+					array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, $wf->defaultworkflow, $wf->id));
 			}else{
 				$workflowId = $adb->getUniqueID("com_vtiger_workflows");
 				$workflow->id = $workflowId;
 				$wf=$workflow;
-				$adb->pquery("insert into com_vtiger_workflows 
-								(workflow_id, module_name, summary, test, execution_condition, type)
-								values (?,?,?,?,?,?)",
-					array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type));
+
+				$result=$adb->getColumnNames("com_vtiger_workflows");
+				if(in_array("type",$result)) {
+					$adb->pquery("insert into com_vtiger_workflows
+									(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow)
+									values (?,?,?,?,?,?,?)",
+						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type, $wf->defaultworkflow));
+				} else {
+					$adb->pquery("insert into com_vtiger_workflows
+									(workflow_id, module_name, summary, test, execution_condition, defaultworkflow)
+									values (?,?,?,?,?,?)",
+						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->defaultworkflow));
+				}
 			}
 		}
-		
-		
+
+
 		function getWorkflows(){
 			$adb=$this->adb;
-			
+
 			$result=$adb->getColumnNames("com_vtiger_workflows");
 			if(in_array("defaultworkflow",$result)){
 				$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type
 									from com_vtiger_workflows ");
 			}else{
-				
+
 				$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition, type
 									from com_vtiger_workflows");
-			}						
+			}
 			return $this->getWorkflowsForResult($result);
-			
+
 		}
-		
+
 		function getWorkflowsForModule($moduleName){
 			$adb=$this->adb;
-			
-			//my changes	
+
+			//my changes
 			$result=$adb->getColumnNames("com_vtiger_workflows");
 			if(in_array(defaultworkflow,$result)){
 				$result = $adb->pquery("select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type
@@ -74,10 +83,10 @@
 			}
 			return $this->getWorkflowsForResult($result);
 		}
-		
+
 		protected function getWorkflowsForResult($result){
 			$adb=$this->adb;
-			
+
 			$it = new SqlResultIterator($adb, $result);
 			$workflows=array();
 			foreach($it as $row){
@@ -101,7 +110,7 @@
 			$workflow = new $workflowClass();
 			return $workflow;
 		}
-		
+
 		/**
 		 * Retrieve a workflow from the database
 		 *
@@ -112,10 +121,10 @@
 		 */
 		function retrieve($id){
 			$adb=$this->adb;
-			$result = $adb->pquery("select workflow_id, module_name, summary, test, execution_condition, type
-									from com_vtiger_workflows where workflow_id=?", 
+			$result = $adb->pquery("select workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow
+									from com_vtiger_workflows where workflow_id=?",
 						array($id));
-			
+
 			if($adb->num_rows($result)){
 				$data = $adb->raw_query_result_rowdata($result, 0);
 				$workflow = $this->getWorkflowInstance($data['type']);
@@ -125,22 +134,24 @@
 				return null;
 			}
 		}
-		
+
 		function delete($id){
 			$adb=$this->adb;
-			$adb->pquery("delete from com_vtiger_workflowtasks where workflow_id=?", array($id));
-			$adb->pquery("delete from com_vtiger_workflows where workflow_id=?", array($id));
+			$adb->pquery("DELETE FROM com_vtiger_workflowtasks WHERE workflow_id IN
+							(SELECT workflow_id FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow != 1))",
+						array($id));
+			$adb->pquery("DELETE FROM com_vtiger_workflows WHERE workflow_id=? AND (defaultworkflow IS NULL OR defaultworkflow != 1)", array($id));
 		}
-		
+
 		function newWorkflow($moduleName){
 			$workflow = $this->getWorkflowInstance();
 			$workflow->moduleName = $moduleName;
 			$workflow->executionCondition = self::$ON_EVERY_SAVE;
 			$workflow->type = 'basic';
 			return $workflow;
-			
+
 		}
-		
+
 
 		/**
 		 * Export a workflow as a json encoded string
@@ -185,9 +196,9 @@
 			}
 			return $workflow;
 		}
-		
+
 	}
-	
+
 	class Workflow{
 		function __construct(){
 			$this->conditionStrategy = new VTJsonCondition();
@@ -204,20 +215,20 @@
 				$this->defaultworkflow=$row['defaultworkflow'];
 			}
 		}
-		
+
 		function evaluate($entityCache, $id){
 			if($this->test==""){
 				return true;
 			}else{
 				$cs = $this->conditionStrategy;
-				return $cs->evaluate($this->test, 
+				return $cs->evaluate($this->test,
 									 $entityCache, $id);
 			}
 		}
 
 		function isCompletedForRecord($recordId) {
 			global $adb;
-			
+
 			$result = $adb->pquery("SELECT * FROM com_vtiger_workflow_activatedonce
 							WHERE entity_id=? and workflow_id=?", array($recordId, $this->id));
 
@@ -244,7 +255,7 @@
 		function performTasks($entityData) {
 			global $adb;
 			$data = $entityData->getData();
-			
+
 			require_once('modules/com_vtiger_workflow/VTTaskManager.inc');
 			require_once('modules/com_vtiger_workflow/VTTaskQueue.inc');
 
@@ -268,7 +279,7 @@
 				}
 			}
 		}
-		
+
 		function executionConditionAsLabel($label=null){
 			if($label==null){
 				$arr = array('ON_FIRST_SAVE', 'ONCE', 'ON_EVERY_SAVE', 'ON_MODIFY', '', '', 'MANUAL');

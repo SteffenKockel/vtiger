@@ -324,7 +324,16 @@ class Vtiger_MailScannerAction {
 				
 				// Link document to base record
 				$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)", 
-					Array($basefocus->id, $document->id));				
+					Array($basefocus->id, $document->id));
+
+				// Link document to Parent entity - Account/Contact/...
+				list($eid,$junk)=explode('@',$basefocus->column_fields['parent_id']);
+				$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)",
+					Array($eid, $document->id));
+
+				// Link Attachement to the Email
+				$adb->pquery("INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)",
+					Array($basefocus->id, $attachid));
 			}
 		}	
 	}

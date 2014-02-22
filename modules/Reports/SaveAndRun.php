@@ -28,6 +28,15 @@ $now_action = vtlib_purify($_REQUEST['action']);
 $sql = "select * from vtiger_report where reportid=?";
 $res = $adb->pquery($sql, array($reportid));
 $Report_ID = $adb->query_result($res,0,'reportid');
+if(empty($folderid)) {
+	$folderid = $adb->query_result($res,0,'folderid');
+}
+$reporttype = $adb->query_result($res,0,'reporttype');
+$showCharts = false;
+if($reporttype == 'summary'){
+	$showCharts = true;
+}
+//END Customization
 $numOfRows = $adb->num_rows($res);
 
 if($numOfRows > 0) {
@@ -73,19 +82,55 @@ if($numOfRows > 0) {
 		}
 
 		$filtersql = $oReportRun->RunTimeAdvFilter($advft_criteria,$advft_criteria_groups);
-		if($_REQUEST['submode'] == 'generateReport' && empty($advft_criteria)) {
+
+		$list_report_form = new vtigerCRM_Smarty;
+		//Monolithic phase 6 changes
+		if($showCharts == true){
+			$list_report_form->assign("SHOWCHARTS",$showCharts);
+			require_once 'modules/Reports/CustomReportUtils.php';
+			require_once 'include/ChartUtils.php';
+
+			$groupBy = $oReportRun->getGroupingList($reportid);
+			if(!empty($groupBy)){
+				foreach ($groupBy as $key => $value) {
+					//$groupByConditon = explode(" ",$value);
+					//$groupByNew = explode("'",$groupByConditon[0]);
+					list($tablename,$colname,$module_field,$fieldname,$single) = split(":",$key);
+					list($module,$field)= split("_",$module_field);
+					$fieldDetails = $key;
+					break;
+				}
+				//$groupByField = $oReportRun->GetFirstSortByField($reportid);
+				$queryReports = CustomReportUtils::getCustomReportsQuery($Report_ID,$filtersql);
+				$queryResult = $adb->pquery($queryReports,array());
+				//ChartUtils::generateChartDataFromReports($queryResult, strtolower($groupByNew[1]));
+                if($adb->num_rows($queryResult)){
+					$pieChart = ChartUtils::getReportPieChart($queryResult, strtolower($module_field),$fieldDetails,$reportid);
+					$barChart = ChartUtils::getReportBarChart($queryResult, strtolower($module_field),$fieldDetails,$reportid);
+					$list_report_form->assign("PIECHART",$pieChart);
+					$list_report_form->assign("BARCHART",$barChart);
+				}
+				else{
+					$showCharts = false;
+				}
+			}
+			else{
+				$showCharts = false;
+			}
+			$list_report_form->assign("SHOWCHARTS",$showCharts);
+		}
+		//Monolithic Changes Ends
+
+        // Performance Optimization: Direct output of the report result
+        if($_REQUEST['submode'] == 'generateReport' && empty($advft_criteria)) {
 			$filtersql = '';
 		}
-
-		// Performance Optimization: Direct output of the report result
-		$list_report_form = new vtigerCRM_Smarty;
-
-		$sshtml = array();
+        $sshtml = array();
 		$totalhtml = '';
 		$list_report_form->assign("DIRECT_OUTPUT", true);
 		$list_report_form->assign_by_ref("__REPORT_RUN_INSTANCE", $oReportRun);
 		$list_report_form->assign_by_ref("__REPORT_RUN_FILTER_SQL", $filtersql);
-		// END
+        //Ends
 
 		$ogReport->getPriModuleColumnsList($ogReport->primodule);
 		$ogReport->getSecModuleColumnsList($ogReport->secmodule);
@@ -108,9 +153,9 @@ if($numOfRows > 0) {
 		$list_report_form->assign("IMAGE_PATH", $image_path);
 		$list_report_form->assign("REPORTID", $reportid);
 		$list_report_form->assign("IS_EDITABLE", $ogReport->is_editable);
-		
+
 		$list_report_form->assign("REP_FOLDERS",$ogReport->sgetRptFldr());
-		
+
 		$list_report_form->assign("REPORTNAME", htmlspecialchars($ogReport->reportname,ENT_QUOTES,$default_charset));
 		if(is_array($sshtml))$list_report_form->assign("REPORTHTML", $sshtml);
 		else $list_report_form->assign("ERROR_MSG", getTranslatedString('LBL_REPORT_GENERATION_FAILED', $currentModule) . "<br>" . $sshtml);
@@ -132,7 +177,7 @@ if($numOfRows > 0) {
 		if($_REQUEST['mode'] != 'ajax')
 		{
 			$list_report_form->assign("REPINFOLDER", $reports_array);
-			include('themes/'.$theme.'/header.php');
+			include('modules/Vtiger/header.php');
 			$list_report_form->display('ReportRun.tpl');
 		}
 		else
@@ -142,7 +187,7 @@ if($numOfRows > 0) {
 
 	} else {
 		if($_REQUEST['mode'] != 'ajax') {
-			include('themes/'.$theme.'/header.php');
+			include('modules/Vtiger/header.php');
 		}
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 80%; position: relative; z-index: 10000000;'>
@@ -180,7 +225,7 @@ if($numOfRows > 0) {
 		echo "</td></tr></table>";
 }
 
-/** Function to get the StdfilterHTML strings for the given  primary module 
+/** Function to get the StdfilterHTML strings for the given  primary module
  *  @ param $module : Type String
  *  @ param $selected : Type String(optional)
  *  This Generates the HTML Combo strings for the standard filter for the given reports module
@@ -224,10 +269,10 @@ function getPrimaryStdFilterHTML($module,$selected="")
 	return $shtml;
 }
 
-	/** Function to get the StdfilterHTML strings for the given secondary module 
+	/** Function to get the StdfilterHTML strings for the given secondary module
 	 *  @ param $module : Type String
-	 *  @ param $selected : Type String(optional)	
-	 *  This Generates the HTML Combo strings for the standard filter for the given reports module  
+	 *  @ param $selected : Type String(optional)
+	 *  This Generates the HTML Combo strings for the standard filter for the given reports module
 	 *  This Returns a HTML sring
 	 */
 function getSecondaryStdFilterHTML($module,$selected="")
@@ -269,32 +314,10 @@ function getSecondaryStdFilterHTML($module,$selected="")
 					}
                 		}
         		}
-		
+
 		}
 	}
 	return $shtml;
-}
-	/** Function to get the reports under a report folder 
-	 *  @ param $folderid : Type Integer 
-	 *  This Returns $reports_array in the following format 
-	 *  		$reports_array = array ($reportid=>$reportname,$reportid=>$reportname1,.............,$reportidn=>$reportname)
-	 */
-function getReportsinFolder($folderid)
-{
-	global $adb;
-	$query = 'select reportid,reportname from vtiger_report where folderid=?';
-	$result = $adb->pquery($query, array($folderid));
-	$reports_array = Array();
-	for($i=0;$i < $adb->num_rows($result);$i++)	
-	{
-		$reportid = $adb->query_result($result,$i,'reportid');
-		$reportname = $adb->query_result($result,$i,'reportname');
-		$reports_array[$reportid] = $reportname; 
-	}
-	if(count($reports_array) > 0)
-		return $reports_array;
-	else
-		return false;
 }
 
 function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected='') {
@@ -388,7 +411,7 @@ function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected="") {
 }
 
 function getAdvCriteria_HTML($adv_filter_options, $selected="") {
-		
+
 	 foreach($adv_filter_options as $key=>$value) {
 		if($selected == $key) {
 			$shtml .= "<option selected value=\"".$key."\">".$value."</option>";
@@ -396,7 +419,7 @@ function getAdvCriteria_HTML($adv_filter_options, $selected="") {
 			$shtml .= "<option value=\"".$key."\">".$value."</option>";
 		}
 	 }
-	
+
     return $shtml;
 }
 ?>

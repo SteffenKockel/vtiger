@@ -67,6 +67,7 @@ $mod_strings = Array(
 	'Project Milestones' => 'Project Milestones',
 	'Project Tasks' => 'Project Tasks',
 	'Project Team' => 'Project Team',
+	'Project ID' => 'Project ID',
 );
 
 ?>

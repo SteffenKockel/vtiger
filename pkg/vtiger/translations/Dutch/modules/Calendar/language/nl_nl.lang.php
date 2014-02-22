@@ -1,23 +1,34 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
+
+/*******************************************************************************
+ * The contents of this file are subject to the following licences:
+ * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
+ * - vtiger CRM Public License Version 1.0 
+ * You may not use this file except in compliance with the License
+ * Software distributed under the License is distributed on an  "AS IS" basis,
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific apmt_locationuage governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
+ * the specific language governing rights and limitations under the License.
+ * The Original Code is: SugarCRM Open Source
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
+ * Feel free to use / redistribute these languagefiles under the VPL 1.0.
+ * This translations is based on earlier work of: 
+ * - IT-Online.nl <www.it-online.nl>
+ * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English apmt_locationuage pack
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): Vertaling door Weltevree.org www.weltevree.org.
+
+/*******************************************************************************
+ * Vicus eBusiness Solutions Version Control
+ * @package 	NL-Dutch
+ * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * @author	$Author: luuk $
+ * @version 	$Revision: 1.3 $ $Date: 2011/11/14 17:07:26 $
+ * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Calendar/language/nl_nl.lang.php,v $
+ * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -38,7 +49,7 @@ $mod_strings = Array(
 'LBL_USE24'=>'Gebruik een 24 uur formaat',
 'LBL_CALSTART'=>'Start mijn agenda om',
 'LBL_TIMESETTINGS'=>'Tijdinstelling',
-'LBL_HOLDFOLLOWUP'=>'Hold followup on',
+'LBL_HOLDFOLLOWUP'=>'Vasthouden opvolgen van',
 'LBL_CALL' => 'Telefoongesprek',
 'LBL_MEET' => 'Vergadering',
 'LBL_APPNT' => 'Afspraak',
@@ -50,21 +61,21 @@ $mod_strings = Array(
 'LBL_DAY' => 'Dag',
 'LBL_DAY_BUTTON_KEY' => 'D',
 'LBL_DAY_BUTTON_TITLE' => 'Dag [Alt+D]',
-'LBL_DAY1' => 'Maandag',
-'LBL_DAY2' => 'Dinsdag',
-'LBL_DAY3' => 'Woensdag',
-'LBL_DAY4' => 'Donderdag',
-'LBL_DAY5' => 'Vrijdag',
-'LBL_DAY6' => 'Zaterdag',
-'LBL_DAY0' => 'Zondag',
+'LBL_DAY1' => 'maandag',
+'LBL_DAY2' => 'dinsdag',
+'LBL_DAY3' => 'woensdag',
+'LBL_DAY4' => 'donderdag',
+'LBL_DAY5' => 'vrijdag',
+'LBL_DAY6' => 'zaterdag',
+'LBL_DAY0' => 'zondag',
 
-'LBL_SM_MON' => 'Maa',
-'LBL_SM_TUE' => 'Din',
-'LBL_SM_WED' => 'Woe',
-'LBL_SM_THU' => 'Don',
-'LBL_SM_FRI' => 'Vrij',
-'LBL_SM_SAT' => 'Zat',
-'LBL_SM_SUN' => 'Zon',
+'LBL_SM_MON' => 'maa',
+'LBL_SM_TUE' => 'din',
+'LBL_SM_WED' => 'woe',
+'LBL_SM_THU' => 'don',
+'LBL_SM_FRI' => 'vrij',
+'LBL_SM_SAT' => 'zat',
+'LBL_SM_SUN' => 'zon',
 
 'LBL_DATE_TITLE' => 'Dag %d, %A',
 
@@ -80,7 +91,7 @@ $mod_strings = Array(
 
 
 'LBL_APPCREATED_BY' => 'Gemaakt door',
-'LBL_AT_DATE_TIME' => 'aan',
+'LBL_AT_DATE_TIME' => 'Aan',
 
 'LBL_MON' => 'Maand',
 'LBL_MON_BUTTON_KEY' => 'M',
@@ -89,6 +100,7 @@ $mod_strings = Array(
 'LBL_NEXT_MON' => 'Volgende maand',
 
 'LBL_YEAR_BUTTON_KEY'=>'J',
+'LBL_MON_BUTTON_TITLE'=>'Jaar [Alt+J]',
 'LBL_PREV_YEAR'=>'Vorig jaar',
 'LBL_NEXT_YEAR' => 'Volgend jaar',
 
@@ -96,8 +108,9 @@ $mod_strings = Array(
 'LBL_APP_IGNORE_TIME' => 'Negeer bovengenoemde tijden',
 'LBL_SUBJECT'=>'Onderwerp:',
 'LBL_APP_DESCRIPTION' => 'Omschrijving',
+
 'LBL_CONTACT'=>'Contact:',
-'LBL_CONTACT_LIST'=>'Contact Lijst:',
+'LBL_CONTACT_LIST'=>'Contactlijst:',
 
 'LBL_APP_IGNORE_TIME2' => '(i.e. de afspraak vindt plaats<br />op geen van deze dagen',
 
@@ -133,22 +146,22 @@ $mod_strings = Array(
 ),
 
 'cal_weekdays_short'=>array(
-"Zon",
-"Maa",
-"Din",
-"Woe",
-"Don",
-"Vrij",
-"Zat",
+"zon",
+"maa",
+"din",
+"woe",
+"don",
+"vrij",
+"zat",
 ),
 'cal_weekdays_long'=>array(
-"Zondag",
-"Maandag",
-"Dinsdag",
-"Woensdag",
-"Donderdag",
-"Vrijdag",
-"Zaterdag",
+"zondag",
+"maandag",
+"dinsdag",
+"woensdag",
+"donderdag",
+"vrijdag",
+"zaterdag",
 ),
 'cal_month_short'=>array(
 "",
@@ -167,22 +180,22 @@ $mod_strings = Array(
 ),
 
 'LBL_TIME'=>'Tijd',
-'LBL_START_TIME' => 'Begintijd',
+'LBL_START_TIME' => 'Starttijd',
 'LBL_END_TIME' => 'Eindtijd',
-'LBL_START_DATE'=>'Begin datum',
+'LBL_START_DATE'=>'Startdatum',
 'LBL_TIME_START'=>'Tijd van aanvang',
 'LBL_DUE_DATE'=>'Verwacht op',
-'LBL_START_DATE_TIME'=>'Begindatum & Tijd',
-'LBL_END_DATE_TIME'=>'Einddatum & Tijd',
-'LBL_TODO'=>'Taak',
-'LBL_TODOS'=>'Taken',
-'LBL_EVENTS'=>'Vergaderingen',
-'LBL_TOTALEVENTS'=>'Mijn totale evenementen :',
-'LBL_TOTALTODOS'=>'Mijn taken :',
+'LBL_START_DATE_TIME'=>'Startdatum & tijd',
+'LBL_END_DATE_TIME'=>'Einddatum & tijd',
+'LBL_TODO'=>'Actie',
+'LBL_TODOS'=>'Acties',
+'LBL_EVENTS'=>'Afspraken',
+'LBL_TOTALEVENTS'=>'Al mijn Afspraken:',
+'LBL_TOTALTODOS'=>'Al mijn Acties:',
 'LBL_VIEW'=>'Bekijken',
 'LBL_LISTVIEW'=>'Bekijk lijst',
 'LBL_HRVIEW'=>'Bekijk uren',
-'LBL_WEEKVIEW'=>'Bekijk weekelijkse kalender',
+'LBL_WEEKVIEW'=>'Bekijk wekelijkse kalender',
 'LBL_MONTHVIEW'=>'Bekijk maandelijkse kalender',
 'LBL_YEARVIEW'=>'Bekijk jaarlijkse kalender',
 'LBL_STATUS'=>'Status',
@@ -191,20 +204,20 @@ $mod_strings = Array(
 'LBL_OPENCAL'=>'Kalender openmaken',
 
 
-'LBL_ADD_EVENT'=>'Afspraak toevoegen',
+'LBL_ADD_EVENT'=>'Afspraken toevoegen',
 'LBL_ADDCALL'=>'Telefoongesprek',
 'LBL_ADDMEETING'=>'Vergadering',
-'LBL_ADDTODO'=>'Taken',
-'LBL_BEFOREEVENT'=>'Voordat het evenement begint',
+'LBL_ADDTODO'=>'Actie',
+'LBL_BEFOREEVENT'=>'Voordat de afspraak begint',
 'LBL_BEFORETASK'=>'Voordat de taak begint',
-'LBL_EVENTDETAILS'=>'Vergadering details',
+'LBL_EVENTDETAILS'=>'Afspraak details',
 'LBL_CURSTATUS'=>'Huidige status',
-'LBL_ASSINGEDTO'=>'Toegekend aan',
+'LBL_ASSINGEDTO'=>'Toegewezen aan',
 'LBL_RELATEDTO'=>'Gerelateerd aan',
 'LBL_PENDING'=>'In afwachting van',
-'LBL_PUBLIC'=>'Noteer Publiek',
+'LBL_PUBLIC'=>'Noteer publiek',
 'LBL_MORE'=>'Meer',
-'LBL_EDIT'=>'Wijzigen',
+'LBL_EDIT'=>'Bewerk',
 'LBL_EVERYDAY'=>'Elke dag',
 'LBL_EVERYWEEK'=>'Elke week',
 'LBL_EVERYMON'=>'Elke maand',
@@ -215,21 +228,21 @@ $mod_strings = Array(
 
 'LBL_INVITE_INST1'=>'Selecteer een gebruiker voor een uitnodiging.',
 'LBL_INVITE_INST2'=>'Om te verwijderen selecteer een gebruiker.',
-'LBL_SELUSR_INFO'=>' Geselecteerde gebruikers ontvangen een email van de afspraak.',
+'LBL_SELUSR_INFO'=>' Geselecteerde gebruikers ontvangen een e-mail van de afspraak.',
 'LBL_CALSHAREMESSAGE'=>'Deel mijn agenda met de geselecteerde gebruikers',
 'LBL_CALSHARE'=>'Agenda delen',
 'LBL_SEL_USERS'=>'Geselecteerde gebruikers',
 'LBL_AVL_USERS'=>'Beschikbare gebruikers',
 'LBL_ADD_BUTTON'=>'Toevoegen',
 'LBL_USERS'=>'Gebruikers',
-'LBL_RMV_BUTTON'=>'Verwijderen',
+'LBL_RMV_BUTTON'=>'Verwijder',
 'LBL_RMD_ON'=>'Herinner op',
 'LBL_SDRMD'=>'Stuur herinnnering aan',
 'LBL_ENABLE_REPEAT'=>'Herhaling aanzetten',
 'LBL_REPEAT_ONCE'=>'Herhaal een keer per',
-'LBL_ADD_TODO'=>'Taak toevoegen',
-'LBL_TODONAME'=>'Taak',
-'LBL_TODODATETIME'=>'Tijd & Datum',
+'LBL_ADD_TODO'=>'Toevoegen Actie',
+'LBL_TODONAME'=>'Actie',
+'LBL_TODODATETIME'=>'Start tijd en datum',
 
 
 
@@ -242,33 +255,33 @@ $mod_strings = Array(
 'db_email1' => 'LBL_LIST_EMAIL_ADDRESS',
 'db_email2' => 'LBL_LIST_EMAIL_ADDRESS',
 //DON'T CONVERT THESE THEY ARE MAPPINGS -ENDS
-'LBL_COMPLETED'=>'Mark Completed',
-'LBL_DEFERRED'=>'Mark Deferred',
-'LBL_HELD'=>'Mark Held',
-'LBL_NOTHELD'=>'Mark Not Held',
-'LBL_POSTPONE'=>'Postpone',
-'LBL_CHANGEOWNER'=>'Change Owner',
+'LBL_COMPLETED'=>'Markeer Afgerond',
+'LBL_DEFERRED'=>'Uitgesteld',
+'LBL_HELD'=>'Mark gehouden',
+'LBL_NOTHELD'=>'Mark niet gehouden',
+'LBL_POSTPONE'=>'Verplaatsen',
+'LBL_CHANGEOWNER'=>'Wijzig eigenaar',
 'LBL_DEL'=>'Delete',
 
 //Added for actvity merge with calendar
-'LBL_SEARCH_FORM_TITLE'=>'Zoek Activiteiten',
+'LBL_SEARCH_FORM_TITLE'=>'Zoek activiteiten',
 'LBL_LIST_FORM_TITLE'=>'Activiteitenlijst',
-'LBL_NEW_FORM_TITLE'=>'Nieuwe Activiteiten',
-'LBL_TASK_INFORMATION'=>'Taken infomatie',
-'LBL_EVENT_INFORMATION'=>'Vergaderingen informatie',
+'LBL_NEW_FORM_TITLE'=>'Nieuwe activiteiten',
+'LBL_TASK_INFORMATION'=>'Taak informatie',
+'LBL_EVENT_INFORMATION'=>'Afspraak informatie',
 'LBL_CALENDAR_INFORMATION'=>'Kalender informatie',
 
 'LBL_NAME'=>'Onderwerp:',
-'LBL_ACTIVITY_NOTIFICATION'=>'Dit is een notificatie dat een activiteit aan u is toegewezen die is',
-'LBL_ACTIVITY_INVITATION'=>'U bent uitgenodigd voor deelname aan een activiteit die is',
+'LBL_ACTIVITY_NOTIFICATION'=>'Dit is een notificatie dat een activiteit aan u is toegewezen dat is ',
+'LBL_ACTIVITY_INVITATION'=>'U bent uitgenodigd voor een activiteit dat is ',
 'LBL_DETAILS_STRING'=>'De details zijn',
 'LBL_REGARDS_STRING'=>'Bedankt & Groeten',
 'LBL_CONTACT_NAME'=>'Contactnaam',
-'LBL_OPEN_ACTIVITIES'=>'Openstaande activiteiten',
+'LBL_OPEN_ACTIVITIES'=>'Open activiteiten',
 'LBL_ACTIVITY'=>'Activiteit:',
 'LBL_HISTORY'=>'Geschiedenis',
-'LBL_UPCOMING'=>"Mijn aankomende en afwachtende activiteiten",
-'LBL_TODAY'=>'door',
+'LBL_UPCOMING'=>"Mijn huidige en aankomende activiteiten",
+'LBL_TODAY'=>'door ',
 
 'LBL_NEW_TASK_BUTTON_TITLE'=>'Nieuwe taak [Alt+N]',
 'LBL_NEW_TASK_BUTTON_KEY'=>'N',
@@ -285,9 +298,9 @@ $mod_strings = Array(
 'LBL_NEW_ATTACH_BUTTON_KEY'=>'F',
 'LBL_NEW_NOTE_BUTTON_LABEL'=>'Nieuwe notitie',
 'LBL_NEW_ATTACH_BUTTON_LABEL'=>'Bestand toevoegen',
-'LBL_TRACK_EMAIL_BUTTON_TITLE'=>'e-Mail zoeken [Alt+K]',
+'LBL_TRACK_EMAIL_BUTTON_TITLE'=>'E-mail zoeken [Alt+K]',
 'LBL_TRACK_EMAIL_BUTTON_KEY'=>'K',
-'LBL_TRACK_EMAIL_BUTTON_LABEL'=>'e-Mail zoeken',
+'LBL_TRACK_EMAIL_BUTTON_LABEL'=>'E-mail zoeken',
 
 'LBL_LIST_CLOSE'=>'Sluiten',
 'LBL_LIST_STATUS'=>'Status',
@@ -298,11 +311,11 @@ $mod_strings = Array(
 'LBL_LIST_DUE_DATE'=>'Einddatum',
 'LBL_LIST_DATE'=>'Datum',
 'LBL_LIST_SUBJECT'=>'Onderwerp',
-'LBL_LIST_LAST_MODIFIED'=>'Veranderd',
-'LBL_LIST_RECURRING_TYPE'=>'Recurring Type',
+'LBL_LIST_LAST_MODIFIED'=>'Gewijzigd',
+'LBL_LIST_RECURRING_TYPE'=>'Herhaaltype',
 
-'ERR_DELETE_RECORD'=>"Een veld moet gespecificeerd zijn om de vtiger_account te verwijderen.",
-'NTC_NONE_SCHEDULED'=>'None scheduled.',
+'ERR_DELETE_RECORD'=>"Een veld moet gespecificeerd zijn om de vTiger_account te verwijderen.",
+'NTC_NONE_SCHEDULED'=>'Niets gepland.',
 
 // Added vtiger_fields for Attachments in Activities/SubPanelView.php
 'LBL_ATTACHMENTS'=>'Bijlage',
@@ -316,18 +329,18 @@ $mod_strings = Array(
 
 //Added for 4GA Release
 'Subject'=>'Onderwerp',
-'Assigned To'=>'Toegekend aan',
-'Start Date & Time'=>'Startdatum & Tijd',
+'Assigned To'=>'Toegewezen aan',
+'Start Date & Time'=>'Startdatum & tijd',
 'Time Start'=>'Starttijd',
 'Due Date'=>'Einddatum',
 'Related To'=>'Gerelateerd aan',
 'Contact Name'=>'Contactnaam',
 'Status'=>'Status',
 'Priority'=>'Prioriteit',
-'Visibility'=>'Visibility',
+'Visibility'=>'Zichtbaarheid',
 'Send Notification'=>'Stuur notificatie',
 'Created Time'=>'Gemaakt',
-'Modified Time'=>'Veranderd',
+'Modified Time'=>'Gewijzigd',
 'Activity Type'=>'Activiteit type',
 'Description'=>'Omschrijving',
 'Duration'=>'Duur',
@@ -341,16 +354,16 @@ $mod_strings = Array(
 'LBL_DAYS'=>'Dagen(s)',
 'LBL_MINUTES'=>'Minuten',
 'LBL_HOURS'=>'Uren',
-'LBL_BEFORE_EVENT'=>'voor het evenement',
+'LBL_BEFORE_EVENT'=>'Voor de afspraak',
 //Added for CustomView 4.2 Release
 'Close'=>'Sluiten',
 'Start Date'=>'Startdatum',
 'Type'=>'Type',
 'End Date'=>'Einddatum',
-'Recurrence'=> 'Terugkomende evenementen',
-'Recurring Type'=> 'Terugkomend type',
+'Recurrence'=> 'Herhaalde afspraken',
+'Recurring Type'=> 'Herhaalype',
 //Activities - Notification Error
-'LBL_NOTIFICATION_ERROR'=>'e-Mailserver Error : U heeft uw uitgaande e-mailserver nog niet geconfigureerd',
+'LBL_NOTIFICATION_ERROR'=>'E-mailserver Error : U heeft uw uitgaande e-mailserver nog niet geconfigureerd',
 // Mike Crowe Mod --------------------------------------------------------added for generic search
 'LBL_GENERAL_INFORMATION'=>'Algemene informatie',
 
@@ -361,12 +374,14 @@ $mod_strings = Array(
 'LBL_INVITE'=>'Uitnodigen',
 'LBL_REPEAT'=>'Herhalen',
 'LBL_REMINDER'=>'Herinnering',
+'LBL_ENABLE_REPEAT'=>'Herhalen',
 'LBL_SENDREMINDER'=>'Stuur herinnering',
 'LBL_NOTIFICATION'=>'Notificatie',
 'LBL_SENDNOTIFICATION'=>'Stuur notificatie',
 'LBL_RMD_ON'=>'Herinner',
 'LBL_REPEATEVENT'=>'Herhaal om de',
 'LBL_TIMEDATE'=>'Tijd & Datum',
+'LBL_TODO'=>'Actie',
 'LBL_HR'=>'uur',
 'LBL_MIN'=>'min',
 'LBL_EVENT'=>'Afspraak',
@@ -375,18 +390,19 @@ $mod_strings = Array(
 'Monthly'=>'Maand(en)',
 'Yearly'=>'Jaar',
 'createdtime'=>'Gemaakt',
-'modifiedtime'=>'Veranderd',
+'modifiedtime'=>'Gewijzigd',
 'first'=>'Eerst',
 'last'=>'Laatst',
 'High'=>'Hoog',
 'Medium'=>'Medium',
 'Low'=>'Laag',
 'LBL_SELECT'=>'Selecteer',
-'LBL_ALL_EVENTS_TODOS'=>'Alle afspraken & Taken',
+'LBL_SELECT_CONTACT'=>'Selecteer contact',
+'LBL_ALL_EVENTS_TODOS'=>'Alle Afspraken en Acties',
 'First'=>'Eerste', 
 'Last'=>'Laaste', 
 'on'=>'op', 
-'day of the month'=>'dag van de maand',
+'day of the month'=>'Dag van de maand',
 'Private'=>'Prive',
 'Public'=>'Publiek',
 
@@ -396,7 +412,7 @@ $mod_strings = Array(
 'Held'=>'Gehouden',
 'Not Held'=>'Niet gehouden',
 'Completed'=>'Gereed',
-'Deferred'=>'Veranderd',
+'Deferred'=>'Uitgesteld',
 'Not Started'=>'Niet gestart',
 'In Progress'=>'Bezig',
 'Pending Input'=>'Wacht op informatie',
@@ -411,7 +427,7 @@ $mod_strings = Array(
 'End date and time'=>'Einddatum & tijd',
 //this is for task
 'End date'=>'Einddatum',
-'LBL_SET_DATE'=>'Datum vastzetten',
+'LBL_SET_DATE'=>'Datum instellen',
 'Recurrence'=>'Herhaling',
 
 //added to send invitation mail Subject.
@@ -419,31 +435,31 @@ $mod_strings = Array(
 
 // Added/Updated for vtiger CRM 5.0.4
 'LBL_YEAR_BUTTON_TITLE'=>'Jaar [Alt+Y]',
-'LBL_SELECT_CONTACT'=>'Selecteer contacten',
-'SHARED_EVENT_DEL_MSG'=>'De gebruiker heeft hier geen toegang.',
+'LBL_SELECT_CONTACT'=>'Selecteer Contactpersonen',
+'SHARED_EVENT_DEL_MSG'=>'De gebruiker heeft geen toestemming om gedeelde activiteiten te wijzigen/ verwijderen.',
 //added to fix ticket#4525
-'LBL_CREATED'=>'gemaakt',
-'LBL_UPDATED'=>'vernieuwd',
+'LBL_CREATED'=>'aangemaakt',
+'LBL_UPDATED'=>'bijgewerkt',
 
 //Added after 5.0.4 GA
-'LBL_BUSY' => 'Bezig',
+'LBL_BUSY' => 'Bezet',
 
 //Custom Fields support for Calendar
-'LBL_CUSTOM_INFORMATION'=>'Custom Informatie',
+'LBL_CUSTOM_INFORMATION'=>'Extra Informatie',
 
 // Repeat Event support for Calendar
 'LBL_UNTIL' => 'Tot',
-'LBL_SET_DATE'=>'Geef Datum',
+'LBL_SET_DATE'=>'prik datum',
 
 'LBL_MINE' =>'Mijn',
-'LBL_SUCCESS_CALENDAR_1' => 'Aantal Taken Sucessvol Geimporteerd : ',
-'LBL_SKIPPED_CALENDAR_1' => 'Aantal Taken Overgeslagen omdat één of meer verplichte velden niet aanwezig waren : ',
-'LBL_SUCCESS_EVENTS_1' => 'Aantal Gebeurtenissen Sucessvol Geimporteerd: ',
-'LBL_SKIPPED_EVENTS_1' => 'Aantal Gebeurtenissen Overgeslagen omdat één of meer verplichte velden niet aanwezig waren: ',
-'LBL_FINISHED'=>'KLaar',
-'LBL_UNDO_LAST_IMPORT'=>'Ongedaan maken laatste Importeer aktie.',
-'LBL_LAST_IMPORT'=>'Laatst Geimporteerd.',
-'LBL_LAST_IMPORT_UNDONE'=>'Uw Laatste Importeer Aktie Is Ongedaan Gemaakt.',
+'LBL_SUCCESS_CALENDAR_1' => 'Aantal succesvol geimporteerde Taken : ',
+'LBL_SKIPPED_CALENDAR_1' => 'Aantal Taken overgeslagen vanwege het missen van een of meer verplichte velden : ',
+'LBL_SUCCESS_EVENTS_1' => 'Aantal succesvol geimporteerde Afspraken : ',
+'LBL_SKIPPED_EVENTS_1' => 'Aantal Afspraken overgeslagen vanwege het missen van een of meer verplichte velden : ',
+'LBL_FINISHED'=>'Beeindigd',
+'LBL_UNDO_LAST_IMPORT'=>'Laatste import ongedaan maken',
+'LBL_LAST_IMPORT'=>'Laatst geimporteerd',
+'LBL_LAST_IMPORT_UNDONE'=>'Uw laatste import is ongedaan gemaakt',
 'LBL_SUCCESS'=>'Succes!',
 'LBL_NO_IMPORT_TO_UNDO'=>'Er Is Geen Import Om Ongedaan Te Maken.',
 'LBL_FAILURE'=>'Fout!',

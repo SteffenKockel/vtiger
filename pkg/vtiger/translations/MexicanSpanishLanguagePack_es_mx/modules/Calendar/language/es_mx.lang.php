@@ -13,10 +13,10 @@
  ********************************************************************************
 *  Module       : Calendar
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-28
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
@@ -134,22 +134,22 @@ $mod_strings = array (
 ),
 
 'cal_weekdays_short'=>array(
-"Dom",
 "Lun",
 "Mar",
 "Mie",
 "Jue",
 "Vie",
 "Sab",
+"Dom",
 ),
 'cal_weekdays_long'=>array(
-"Domingo",
 "Lunes",
 "Martes",
 "Miércoles",
 "Jueves",
 "Viernes",
 "Sabado",
+"Domingo",
 ),
 'cal_month_short'=>array(
 "",
@@ -260,8 +260,8 @@ $mod_strings = array (
 'LBL_CALENDAR_INFORMATION'=>'Información de Calendario',
 
 'LBL_NAME'=>'Asunto:',
-'LBL_ACTIVITY_NOTIFICATION'=>'Se te ha asignado una tarea y ha sido',
-'LBL_ACTIVITY_INVITATION'=>'Has sido invitado a una tarea que ha sido',
+'LBL_ACTIVITY_NOTIFICATION'=>'Se te ha asignado una tarea. Estado:',
+'LBL_ACTIVITY_INVITATION'=>'Has sido invitado a una tarea. Estado:',
 'LBL_DETAILS_STRING'=>'Los detalles son',
 'LBL_REGARDS_STRING'=>'Gracias',
 'LBL_CONTACT_NAME'=>'Contacto',
@@ -448,6 +448,9 @@ $mod_strings = array (
 'LBL_SUCCESS'=>'Correcto!',
 'LBL_NO_IMPORT_TO_UNDO'=>'No hay importación para deshacer.',
 'LBL_FAILURE'=>'Fracaso!',
+
+'LBL_ARE_YOU_SURE'=>'¿Estás seguro?',
+'Calendar ID' => 'Id Calendario',
 );
 
 ?>

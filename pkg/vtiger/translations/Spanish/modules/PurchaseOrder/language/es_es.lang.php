@@ -13,10 +13,10 @@
  ********************************************************************************
 *  Module       : Purchase Orders
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
@@ -154,7 +154,6 @@ $mod_strings = Array(
 'Vendor Terms'=>'Condiciones del Proveedor',
 'Pending'=>'Pendiente',
 'Account Name'=>'Nombre de la Cuenta',
-'Terms & Conditions'=>'Condiciones Generales',
 //Quote Info
 'LBL_PO_INFORMATION'=>'Información de la Orden de Compra',
 'LBL_PO'=>'Orden de Compra:',
@@ -198,6 +197,7 @@ $mod_strings = Array(
 
 //Added after 5.0.4 GA
 'PurchaseOrder No'=>'No Orden Compra',
+'PurchaseOrder ID'=>'Id Orden Compra',
 );
 
 ?>

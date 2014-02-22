@@ -8,7 +8,7 @@
  ************************************************************************************}
 <table cellpadding=0 cellspacing=0 border=0 class="small" width="98%">
 <tr>
-	<td class="dvtSelectedCell" style="padding-left: 5px;">{'LBL_Mailbox'|@getTranslatedString}</td>
+	<td class="txtGreen" style="padding-left: 5px;"><strong>{'LBL_Mailbox'|@getTranslatedString}</strong></td>
 </tr>
 <tr>
 	<td style="padding-left: 5px;" class="dvtContentSpace">
@@ -40,6 +40,7 @@
             <td><a href="#Drafts" id="_mailfolder_mm_drafts" onclick="MailManager.folder_drafts();">{'LBL_Drafts'|@getTranslatedString}</a></td>
 		</tr>
 	</table>
+		{include file="SentMailFolders.tpl"}
 	</td>
 </tr>
 </table>

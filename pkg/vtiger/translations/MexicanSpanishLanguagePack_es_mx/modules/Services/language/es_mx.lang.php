@@ -6,7 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*  Author       : Francisco Hernandez Odin Consultores www.odin.mx
+ * 
+ *  ********************************************************************************
+ *  Module       : Services
+ *  Language     : Español
+ *  Version      : 5.4.0 
+ *  Last change  : 2012-02-27
+ *  Author       : Odin Consultores, Francisco Hernandez
  ************************************************************************************/
 
 $mod_strings = Array(
@@ -117,7 +123,7 @@ $mod_strings = Array(
 'Incidents'=>'Incidentes',
 
 'LBL_NO_TAXES_ASSOCIATED'=>'No hay impuestos asociados a este servicio',
-
+'Services ID'=>'Id Servicio',
 );
 
 ?>

@@ -13,11 +13,11 @@
  ********************************************************************************/
 
 $mod_strings = Array(
-'LBL_MODULE_NAME'=>'Administration',
-'LBL_MODULE_TITLE'=>'Administration: Home',
+    'LBL_MODULE_NAME' => 'Administration',
+    'LBL_MODULE_TITLE' => 'Administration: Home',
 
-'LBL_NEW_FORM_TITLE'=>'neuer Benutzer',
-'ERR_DELETE_RECORD'=>"Zum Löschen muss mindestens ein Benutzer ausgewählt werden.",
+    'LBL_NEW_FORM_TITLE' => 'neuer Benutzer',
+    'ERR_DELETE_RECORD' => 'Zum Löschen muss mindestens ein Benutzer ausgewählt werden.',
 );
 
 ?>

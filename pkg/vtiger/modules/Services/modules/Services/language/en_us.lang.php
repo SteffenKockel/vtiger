@@ -35,7 +35,7 @@ $mod_strings = Array(
 'Hours'=>'Hours',
 'Incidents'=>'Incidents',
 'No of Units'=>'No of Units',
-'Commission Rate'=>'Commission Rate (%)',
+'Commission Rate'=>'Commission Rate',
 'Unit Price'=>'Unit Price',
 'Price'=>'Price',
 'Support Start Date'=>'Support Start Date',
@@ -59,7 +59,7 @@ $mod_strings = Array(
 'Migration'=>'Migration',
 'Customization'=>'Customization',
 'Training'=>'Training',
-
+'Services ID'=>'Services ID',
 );
 
 ?>

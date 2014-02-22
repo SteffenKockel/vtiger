@@ -5,7 +5,7 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|14/10/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
   ************************************************************************************/
 $mod_strings = array(
 'VTEmailTask' => 'Enviar Email',
@@ -70,6 +70,21 @@ $mod_strings = array(
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: Toda a data, hora e informação recorrente configurada para o Evento,
 													estarão relacionados com o time zone padrão, configurado no config.inc.php',
 
+'Select Meta Variables' => 'Selecionar Variáveis Meta',
+'Current Date' => 'Data Atual',
+'Current Time' => 'Hora Atual',
+'System Timezone' => 'Sistema Fuso Horário [Timezone]',
+'CRM Detail View URL' => 'Visualizar Detalhes URL do CRM',
+'Portal Detail View URL' => 'Visualizar Detalhes URL do Portal',
+'Site Url' => 'Url do Site',
+'Portal Url' => 'Url do Portal',
+
+'Workflow'=>'Workflow',
+
+'VTCreateEntityTask' => 'Criar Entidade',
+'LBL_ENTITY_TYPE' => 'Tipo Entidade',
+'LBL_SELECT_ENTITY_TYPE' => '-- Selecionar Tipo Entidade --',
+'LBL_NO_ENTITIES_FOUND' => 'Nenhuma Entidade Encontrada para ser Criar',
 );
 
 

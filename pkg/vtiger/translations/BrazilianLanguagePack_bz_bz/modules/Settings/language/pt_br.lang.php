@@ -30,13 +30,13 @@
 
  * $Header: /advent/projects/custprojects/vtigercrm/vtigersupport/vtiger_crm/modules/Settings/language/en_us.lang.php,v 1.2 2007/07/06 09:55:40 rajeshkannan Exp $
 
- * Description:  Defines the English language pack
+ * Description:  Defines the English language pack for Settings
 
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
 
  * All Rights Reserved.
 
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|09/11/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
 
  ********************************************************************************/
 
@@ -91,7 +91,7 @@ $mod_strings = Array(
 
 'LEADCUSTOMFIELDS'=>'Campos Customizados Lead',
 
-'ACCOUNTCUSTOMFIELDS'=>'Campos Conta Customizados',
+'ACCOUNTCUSTOMFIELDS'=>'Campos Organização Customizados',
 
 'CONTACTCUSTOMFIELDS'=>'Campos Customizados Contato',
 
@@ -112,7 +112,7 @@ $mod_strings = Array(
 
 'EDITLEADPICKLISTVALUES'=>'Editar Lista Opções Lead ',
 
-'EDITACCOUNTPICKLISTVALUES'=>'Editar Lista Opções Conta ',
+'EDITACCOUNTPICKLISTVALUES'=>'Editar Lista Opções Organização ',
 
 'EDITCONTACTPICKLISTVALUES'=>'Editar Lista Opções Contato ',
 
@@ -148,7 +148,7 @@ $mod_strings = Array(
 
 'Leads'=>'Lead',
 
-'Accounts'=>'Conta',
+'Accounts'=>'Organização',
 
 'Contacts'=>'Contato',
 
@@ -161,10 +161,6 @@ $mod_strings = Array(
 'Events'=>'Evento',
 
 'Activities'=>'Tarefa',
-'Add New'=> 'Adicionar Novo', // Added by Valmir Carlos Trindade - valmir@ttcasolucoes.com.br
-'SMSNotifier'=>'Notificador SMS', // Added by Valmir Carlos Trindade - valmir@ttcasolucoes.com.br
-
-
 
 'CustomFields'=>'Campos Customizados',
 
@@ -253,7 +249,7 @@ $mod_strings = Array(
 
 'Skype'=>'Skype',
 
-
+'Time'=>'Hora',
 
 //added for patch2
 
@@ -261,9 +257,9 @@ $mod_strings = Array(
 
 'EMAILTEMPLATES'=>'Modelos E-mail',
 
-'WORDINTEGRATION'=>'Mesclar Modelos Mensagem',
+'WORDINTEGRATION'=>'Mesclar Modelos Correspondências',
 
-'LBL_MAIL_MERGE'=>'Mesclar Mensagem',
+'LBL_MAIL_MERGE'=>'Mesclar Correspondência',
 
 'NOTIFICATIONSCHEDULERS'=>'Sistema Agendamento Notificação',
 //currency status
@@ -341,7 +337,7 @@ $mod_strings = Array(
 
 'LBL_USERNAME'=>'Nome Usuário',
 'LBL_PASWRD'=>'Senha',
-'LBL_REQUIRES_AUTHENT'=>'Requer Autenticação?', // Translation. Contribution: Jader Marasca - 25/09/2010
+'LBL_REQUIRES_AUTHENT'=>'Requer Autenticação?',
 'LBL_FROM_EMAIL_FIELD'=>'Do Email',
 
 //Fields for Settings
@@ -386,7 +382,7 @@ $mod_strings = Array(
 //<<<<<<<<<<end>>>>>>>>>>>>>
 'LBL_LEAD_FIELD_ACCESS'=>'Acesso Campo Lead',
 
-'LBL_ACCOUNT_FIELD_ACCESS'=>'Acesso Campo Conta',
+'LBL_ACCOUNT_FIELD_ACCESS'=>'Acesso Campo Organização',
 
 'LBL_CONTACT_FIELD_ACCESS'=>'Acesso Campo Contato',
 
@@ -432,7 +428,7 @@ $mod_strings = Array(
 
 'LBL_CREATE_EMAIL_TEMPLATES'=>'Novo Modelo de E-mail',
 
-'LBL_UPLOAD_MSWORD_TEMPLATES'=>' - Transferir Modelos do MS Word para Mesclar Mensagem',
+'LBL_UPLOAD_MSWORD_TEMPLATES'=>' - Transferir Modelos do MS Word para Mesclar Correspondência',
 
 'LBL_SCHEDULE_EMAIL_NOTIFICATION'=>' - Agendar Notificações por E-mail',
 
@@ -486,7 +482,7 @@ $mod_strings = Array(
 
 'LBL_RATING'=>'Avaliação',
 
-'LBL_ACCOUNT_TYPE'=>'Tipo Conta',
+'LBL_ACCOUNT_TYPE'=>'Tipo Organização',
 
 'LBL_BUSINESS_TYPE'=>'Tipo Negócio',
 
@@ -540,7 +536,7 @@ $mod_strings = Array(
 'LBL_DONOT_VAL_SSL_CERT'=>'não Validar SSL',
 'LBL_WEB_MAIL_CONFIG'=>'Configuração Web Mail',
 'LBL_CONFIGURE_WEB_MAIL'=>' - Configurar Web Mail',
-'LBL_LIST_MAIL_ACCOUNT'=>'  Listar Conta Correio',
+'LBL_LIST_MAIL_ACCOUNT'=>'  Listar Contas Correio',
 'LBL_USAGEUNIT'=>'Unidade Utilizada',
 'LBL_GLACCT'=>'Conta Plano Contas',
 'LBL_QUOTE_STAGE'=>'Estágio Cotação',
@@ -608,10 +604,10 @@ $mod_strings = Array(
 
 //For Custom Fields
 'LBL_LEAD_MAP_CUSTOM_FIELD'=>'Mapear Campos Customizado do Lead',
-'leadCustomFieldDescription'=>'Mapear cada campo customizado do Lead para cada campo customizado de sua Conta
+'leadCustomFieldDescription'=>'Mapear cada campo customizado do Lead para cada campo customizado de sua Organização
 ,Contato, ou Oportunidade. Este mapeamento será usado quando você converter Leads',
 'LBL_MAPPING_INFO'=>'Informação Mapeamento',
-'LBL_ACCOUNT_FIELD'=>'Customizar Campo Conta',
+'LBL_ACCOUNT_FIELD'=>'Customizar Campo Organização',
 'LBL_CONTACT_FIELD'=>'Customizar Campo Contato',
 'LBL_POTENTIAL_FIELD'=>'Customizar Campo Oportunidade',
 'CUSTOMFIELDMAPPING'=>'Mapeando Customizar Campo',
@@ -644,7 +640,7 @@ $mod_strings = Array(
 'LBL_CUSTOM_FIELDS_DESCRIPTION'=>'Administrar tipos diferentes de campos definidos pelo Usuário',
 'LBL_PICKLIST_DESCRIPTION'=>'Customizar Lista de Opções em cada Módulo',
 'LBL_EMAIL_TEMPLATE_DESCRIPTION'=>'Administrar modelos para Módulo de E-Mail',
-'LBL_MAIL_MERGE_DESCRIPTION'=>'Administrar modelos para Mesclar Mensagem',
+'LBL_MAIL_MERGE_DESCRIPTION'=>'Administrar modelos de Correspondências',
 'LBL_NOTIF_SCHED_DESCRIPTION'=>'Administrar Notificações que serão disparadas em caso de ações importante',
 'LBL_INV_NOTIF_DESCRIPTION'=>'Mudar Configurações das Notificações relacionadas ao Estoque',
 'LBL_INV_TANDC_DESCRIPTION'=>'Especificar Prazos e Condições para Cotações, Pedidos e Faturas',
@@ -664,7 +660,7 @@ $mod_strings = Array(
 'LBL_BACKUP_SERVER_DESC'=>'Administrar seu Servidor de Backup',
 'LBL_MODULES_AND_OWNERS'=>'Proprietários & Módulos',
 'LBL_GROUP_DESC'=>'Administrar diferentes tipos de Grupos de Usuários na Organização',
-'LBL_MAIL_MERGE_DESC'=>'Administrar modelos de Mensagens Mescladas usadas nos Módulos do CRM',
+'LBL_MAIL_MERGE_DESC'=>'Administrar modelos de Correspondências utilizadas nos Módulos do CRM',
 
 
 //Added fields after 5.0 Alpha
@@ -745,7 +741,7 @@ $mod_strings = Array(
 'LBL_NAME'=>'Nome',
 'LBL_PERSONAL'=>'Pessoal',
 'LBL_PUBLIC'=>'Público',
-'LBL_ACCOUNT_FIELDS'=>'Campos Conta',
+'LBL_ACCOUNT_FIELDS'=>'Campos Organização',
 'LBL_CONTACT_FIELDS'=>'Campos Contato',
 'LBL_LEAD_FIELDS'=>'Campos Lead',
 'LBL_USER_FIELDS'=>'Campos do Usuário',
@@ -755,7 +751,7 @@ $mod_strings = Array(
 'LBL_MODULENAMES'=>'Módulo',
 'LBL_DOWNLOAD'=>'Download',
 'LBL_ADD_TEMPLATE'=>'Adicionar Modelo',
-'LBL_WORD_TEMPLATES'=>'Modelo de Mensagem Mesclada',
+'LBL_WORD_TEMPLATES'=>'Modelo de Correspondência',
 //Added while moving Notification Schedulers from Users to Settings
 'LBL_TASK_NOTIFICATION'=>'Notificação Tarefas Atrasadas',
 'LBL_BIG_DEAL'=>'Notificação Grande Negócio',
@@ -833,7 +829,7 @@ $mod_strings = Array(
 'LBL_CUSTOM_ACCESS_MESG'=>'Funções para Acesso Customizado não definidas .',
 'LNK_CLICK_HERE'=>'Clique aqui',
 'LBL_CREATE_RULE_MESG'=>'para criar uma nova Função',
-'LBL_RECALC_MSG'=>'você tem certeza que deseja recalcular Acesso Compartilhado?',
+'LBL_RECALC_MSG'=>'Tem certeza que deseja recalcular o Acesso Compartilhado?',
 'LBL_YES'=>'Sim',
 'LBL_NO'=>'não',
 'LBL_IN_PERMISSION'=>'na permissão',
@@ -901,8 +897,8 @@ $mod_strings = Array(
 'LBL_FIELDS_TO_BE_SHOWN'=>'Campos a serem apresentados',
 //Added for alerts
 'SPECIFY_FILE_TO_MERGE' => 'Por favor, especifique uma Arquivo para Mesclar',
-'FILESIZE_EXCEEDS_INFO_CONFIG_INC' => 'Desculpe, o arquivo transferido excedeu o tamanho máximo definido no arquivo config.inc.php. Tente um arquivo menor. ',
-'FILESIZE_EXCEEDS_INFO_PHP_INI' => 'Desculpe, o arquivo transferido excedeu o tamanho máximo definido no arquivo php.ini. Tente um arquivo menor. ',
+'FILESIZE_EXCEEDS_INFO_CONFIG_INC' => 'Desculpe, o arquivo transferido excedeu o tamanho máximo definido no arquivo config.inc.php. Tente arquivo menor. ',
+'FILESIZE_EXCEEDS_INFO_PHP_INI' => 'Desculpe, o arquivo transferido excedeu o tamanho máximo definido no arquivo php.ini. Tente arquivo menor. ',
 'PROBLEMS_IN_FILEUPLOAD' => 'Problemas na transferência do arquivo. Por favor tente novamente!',
 
 //Added fields for Invoice Number labels
@@ -996,7 +992,7 @@ $mod_strings = Array(
 'VTLIB_LBL_MODULE_MANAGER_CUSTOMMOD'=>'Módulos Customizados',
 'VTLIB_LBL_MODULE_MANAGER_STANDARDMOD'=>'Módulos Padrões',
 'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'Nenhum Módulo customizado foi encontrado! Criar ou Importar Novo...',
-'VTLIB_LBL_MODULE_MANAGER_SETTINGS' => 'Configurações', //Inserted by Valmir Carlos Trindade - 07/09/2011 - valmir@ttcasolucoes.com.br
+
 // vtmailscanner START
 'LBL_MAIL_SCANNER'=>'Scanner de Mensagem',
 'LBL_MAIL_SCANNER_DESCRIPTION'=>'Configure Caixa Correio para Scanear',
@@ -1013,8 +1009,8 @@ $mod_strings = Array(
 'LBL_TYPE' => 'Tipo',
 'LBL_SSL' => 'SSL',
 'LBL_METHOD'=> 'Método',
-'LBL_VAL_SSL_CERT'=>'Validar SSL',
-'LBL_DONOT_VAL_SSL_CERT'=>'não Validar SSL',
+'LBL_VAL_SSL_CERT'=>'Validar Certificado SSL',
+'LBL_DONOT_VAL_SSL_CERT'=>'não Validar Certificado SSL',
 'LBL_STATUS'=>'Status',
 'LBL_ENABLE'=>'Habilitar',
 'LBL_DISABLE'=>'Desabilitar',
@@ -1034,7 +1030,7 @@ $mod_strings = Array(
 'LBL_ADD'=>'Adicionar',
 
 'LBL_CONTACT'=>'Contato',
-'LBL_ACCOUNT'=>'Conta',
+'LBL_ACCOUNT'=>'Organização',
 
 'LBL_FROM_CAPS'=>'DE',
 'LBL_TO_CAPS'=>'PARA',
@@ -1045,7 +1041,7 @@ $mod_strings = Array(
 
 'LBL_BEGINS'=>'Inicia',
 
-'LBL_REGEX'=>'Expressão',
+'LBL_REGEX'=>'Regex',
 'LBL_ENDS'=>'Final',
 'LBL_BODY'=>'Corpo',
 
@@ -1105,7 +1101,7 @@ $mod_strings = Array(
 
 //added for softphone integration
 'LBL_SOFTPHONE_SERVER_SETTINGS'=>'Configurações Servidor SoftPhone',
-'LBL_SOFTPHONE_SERVER_SETTINGS_DESCRIPTION'=>'Configure aqui seu softphone',
+'LBL_SOFTPHONE_SERVER_SETTINGS_DESCRIPTION'=>'Configure aqui seu Softphone',
 'ASTERISK_SERVER_IP'=>'IP Servidor Asterisk ',
 'ASTERISK_PORT'=>'Porta Servidor Asterisk',
 'ASTERISK_USERNAME'=>'Usuário Asterisk',
@@ -1180,7 +1176,7 @@ $mod_strings = Array(
 'ARRANGE_RELATEDLIST' => 'Organizar Lista Relacionada',
 'CUSTOMFIELD_MAPPING' => 'Mapear Campo Customizado',
 'LBL_MAPPED_FIELDS' => 'Campos Mapeados',
-'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Mapear campos customizados de Leads com Contas, Contatos e Oportunidades',
+'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Mapear campos customizados de Leads com Organizações, Contatos e Oportunidades',
 'LEADS_CUSTOM_FIELD_MAPPING'=> 'Mapear Campos Customizados de Leads',
 'LBL_CALENDER_CUSTOMFIELDS' => 'Campos Customizados da Agenda',
 'LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION' => 'você pode Criar Campos Customizados para Agenda',
@@ -1206,18 +1202,14 @@ $mod_strings = Array(
 
 'ERR_INVALID_PROFILE_ID' => 'ID Perfil Inválido. Por favor, especifique um ID do Perfil válido.',
 
-//Added for the Configuration Editor module. By Valmir Carlos Trindade | valmir@ttcasolucoes.com.br
-'Configuration Editor'=>'Editor Configurações',
-
-
 // Customization
 'LBL_PUBLISHER' => 'Editor',
 'LBL_PUBLISHED_ON' => 'Publicado em',
 'LBL_LICENSE'   => 'Licença',
 'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Falha ao fazer o download do pacote de extensão!',
-'LBL_DEFAULT'=>'Por padrão, as configurações da conta SMTP, para o Servidor de Envio de Mensagens, estão configuradas para o Servidor od1.vtiger.com. Para evitar problemas com os filtros de spam no Servidor de Mensagens do ISP (Provedor) do destinatário, recomendamos implementar o que se segue.',
+'LBL_DEFAULT'=>'Por padrão, as configurações da Organização SMTP, para o Servidor de Envio de Mensagens, estão configuradas para o Servidor od1.vtiger.com. Para evitar problemas com os filtros de spam no Servidor de Mensagens do ISP (Provedor) do destinatário, recomendamos implementar o que se segue.',
 'LBL_OPTIONS1'=>'Enviar emails a partir do seu Servidor de Envio de Mensagens<br>
-				- Digite os detalhes da conta SMTP (Nome Servidor, Usuário, Senha) para a mesma conta digitada no endereço do Remetente (DE:).',
+				- Digite os detalhes da Organização SMTP (Nome Servidor, Usuário, Senha) para a mesma Organização digitada no endereço do Remetente (DE:).',
 'LBL_OPTIONS2'=>"Adicionar o Servidor od1.vtiger.com como um remetente autorizado para seu domínio.<br>
 				- Se você preferir manter o Servidor do vtiger como Servidor de Envio de Mensagem, recomendamos que configure seu registro SPF (Sender Policy Framework) do domínio, para incluir o Servidor do vtiger como um rementente válido para seu domínio.
 				  Para instruções adicionais sobre configuração do registro SPF, por gentileza, envie email para od-support@vtiger.com.",
@@ -1250,5 +1242,25 @@ $mod_strings = Array(
 'Settings' => 'Configurações',
 'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Este imposto já está disponível.',
 'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Alguns rótulos de impostos já estão disponíveis, portanto não foram salvos.',
+'LBL_EDIT_COMPANY_INFO' => "Para editar os detalhes da empresa, por favor, clique sobre o
+			   <span style='font-style:italic;color:blue;'>Ícone Configurações > Admin On Demand > Empresa </span>",
+
+'Configuration Editor'=>'Editor Configuração',
+
+'ModTracker' => 'Rastreador de Módulo',
+'LBL_MODTRACKER_DESCRIPTION' => 'Selecionar Módulos para rastrear',
+
+'LBL_MENUS_TO_SHOW'=>'Selecionar os Módulos para serem apresentados no menu principal',
+'LBL_MENU_DESC'=>'Customizar sequência do Menu',
+'LBL_MENU_EDITOR'=>'Editor de Menu',
+'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'Você pode utilizar as setas para ordenar os itens do Menu. Os 10 primeiros itens aparecem no menu principal e os demais são apresentados no dropdown <b><i>Mais</i></b>',
+'LBL_ALL_MODULES' => 'Todos os Módulos',
+'LBL_SELECTED_MODULES' => 'Módulos Selecionados',
+
+'LBL_CRM_SETTINGS' => 'Configurações CRM',
+
+//Fields missing vtiger CRM
+'Add New'=> 'Adicionar Novo', // Added by Valmir Carlos Trindade - valmir@ttcasolucoes.com.br
+'SMSNotifier'=>'Notificador SMS', // Added by Valmir Carlos Trindade - valmir@ttcasolucoes.com.br
 );
 ?>

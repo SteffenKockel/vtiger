@@ -9,8 +9,9 @@
  *************************************************************************************/
 require_once 'include/Webservices/Utils.php';
 require_once 'include/Webservices/ModuleTypes.php';
+require_once 'include/utils/CommonUtils.php';
 
-	function vtws_sync($mtime,$elementType,$user){
+	function vtws_sync($mtime,$elementType,$syncType,$user){
 		global $adb, $recordString,$modifiedTimeString;
         
 		$numRecordsLimit = 100;
@@ -26,11 +27,25 @@ require_once 'include/Webservices/ModuleTypes.php';
 		$output = array();
 		$output["updated"] = array();
 		$output["deleted"] = array();
-       
 		
+		$applicationSync = false;
+		if(is_object($syncType) && ($syncType instanceof Users)){
+			$user = $syncType;
+		} else if($syncType == 'application'){
+			$applicationSync = true;
+		}
+
+		if($applicationSync && !is_admin($user)){
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Only admin users can perform application sync");
+		}
+		
+		$ownerIds = array($user->id);
+
 		if(!isset($elementType) || $elementType=='' || $elementType==null){
 			$typed=false;
 		}
+
+
 		
 		$adb->startTransaction();
 
@@ -76,16 +91,21 @@ require_once 'include/Webservices/ModuleTypes.php';
 		 $baseCRMTable = " vtiger_crmentity ";
 
 		//modifiedtime - next token
-		$q = "SELECT modifiedtime FROM $baseCRMTable WHERE smownerid=? and modifiedtime>? and setype IN(".generateQuestionMarks($accessableModules).") ";
-		$params = array($user->id,$datetime);
+		$q = "SELECT modifiedtime FROM $baseCRMTable WHERE  modifiedtime>? and setype IN(".generateQuestionMarks($accessableModules).") ";
+		$params = array($datetime);
 		foreach($accessableModules as $entityModule){
 			if($entityModule == "Events")
 				$entityModule = "Calendar";
 			$params[] = $entityModule;
 		}
+		if(!$applicationSync){
+			$q .= ' and smownerid IN('.generateQuestionMarks($ownerIds).')';
+			$params = array_merge($params,$ownerIds);
+		}
+		
 		$q .=" order by modifiedtime limit $numRecordsLimit";
 		$result = $adb->pquery($q,$params);
-
+		
 		$modTime = array();
 		for($i=0;$i<$adb->num_rows($result);$i++){
 			$modTime[] = $adb->query_result($result,$i,'modifiedtime');
@@ -111,7 +131,9 @@ require_once 'include/Webservices/ModuleTypes.php';
 				$fieldComp = explode(".",$tableName_fieldName);
 				$deleteColumnNames[$tableName_fieldName] = $fieldComp[1];
 			}
-			$params = array($moduleMeta->getTabName(),$datetime,$user->id,$maxModifiedTime);
+			$params = array($moduleMeta->getTabName(),$datetime,$maxModifiedTime);
+			
+
 			$queryGenerator = new QueryGenerator($elementType, $user);
 			$fields = array();
 			$moduleFeilds = $moduleMeta->getModuleFields();
@@ -130,7 +152,12 @@ require_once 'include/Webservices/ModuleTypes.php';
 				$fromClause = vtws_getEmailFromClause();
 			else
 				$fromClause = $queryGenerator->getFromClause();
-			$fromClause .= " INNER JOIN (select modifiedtime, crmid,deleted,setype FROM $baseCRMTable WHERE setype=? and modifiedtime >? and smownerid=? and modifiedtime<=?) vtiger_ws_sync ON (vtiger_crmentity.crmid = vtiger_ws_sync.crmid)";
+			$fromClause .= " INNER JOIN (select modifiedtime, crmid,deleted,setype FROM $baseCRMTable WHERE setype=? and modifiedtime >? and modifiedtime<=?";
+			if(!$applicationSync){
+				$fromClause.= 'and smownerid IN('.generateQuestionMarks($ownerIds).')';
+				$params = array_merge($params,$ownerIds);
+			}
+			$fromClause.= ' ) vtiger_ws_sync ON (vtiger_crmentity.crmid = vtiger_ws_sync.crmid)';
 			$q = $selectClause." ".$fromClause;
 			$result = $adb->pquery($q, $params);
 			$recordDetails = array();
@@ -159,13 +186,19 @@ require_once 'include/Webservices/ModuleTypes.php';
 			}
 		}
 
-		$q = "SELECT crmid FROM $baseCRMTable WHERE modifiedtime>? and smownerid=? and setype IN(".generateQuestionMarks($accessableModules).")";
-		$params = array($maxModifiedTime,$user->id);
+		$q = "SELECT crmid FROM $baseCRMTable WHERE modifiedtime>?  and setype IN(".generateQuestionMarks($accessableModules).")";
+		$params = array($maxModifiedTime);
+		
 		foreach($accessableModules as $entityModule){
 			if($entityModule == "Events")
 				$entityModule = "Calendar";
 			$params[] = $entityModule;
 		}
+		if(!$applicationSync){
+			$q.='and smownerid IN('.generateQuestionMarks($ownerIds).')';
+			$params = array_merge($params,$ownerIds);
+		}
+		
 		$result = $adb->pquery($q,$params);
 		if($adb->num_rows($result)>0){
 			$output['more'] = true;

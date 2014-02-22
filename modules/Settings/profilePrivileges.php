@@ -408,7 +408,7 @@ elseif($mode == 'create')
 $smarty->assign("UTILITIES_PRIV",$privilege_util);		
 
 //Field privileges		
-$modArr=getFieldModuleAccessArray();
+$modArr=getModuleAccessArray();
 
 
 $no_of_mod=sizeof($modArr);

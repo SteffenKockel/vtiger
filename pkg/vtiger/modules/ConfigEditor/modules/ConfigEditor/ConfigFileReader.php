@@ -163,8 +163,8 @@ class ConfigFileRow {
 	
 	// Regex to detect variable name and its safe value
 	static $variableRegex = '/^[ \t]*\\$([^=]+)=([^;]+)/';
-	static $variableUnSafeValueRegex = "/[^0-9a-zA-Z_ -]+/";
-	
+	//Regex to detect support name,it doesnt allow any single quote,and special characters,it does allow only alpha numeric,utf8,.com,@
+	static $variableUnSafeValueRegex = "/[\x{4e00}-\x{9fa5}[:print:]]+.*\-/u";
 	/**
 	 * Constructor
 	 */

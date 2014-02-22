@@ -14,10 +14,10 @@
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Notes/language/en_us.lang.php,v 1.10 2005/03/28 06:33:37 rank Exp $
- * Description:  Defines the English language pack for the Account module.
+ * Description:  Defines the English language pack for the Documents module.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -137,6 +137,9 @@ $mod_strings = Array(
 // Added after 5.1.0 GA
 'Folder Name'=>'Nome Pasta',
 'Document No'=>'No. Documento',
+
+'Documents' => 'Documentos',
+'Documents ID' => 'ID Documentos',
 );
 
 ?>

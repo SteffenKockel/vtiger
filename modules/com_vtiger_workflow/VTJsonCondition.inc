@@ -163,6 +163,17 @@ class VTJsonCondition {
 				} else {
 					return $fieldValue == $value;
 				}
+			case "is not":
+				if (preg_match('/([^:]+):boolean$/', $value, $match)) {
+					$value = $match[1];
+					if ($value == 'true') {
+						return $fieldValue === 'off' || $fieldValue === 0 || $fieldValue === '0' || $fieldValue === '';
+					} else {
+						return $fieldValue === 'on' || $fieldValue === 1 || $fieldValue === '1';
+					}
+				} else {
+					return $fieldValue != $value;
+				}
 			case "contains":
 				return strpos($fieldValue, $value) !== FALSE;
 			case "does not contain":

@@ -1,61 +1,61 @@
 <?php
 /***********************************************************
 *  Module       : ServiceContracts
-*  Language     : Francais
-*  Version      : 5.1.0 RC
-*  Created Date : 2009-06-23 21:36:13 
-*  Last change  : 2009-07-21 00:49:17
-*  Author       : french-vtiger.fr 
+*  Language     : French
+*  Version      : 5.4.0 
 *  License      : GPL
-
+*  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
 $mod_strings = Array(
-'LBL_MODULE_NAME'=>'Services',
-'SINGLE_Services'=>'Service',
-'LBL_LIST_SERVICE_NAME'=>'Service',
-'LBL_PRICEBOOK'=>'Grille tarifaire:',
-'LBL_PRICEBOOK_INFORMATION'=>'Informations grille tarifaire:',
-'LBL_PRICING_INFORMATION'=>'Information prix:',
-'LBL_LIST_FORM_TITLE'=>'Liste des Services',
-'LBL_LIST_PRICEBOOK_FORM_TITLE'=>'Liste des grilles tarifaires',
-'LBL_SERVICE_UNIT_PRICE'=>'Prix unitaire',
-'LBL_PB_LIST_PRICE'=>'Liste tarifaire',
-'LBL_SERVICE_INFORMATION'=>'Information du Service',
-'LBL_CUSTOM_INFORMATION'=>'Informations personnalisées',
-'LBL_DESCRIPTION_INFORMATION'=>'Description',
+	'Service Contracts' => 'Contrats de Service',
+	'ServiceContracts' => 'Contrats de Service',
+	'SINGLE_ServiceContracts' => 'Contrat de Service',
+	'LBL_SERVICE_CONTRACT_INFORMATION' => 'Information Contrat de Service',
 
-'LBL_ADD_PRICEBOOK_BUTTON_LABEL'=>'Ajouter à la grille tarifaire',
+	'Contract No' => 'Contrat No',
+	'Assigned To' => 'AssignÃ© Ã ',
+	'Created Time' => 'Date de crÃ©ation',
+	'Modified Time' => 'Date de modification',
+	'Start Date' => 'Date de dÃ©but',
+	'Due date' => 'Date d\'Ã©chÃ©ance',
+	'End Date' => 'Date de fin',
+	'Related to' => 'Relatif Ã ',
+	'Tracking Unit' => 'UnitÃ©s de suivi',
+	'Total Units' => 'UnitÃ©s totales',
+	'Used Units' => 'UnitÃ©s utilisï¿½es',
+	'Subject' => 'Objet',
+	'Progress'=> 'Progession (en %)',
+	'Type' => 'Type',
+	'Planned Duration' => 'DurÃ©e estimÃ©e (en jours)',
+	'Actual Duration' => 'DurÃ©e actuelle (en jours)',
+	'Status' => 'Statut',
+	'Priority' => 'PrioritÃ©',
 
-'Services'=>'Services',
-'Service Name'=>'Service',
-'Service Active'=>'Actif',
-'Service Category'=>'Categorie',
-'Service No'=>'Service No',
-'Owner'=>'Propriétaire',
-'Days'=>'Jours',
-'Hours'=>'Heures',
-'Incidents'=>'Incidents',
-'No of Units'=>'Nombre d\'unités',
-'Commission Rate'=>'Commission (%)',
-'Unit Price'=>'Prix unitaire',
-'Price'=>'Prix',
-'Support Start Date'=>'Début de Support',
-'Support Expiry Date'=>'Fin de Support',
-'Sales Start Date'=>'Mise en vente',
-'Sales End Date'=>'Fin de vente',
-'Created Time'=>'Date de création',
-'Modified Time'=>'Date de modification',
-'Related To'=>'Lié à',
-'Usage Unit'=>'Unité de vente',
-'Currency'=>'Monnaie',
-'Tax Class'=>'Type de taxe',
-'Website'=>'Site WEB',
-'Description'=>'Description',
+	'Undefined' => 'IndÃ©fini',
+	'In Planning' => 'PlanifiÃ©',
+	'In Progress' => 'En cours',
+	'On Hold' => 'En attente',
+	'Complete' => 'TerminÃ©',
+	'Archived' => 'ArchivÃ©',
 
-'Price Book Name'=>'Nom de la grille tarifaire',
+	'Support' => 'Support',
+	'Services' => 'Services',
+	'Administrative' => 'Administratif',
 
-'LBL_NO_TAXES_ASSOCIATED'=>'Aucune taxe associée à ce service',
+	'Low'=>'Basse',
+	'Normal'=>'Normal',
+	'High'=>'ElevÃ©',
+
+	'None'=>'Aucun',
+	'Hours'=>'Heures',
+	'Days'=>'Jours',
+	'Incidents'=>'Incidents',
+	/*
+	 * 5.2.0 changes 
+	 */
+	'LBL_MODULE_NAME'=>'Contrats de Service',
+	'ServiceContracts ID'=>'Contrat de Service ID',
 );
 
 ?>

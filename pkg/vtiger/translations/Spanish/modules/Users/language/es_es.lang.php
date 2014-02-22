@@ -14,10 +14,10 @@
  ********************************************************************************
 *  Module       : Users
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-28
 *  Author       : Joe Bordes  JPL TSolucio, S.L.
  ********************************************************************************/
 
@@ -556,7 +556,7 @@ $mod_strings = Array(
 'Date Format'=>'Formato de Fecha',
 'Tag Cloud'=>'Nube de Etiquetas',
 'Signature'=>'Firma',
-'Documents'=>'Notas',
+'Documents'=>'Documentos',
 'Street Address'=>'Dirección',
 'City'=>'Población',
 'State'=>'Provincia',
@@ -792,6 +792,11 @@ $mod_strings = Array(
 'Pacific/Auckland' => '(UTC+12:00) Auckland',
 'Asia/Magadan' => '(UTC+12:00) Magadan',
 'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
+
+'Theme'=>'Apariencia',
+'Language'=>'Idioma',
+'Secondary Email'=>'Email Segundario',
+'Time Zone'=>'Zona Horaria',
 
 );
 

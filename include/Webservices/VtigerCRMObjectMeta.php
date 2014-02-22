@@ -212,6 +212,9 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	
 	function hasAssignPrivilege($webserviceId){
 		global $adb;
+
+		// administrator's have assign privilege
+		if(is_admin($this->user)) return true;
 		
 		$idComponents = vtws_getIdComponents($webserviceId);
 		$userId=$idComponents[1];
@@ -399,6 +402,12 @@ class VtigerCRMObjectMeta extends EntityMeta {
 				$params = array($tabid, $block);
 			}
 		}
+
+		// Bulk Save Mode: Group by is not required!?
+		if(CRMEntity::isBulkSaveMode()) {
+			$sql = preg_replace("/group by [^ ]*/", " ", $sql);
+		}
+		// END
 		
 		$result = $adb->pquery($sql,$params);
 		

@@ -19,8 +19,13 @@
     		<td style="padding-right:20px" nowrap>
 				<input type="hidden" id="search_url" value="{$SEARCH_URL}">
 				<input type="hidden" name="idlist" id="idlist">
-				<input type="hidden" id="allselectedboxes" name="allselectedboxes">
+				<input name="numOfRows" id="numOfRows" type="hidden" value="{$NUMOFROWS}">
+				<input name="maxrecords" type="hidden" value="{$MAX_RECORDS}" id='maxrecords'>
+				<input type="hidden" id="excludedRecords" name="excludedRecords" value="{$excludedRecords}">
+				<input type="hidden" name="allselectedboxes" id="allselectedboxes" value="{$ALLSELECTEDIDS}">
+				<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
 				<input type="hidden" name="selected_module" id="selected_module" value="{$SELECTED_MODULE}">
+				<input type="hidden" name="selected_module_translated" id="selected_module_translated" value="{$SELECTED_MODULE|@getTranslatedString:$SELECTED_MODULE}">
 		        <input class="crmbutton small edit" type="button" onclick ="massRestore();" value="{$MOD.LBL_MASS_RESTORE}">
 		        {if $IS_ADMIN eq 'true'}
 		        <input class="crmbutton small delete" type="button" onclick ="callEmptyRecyclebin();" value="{$MOD.LBL_EMPTY_RECYCLEBIN}">
@@ -55,15 +60,21 @@
 	<table border=0 cellspacing=1 cellpadding=3 width=100% class="lvt small">
 	<!-- Table Headers -->
 	<tr>
-          <td class="lvtCol" width=2%><input type="checkbox" onclick='toggleSelect_ListView(this.checked,"selected_id")'  name="selectall" ></td>
+          <td class="lvtCol" width=2%><input type="checkbox" onclick='toggleSelect_ListView(this.checked,"selected_id")' id="selectCurrentPageRec" name="selectall" ></td>
 	{foreach key=mod_data item=moddata from=$MODULE_DATA name="listviewforeach"}
         	<td class="lvtCol" >{$moddata}</td>
 	{/foreach}
 		<td class="lvtCol" >{$APP.LBL_ACTION}</td>
 	</tr>
+	<tr>
+		<td id="linkForSelectAll" class="linkForSelectAll" style="display:none;" colspan=10>
+			<span id="selectAllRec" class="selectall" style="display:inline;" onClick="toggleSelectAll_Records('{$MODULE}',true,'selected_id')">{$APP.LBL_SELECT_ALL} <span id="count"> {$NUMOFROWS} </span> {$APP.LBL_RECORDS_IN} {$MODULE|@getTranslatedString:$MODULE}</span>
+			<span id="deSelectAllRec" class="selectall" style="display:none;" onClick="toggleSelectAll_Records('{$MODULE}',false,'selected_id')">{$APP.LBL_DESELECT_ALL} {$MODULE|@getTranslatedString:$MODULE}</span>
+		</td>
+	</tr>
 	{foreach key=entity_id item=lvdata from=$lvEntries}
 	<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
-        <td  width=2%><input type="checkbox" name="selected_id"  onclick='check_object(this)' value="{$entity_id}"></td>
+        <td  width=2%><input type="checkbox" name="selected_id"  onclick='check_object(this)' value="{$entity_id}" id="{$entity_id}"></td>
 		{foreach item=data from=$lvdata}
         <td >{$data}</td>
 		{/foreach}

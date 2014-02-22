@@ -26,14 +26,27 @@ class VTEntityDelta extends VTEventHandler {
 		
 		if($eventName == 'vtiger.entity.beforesave') {
 			if(!empty($recordId)) {
-				self::$oldEntity[$moduleName][$recordId] = VTEntityData::fromEntityId($adb, $recordId);
+				$entityData = VTEntityData::fromEntityId($adb, $recordId);
+				if($moduleName == 'HelpDesk') {
+					$entityData->set('comments', getTicketComments($recordId));
+				}
+				self::$oldEntity[$moduleName][$recordId] = $entityData;
 			}
 		}
 
 		if($eventName == 'vtiger.entity.aftersave'){
-			self::$newEntity[$moduleName][$recordId] = VTEntityData::fromEntityId($adb, $recordId);
+			$this->fetchEntity($moduleName, $recordId);
 			$this->computeDelta($moduleName, $recordId);
 		}
+	}
+
+	function fetchEntity($moduleName, $recordId) {
+		$adb = PearDatabase::getInstance();
+		$entityData = VTEntityData::fromEntityId($adb, $recordId);
+		if($moduleName == 'HelpDesk') {
+			$entityData->set('comments', getTicketComments($recordId));
+		}
+		self::$newEntity[$moduleName][$recordId] = $entityData;
 	}
 
 	function computeDelta($moduleName, $recordId) {
@@ -65,7 +78,11 @@ class VTEntityDelta extends VTEventHandler {
 		self::$entityDelta[$moduleName][$recordId] = $delta;
 	}
 
-	function getEntityDelta($moduleName, $recordId) {
+	function getEntityDelta($moduleName, $recordId, $forceFetch=false) {
+		if($forceFetch) {
+			$this->fetchEntity($moduleName, $recordId);
+			$this->computeDelta($moduleName, $recordId);
+		}
 		return self::$entityDelta[$moduleName][$recordId];
 	}
 

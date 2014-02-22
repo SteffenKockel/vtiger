@@ -114,13 +114,27 @@
 		}
 		
 		
-		function getTaskTypes(){
-			$taskTypes = array("VTEmailTask", "VTEntityMethodTask", "VTCreateTodoTask","VTCreateEventTask","VTUpdateFieldsTask");
+		function getTaskTypes($moduleName=''){
+			$taskTypes = array("VTEmailTask", "VTEntityMethodTask", "VTCreateTodoTask","VTCreateEventTask","VTUpdateFieldsTask","VTCreateEntityTask");
 			// Make SMSTask available if module is active
 			// TODO Generic way of handling this could be helpful
 			if(getTabid('SMSNotifier') && vtlib_isModuleActive('SMSNotifier')) {
 				$taskTypes [] = 'VTSMSTask'; 	
-			}				
+			}
+			$taskTypes = $this->filterTaskTypes($moduleName, $taskTypes);
+			return $taskTypes;
+		}
+
+		private function filterTaskTypes($moduleName, $taskTypes) {
+			$eliminateTaskTypes = array(
+				"Calendar" => array("VTCreateTodoTask","VTCreateEventTask"),
+				"Events" => array("VTCreateTodoTask","VTCreateEventTask"),
+				"Faq" => array("VTCreateTodoTask","VTCreateEventTask"),
+			);
+
+			if(!empty($moduleName) && array_key_exists($moduleName, $eliminateTaskTypes)) {
+				$taskTypes = array_diff($taskTypes, $eliminateTaskTypes[$moduleName]);
+			}
 			return $taskTypes;
 		}
 		
@@ -164,7 +178,18 @@
 			return str_pad(($h%12), 2, 0, STR_PAD_LEFT).':'.$mn.$AM_PM[($h/12)%2];
 		}
 
+		public function getMetaVariables() {
+			return array(
+				'Current Date' => '(general : (__VtigerMeta__) date)',
+				'Current Time' => '(general : (__VtigerMeta__) time)',
+				'System Timezone' => '(general : (__VtigerMeta__) dbtimezone)',
+				'CRM Detail View URL' => '(general : (__VtigerMeta__) crmdetailviewurl)',
+				'Portal Detail View URL' => '(general : (__VtigerMeta__) portaldetailviewurl)',
+				'Site Url' => '(general : (__VtigerMeta__) siteurl)',
+				'Portal Url' => '(general : (__VtigerMeta__) portalurl)'
+			);
+		}
+
 	}
 	
-	//require 'modules/Workflow/tasks/VTEmailTask.inc';
 ?>

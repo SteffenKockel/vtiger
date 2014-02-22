@@ -185,6 +185,10 @@ function fieldExpressionPopup(moduleName, $){
 				{inputField : "editpopup_expression", ifFormat : "%Y-%m-%d", showsTime : false, button : "jscal_trigger_editpopup_expression", singleClick : true, step : 1}
 			);
 		}
+		function forTimeField(opType){ 
+			var value = $("#editpopup_expression");
+			value.replaceWith('<input type="text" id="editpopup_expression" value="0" class="value">');
+		}
 		function forDateTimeField(opType) {
 			var value = $("#editpopup_expression");
 			value.replaceWith('<input type="text" id="editpopup_expression" class="value" readonly> \
@@ -211,7 +215,8 @@ function fieldExpressionPopup(moduleName, $){
 			multipicklist: forPicklist,
 			owner: forOwnerField,
 			date: forDateField,
-			datetime: forDateTimeField
+			datetime: forDateTimeField,
+			time: forTimeField 
 		};
 
 		if($('#jscal_trigger_editpopup_expression'))  $('#jscal_trigger_editpopup_expression').remove();

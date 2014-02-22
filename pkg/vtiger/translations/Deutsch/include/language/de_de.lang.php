@@ -14,9 +14,10 @@
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/include/language/en_us.lang.php,v 1.68 2005/04/26 06:50:39 rank Exp $
- * Description:  Defines the German language pack for the base application.
+ * Description:  Defines the English language pack for the base application.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
+ * Contributor(s): ______________________________________..
  ********************************************************************************/
 $app_strings = array(
 'LBL_BROWSER_TITLE' => 'vtiger CRM 5 - Commercial Open Source CRM',
@@ -199,6 +200,7 @@ $app_strings = array(
 'NTC_LOGIN_MESSAGE'=>"Bitte anmelden.",
 'LBL_NONE'=>'--keine--',
 'LBL_BACK'=>'zurück',
+'LBL_TIMEFIELD'=>'(HH:mm:ss)',
 'LBL_IMPORT'=>'importiere',
 'LBL_EXPORT'=>'exportiere',
 'LBL_EXPORT_ALL'=>'exportiere alle',
@@ -514,6 +516,7 @@ $app_strings = array(
 'LBL_UPD_FIELD_ORD'=>'Update Feldanordnung',
 'LBL_SEND_CUSTOM_MAIL_BUTTON'=>'Sende E-Mail',
 'LBL_UPDATED_TODAY'=>'Updated heute',
+'LBL_BY' => 'von ',
 'LBL_UPDATED'=>'Updated',
 'LBL_DAY_AGO'=>'Tage zurück',
 'LBL_DAYS_AGO'=>'Tage zurück',
@@ -572,7 +575,6 @@ $app_strings = array(
 'LBL_NO'=>'Keine',
 'LBL_FOUND'=>'Die Liste ist leer',
 'LBL_YOU_CAN_CREATE'=>'Sie können einen neuen Eintrag jetzt anlegen. ',
-'LBL_NOW'=>'jetzt erstellen',
 'LBL_CLICK_THE_LINK'=>'Auf den Link klicken',
 'LBL_CREATE'=>' erstelle',
 'LBL_A'=>'eine',
@@ -622,8 +624,6 @@ $app_strings = array(
 'LBL_ADDRESS_INF'=>'Adressinformation',
 'yes'=>'ja',
 'no' => 'nein',
-'on'=>'ja',
-'off'=>'nein',
 'LBL_RENAMEPROFILE_BUTTON_LABEL'=>'Umbenennen',
 'LBL_RENAME_PROFILE'=>'Profil umbenennen',
 'LBL_PROFILE_NAME'=>'Profilname',
@@ -946,7 +946,6 @@ $app_strings = array(
 'LBL_DATA_IN_CURRENT_PAGE'=>'exportiere Daten dieser Seite',
 'LBL_ONLY_SELECTED_RECORDS'=>'exportiere ausgewählte Daten',
 'LBL_YES'=>'Ja',
-'LBL_NO'=>'Nein',
 'Planned'=>'geplant',
 'Held'=>'durchgeführt',
 'Not Held'=>'nicht durchgeführt',
@@ -1266,32 +1265,55 @@ $app_strings = array(
 	'LBL_RESET_PASSWORD' => 'Password zurücksetzen',
 	'LBL_PHP_UPGRADE' => 'Wir haben Ihre PHP Version geändert. Durch die neue API zur Verschlüssleung
 		  ist Ihr Passwort nicht länger gültig. Bitte setzen Sie ein neues Passwort.',
-	'LBL_RESET_PASSWORD_DESCRIPTION' => 'you can reset password for all users using a script and set it to thier respective
-			  user names.',
+	'LBL_RESET_PASSWORD_DESCRIPTION' => 'Sie können das Passwort für alle Benutzer mit einem Skript zurücksetzten. Als Passwort wird der 
+              Benutzername verwendet',
 
-
-'Assets' => 'Produktverwaltung',
-'CustomerPortal' => 'Kundenportal',
-'Comments' => 'Kommentare',
-'ProjectMilestone' => 'Projektmeilenstein',
-'ProjectTask' => 'Projektaufgabe',
-'ProjectTeam' => 'Projekt Team',
-'Project' => 'Projekte',
-'Recycle Bin' => 'Papierkorb',
-'SMSNotifier' => 'SMS',
-'Tool Tip' => 'Kurzinfo',
-
-'ERR_INVALID_SECONDARY_EMAIL_ADDRESS' => 'keine gültige zweite E-Mail-Adresse angegeben.',
-'SECONDARY_EMAIL_FILED_IS' => "\' im sekundären E-Mail Feld ist ",
 'LBL_CRITERIA_AND'=>'und',
 'LBL_CRITERIA_OR'=>'oder',
 'LBL_NEW_GROUP'=>'Neue Gruppe',
 'LBL_DELETE_GROUP'=>'Gruppe löschen',
-'LBL_NEW_CONDITION'=>'Neue Bedingung',
+'LBL_NEW_CONDITION'=>'Neue Bedingugn',
 'LBL_ADVANCED_FILTER' => 'Erweiterte Suche',
-'LBL_CHANGE'=>'Ändern',
-'LBL_CHANGE_TITLE'=>'Ändern [Alt+C]',
-'LBL_NEXT_BUTTON_LABEL' => 'Weiter',	  
+
+'LBL_CHANGE'=>'ändern',
+'LBL_CHANGE_TITLE'=>'ändern [Alt+C]',
+
+'LBL_NEXT_BUTTON_LABEL' => 'weiter',
+
+'LBL_MAX_SIZE'=> 'Die maximale Dateigröße zum hochladen beträgt', //added for uploadsize limit message
+'LBL_FILESIZEIN_MB'=> 'MB', //added to show filesize in MB
+
+// Unified Cron Job language strings
+'LBL_DISABLED' => 'deaktiviert',
+'LBL_RUNNING' => 'läuft',
+'LBL_LAST_SCAN_TIMED_OUT' => 'Letzte Überprüfung überschritt Zeit',
+'LBL_LAST_SCAN_AT' => 'Letzte überprüfung @',
+'LBL_TIME_TAKEN' => 'benötigte Zeit',
+'LBL_SHORT_SECONDS' => 'Sek',
+
+//Added missing labels in the vtigercrm
+'Projects' => 'Projekte',
+'End Time' => 'Ende',
+'Start Time' => 'Beginn',
+'Email2' => 'Email2',
+'Comments' => 'Kommentare',
+'Issued Date' => 'Ausstellungsdatum',
+'Shipping & Handling Charges' => 'Versandkosten und Bearbeitungsgebühren',
+'Shipping & Handling Tax:' => 'Steuern auf Versandkosten und Bearbeitungsgebühren:',
+'Quantity' => 'Menge',
+'Net Total' => 'Netto gesamt',
+'Send SMS' => 'Sende SMS',
+
+'LBL_MORE'=>'mehr',
+'LBL_CRM_SETTINGS' => 'CRM Einstellungen',
+'LBL_RELATED_TO_THIS' =>'bezogen auf',
+'LBL_DESELECT_ALL' => 'alle abwählen',
+'LBL_RECORDS_IN' => 'Datensätze in',
+'LBL_FOLDER' => 'Verzeinis',
+
+//added for creating a custom lead map row in UI
+'LBL_ADD_MAPPING'=> 'Zuordnung hinzufügen',
+'LBL_FIELD_MAPPING' => 'Feldzuordnung'
 );
 
 $app_list_strings = array (
@@ -1338,18 +1360,18 @@ $app_list_strings = array (
   ),
   'case_relationship_type_default_key' => 'Primary Contact',
   'case_relationship_type_dom' => 
-	array(
-		''=>'',
-		'Primary Contact'=>'Primärer Kontakt',
-		'Alternate Contact'=>'Alternativer Kontakt',
-		),
-'task_priority_dom' =>
-	array(
-		'High'=>'hoch',
-		'Medium'=>'mittel',
-		'Low'=>'niedrig',
-		),
-'task_status_dom' =>
+    array(
+    	''=>'',
+    	'Primary Contact'=>'Primärer Kontakt',
+    	'Alternate Contact'=>'Alternativer Kontakt',
+    	),
+    'task_priority_dom' =>
+    array(
+    	'High'=>'hoch',
+    	'Medium'=>'mittel',
+    	'Low'=>'niedrig',
+    	),
+    'task_status_dom' =>
 	array(
 		'Planned'=>'geplant',
 		'Completed'=>'abgeschlossen',
@@ -1415,9 +1437,10 @@ $app_currency_strings = array(
 	'Cayman Islands, Dollars' => 'Cayman Islands, Dollars',
 	'Chile, Pesos' 			=> 'Chile, Pesos',
 	'Colombia, Pesos' 		=> 'Colombia, Pesos',
-	'Costa Rica, ColÃ³n' 	=> 'Costa Rica, ColÃ³n',
+	'Costa Rica, Colón' 	=> 'Costa Rica, Colón',
 	'Croatia, Kuna' 		=> 'Croatia, Kuna',
 	'Cuba, Pesos' 			=> 'Cuba, Pesos',
+	'Cyprus, Pounds'		=> 'Cyprus, Pounds',
 	'Czech Republic, Koruny' => 'Czech Republic, Koruny',
 	'Denmark, Kroner' 		=> 'Denmark, Kroner',
 	'Dominican Republic, Pesos' => 'Dominican Republic, Pesos',
@@ -1458,6 +1481,7 @@ $app_currency_strings = array(
 	'Lithuania, Litai' 		=> 'Lithuania, Litai',
 	'Macedonia, Denars' 	=> 'Macedonia, Denars',
 	'Malaysia, Ringgits' 	=> 'Malaysia, Ringgits',
+	'Malta, Liri'			=> 'Malta, Liri',
 	'Mauritius, Rupees' 	=> 'Mauritius, Rupees',
 	'Mexico, Pesos' 		=> 'Mexico, Pesos',
 	'Mongolia, Tugriks' 	=> 'Mongolia, Tugriks',
@@ -1477,6 +1501,7 @@ $app_currency_strings = array(
 	'Peru, Nuevos Soles' 	=> 'Peru, Nuevos Soles',
 	'Philippines, Pesos' 	=> 'Philippines, Pesos',
 	'Poland, Zlotych' 		=> 'Poland, Zlotych',
+	'Qatar, Rials'			=> 'Qatar, Rials',
 	'Romania, New Lei' 		=> 'Romania, New Lei',
 	'Russia, Rubles'		=> 'Russia, Rubles',
 	'Saint Helena, Pounds' => 'Saint Helena, Pounds',
@@ -1516,6 +1541,7 @@ $app_currency_strings = array(
 	'MADAGASCAR, Malagasy Ariary' => 'MADAGASCAR, Malagasy Ariary',
 	'United Arab Emirates, Dirham' => 'United Arab Emirates, Dirham',
 	'United Republic OF Tanzania, Shilling' => 'United Republic OF Tanzania, Shilling',
+	'Yemen, Rials'			=> 'Yemen, Rials',
 	'Zambia, Kwacha' => 'Zambia, Kwacha',
 	'Malawi, kwacha'		=> 'Malawi, kwacha',
 	'Tunisian, Dinar'		=> 'Tunisian, Dinar',

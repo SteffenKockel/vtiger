@@ -14,10 +14,10 @@
  ********************************************************************************
 *  Module       : Sales Orders
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
@@ -156,7 +156,6 @@ $mod_strings = Array(
 'Vendor Terms'=>'Términos del Proveedor',
 'Pending'=>'Pendiente',
 'Account Name'=>'Nombre de Cuenta',
-'Terms & Conditions'=>'Condiciones Generales',
 //Quote Info
 'LBL_SO_INFORMATION'=>'Información de la Orden',
 'LBL_SO'=>'Orden de Venta:',
@@ -219,6 +218,7 @@ $mod_strings = Array(
 'Net 45 days' => '45 días',
 'Net 60 days' => '60 días',
 
+'SalesOrder ID' => 'Id Orden de Venta',
 );
 
 ?>

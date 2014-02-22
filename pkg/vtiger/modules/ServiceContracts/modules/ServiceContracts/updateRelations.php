@@ -39,7 +39,7 @@ if($mode == 'delete') {
 		$ids = $_REQUEST['entityid'];
 	}
 	if(!empty($ids)) {
-		$focus->save_related_module($currentModule, $forCRMRecord, $destinationModule, $ids);
+		relateEntities($focus, $currentModule, $forCRMRecord, $destinationModule, $ids);
 	}
 }
 header("Location: index.php?module=$currentModule&record=$forCRMRecord&action=$action&parenttab=$parenttab");

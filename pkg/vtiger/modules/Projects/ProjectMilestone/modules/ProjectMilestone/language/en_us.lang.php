@@ -41,7 +41,7 @@ $mod_strings = Array(
     //added for related lists 
     'Project Milestone Name' => 'Milestone Name',
     'Project Milestone No' => 'Milestone No',
-
+	'ProjectMilestone ID' => 'ProjectMilestone ID',
 );
 
 ?>

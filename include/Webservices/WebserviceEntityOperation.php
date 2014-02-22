@@ -19,6 +19,8 @@ abstract class WebserviceEntityOperation{
 	 */
 	protected $pearDB;
 	
+	protected static $metaCache = array();
+	
 	protected function WebserviceEntityOperation($webserviceObject,$user,$adb,$log){
 		$this->user = $user;
 		$this->log = $log;
@@ -113,6 +115,7 @@ abstract class WebserviceEntityOperation{
 	 *
 	 */
 	abstract public function getMeta();
+	abstract protected  function getMetaInstance();
 	
 }
 

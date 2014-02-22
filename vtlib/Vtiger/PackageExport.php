@@ -11,7 +11,7 @@ include_once('vtlib/Vtiger/Module.php');
 include_once('vtlib/Vtiger/Menu.php');
 include_once('vtlib/Vtiger/Event.php');
 include_once('vtlib/Vtiger/Zip.php');
-
+include_once('vtlib/Vtiger/Cron.php');
 /**
  * Provides API to package vtiger CRM module and associated files.
  * @package vtlib
@@ -233,7 +233,10 @@ class Vtiger_PackageExport {
 		// Export Custom Links
 		$this->export_CustomLinks($moduleInstance);
 
-		$this->closeNode('module');
+		//Export cronTasks
+        $this->export_CronTasks($moduleInstance);
+
+        $this->closeNode('module');
 	}
 
 	/**
@@ -614,6 +617,26 @@ class Vtiger_PackageExport {
 			$this->closeNode('customlinks');
 		}
 	}
+
+	/**
+	 * Export cron tasks for the module.
+	 * @access private
+	 */        
+	function export_CronTasks($moduleInstance){
+        $cronTasks = Vtiger_Cron::listAllInstancesByModule($moduleInstance->name);
+        $this->openNode('crons');
+        foreach($cronTasks as $cronTask){
+            $this->openNode('cron');
+            $this->outputNode($cronTask->getName(),'name');
+            $this->outputNode($cronTask->getFrequency(),'frequency');
+            $this->outputNode($cronTask->getStatus(),'status');
+            $this->outputNode($cronTask->getHandlerFile(),'handler');
+            $this->outputNode($cronTask->getSequence(),'sequence');
+            $this->outputNode($cronTask->getDescription(),'description');
+            $this->closeNode('cron');
+        }
+      $this->closeNode('crons');
+    }
 
 	/**
 	 * Helper function to log messages

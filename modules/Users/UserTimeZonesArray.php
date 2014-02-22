@@ -15,7 +15,6 @@
 class UserTimeZones{
 	function userTimeZones(){
 		$arrayOfSupportedTimeZones = array(
-										'Kwajalein',
 										'Pacific/Midway',
 										'Pacific/Samoa',
 										'Pacific/Honolulu',

@@ -13,10 +13,10 @@
  ********************************************************************************
 *  Module       : Contacts
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-28
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
@@ -244,6 +244,9 @@ $mod_strings = array (
 // Module Sequence Numbering
 'Contact Id' => 'Id Contacto',
 // END
+'Secondary Email'=>'Email Segundario',
+
+'Contacts ID'=>'Id Contacto',
 
 );
 

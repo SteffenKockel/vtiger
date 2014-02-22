@@ -1,28 +1,39 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
+
+/*******************************************************************************
+ * The contents of this file are subject to the following licences:
+ * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
+ * - vtiger CRM Public License Version 1.0 
+ * You may not use this file except in compliance with the License
+ * Software distributed under the License is distributed on an  "AS IS" basis,
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
  * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
+ * The Original Code is: SugarCRM Open Source
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Contributor(s): Vertaling door: Weltevree.org   www.weltevree.org
+ * Feel free to use / redistribute these languagefiles under the VPL 1.0.
+ * This translations is based on earlier work of: 
+ * - IT-Online.nl <www.it-online.nl>
+ * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): Weltevree.org   www.weltevree.org
+
+/*******************************************************************************
+ * Vicus eBusiness Solutions Version Control
+ * @package 	NL-Dutch
+ * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * @author	$Author: luuk $
+ * @version 	$Revision: 1.5 $ $Date: 2012/02/28 23:40:22 $
+ * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/HelpDesk/language/nl_nl.lang.php,v $
+ * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
 $mod_strings = Array(
 // Added in release 4.0
-'LBL_MODULE_NAME'=>'HelpDesk',
+'LBL_MODULE_NAME'=>'Helpdesk',
 'LBL_GROUP'=>'Groep',
 'LBL_ACCOUNT_NAME'=>'Accountnaam',
 'LBL_CONTACT_NAME'=>'Contactnaam',
@@ -48,10 +59,10 @@ $mod_strings = Array(
 'LBL_CONTACT'=>'Contact',
 'LBL_STATUS'=>'Status',
 'LBL_ASSIGNED_TO'=>'Toegewezen aan',
-'LBL_FAQ'=>'Meest gestelde vragen',
-'LBL_VIEW_FAQS'=>'Bekijk Meest gestelde vragen',
-'LBL_ADD_FAQS'=>'Toevoegen Meest gestelde vragen',
-'LBL_FAQ_CATEGORIES'=>'Meest gestelde vragen categorieen',
+'LBL_FAQ'=>'FAQ',
+'LBL_VIEW_FAQS'=>'Bekijk FAQ',
+'LBL_ADD_FAQS'=>'Toevoegen FAQ',
+'LBL_FAQ_CATEGORIES'=>'FAQ categorieën',
 
 'LBL_PRIORITY'=>'Prioriteiten',
 'LBL_CATEGORY'=>'Categorie',
@@ -65,7 +76,7 @@ $mod_strings = Array(
 //Added fields for File Attachment and Mail send in Tickets
 'LBL_ATTACHMENTS'=>'Bijlagen',
 'LBL_NEW_ATTACHMENT'=>'Nieuwe bijlage',
-'LBL_SEND_MAIL'=>'Verstuur e-Mail',
+'LBL_SEND_MAIL'=>'Verstuur e-mail',
 
 //Added fields for search option  in TicketsList -- 4Beta
 'LBL_CREATED_DATE'=>'Gemaakt op',
@@ -76,11 +87,11 @@ $mod_strings = Array(
 'LBL_STATISTICS'=>'Statistieken',
 'LBL_TICKET_ID'=>'Ticket Id',
 'LBL_MY_TICKETS'=>'Mijn tickets',
-"LBL_MY_FAQ"=>"Mijn meest gestelde vragen",
+"LBL_MY_FAQ"=>"Mijn FAQ",
 'LBL_ESTIMATED_FINISHING_TIME'=>'Verwachte eindtijd',
 'LBL_SELECT_TICKET'=>'Selecteer ticket',
-'LBL_CHANGE_OWNER'=>'Verander eigenaar',
-'LBL_CHANGE_STATUS'=>'Verander Status',
+'LBL_CHANGE_OWNER'=>'Wijzig eigenaar',
+'LBL_CHANGE_STATUS'=>'Wijzig Status',
 'LBL_TICKET_TITLE'=>'Titel',
 'LBL_TICKET_DESCRIPTION'=>'Omschrijving',
 'LBL_TICKET_CATEGORY'=>'Categorie',
@@ -121,6 +132,26 @@ $mod_strings = Array(
 'LBL_CATEGORIES'=>'Categorieen',
 'LBL_PRIORITIES'=>'Prioriteiten',
 'LBL_SUPPORTERS'=>'Supporters',
+//this label for customerportal.
+'LBL_STATUS_CLOSED' =>'Closed',//Do not convert this label. This is used to check the status. If the status 'Closed' is changed in vtigerCRM server side then you have to change in customerportal language file also.
+'LBL_STATUS_UPDATE' => 'Ticket status is veranderd naar',
+'LBL_COULDNOT_CLOSED' => 'Ticket kan niet',
+'LBL_CUSTOMER_COMMENTS' => 'De klant heeft de volgende additionele informatie toegevoegd in uw antwoord:',
+'LBL_RESPOND'=> 'Gaarne vroegtijdig bericht op bovengenoemde ticket.',
+'LBL_REGARDS' =>'Vriendelijke Groeten',
+'LBL_SUPPORT_ADMIN' => 'Ondersteuningsbeheerder',
+'LBL_RESPONDTO_TICKETID' =>'Antwoord op ticket ID',
+'LBL_CUSTOMER_PORTAL' => 'in klanten Portal - SPOED', 
+'LBL_LOGIN_DETAILS' => 'Hierbij uw klant Portal login details gegevens:',
+'LBL_MAIL_COULDNOT_SENT' =>'E-mail kon niet verstuurd worden',
+'LBL_USERNAME' => 'Gebruikersnaam :',
+'LBL_PASSWORD' => 'Wachtwoord :',
+'LBL_SUBJECT_PORTAL_LOGIN_DETAILS' => 'Met betrekking tot uw klant Portal login gegevens',
+'LBL_GIVE_MAILID' => 'Gaarne uw e-mail id',
+'LBL_CHECK_MAILID' => 'Gaarne uw e-mail id voor de klanten portal bekijken',
+'LBL_LOGIN_REVOKED' => 'Uw login is ingetrokken. Contacteer uw administrator.',
+'LBL_MAIL_SENT' => 'Een e-mail is naar uw e-mail id verstuurd met daarin klant portal login gegevens',
+'LBL_ALTBODY' => 'Dit is een e-mail pagina met platte tekst voor niet HTML mail clients',
 
 //Added fields after 4_0_1
 'LBL_TICKET_RESOLUTION'=>'Oplossing',
@@ -133,7 +164,7 @@ $mod_strings = Array(
 'Subject'=>'Onderwerp',
 
 //Added after 4.2 alpha
-'Severity'=>'Probleem status',
+'Severity'=>'Ernstigheid',
 'Product Name'=>'Productnaam',
 'Related To'=>'Gerelateerd aan',
 'LBL_MORE'=>'Meer',
@@ -144,17 +175,17 @@ $mod_strings = Array(
 'LBL_CUMULATIVE_STATISTICS'=>'Cumulatieve Statistieken',
 
 //Added on 12-12-2005
-'LBL_CONVERT_AS_FAQ_BUTTON_TITLE'=>'Verander naar meest gestelde vragen',
+'LBL_CONVERT_AS_FAQ_BUTTON_TITLE'=>'Converteer naar FAQ',
 'LBL_CONVERT_AS_FAQ_BUTTON_KEY'=>'C',
-'LBL_CONVERT_AS_FAQ_BUTTON_LABEL'=>'Verander naar meest gestelde vragen',
+'LBL_CONVERT_AS_FAQ_BUTTON_LABEL'=>'Converteer naar FAQ',
 'Attachment'=>'Bijlage',
 'LBL_COMMENT_INFORMATION'=>'Commentaar',
 
 //Added for existing picklist entries
 
 'Big Problem'=>'Groot probleem',
-'Small Problem'=>'Matig probleem',
-'Other Problem'=>'Ander probleem',
+'Small Problem'=>'Klein probleem',
+'Other Problem'=>'Probleem',
 
 'Low'=>'Laag',
 'Normal'=>'Normaal',
@@ -162,7 +193,7 @@ $mod_strings = Array(
 'Urgent'=>'Urgent',
 
 'Minor'=>'Klein',
-'Major'=>'GROOT',
+'Major'=>'Groot',
 'Feature'=>'Mogelijkheden',
 'Critical'=>'Kritiek',
 
@@ -183,39 +214,46 @@ $mod_strings = Array(
 'created' => 'Gemaakt',
 'replied' => 'Beantwoord',
 'reply'=>'Er is een antwoord naar',
-'customer_portal' => 'in "Klanten Portal" van vTiger.',
+'customer_portal' => 'in "Klanten Portal" van '.$HELPDESK_SUPPORT_NAME.'.',
 'link' => 'Men kan de volgende link bekijken om de gemaakte antwoorden te zien:',
 'Thanks' => 'Bedankt',
-'Support_team' => 'vTiger Support Team',
+//'Support_team' => 'vTiger Support Team',
+'Support_team' => $HELPDESK_SUPPORT_NAME,
+
 
 // Added/Updated for vtiger CRM 5.0.4
 
 //this label for customerportal.
-'LBL_STATUS_CLOSED'=>'Closed',//Do not convert this label. This is used to check the status. If the status 'Closed' is changed in vtigerCRM server side then you have to change in customerportal language file also.
-'LBL_STATUS_UPDATE' => 'Ticket status is veranderd naar',
-'LBL_COULDNOT_CLOSED' => 'Ticket kan niet',
-'LBL_CUSTOMER_COMMENTS' => 'De klant heeft de volgende informatie doorgestuurd:',
-'LBL_RESPOND'=> 'Gaarne z.s.m. ticket beantwoorden.',
-'LBL_REGARDS' =>'Groeten',
-'LBL_SUPPORT_ADMIN' => 'Support administrator',
-'LBL_RESPONDTO_TICKETID' =>'Antwoorden op ticket ID',
-'LBL_CUSTOMER_PORTAL' => 'in klant portaal - DRINGEND',
-'LBL_LOGIN_DETAILS' => 'Hierbij uw klant portaal inlog gegevens :',
-'LBL_MAIL_COULDNOT_SENT' =>'e-Mail kon niet verstuurd worden',
+'LBL_STATUS_CLOSED' =>'Closed',//Do not convert this label. This is used to check the status. If the status 'Closed' is changed in vtigerCRM server side then you have to change in customerportal language file also.
+'LBL_STATUS_UPDATE' => 'Ticket status is gewijzigd in',
+'LBL_COULDNOT_CLOSED' => 'Ticket kan niet worden',
+'LBL_CUSTOMER_COMMENTS' => 'De relatie heeft de volgende informatie geantwoord:',
+'LBL_RESPOND'=> 'Gelieve zo snel mogelijk te reageren op bovengenoemd Ticket.',
+'LBL_REGARDS' =>'Met vriendelijke groet',
+'LBL_SUPPORT_ADMIN' => 'Ondersteuningsbeheerder',
+'LBL_RESPONDTO_TICKETID' =>'Beantwoord Ticket ID',
+'LBL_CUSTOMER_PORTAL' => 'in Klant Portaal - Dringend',
+'LBL_LOGIN_DETAILS' => 'Hieronder volgen uw inloggegevens voor de klantportaal :',
+'LBL_MAIL_COULDNOT_SENT' =>'Mail kon niet worden verzonden',
 'LBL_USERNAME' => 'Gebruikersnaam :',
 'LBL_PASSWORD' => 'Wachtwoord :',
-'LBL_SUBJECT_PORTAL_LOGIN_DETAILS' => 'Betreft uw klant portaal inlog gegevens',
-'LBL_GIVE_MAILID' => 'Geef uw e-Mail id',
-'LBL_CHECK_MAILID' => 'Bekijk uw e-Mail id voor het klanten portaal',
-'LBL_LOGIN_REVOKED' => 'Uw inlog gegevens zijn ingetrokken. Kontakteer de administrator.',
-'LBL_MAIL_SENT' => 'Een e-Mail met uw klant portaal inlog gegevens is verstuurd naar uw e-Mail id',
-'LBL_ALTBODY' => 'Dit is een tekst e-Mail, HTML niet toegestaan',
+'LBL_SUBJECT_PORTAL_LOGIN_DETAILS' => 'Betreft uw login gegevens voor de klantportaal',
+'LBL_GIVE_MAILID' => 'Uw e-mailadres svp',
+'LBL_CHECK_MAILID' => 'Controleer uw e-mailadres voor de Klantportaal',
+'LBL_LOGIN_REVOKED' => 'Uw inloggegevens zijn vervallen. Neem contact op met de helpdesk.',
+'LBL_MAIL_SENT' => 'Een e-mail met de inloggegevsn is verstuurd naar het ons bekende emailadres',
+'LBL_ALTBODY' => '',
 
 // Added after 5.0.4 GA
 
 // Module Sequence Numbering
 'Ticket No' => 'Ticket Nr',
 // END
+
+'Hours' => 'Uren',
+'Days' => 'Dagen',
+
+'From Portal' => 'Van Portaal',
 );
 
 ?>

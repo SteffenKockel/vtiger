@@ -122,12 +122,12 @@ class vt_DateTime
 	
 	/**
 	 * function to get days in week using index
-	 * @param integer       $index - number between 0 to 6
+	 * @param integer       $index - number between 1 to 7
 	 * return vt_DateTime obj  $datetimevalue
 	 */
 	function getThisweekDaysbyIndex($index){
 		$week_array = array();
-		if($index < 0 || $index > 6){
+		if($index < 1 || $index > 7){
 			die("day is invalid");
 		}
 		$week_array['day'] = $this->day + ($index - $this->dayofweek);
@@ -309,12 +309,12 @@ class vt_DateTime
 
 		$this->ts = $ts;
 		$this->ts_def = $this->ts;
-		$date_string = date('i::G::H::j::d::t::w::z::L::W::n::m::Y::Z::T::s',$ts);
+		$date_string = date('i::G::H::j::d::t::N::z::L::W::n::m::Y::Z::T::s',$ts);
 		
 		list($this->minute,$this->hour,$this->z_hour,$this->day,$this->z_day,$this->daysinmonth,$this->dayofweek,$this->dayofyear,$is_leap,$this->week,$this->month,$this->z_month,$this->year,$this->offset,$this->tz,$this->second) = explode('::',$date_string);
 
-		$this->dayofweek_inshort =$mod_strings['cal_weekdays_short'][$this->dayofweek];
-		$this->dayofweek_inlong=$mod_strings['cal_weekdays_long'][$this->dayofweek];
+		$this->dayofweek_inshort =$mod_strings['cal_weekdays_short'][$this->dayofweek-1];
+		$this->dayofweek_inlong=$mod_strings['cal_weekdays_long'][$this->dayofweek-1];
 		$this->month_inshort=$mod_strings['cal_month_short'][$this->month];
 		$this->month_inlong=$mod_strings['cal_month_long'][$this->month];
 
@@ -417,7 +417,7 @@ class vt_DateTime
 	 * return vt_DateTime obj
 	 */
 	function get_first_day_of_changed_week($mode){
-		$first_day = $this->getThisweekDaysbyIndex(0);
+		$first_day = $this->getThisweekDaysbyIndex(1);
 		if($mode == 'increment')
 			$day = $first_day->day + 7;
 		else

@@ -56,6 +56,9 @@
 	<tr>
 		<td class="small" align="center">
 			<input type="hidden" name="idstring" value="{$IDSTRING}" />
+            <input type="hidden" name="excludedRecords" value="{$excludedRecords}"/>
+            <input type="hidden" name="viewid" value="{$VIEWID}"/>
+			<input type="hidden" name="searchurl" value="{$SEARCHURL}"/>
 			<input type="hidden" name="sourcemodule" value="{$SOURCEMODULE}" />
 			<input type="button" class="small crmbutton create" onclick="SMSNotifierCommon.displayComposeWizard(this.form);" value="{$APP.LBL_SELECT_BUTTON_LABEL}"/>
 			<input type="button" class="small crmbutton cancel" onclick="SMSNotifierCommon.hideSelectWizard();" value="{$APP.LBL_CANCEL_BUTTON_LABEL}"/>

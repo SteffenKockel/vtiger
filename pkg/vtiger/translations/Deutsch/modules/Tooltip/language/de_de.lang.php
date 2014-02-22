@@ -8,13 +8,12 @@
  ********************************************************************************/
 
 $mod_strings = Array (
-'Tooltip' => 'Kurzinfo',
-'LBL_TOOLTIP_MANAGEMENT'=>'Kurzinfo Management',
-'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'kontrollieren Sie die Anzeige von Kurzinfos von hier',
-'LBL_FIELDS_IN'=>'Felder in',
-'LBL_TOOLTIP_HELP_TEXT'=>'Wählen Sie die Felder aus, welche als Kurzinfo angezeigt werden sollen',
-'LBL_FIELD'=>'Feld',
-
+    'Tooltip' => 'Kurzinfo',
+    'LBL_TOOLTIP_MANAGEMENT'=>'Kurzinfo Management',
+    'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'kontrollieren Sie die Anzeige von Kurzinfos von hier',
+    'LBL_FIELDS_IN'=>'Felder in',
+    'LBL_TOOLTIP_HELP_TEXT'=>'Wählen Sie die Felder aus, welche als Kurzinfo angezeigt werden sollen',
+    'LBL_FIELD'=>'Feld',
 );
 
 ?>

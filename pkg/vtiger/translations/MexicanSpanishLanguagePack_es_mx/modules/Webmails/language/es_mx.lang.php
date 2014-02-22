@@ -13,15 +13,16 @@
  ********************************************************************************
 *  Module       : Webmails
 *  Language     : Español
-*  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
+*  Version      : 5.4.0
+*  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Author       : Francisco Hernandez Odin Consultores www.odin.mx
+*  Last change  : 2012-02-28
+*  Author       : Odin Consultores, Francisco Hernandez
  ********************************************************************************/
 
 $mod_strings = array (
-'LBL_MODULE_NAME'=>'Email',
-'LBL_MODULE_TITLE'=>'Email: Inicio',
+'LBL_MODULE_NAME'=>'Webmail',
+'LBL_MODULE_TITLE'=>'Webmail: Inicio',
 'LBL_SEARCH_FORM_TITLE'=>'Buscar Email',
 'LBL_LIST_FORM_TITLE'=>'Listado de Email',
 'LBL_NEW_FORM_TITLE'=>'Seguimiento de Correo',
@@ -121,7 +122,7 @@ $mod_strings = array (
 'Modified Time'=>'Modificada',
 
 'MESSAGE_CHECK_MAIL_SERVER_NAME'=>'Por favor compruebe el nombre del servidor de mail...',
-'MESSAGE_CHECK_MAIL_ID'=>'Por favor compruebe el Email del usuario \"Asignado a\"...',
+'MESSAGE_CHECK_MAIL_ID'=>'Por favor compruebe el Email del usuario "Asignado a"...',
 'MESSAGE_MAIL_HAS_SENT_TO_USERS'=>'El correo se ha enviado a los siguientes usuarios:',
 'MESSAGE_MAIL_HAS_SENT_TO_CONTACTS'=>'El correo se ha enviado a los siguientes contactos:',
 'MESSAGE_MAIL_ID_IS_INCORRECT'=>'El Email es incorrecto. Compruebe el Email ...',
@@ -180,5 +181,7 @@ $mod_strings = array (
 'LBL_ATTACHMENTS'=>'Adjuntos',
 'LBL_LIST_COUNT'=>'Mostrando',
 
+'LBL_INSTEAD_OF_WEBMAILS_USE' => 'En vez de Webmail, utiliza',
+'LBL_PLEASE_CLICK_HERE_TO_GO_TO' => 'Haz click aquí para ir a ',
 );
 ?>

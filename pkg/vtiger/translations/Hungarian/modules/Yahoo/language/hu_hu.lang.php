@@ -12,21 +12,18 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  *********************************************************************************
-/*********************************************************************************
- * $Header:  E:\D_root\Dokumentumok\vtiger520\hungarian52\trunk\modules\Yahoo\language\hu_hu.lang.php - 23:04 2010.05.21. $
- * Description:  Defines the Hungarian language pack for the Yahoo module vtiger 5.2.0
+ * $Header:  \modules\Yahoo\language\hu_hu.lang.php - 12:16 2011.11.12. $
+ * Description:  Defines the Hungarian language pack for the Yahoo module vtiger 5.3.x
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
- ********************************************************************************/
- 
-$mod_strings = Array(
-'LBL_MODULE_NAME'=>'Cégek',
-'LBL_MODULE_NAME'=>'Cégek: Kezdőlap',
-'LBL_MODULE_NAME'=>'Cég Keresés',
-'LBL_LIST_FORM_TITLE'=>'Cég Lista',
-'LBL_NEW_FORM_TITLE'=>'Új Cég',
-'ERR_DELETE_RECORD'=>"Adj meg egy rekord azonosítót a Cég törléséhez",
+ ********************************************************************************/ 
+$mod_strings = array(
+	'LBL_MODULE_NAME' => 'Cégek',
+	'LBL_MODULE_TITLE' => 'Cégek: Kezdőlap',
+	'LBL_SEARCH_FORM_TITLE' => 'Cég Keresés',
+	'LBL_LIST_FORM_TITLE' => 'Cég Lista',
+	'LBL_NEW_FORM_TITLE' => 'Új Cég',
+	'ERR_DELETE_RECORD' => 'Adj meg egy rekord azonosítót a Cég törléséhez'
 );
-
 ?>

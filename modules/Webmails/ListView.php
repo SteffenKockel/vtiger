@@ -412,7 +412,7 @@ $smarty->assign("LISTENTITY", $listview_entries);
 $smarty->assign("LISTHEADER", $listview_header);
 $smarty->assign("SEARCH_HTML", $search_html);
 $smarty->assign("MODULE","Webmails");
-$smarty->assign("SINGLE_MOD",'Webmails');
+$smarty->assign("SINGLE_MOD",getTranslatedString('SINGLE_'.$currentModule, $currentModule));
 $smarty->assign("BUTTONS",$other_text);
 $smarty->assign("CATEGORY","My Home Page");
 $smarty->assign("NAVIGATION", $navigationOutput);

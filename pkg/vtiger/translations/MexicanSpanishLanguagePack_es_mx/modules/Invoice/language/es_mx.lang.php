@@ -13,16 +13,17 @@
  ********************************************************************************
 *  Module       : invoice
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-27
 *  Author       : Joe Bordes  JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
  
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Facturas',
+'SINGLE_Invoice'=>'Factura',
 'LBL_SO_MODULE_NAME'=>'Factura',
 'LBL_RELATED_PRODUCTS'=>'Elementos',
 'LBL_MODULE_TITLE'=>'Factura: Inicio',
@@ -182,7 +183,7 @@ $mod_strings = Array(
 'Sent'=>'Enviada',
 'Credit Invoice'=>'a Crédito',
 'Paid'=>'Pagada',
-'AutoCreated'=>'Autocreada',
+'AutoCreated'=>'Automática',
 //Added to Custom Invoice Number
 'Invoice No'=>'Nº Factura',
 'Adjustment'=>'Ajuste',
@@ -198,6 +199,7 @@ $mod_strings = Array(
 // Added affter 5.0.4 GA
 //Added for Documents module
 'Documents'=>'Documentos',
+'Invoice ID'=>'Id Factura',
 );
 
 ?>

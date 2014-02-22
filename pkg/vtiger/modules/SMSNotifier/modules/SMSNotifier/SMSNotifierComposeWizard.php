@@ -20,9 +20,10 @@ $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("MOD", $mod_strings);
 
+$excludedRecords=vtlib_purify($_REQUEST['excludedRecords']);
 $idstring = vtlib_purify($_REQUEST['idstring']);
 $idstring = trim($idstring, ';');
-$idlist = explode(';', $idstring);
+$idlist = getSelectedRecords($_REQUEST,$_REQUEST['sourcemodule'],$idstring,$excludedRecords);//explode(';', $idstring);
 
 $sourcemodule = vtlib_purify($_REQUEST['sourcemodule']);
 
@@ -32,6 +33,9 @@ $phonefields = trim($phonefields, ';');
 $smarty->assign('PHONEFIELDS', $phonefields);
 $smarty->assign('IDSTRING', $idstring);
 $smarty->assign('SOURCEMODULE', $sourcemodule);
+$smarty->assign('excludedRecords',$excludedRecords);
+$smarty->assign('VIEWID',$_REQUEST['viewname']);
+$smarty->assign('SEARCHURL',$_REQUEST['searchurl']);
 
 $smarty->display(vtlib_getModuleTemplate($currentModule, 'SMSNotifierComposeWizard.tpl'));
 

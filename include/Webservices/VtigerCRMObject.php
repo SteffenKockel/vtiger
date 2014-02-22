@@ -63,14 +63,20 @@ class VtigerCRMObject{
 	
 	private function getObjectTypeId($objectName){
 		
-		global $adb;
+		// Use getTabid API
+		$tid = getTabid($objectName);
+
+		if($tid === false) {
+			global $adb;
 		
-		$sql = "select * from vtiger_tab where name=?;";
-		$params = array($objectName);
-		$result = $adb->pquery($sql, $params);
-		$data1 = $adb->fetchByAssoc($result,1,false);
+			$sql = "select * from vtiger_tab where name=?;";
+			$params = array($objectName);
+			$result = $adb->pquery($sql, $params);
+			$data1 = $adb->fetchByAssoc($result,1,false);
 		
-		$tid = $data1["tabid"];
+			$tid = $data1["tabid"];
+		}
+		// END
 		
 		return $tid;
 		

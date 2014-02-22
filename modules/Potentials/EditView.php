@@ -25,9 +25,9 @@ $smarty->assign("SEARCH", $searchurl);
 
 if(isset($_REQUEST['record']) && $_REQUEST['record'] != ''){
     $focus->id = $_REQUEST['record'];
-    $focus->mode = 'edit'; 	
+    $focus->mode = 'edit';
     $focus->retrieve_entity_info($_REQUEST['record'],"Potentials");
-    $focus->name=$focus->column_fields['potentialname'];	
+    $focus->name=$focus->column_fields['potentialname'];
 }
 
 //adding support for uitype 10
@@ -39,7 +39,7 @@ if(!empty($_REQUEST['contact_id'])){
 
 if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 	$focus->id = "";
-    	$focus->mode = ''; 	
+    	$focus->mode = '';
 }
 if(empty($_REQUEST['record']) && $focus->mode != 'edit'){
 	setObjectValuesFromRequest($focus);
@@ -75,9 +75,9 @@ $log->info("Potential detail view");
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);
 
-if (isset($focus->name)) 
+if (isset($focus->name))
 $smarty->assign("NAME", $focus->name);
-else 
+else
 $smarty->assign("NAME", "");
 
 if(isset($cust_fld))
@@ -88,21 +88,20 @@ if($focus->mode == 'edit')
 {
 	$smarty->assign("UPDATEINFO",updateInfo($focus->id));
 	$smarty->assign("MODE", $focus->mode);
-}		
-
-
+}
+$smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
 
 // Unimplemented until jscalendar language vtiger_files are fixed
 $smarty->assign("CALENDAR_LANG", $app_strings['LBL_JSCALENDAR_LANG']);
 $smarty->assign("CALENDAR_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 
-if (isset($_REQUEST['return_module'])) 
+if (isset($_REQUEST['return_module']))
 $smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
-if (isset($_REQUEST['return_action'])) 
+if (isset($_REQUEST['return_action']))
 $smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
-if (isset($_REQUEST['return_id'])) 
+if (isset($_REQUEST['return_id']))
 $smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
-if (isset($_REQUEST['return_viewname'])) 
+if (isset($_REQUEST['return_viewname']))
 $smarty->assign("RETURN_VIEWNAME", vtlib_purify($_REQUEST['return_viewname']));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);

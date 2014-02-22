@@ -51,7 +51,8 @@ $cfimagecombo = Array($image_path."text.gif",
                         $image_path."checkbox.gif",
                         $image_path."text.gif",
                         $image_path."cfpicklist.gif",
-						$image_path."skype.gif");
+						$image_path."skype.gif",
+						$image_path."time.PNG");
 
 $cftextcombo = Array($mod_strings['Text'],
                         $mod_strings['Number'],
@@ -65,7 +66,8 @@ $cftextcombo = Array($mod_strings['Text'],
                         $mod_strings['LBL_CHECK_BOX'],
                         $mod_strings['LBL_TEXT_AREA'],
                         $mod_strings['LBL_MULTISELECT_COMBO'],
-						$mod_strings['Skype']
+						$mod_strings['Skype'],
+						$mod_strings['Time']
 				);	
 				
 $typeVal = Array(
@@ -80,7 +82,8 @@ $typeVal = Array(
 	'8'=>'URL',
 	'9'=>'Checkbox',
 	'11'=>'MultiSelectCombo',
-	'12'=>'Skype');
+	'12'=>'Skype',
+	'13'=>'Time');
 if(isset($fieldid) && $fieldid!='')
 {
 	$mode='edit';

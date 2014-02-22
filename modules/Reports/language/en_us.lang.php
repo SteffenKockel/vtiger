@@ -13,8 +13,8 @@
  * Contributor(s): ______________________________________.
  ********************************************************************************/
 /*********************************************************************************
- * $Header:  
- * Description:  Defines the English language pack for the Account module.
+ * $Header:
+ * Description:  Defines the English language pack for the Reports module.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
@@ -116,9 +116,9 @@ $mod_strings = Array(
 'LBL_RENAME_FOLDER'=>'Rename Folder',
 'LBL_DELETE_FOLDER'=>'Delete Folder',
 
-'Account and Contact Reports'=>'Account and Contact Reports',
+'Account and Contact Reports'=>'Organization and Contact Reports',
 'Lead Reports'=>'Lead Reports',
-'Potential Reports'=>'Potential Reports',
+'Potential Reports'=>'Opportunity Reports',
 'Activity Reports'=>'Activity Reports',
 'HelpDesk Reports'=>'Trouble Tickets Reports',
 'Product Reports'=>'Product Reports',
@@ -126,18 +126,18 @@ $mod_strings = Array(
 'PurchaseOrder Reports'=>'PurchaseOrder Reports',
 'SalesOrder Reports'=>'SalesOrder Reports', //Added for SO
 'Invoice Reports'=>'Invoice Reports',
-'Campaign Reports'=>'Campaign Reports', //Added for Campaigns 
-'Contacts by Accounts'=>'Contacts by Accounts',
-'Contacts without Accounts'=>'Contacts without Accounts',
-'Contacts by Potentials'=>'Contacts by Potentials',
-'Contacts related to Accounts'=>'Contacts related to Accounts',
-'Contacts not related to Accounts'=>'Contacts not related to Accounts',
-'Contacts related to Potentials'=>'Contacts related to Potentials',
+'Campaign Reports'=>'Campaign Reports', //Added for Campaigns
+'Contacts by Accounts'=>'Contacts by Organizations',
+'Contacts without Accounts'=>'Contacts without Organizations',
+'Contacts by Potentials'=>'Contacts by Opportunities',
+'Contacts related to Accounts'=>'Contacts related to Organizations',
+'Contacts not related to Accounts'=>'Contacts not related to Organizations',
+'Contacts related to Potentials'=>'Contacts related to Opportunities',
 'Lead by Source'=>'Lead by Source',
 'Lead Status Report'=>'Lead Status Report',
-'Potential Pipeline'=>'Potential Pipeline',
-'Closed Potentials'=>'Closed Potentials',
-'Potential that have Won'=>'Potential that have Won',
+'Potential Pipeline'=>'Opportunity Pipeline',
+'Closed Potentials'=>'Closed Opportunities',
+'Potential that have Won'=>'Opportunity that have Won',
 'Tickets by Products'=>'Tickets by Products',
 'Tickets by Priority'=>'Tickets by Priority',
 'Open Tickets'=>'Open Tickets',
@@ -163,10 +163,10 @@ $mod_strings = Array(
 'Create_Reports'=>'Create Reports',
 'Create_New_Folder'=>'Create New Folder',
 'Move_Reports'=>'Move Reports',
-'Delete_Report'=>'Delete Report', 
+'Delete_Report'=>'Delete Report',
 
 'Custom'=>'Custom',
-'Previous FY'=>'Previous FY', 
+'Previous FY'=>'Previous FY',
 'Current FY'=>'Current FY',
 'Next FY'=>'Next FY',
 'Previous FQ'=>'Previous FQ',
@@ -224,8 +224,12 @@ $mod_strings = Array(
 'NO_REL_MODULES'=>'No Related Modules for the Selected Module',
 'LBL_REPORT_GENERATION_FAILED'=>'Report generation failed!',
 
+'LBL_OR'=>'or',
+'LBL_NEW_GROUP'=>'New Group',
+'LBL_DELETE_GROUP'=>'Delete Group',
+'LBL_NEW_CONDITION'=>'New Condition',
 'LBL_SHARING_TYPE'=>'Sharing Type',
-'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Select Sharing Type to Control Access to the Report', 
+'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Select Sharing Type to Control Access to the Report',
 'LBL_ACTION' => 'Action',
 'LBL_VIEW_DETAILS' => 'View Details',
 'LBL_SHOW_STANDARD_FILTERS' => 'Show Standard Filters',
@@ -266,6 +270,19 @@ $mod_strings = Array(
 
 'LBL_SAVE_REPORT' => 'Save',
 'LBL_SAVE_REPORT_AS' => 'Save Report as...',
+
+//Report Charts
+'LBL_VIEW_CHARTS' => 'View Charts',
+'LBL_ADD_CHARTS' => 'Add Chart To HomePage',
+'LBL_HOME_REPORT_NAME' => 'Report Name',
+'LBL_HOME_HORIZONTAL_BARCHART' => 'Horizontal BarChart',
+'LBL_HOME_VERTICAL_BARCHART' => 'Vertical BarChart',
+'LBL_HOME_PIE_CHART' => 'Pie Chart',
+'LBL_HOME_REPORT_TYPE' => 'Report Type',
+'LBL_HOME_WINDOW_TITLE' => 'Window Title',
+'LBL_GROUPING_TIME' => 'Group By Time',
+'LBL_WIDGET_ADDED' => 'Widget Added Successfully.',
+'LBL_UNDEFINED' => 'Undefined',
 )
 
 ?>

@@ -15,6 +15,7 @@ $mod_strings = Array(
 	'Call From'=>'Call From',
 	'Call To'=>'Call To',
 	'Time Of Call'=>'Time Of Call',
+	'PBXManager ID'=>'PBX Manager ID',
 );
 
 ?>

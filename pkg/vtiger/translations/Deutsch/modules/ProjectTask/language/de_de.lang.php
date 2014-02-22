@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 $mod_strings = Array(
 
     'LBL_MODULE_NAME'=>'Projektaufgaben',
@@ -48,6 +47,7 @@ $mod_strings = Array(
     'Project Task Name' => 'Aufgabenname',
     'Project Task No' => 'Aufgabennr.',
     'Project Task Number' => 'Aufgaben Code',
+	'ProjectTask ID'=>'Projektaufgaben-ID',    
 );
 
 ?>

@@ -5,7 +5,7 @@
 <label>WSAPP</label>
 <parent></parent>
 <type>extension</type>
-<version>3.4.1</version>
+<version>3.4.4</version>
 <dependencies>
 <vtiger_version>5.1.0</vtiger_version>
 </dependencies>
@@ -18,12 +18,26 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/]]></inline></license>
+<migrations>
+	<migration version='3.4.4'>
+		<tables>
+			<table>
+				<name>vtiger_wsapp</name>
+				<sql><![CDATA[ALTER TABLE vtiger_wsapp MODIFY COLUMN name varchar(200) NOT NULL]]></sql>
+			</table>
+			<table>
+				<name>vtiger_wsapp_handlerdetails</name>
+				<sql><![CDATA[ALTER TABLE vtiger_wsapp_handlerdetails MODIFY COLUMN type varchar(200) NOT NULL]]></sql>
+			</table>
+		</tables>
+	</migration>
+</migrations>
 <tables>
 <table>
 <name>vtiger_wsapp</name>
 <sql><![CDATA[CREATE TABLE `vtiger_wsapp` (
   `appid` int(11) NOT NULL auto_increment,
-  `name` varchar(20) default NULL,
+  `name` varchar(200) NOT NULL,
   `appkey` varchar(255) default NULL,
   `type` varchar(100) default NULL,
   PRIMARY KEY  (`appid`)
@@ -45,7 +59,7 @@
 <table>
 <name>vtiger_wsapp_handlerdetails</name>
 <sql><![CDATA[CREATE TABLE `vtiger_wsapp_handlerdetails` (
-  `type` varchar(20) default NULL,
+  `type` varchar(200) NOT NULL,
   `handlerclass` varchar(100) default NULL,
   `handlerpath` varchar(300) default NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
@@ -57,6 +71,16 @@
   `details` varchar(300) default NULL,
   `flag` varchar(100) default NULL,
   `appid` int(19) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_wsapp_sync_state</name>
+<sql><![CDATA[CREATE TABLE `vtiger_wsapp_sync_state` (
+	`id` int(19) NOT NULL auto_increment,
+	`name` varchar(200) default NULL,
+	`stateencodedvalues` varchar(300) NOT NULL,
+	`userid` int(19) default NULL,
+	PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 </table>
 </tables>

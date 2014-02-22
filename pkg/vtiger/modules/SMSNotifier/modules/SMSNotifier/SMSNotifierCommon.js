@@ -54,39 +54,66 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 		},
 		
 		displaySelectWizard : function(sourcenode, sourcemodule, recordid) {
-			
 			var idstring = false;
 			
 			// Record id not sent directly? Could be from ListView
 			if(typeof(recordid) == 'undefined' || recordid == null || recordid == '') {
+				var excludedRecords = document.getElementById("excludedRecords").value;
 				var select_options = document.getElementById('allselectedboxes').value;
-				var x = select_options.split(';');
-				var count = x.length;
-				
-				if(count > 1) {
-					idstring=select_options;
-				} else {
-					alert(alert_arr.SELECT);
-					return false;
+				var searchurl = document.getElementById('search_url').value;
+				var numOfRows = document.getElementById('numOfRows').value;
+				var viewid = getviewId();
+				if(select_options != 'all'){
+					var x = select_options.split(';');
+					var count = x.length;
+                                
+					if(count > 1) {
+						idstring = select_options;
+					} else {
+						alert(alert_arr.SELECT);
+						return false;
+					}
+				}else{
+					idstring = select_options;
+					count = numOfRows;
 				}
 			} else {
 				// Record id sent? Could be from DetailView
 				idstring = recordid;
 			}
+			if(count > getMaxMassOperationLimit()) {
+				var confirm_str = alert_arr.MORE_THAN_500;
+				if(confirm(confirm_str)) {
+					var confirm_status = true;
+				} else {
+					return false;
+				}
+			} else {
+				confirm_status = true;
+			}
+
+			if(confirm_status){
 	
-			if(idstring) {
-				var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierSelectWizard';
-				url += '&sourcemodule=' + encodeURIComponent(sourcemodule);			
-				url += '&idstring=' + encodeURIComponent(idstring);
+				if(idstring) {
+					var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierSelectWizard';
+					url += '&sourcemodule=' + encodeURIComponent(sourcemodule);
+					url += '&idstring=' + encodeURIComponent(idstring);
+					url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
+					url += '&viewname=' +encodeURIComponent(viewid);
+					url += '&searchurl=' +encodeURIComponent(searchurl);
 							
-				new Ajax.Request('index.php', {
-					queue: {position: 'end', scope: 'command'},
-					method: 'post',
-					postBody:url,
-					onComplete: function(response) {					
-						SMSNotifierCommon.buildSelectWizard(response.responseText, sourcenode);					
-					}
-				});
+					new Ajax.Request('index.php', {
+						queue: {
+							position: 'end',
+							scope: 'command'
+						},
+						method: 'post',
+						postBody:url,
+						onComplete: function(response) {
+							SMSNotifierCommon.buildSelectWizard(response.responseText, sourcenode);
+						}
+					});
+				}
 			}
 		},
 		
@@ -111,6 +138,9 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 			// Variables to submit for next wizard
 			var phonefields = '';
 			var idstring = form.idstring.value;
+            var excludedRecords = form.excludedRecords.value;
+            var viewid = form.viewid.value;
+            var searchurl = form.searchurl.value;
 			var sourcemodule = form.sourcemodule.value;
 			
 			// Gather the phone fields selected.
@@ -128,6 +158,9 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 			var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierComposeWizard';			
 			url += '&sourcemodule=' + encodeURIComponent(sourcemodule);			
 			url += '&idstring=' + encodeURIComponent(idstring);
+            url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
+            url += '&viewname=' +encodeURIComponent(viewid);
+            url += '&searchurl=' +encodeURIComponent(searchurl);
 			url += '&phonefields='+ encodeURIComponent(phonefields);
 			
 			new Ajax.Request('index.php', {
@@ -162,6 +195,9 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 			// Variables to submit for next wizard
 			var phonefields = form.phonefields.value;
 			var idstring = form.idstring.value;
+            var excludedRecords = form.excludedRecords.value;
+            var viewid = form.viewid.value;
+            var searchurl = form.searchurl.value;
 			var sourcemodule = form.sourcemodule.value;
 			var message = messageTextInput.value;
 			
@@ -174,6 +210,9 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 			url += '&idstring=' + encodeURIComponent(idstring);
 			url += '&phonefields='+ encodeURIComponent(phonefields);
 			url += '&message=' + encodeURIComponent(message);
+            url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
+            url += '&viewname=' +encodeURIComponent(viewid);
+            url += '&searchurl=' +encodeURIComponent(searchurl);
 			
 			new Ajax.Request('index.php', {
 				queue: {position: 'end', scope: 'command'},
@@ -186,8 +225,6 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 					VtigerJS_DialogBox.unblock();
 				}
 			});
-			
 		}
-		
 	};
 }

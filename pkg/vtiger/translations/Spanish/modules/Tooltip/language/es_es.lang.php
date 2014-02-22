@@ -12,6 +12,7 @@
 
 $mod_strings = Array (
 'Tooltip' => 'Ayuda rápida',
+'SINGLE_Tooltip' => 'Ayuda rápida',
 'LBL_TOOLTIP_MANAGEMENT'=>'Administración de Ayudas',
 'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Administra los mensajes de ayuda aqui',
 'LBL_TOOLTIP_HELP_TEXT'=>'Selecciona los campos a mostrar como ayuda',

@@ -1,0 +1,88 @@
+<?php
+/*+***********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ *************************************************************************************/
+
+$mod_strings = array (
+	'Import' => 'Importar',
+	'LBL_IMPORT_STEP_1' => 'Passo 1',
+	'LBL_IMPORT_STEP_2' => 'Passo 2',
+	'LBL_IMPORT_STEP_3' => 'Passo 3',
+	'LBL_IMPORT_STEP_4' => 'Passo 4',
+	'LBL_IMPORT_STEP_1_DESCRIPTION' => 'Selecione o Arquivo',
+	'LBL_IMPORT_STEP_2_DESCRIPTION' => 'Defina no Formato',
+	'LBL_IMPORT_STEP_3_DESCRIPTION' => 'Manipulação de Registros Duplicados',
+	'LBL_IMPORT_STEP_4_DESCRIPTION' => 'Mapear as Colunas dos Campos do Módulo',
+	'Skip' => 'Pular',
+	'Overwrite' => 'Sobrescrever',
+	'Merge' => 'Mesclar',
+	'LBL_IMPORT_SUPPORTED_FILE_TYPES' => 'Tipo(s) de Arquivos Suportados: .CSV, .VCF',
+	'LBL_IMPORT_STEP_3_DESCRIPTION_DETAILED' => 'Selecionar esta opção para habilitar e definir o critério para mesclar registros duplicados',
+	'LBL_CHARACTER_ENCODING' => 'Codificação do Caracter',
+	'LBL_DELIMITER' => 'Delimitador',
+	'LBL_HAS_HEADER' => 'Tem Cabeçalho',
+	'LBL_SPECIFY_MERGE_TYPE' => 'Selecione como os registros duplicados devem ser manuseados',
+	'LBL_SELECT_MERGE_FIELDS' => 'SSelecione os campos correspondentes para encontrar registros duplicados',
+	'LBL_AVAILABLE_FIELDS' => 'Campos Disponíveis',
+	'LBL_SELECTED_FIELDS' => 'Campos para serem encontrados em',
+	'UTF-8' => 'UTF-8',
+	'ISO-8859-1' => 'ISO-8859-1',
+	'comma' => ', (vírgula)',
+	'semicolon' => '; (ponto e vírgula)',
+	'LBL_USE_SAVED_MAPPING' => 'Utilizar Mapeamento Salvo',
+	'LBL_SAVE_AS_CUSTOM_MAPPING' => 'Salvar como Mapeamento Customizado',
+	'LBL_FILE_COLUMN_HEADER' => 'Cabeçalho',
+	'LBL_ROW_1' => 'Linha 1',
+	'LBL_CRM_FIELDS' => 'Campos do CRM',
+	'LBL_DEFAULT_VALUE' => 'Valores Padrões',
+	'LBL_IMPORT_BUTTON_LABEL' => 'Importar',
+	'LBL_TOTAL_RECORDS_IMPORTED' => 'Número total de registros importados',
+	'LBL_TOTAL_RECORDS_FAILED' => 'Número toral de registros falhos',
+	'LBL_NUMBER_OF_RECORDS_CREATED' => 'Número de registros criados',
+	'LBL_NUMBER_OF_RECORDS_UPDATED' => 'Número de registros sobrescritos',
+	'LBL_NUMBER_OF_RECORDS_SKIPPED' => 'Número de registros pulados',
+	'LBL_UNDO_LAST_IMPORT' => 'Desfazer Última Importação',
+	'LBL_VIEW_LAST_IMPORTED_RECORDS' => 'Últimos Registros Importados',
+	'LBL_IMPORT_MORE' => 'Importar Mais',
+	'LBL_FINISH_BUTTON_LABEL' => 'Final',
+	'LBL_RESULT' => 'Resultado',
+	'ERR_FILE_DOESNT_EXIST' => "O arquivo não existe",
+	'ERR_CANT_OPEN_FILE' => "Não é possível abrir o arquivo para leitura",
+	'ERR_UNIMPORTED_RECORDS_IN_QUEUE' => 'O Usuário ainda tem registros não importados na fila',
+	'ERR_FILE_READ_FAILED' => 'Falha ao ler o arquivo',
+	'LBL_IMPORT_SCHEDULED' => 'Importação Agendada',
+	'LBL_SCHEDULED_IMPORT_DETAILS' => 'Sua importação foi agendada e você receberá um email assim que a importação for concluída. <br>
+										Por favor, certifique-se de que o Servidor de Envio de Mensagens e seu endereço de email estejam configurados para receber notificação por email',
+	'ERR_DETAILS_BELOW' => 'Os detalhes encontram-se listados abaixo',
+	'LBL_ERROR' => 'Erro',
+	'LBL_OK_BUTTON_LABEL' => 'OK',
+	'TOTAL_RECORDS' => 'Número total de registros',
+	'LBL_NUMBER_OF_RECORDS_DELETED' => 'Número de registros apagados',
+	'LBL_NUMBER_OF_RECORDS_MERGED' => 'Número de registros mesclados',
+	'LBL_TOTAL_RECORDS' => 'Número Total de Registros',
+	'LBL_UNDO_RESULT' => 'Desfazer Resultado da Importação',
+	'LBL_LAST_IMPORTED_RECORDS' => 'Últimos Registros Importados',
+	'LBL_NO_ROWS_FOUND' => 'Nenhuma Linha Encontrada',
+	'ERR_UNIMPORTED_RECORDS_EXIST' => 'Existem alguns registros não importados na fila de importação bloqueando a importação de mais dados. <br>
+										Limpe os dados para começar nova importação',
+	'ERR_FAILED_TO_LOCK_MODULE' => 'Falha ao bloquear o módulo para importação. Tente novamente mais tarde',
+	'LBL_RUNNING' => 'Executando',
+	'LBL_CLEAR_DATA' => 'Limpar Dados',
+	'ERR_MODULE_IMPORT_LOCKED' => 'Você não tem permissão para importar para este módulo agora, uma outra importação enconta-se em andamento. Tente novamente mais tarde.',
+	'LBL_MODULE_NAME' => 'Módulo',
+	'LBL_USER_NAME' => 'Usuário',
+	'LBL_LOCKED_TIME' => 'Data Bloqueada',
+	'LBL_CANCEL_IMPORT' => 'Cancelar Importação',
+	'ERR_IMPORT_INTERRUPTED' => 'A importação atual foi interrompida. Por favor, tente novamente mais tarde.',
+
+	'LBL_INVALID_FILE' => 'Arquivo Inválido',
+	'LBL_FILE_TYPE' => 'Tipo Arquivo',
+	'csv' => 'CSV',
+	'vcf' => 'VCard',
+);
+?>

@@ -17,12 +17,12 @@
 <input type="hidden" name="advft_criteria" id="advft_criteria" value="" />
 <input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value="" />
 
-<script language="JavaScript" type="text/JavaScript"> 
+<script language="JavaScript" type="text/JavaScript">
 function addColumnConditionGlue(columnIndex) {ldelim}
 
 	var columnConditionGlueElement = document.getElementById('columnconditionglue_'+columnIndex);
-	
-	if(columnConditionGlueElement) {ldelim}		
+
+	if(columnConditionGlueElement) {ldelim}
 		columnConditionGlueElement.innerHTML = "<select name='fcon"+columnIndex+"' id='fcon"+columnIndex+"' class='detailedViewTextBox'>"+
 													"<option value='and'>{'LBL_CRITERIA_AND'|@getTranslatedString:$MODULE}</option>"+
 													"<option value='or'>{'LBL_CRITERIA_OR'|@getTranslatedString:$MODULE}</option>"+
@@ -31,9 +31,9 @@ function addColumnConditionGlue(columnIndex) {ldelim}
 {rdelim}
 
 function addConditionRow(groupIndex) {ldelim}
-		
+
 	var groupColumns = column_index_array[groupIndex];
-	if(typeof(groupColumns) != 'undefined') {ldelim} 		
+	if(typeof(groupColumns) != 'undefined') {ldelim}
 		for(var i=groupColumns.length - 1; i>=0; --i) {ldelim}
 			var prevColumnIndex = groupColumns[i];
 			if(document.getElementById('conditioncolumn_'+groupIndex+'_'+prevColumnIndex)) {ldelim}
@@ -42,16 +42,16 @@ function addConditionRow(groupIndex) {ldelim}
 			{rdelim}
 		{rdelim}
 	{rdelim}
-	
+
 	var columnIndex = advft_column_index_count+1;
 	var nextNode = document.getElementById('groupfooter_'+groupIndex);
-	
+
 	var newNode = document.createElement('tr');
 	newNodeId = 'conditioncolumn_'+groupIndex+'_'+columnIndex;
   	newNode.setAttribute('id',newNodeId);
   	newNode.setAttribute('name','conditionColumn');
 	nextNode.parentNode.insertBefore(newNode, nextNode);
-	
+
 	node1 = document.createElement('td');
 	node1.setAttribute('class', 'dvtCellLabel');
 	node1.setAttribute('width', '25%');
@@ -75,7 +75,7 @@ function addConditionRow(groupIndex) {ldelim}
 							'<option value="">{'LBL_NONE'|@getTranslatedString:$MODULE}</option>'+
 							'{$FOPTION}'+
 						'</select>';
-	
+
 	node3 = document.createElement('td');
 	node3.setAttribute('class', 'dvtCellLabel');
 	newNode.appendChild(node3);
@@ -95,7 +95,7 @@ function addConditionRow(groupIndex) {ldelim}
 												'</td>'+
 											'</tr>'+
 										'</table>'+
-							
+
 										'<table width="100%" cellspacing="0" cellpadding="0" border="0" class="small">'+
 											'<tr>'+
 												'<td>'+
@@ -109,7 +109,7 @@ function addConditionRow(groupIndex) {ldelim}
 												        		'</select>'+
 															'</td>'+
 														'</tr>'+
-													'</table>'+	
+													'</table>'+
 													'<!-- save cancel buttons -->'+
 													'<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerPopupTransport">'+
 														'<tr>'+
@@ -117,7 +117,7 @@ function addConditionRow(groupIndex) {ldelim}
 																'<input type="button" style="width: 70px;" value="{$APP.LBL_DONE}" name="button" onclick="hideAllElementsByName(\'relFieldsPopupDiv\');" class="crmbutton small create" accesskey="X" title="{$APP.LBL_DONE}"/>'+
 															'</td>'+
 														'</tr>'+
-													'</table>'+	
+													'</table>'+
 												'</td>'+
 											'</tr>'+
 										'</table>'+
@@ -129,13 +129,13 @@ function addConditionRow(groupIndex) {ldelim}
 		node3.innerHTML = '<input name="fval'+columnIndex+'" id="fval'+columnIndex+'" class="repBox" type="text" value="">'+
 						'<input type="image" align="absmiddle" style="cursor: pointer;" onclick="document.getElementById(\'fval'+columnIndex+'\').value=\'\';return false;" language="javascript" title="{$APP.LBL_CLEAR}" alt="{$APP.LBL_CLEAR}" src="themes/images/clear_field.gif"/>';
 	{/if}
-	
+
 	node4 = document.createElement('td');
 	node4.setAttribute('class', 'dvtCellLabel');
 	node4.setAttribute('id', 'columnconditionglue_'+columnIndex);
 	node4.setAttribute('width', '60px');
 	newNode.appendChild(node4);
-	
+
 	node5 = document.createElement('td');
 	node5.setAttribute('class', 'dvtCellLabel');
 	node5.setAttribute('width', '30px');
@@ -143,7 +143,7 @@ function addConditionRow(groupIndex) {ldelim}
 	node5.innerHTML = '<a onclick="deleteColumnRow('+groupIndex+','+columnIndex+');" href="javascript:;">'+
 							'<img src="themes/images/delete.gif" align="absmiddle" title="{$MOD.LBL_DELETE}..." border="0">'+
 						'</a>';
-	
+
 	if(document.getElementById('fcol'+columnIndex)) updatefOptions(document.getElementById('fcol'+columnIndex), 'fop'+columnIndex);
 	if(typeof(column_index_array[groupIndex]) == 'undefined') column_index_array[groupIndex] = [];
 	column_index_array[groupIndex].push(columnIndex);
@@ -152,7 +152,7 @@ function addConditionRow(groupIndex) {ldelim}
 {rdelim}
 
 function addGroupConditionGlue(groupIndex) {ldelim}
-	
+
 	var groupConditionGlueElement = document.getElementById('groupconditionglue_'+groupIndex);
 	if(groupConditionGlueElement) {ldelim}
 		groupConditionGlueElement.innerHTML = "<select name='gpcon"+groupIndex+"' id='gpcon"+groupIndex+"' class='small'>"+
@@ -163,7 +163,7 @@ function addGroupConditionGlue(groupIndex) {ldelim}
 {rdelim}
 
 function addConditionGroup(parentNodeId) {ldelim}
-	
+
 	for(var i=group_index_array.length - 1; i>=0; --i) {ldelim}
 		var prevGroupIndex = group_index_array[i];
 		if(document.getElementById('conditiongroup_'+prevGroupIndex)) {ldelim}
@@ -171,15 +171,15 @@ function addConditionGroup(parentNodeId) {ldelim}
 			break;
 		{rdelim}
 	{rdelim}
-	
+
 	var groupIndex = advft_group_index_count+1;
-	var parentNode = document.getElementById(parentNodeId);	
-	
+	var parentNode = document.getElementById(parentNodeId);
+
 	var newNode = document.createElement('div');
 	newNodeId = 'conditiongroup_'+groupIndex;
   	newNode.setAttribute('id',newNodeId);
   	newNode.setAttribute('name','conditionGroup');
-  	
+
   	newNode.innerHTML = "<table class='small crmTable' border='0' cellpadding='5' cellspacing='1' width='100%' valign='top' id='conditiongrouptable_"+groupIndex+"'>"+
 							"<tr id='groupheader_"+groupIndex+"'>"+
 								"<td colspan='5' align='right'>"+
@@ -198,7 +198,7 @@ function addConditionGroup(parentNodeId) {ldelim}
 						"</table>";
 
 	parentNode.appendChild(newNode);
-	
+
 	group_index_array.push(groupIndex);
 	advft_group_index_count++;
 {rdelim}
@@ -207,7 +207,7 @@ function addConditionGroup(parentNodeId) {ldelim}
 <div style="overflow:auto;" id='adv_filter_div' name='adv_filter_div'>
 	<table class="small" border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tr>
-			<td class="detailedViewHeader"><b>{'LBL_ADVANCED_FILTER'|@getTranslatedString:$MODULE}</b></td>
+			<td class="detailedViewHeader" align="left"><b>{'LBL_ADVANCED_FILTER'|@getTranslatedString:$MODULE}</b></td>
 		</tr>
 		<tr>
 			<td colspan="2" align="right">
@@ -231,8 +231,8 @@ function addConditionGroup(parentNodeId) {ldelim}
 			{if $SOURCE eq 'reports'}
 				updateRelFieldOptions(conditionColumnRowElement, 'fval_'+advft_column_index_count);
 			{/if}
-			
-			var columnvalue = "{$COLUMN_CRITERIA.value}";
+
+			var columnvalue = "{$COLUMN_CRITERIA.value|@addslashes}";
 			if('{$COLUMN_CRITERIA.comparator}' == 'bw' && columnvalue != '') {ldelim}
 				var values = columnvalue.split(",");
 				document.getElementById('fval'+advft_column_index_count).value = values[0];
@@ -244,7 +244,7 @@ function addConditionGroup(parentNodeId) {ldelim}
 		</script>
 		{/foreach}
 		{foreach key=COLUMN_INDEX item=COLUMN_CRITERIA from=$GROUP_COLUMNS}
-		<script type="text/javascript">				
+		<script type="text/javascript">
 			if(document.getElementById('fcon{$COLUMN_INDEX}')) document.getElementById('fcon{$COLUMN_INDEX}').value = '{$COLUMN_CRITERIA.column_condition}';
 		</script>
 		{/foreach}

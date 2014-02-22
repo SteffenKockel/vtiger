@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|20/10/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 13/04/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 /**
  * this file can be used to internationalise the strings present in the picklist
@@ -29,7 +29,7 @@ $mod_strings = array(
 	'LBL_ADD_TO_OTHER_ROLES'=>'Adicionar outra Função',
 	'LBL_OK_BUTTON_LABEL'=>'Ok',
 	'LBL_SELECT_ROLES'=>'Selecionar Função',
-	'LBL_DISPLAYED_VALUES'=>'Todos os valores acessíveis para a função apresentada abaixo',
+	'LBL_DISPLAYED_VALUES'=>'Todos os valores acessíveis para a função estão apresentados abaixo',
 
 	// For Dependency picklist
 	'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Configurar Dependência Lista Opções',
@@ -46,5 +46,9 @@ $mod_strings = array(
 	'LBL_CONFIGURE_DEPENDENCY_HELP_2' => "Se você deseja visualizar ou alterar o mapeamento para os valores de outra Lista de Opções do campo Fonte, <br/>
 										então poderá selecionar os valores clicando sobre o botão <b>'Selecionar valores Fonte'</b> no lado direito",
 	'LBL_CONFIGURE_DEPENDENCY_HELP_3' => 'Os valores selecionados para os valores do campo Alvo, estão em destaque como',
+	'LBL_ADD_BUTTON' => 'Adicionar Item',
+	'LBL_EDIT_BUTTON' => 'Renomear Item',
+	'LBL_DELETE_BUTTON' => 'Apagar Item',
+	'NTC_DELETE_CONFIRMATION'=>'Tem certeza que deseja apagar esta dependência da Lista de Opções?',
 );
 ?>

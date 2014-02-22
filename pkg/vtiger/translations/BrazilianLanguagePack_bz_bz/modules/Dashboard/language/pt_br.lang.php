@@ -14,10 +14,10 @@
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Dashboard/language/en_us.lang.php,v 1.4 2005/01/25 06:01:38 jack Exp $
- * Description:  Defines the English language pack for the Account module.
+ * Description:  Defines the English language pack for the DashBoard module.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -58,21 +58,21 @@ $mod_strings = Array(
 "leadstatus" => "Leads por Status",
 "leadindustry" => "Leads por Atividade",
 "salesbyleadsource" => "Vendas por Fonte Lead",
-"salesbyaccount" => "Vendas por Contas",
+"salesbyaccount" => "Vendas por Organização",
 "salesbyuser" => "Vendas por Usuário",
 "salesbyteam"=>"Vendas por Equipe",
-"accountindustry" => "Contas por Atividade",
+"accountindustry" => "Organizações por Atividade",
 "productcategory" => "Produtos por Categoria",
 "productbyqtyinstock" => "Produtos por Quantidade em Estoque",
 "productbypo" => "Produtos por Pedido Compra",
 "productbyquotes" => "Produtos por Cotação",
 "productbyinvoice" => "Produtos por Fatura",
-"sobyaccounts" => "Pedidos Vendas por Contas",
+"sobyaccounts" => "Pedidos Vendas por Organização",
 "sobystatus" => "Pedidos Vendas por Status",
 "pobystatus" => "Pedido Compra por Status",
-"quotesbyaccounts" => "Cotações por Contas",
+"quotesbyaccounts" => "Cotações por Organização",
 "quotesbystage" => "Cotações por Estágio",
-"invoicebyacnts" => "Faturas por Contas",
+"invoicebyacnts" => "Faturas por Organização",
 "invoicebystatus" => "Faturas por Status",
 "ticketsbystatus" => "Tickets por Status",
 "ticketsbypriority" => "Tickets por Prioridade",
@@ -81,7 +81,7 @@ $mod_strings = Array(
 "ticketsbyteam"=>"Tickets por Equipe",
 "ticketsbyproduct"=>"Tickets por Produto",
 "contactbycampaign"=>"Contatos por Campanha",
-"ticketsbyaccount"=>"Tickets por Conta",
+"ticketsbyaccount"=>"Tickets por Organização",
 "ticketsbycontact"=>"Tickets por Contato",
 
 'LBL_DASHBRD_HOME'=>'Painel Principal',
@@ -178,7 +178,7 @@ $mod_strings = Array(
 "Prospecting"=>"Prospectando",
 "Qualification"=>"Qualificação",
 "Needs Analysis"=>"Necessita Análise",
-"Value Proposition"=>"Proposto Valor",
+"Value Proposition"=>"Proposta Valor",
 "Id. Decision Makers"=>"Identif. Decisor",
 "Perception Analysis"=>"Análise Percepção",
 "Proposal/Price Quote"=>"Proposta/Cotação",

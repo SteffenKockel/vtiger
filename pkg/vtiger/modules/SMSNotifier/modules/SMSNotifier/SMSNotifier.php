@@ -22,7 +22,7 @@ class SMSNotifier extends SMSNotifierBase {
 		$provider = SMSNotifierManager::getActiveProviderInstance();
 		return ($provider !== false);
 	}
-	
+
 	/**
 	 * Send SMS (Creates SMS Entity record, links it with related CRM record and triggers provider to send sms)
 	 *
@@ -45,49 +45,49 @@ class SMSNotifier extends SMSNotifierBase {
 
 		$moduleName = 'SMSNotifier';
 		$focus = CRMEntity::getInstance($moduleName);
-		
+
 		$focus->column_fields['message'] = $message;
-		$focus->column_fields['assigned_user_id'] = $ownerid;		
+		$focus->column_fields['assigned_user_id'] = $ownerid;
 		$focus->save($moduleName);
-		
+
 		if($linktoids !== false) {
-			
-			if($linktoModule !== false) {				
-				$focus->save_related_module( $moduleName, $focus->id, $linktoModule, $linktoids );
+
+			if($linktoModule !== false) {
+				relateEntities($focus, $moduleName, $focus->id, $linktoModule, $linktoids);
 			} else {
 				// Link modulename not provided (linktoids can belong to mix of module so determine proper modulename)
 				$linkidsetypes = $adb->pquery( "SELECT setype,crmid FROM vtiger_crmentity WHERE crmid IN (".generateQuestionMarks($linktoids) . ")", array($linktoids) );
 				if($linkidsetypes && $adb->num_rows($linkidsetypes)) {
 					while($linkidsetypesrow = $adb->fetch_array($linkidsetypes)) {
-						$focus->save_related_module( $moduleName, $focus->id, $linkidsetypesrow['setype'], $linkidsetypesrow['crmid']);
+						relateEntities($focus, $moduleName, $focus->id, $linkidsetypesrow['setype'], $linkidsetypesrow['crmid']);
 					}
 				}
 			}
 		}
 		$responses = self::fireSendSMS($message, $tonumbers);
-		$focus->processFireSendSMSResponse($responses);		
+		$focus->processFireSendSMSResponse($responses);
 	}
-	
+
 	/**
 	 * Detect the related modules based on the entity relation information for this instance.
 	 */
 	function detectRelatedModules() {
-		
+
 		global $adb, $current_user;
-		
+
 		// Pick the distinct modulenames based on related records.
 		$result = $adb->pquery("SELECT distinct setype FROM vtiger_crmentity WHERE crmid in (
-			SELECT relcrmid FROM vtiger_crmentityrel INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_crmentityrel.crmid 
+			SELECT relcrmid FROM vtiger_crmentityrel INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_crmentityrel.crmid
 			WHERE vtiger_crmentity.crmid = ? AND vtiger_crmentity.deleted=0)", array($this->id));
-		
+
 		$relatedModules = array();
-		
+
 		// Calculate the related module access (similar to getRelatedList API in DetailViewUtils.php)
-		if($result && $adb->num_rows($result)) {			
-			require('user_privileges/user_privileges_'.$current_user->id.'.php');	
-			while($resultrow = $adb->fetch_array($result)) {				
-				$accessCheck = false;				
-				$relatedTabId = getTabid($resultrow['setype']);				
+		if($result && $adb->num_rows($result)) {
+			require('user_privileges/user_privileges_'.$current_user->id.'.php');
+			while($resultrow = $adb->fetch_array($result)) {
+				$accessCheck = false;
+				$relatedTabId = getTabid($resultrow['setype']);
 				if($relatedTabId == 0) {
 					$accessCheck = true;
 				} else {
@@ -97,17 +97,17 @@ class SMSNotifier extends SMSNotifierBase {
 						}
 					}
 				}
-				
+
 				if($accessCheck) {
 					$relatedModules[$relatedTabId] = $resultrow['setype'];
-				} 
+				}
 			}
 		}
-		
+
 		return $relatedModules;
-	
+
 	}
-	
+
 	protected function isUserOrGroup($id) {
 		global $adb;
 		$result = $adb->pquery("SELECT 1 FROM vtiger_users WHERE id=?", array($id));
@@ -117,14 +117,14 @@ class SMSNotifier extends SMSNotifierBase {
 			return 'T';
 		}
 	}
-	
+
 	protected function smsAssignedTo() {
 		global $adb;
-		
+
 		// Determine the number based on Assign To
 		$assignedtoid = $this->column_fields['assigned_user_id'];
 		$type = $this->isUserOrGroup($assignedtoid);
-		
+
 		if($type == 'U'){
 			$userIds = array($assignedtoid);
 		}else {
@@ -133,9 +133,9 @@ class SMSNotifier extends SMSNotifierBase {
 			$getGroupObj->getAllUsersInGroup($assignedtoid);
       		$userIds = $getGroupObj->group_users;
 		}
-		
+
 		$tonumbers = array();
-		
+
 		if(count($userIds) > 0) {
 	       	$phoneSqlQuery = "select phone_mobile, id from vtiger_users WHERE status='Active' AND id in(". generateQuestionMarks($userIds) .")";
 	       	$phoneSqlResult = $adb->pquery($phoneSqlQuery, array($userIds));
@@ -144,26 +144,26 @@ class SMSNotifier extends SMSNotifierBase {
 	       		if(!empty($number)) {
 	       			$tonumbers[] = $number;
 	       		}
-	       	}      		
+	       	}
       	}
-		
+
       	if(!empty($tonumbers)) {
 			$responses = self::fireSendSMS($this->column_fields['message'], $tonumbers);
 			$this->processFireSendSMSResponse($responses);
       	}
-	}	
-	
+	}
+
 	private function processFireSendSMSResponse($responses) {
 
 		if(empty($responses)) return;
-		
+
 		global $adb;
-		
+
 		foreach($responses as $response) {
 			$responseID = '';
 			$responseStatus = '';
 			$responseStatusMessage = '';
-			
+
 			$needlookup = 1;
 			if($response['error']) {
 				$responseStatus = ISMSProvider::MSG_STATUS_FAILED;
@@ -177,22 +177,22 @@ class SMSNotifier extends SMSNotifierBase {
 				$responseStatusMessage = $response['statusmessage'];
 			}
 			$adb->pquery("INSERT INTO vtiger_smsnotifier_status(smsnotifierid,tonumber,status,statusmessage,smsmessageid,needlookup) VALUES(?,?,?,?,?,?)",
-				array($this->id,$response['to'],$responseStatus,$responseStatusMessage,$responseID,$needlookup)	
+				array($this->id,$response['to'],$responseStatus,$responseStatusMessage,$responseID,$needlookup)
 			);
 		}
 	}
-	
+
 	static function smsquery($record) {
 		global $adb;
 		$result = $adb->pquery("SELECT * FROM vtiger_smsnotifier_status WHERE smsnotifierid = ? AND needlookup = 1", array($record));
 		if($result && $adb->num_rows($result)) {
 			$provider = SMSNotifierManager::getActiveProviderInstance();
-			
+
 			while($resultrow = $adb->fetch_array($result)) {
 				$messageid = $resultrow['smsmessageid'];
-				
+
 				$response = $provider->query($messageid);
-				
+
 				if($response['error']) {
 					$responseStatus = ISMSProvider::MSG_STATUS_FAILED;
 					$needlookup = $response['needlookup'];
@@ -206,14 +206,14 @@ class SMSNotifier extends SMSNotifierBase {
 					$responseStatusMessage = $response['statusmessage'];
 				}
 
-				$adb->pquery("UPDATE vtiger_smsnotifier_status SET status=?, statusmessage=?, needlookup=? WHERE smsmessageid = ?", 
+				$adb->pquery("UPDATE vtiger_smsnotifier_status SET status=?, statusmessage=?, needlookup=? WHERE smsmessageid = ?",
 					array($responseStatus, $responseStatusMessage, $needlookup, $messageid));
 			}
 		}
 	}
-	
-	
-	
+
+
+
 	static function fireSendSMS($message, $tonumbers) {
 		global $log;
 		$provider = SMSNotifierManager::getActiveProviderInstance();
@@ -221,7 +221,7 @@ class SMSNotifier extends SMSNotifierBase {
 			return $provider->send($message, $tonumbers);
 		}
 	}
-	
+
 	static function getSMSStatusInfo($record) {
 		global $adb;
 		$results = array();
@@ -236,12 +236,12 @@ class SMSNotifier extends SMSNotifierBase {
 }
 
 class SMSNotifierManager {
-	
+
 	/** Server configuration management */
 	static function listAvailableProviders() {
 		return SMSProvider::listAll();
-	}	
-	
+	}
+
 	static function getActiveProviderInstance() {
 		global $adb;
 		$result = $adb->pquery("SELECT * FROM vtiger_smsnotifier_servers WHERE isactive = 1 LIMIT 1", array());
@@ -254,12 +254,12 @@ class SMSNotifierManager {
 				$provider->setParameter($k, $v);
 			}
 			$provider->setAuthParameters($resultrow['username'], $resultrow['password']);
-			
+
 			return $provider;
 		}
 		return false;
 	}
-	
+
 	static function listConfiguredServer($id) {
 		global $adb;
 		$result = $adb->pquery("SELECT * FROM vtiger_smsnotifier_servers WHERE id=?", array($id));
@@ -267,7 +267,7 @@ class SMSNotifierManager {
 			return $adb->fetch_row($result);
 		}
 		return false;
-	}	
+	}
 	static function listConfiguredServers() {
 		global $adb;
 		$result = $adb->pquery("SELECT * FROM vtiger_smsnotifier_servers", array());
@@ -278,16 +278,16 @@ class SMSNotifierManager {
 			}
 		}
 		return $servers;
-	}	
+	}
 	static function updateConfiguredServer($id, $frmvalues) {
 		global $adb;
 		$providertype = vtlib_purify($frmvalues['smsserver_provider']);
 		$username     = vtlib_purify($frmvalues['smsserver_username']);
 		$password     = vtlib_purify($frmvalues['smsserver_password']);
 		$isactive     = vtlib_purify($frmvalues['smsserver_isactive']);
-		
+
 		$provider = SMSProvider::getInstance($providertype);
-				
+
 		$parameters = '';
 		if($provider) {
 			$providerParameters = $provider->getRequiredParams();
@@ -300,15 +300,15 @@ class SMSNotifierManager {
 			}
 			$parameters = Zend_Json::encode($inputServerParams);
 		}
-		
+
 		if(empty($id)) {
 			$adb->pquery("INSERT INTO vtiger_smsnotifier_servers (providertype,username,password,isactive,parameters) VALUES(?,?,?,?,?)",
 				array($providertype, $username, $password, $isactive, $parameters));
 		} else {
 			$adb->pquery("UPDATE vtiger_smsnotifier_servers SET username=?, password=?, isactive=?, providertype=?, parameters=? WHERE id=?",
 				array($username, $password, $isactive, $providertype, $parameters, $id));
-		}		
-	}	
+		}
+	}
 	static function deleteConfiguredServer($id) {
 		global $adb;
 		$adb->pquery("DELETE FROM vtiger_smsnotifier_servers WHERE id=?", array($id));

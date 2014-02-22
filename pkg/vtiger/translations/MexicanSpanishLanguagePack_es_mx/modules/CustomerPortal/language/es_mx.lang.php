@@ -7,19 +7,24 @@
 $mod_strings = Array (
 'CustomerPortal' => 'Portal Cliente',
 'LBL_BASIC_SETTINGS'=>'Configuración Básica',
+'LBL_CUSTOMERPORTAL_SETTINGS'=>'Configuración Portal',
 'LBL_ADVANCED_SETTINGS'=>'Configuración Avanzada',
 'LBL_MODULE'=>'Módulo',
 'LBL_VIEW_ALL_RECORD'=>'¿Mostrar todos los registros relacionados?',
-'YES'=>'Sí',
-'NO'=>'No',
-'LBL_USER_DESCRIPTION'=>'El usuario arriba seleccionado controlará qué campos aparecen en el Portal de Cliente
-				Puedes habilitar/deshabilitar los campos que aparecen en el Portal de Cliente a través de la configuración del perfil.',
-'SELECT_USERS'=>'Selecciona los Usuarios',				
+'LBL_MODULE_INFORMATION'=>'Información Módulo',
+'LBL_USER_INFORMATION'=>'Información Usuario',
+'LBL_YES'=>'Sí',
+'LBL_NO'=>'No',
+'LBL_USER_DESCRIPTION'=>'NOTA : El perfil del usuario seleccionado arriba controlará qué campos aparecen en el Portal de Cliente.',
+'LBL_GROUP_DESCRIPTION'=>'NOTA : Los casos se asignarán al usuario/grupo seleccionado por defecto.',
+'LBL_SELECT_USERS'=>'Perfil Usuarios',
+'LBL_DEFAULT_USERS'=>'Asignado por defecto',
 'LBL_DISABLE'=>'Deshabilitar',
 'LBL_ENABLE' =>'Habilitar',
-'Module' => 'Módulo',
-'Sequence' =>'Secuencia',
-'Visible'=>'Visible'
+'LBL_MODULE' => 'Módulo',
+'LBL_SEQUENCE' =>'Secuencia',
+'LBL_VISIBLE'=>'Visible'
+
 
 );
 

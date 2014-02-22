@@ -26,10 +26,10 @@ function set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
 
   if ( domain )
         cookie_string += "; domain=" + escape ( domain );
-  
+
   if ( secure )
         cookie_string += "; secure";
-  
+
   document.cookie = cookie_string;
 }
 
@@ -45,7 +45,7 @@ function get_cookie ( cookie_name )
 }
 
 
-// Delete cookies 
+// Delete cookies
 function delete_cookie ( cookie_name )
 {
   var cookie_date = new Date ( );  // current date & time
@@ -56,16 +56,16 @@ function goToURL( url )
 {
     document.location.href = url;
 }
-    
+
 function invokeAction( actionName )
 {
     if( actionName == "newReport" )
     {
         goToURL( "?module=Reports&action=NewReport0&return_module=Reports&return_action=index" );
         return;
-    }    
+    }
     goToURL( "/crm/ScheduleReport.do?step=showAllSchedules" );
-} 
+}
 function verify_data(form) {
 	var isError = false;
 	var errorMessage = "";
@@ -81,7 +81,7 @@ function verify_data(form) {
 	return true;
 }
 
-function setObjects() 
+function setObjects()
 {
 	availListObj=getObj("availList")
 	selectedColumnsObj=getObj("selectedColumns")
@@ -92,9 +92,9 @@ function setObjects()
 	movedownDisabledObj=getObj("movedown_disabled")
 }
 
-function addColumn() 
+function addColumn()
 {
-	for (i=0;i<selectedColumnsObj.length;i++) 
+	for (i=0;i<selectedColumnsObj.length;i++)
 	{
 		selectedColumnsObj.options[i].selected=false
 	}
@@ -103,19 +103,19 @@ function addColumn()
 
 function addColumnStep1()
 {
-	//the below line is added for report not woking properly in browser IE7 --bharath
+	//the below line is added for report not woking properly in browser IE7
 	document.getElementById("selectedColumns").style.width="164px";
-	
+
 	if (availListObj.options.selectedIndex > -1)
 	{
-		for (i=0;i<availListObj.length;i++) 
+		for (i=0;i<availListObj.length;i++)
 		{
-			if (availListObj.options[i].selected==true) 
+			if (availListObj.options[i].selected==true)
 			{
 				var rowFound=false;
-				for (j=0;j<selectedColumnsObj.length;j++) 
+				for (j=0;j<selectedColumnsObj.length;j++)
 				{
-					if (selectedColumnsObj.options[j].value==availListObj.options[i].value) 
+					if (selectedColumnsObj.options[j].value==availListObj.options[i].value)
 					{
 						var rowFound=true;
 						var existingObj=selectedColumnsObj.options[j];
@@ -123,7 +123,7 @@ function addColumnStep1()
 					}
 				}
 
-				if (rowFound!=true) 
+				if (rowFound!=true)
 				{
 					var newColObj=document.createElement("OPTION")
 					newColObj.value=availListObj.options[i].value
@@ -131,8 +131,8 @@ function addColumnStep1()
 					else if (browser_nn4 || browser_nn6) newColObj.text=availListObj.options[i].text
 					selectedColumnsObj.appendChild(newColObj)
 					newColObj.selected=true
-				} 
-				else 
+				}
+				else
 				{
 					existingObj.selected=true
 				}
@@ -142,7 +142,7 @@ function addColumnStep1()
 		}
 	}
 }
-//this function is done for checking,whether the user has access to edit the field :Bharath
+//this function is done for checking,whether the user has access to edit the field
 function selectedColumnClick(oSel)
 {
 	var error_msg = '';
@@ -165,11 +165,11 @@ function selectedColumnClick(oSel)
 	else
 		return true;
 }
-function delColumn() 
+function delColumn()
 {
 	if (selectedColumnsObj.options.selectedIndex > -1)
 	{
-		for (i=0;i < selectedColumnsObj.options.length;i++) 
+		for (i=0;i < selectedColumnsObj.options.length;i++)
 		{
 			if(selectedColumnsObj.options[i].selected == true)
 			{
@@ -183,36 +183,36 @@ function delColumn()
 function formSelectColumnString()
 {
 	var selectedColStr = "";
-	for (i=0;i<selectedColumnsObj.options.length;i++) 
+	for (i=0;i<selectedColumnsObj.options.length;i++)
 	{
 		selectedColStr += selectedColumnsObj.options[i].value + ";";
 	}
 	document.NewReport.selectedColumnsString.value = selectedColStr;
 }
 
-function moveUp() 
+function moveUp()
 {
 	var currpos=selectedColumnsObj.options.selectedIndex
 	var tempdisabled= false;
-	for (i=0;i<selectedColumnsObj.length;i++) 
+	for (i=0;i<selectedColumnsObj.length;i++)
 	{
 		if(i != currpos)
 			selectedColumnsObj.options[i].selected=false
 	}
-	if (currpos>0) 
+	if (currpos>0)
 	{
 		var prevpos=selectedColumnsObj.options.selectedIndex-1
 
-		if (browser_ie) 
+		if (browser_ie)
 		{
 			temp=selectedColumnsObj.options[prevpos].innerText
 			tempdisabled = selectedColumnsObj.options[prevpos].disabled;
 			selectedColumnsObj.options[prevpos].innerText=selectedColumnsObj.options[currpos].innerText
 			selectedColumnsObj.options[prevpos].disabled = false;
 			selectedColumnsObj.options[currpos].innerText=temp
-			selectedColumnsObj.options[currpos].disabled = tempdisabled;     
-		} 
-		else if (browser_nn4 || browser_nn6) 
+			selectedColumnsObj.options[currpos].disabled = tempdisabled;
+		}
+		else if (browser_nn4 || browser_nn6)
 		{
 			temp=selectedColumnsObj.options[prevpos].text
 			tempdisabled = selectedColumnsObj.options[prevpos].disabled;
@@ -227,24 +227,24 @@ function moveUp()
 		selectedColumnsObj.options[prevpos].selected=true
 		selectedColumnsObj.options[currpos].selected=false
 		}
-		
+
 }
 
-function moveDown() 
+function moveDown()
 {
 	var currpos=selectedColumnsObj.options.selectedIndex
 	var tempdisabled= false;
-	for (i=0;i<selectedColumnsObj.length;i++) 
+	for (i=0;i<selectedColumnsObj.length;i++)
 	{
 		if(i != currpos)
 			selectedColumnsObj.options[i].selected=false
 	}
-	if (currpos<selectedColumnsObj.options.length-1)	
+	if (currpos<selectedColumnsObj.options.length-1)
 	{
 		var nextpos=selectedColumnsObj.options.selectedIndex+1
 
-		if (browser_ie) 
-		{	
+		if (browser_ie)
+		{
 			temp=selectedColumnsObj.options[nextpos].innerText
 			tempdisabled = selectedColumnsObj.options[nextpos].disabled;
 			selectedColumnsObj.options[nextpos].innerText=selectedColumnsObj.options[currpos].innerText
@@ -254,7 +254,7 @@ function moveDown()
 			selectedColumnsObj.options[currpos].innerText=temp
 			selectedColumnsObj.options[currpos].disabled = tempdisabled;
 		}
-		else if (browser_nn4 || browser_nn6) 
+		else if (browser_nn4 || browser_nn6)
 		{
 			temp=selectedColumnsObj.options[nextpos].text
 			tempdisabled = selectedColumnsObj.options[nextpos].disabled;
@@ -273,26 +273,26 @@ function moveDown()
 	}
 }
 
-function disableMove() 
+function disableMove()
 {
 	var cnt=0
-		for (i=0;i<selectedColumnsObj.options.length;i++) 
+		for (i=0;i<selectedColumnsObj.options.length;i++)
 		{
 			if (selectedColumnsObj.options[i].selected==true)
 				cnt++
 		}
 
-	if (cnt>1) 
+	if (cnt>1)
 	{
 		moveupLinkObj.style.display=movedownLinkObj.style.display="none"
 			moveupDisabledObj.style.display=movedownDisabledObj.style.display="block"
 	}
-	else 
+	else
 	{
 		moveupLinkObj.style.display=movedownLinkObj.style.display="block"
 			moveupDisabledObj.style.display=movedownDisabledObj.style.display="none"
 	}
-}        
+}
 
 
 function hideTabs()
@@ -301,7 +301,7 @@ function hideTabs()
 	var objreportType = document.forms.NewReport['reportType'];
 	if(objreportType[0].checked == true) objreportType = objreportType[0];
 	else if(objreportType[1].checked == true) objreportType = objreportType[1];
-	
+
 	if(objreportType.value == 'tabular')
 	{
 		divarray = new Array('step1','step2','step4','step5','step6','step7');
@@ -311,13 +311,13 @@ function hideTabs()
 		divarray = new Array('step1','step2','step3','step4','step5','step6','step7');
 	}
 }
-        
+
 function showSaveDialog()
-{    
+{
 	url = "index.php?module=Reports&action=SaveReport";
 	window.open(url,"Save_Report","width=550,height=350,top=20,left=20;toolbar=no,status=no,menubar=no,directories=no,resizable=yes,scrollbar=no")
 }
-    
+
 function saveAndRunReport()
 {
 	if(selectedColumnsObj.options.length == 0)
@@ -328,15 +328,15 @@ function saveAndRunReport()
 	formSelectedColumnString();
 	formSelectColumnString();
 	document.NewReport.submit();
-}       
-        
-function changeSteps1() 
+}
+
+function changeSteps1()
 {
 	if(getObj('step5').style.display != 'none')
-	{		
+	{
 		if(!checkAdvancedFilter())
 			return false;
-		
+
 		var date1=getObj("startdate")
 		var date2=getObj("enddate")
 
@@ -346,16 +346,17 @@ function changeSteps1()
 
 		if(!dateValidate("startdate","Start Date","D"))
         	        return false
-	
+
 		if(!dateValidate("enddate","End Date","D"))
         	        return false
 
-		if(! dateComparison("startdate",'Start Date',"enddate",'End Date','LE'))	
+		if(! dateComparison("startdate",'Start Date',"enddate",'End Date','LE'))
 			return false;
 		}
 
 	}
 	if (getObj('step7').style.display != 'none') {
+	//if (getObj('step6').style.display != 'none') {
 
 		var isScheduledObj = getObj("isReportScheduled");
 		if(isScheduledObj.checked == true) {
@@ -365,7 +366,7 @@ function changeSteps1()
 				alert(alert_arr.RECIPIENTS_CANNOT_BE_EMPTY);
 				return false;
 			}
-			
+
 			var selectedUsers = new Array();
 			var selectedGroups = new Array();
 			var selectedRoles = new Array();
@@ -406,7 +407,7 @@ function changeSteps1()
 					alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
 					return false;
 				}
-				if (divarray[i + 1] == 'step7') {
+				if (divarray[i + 1] == /*'step6') { //*/ 'step7') {
 					document.getElementById("next").value = finish_text;
 				}
 				hide(divarray[i]);
@@ -418,11 +419,11 @@ function changeSteps1()
 				document.getElementById('back_rep').disabled = false;
 				break;
 			}
-			
+
 		}
 	}
 }
-function changeStepsback1() 
+function changeStepsback1()
 {
 	if(getObj('step1').style.display != 'none')
 	{
@@ -439,12 +440,12 @@ function changeStepsback1()
 				{
 					document.getElementById('back_rep').disabled = true;
 				}
-				document.getElementById("next").value = next_text+'>';	
+				document.getElementById("next").value = next_text+'>';
 				hide(divarray[i]);
 				show(divarray[i-1]);
 				tableid = divarray[i]+'label';
 				newtableid = divarray[i-1]+'label';
-				getObj(tableid).className = 'settingsTabList'; 
+				getObj(tableid).className = 'settingsTabList';
 				getObj(newtableid).className = 'settingsTabSelected';
 				break;
 			}
@@ -474,7 +475,7 @@ function changeSteps()
 						return false;
 					}
 					else
-					{		
+					{
 						hide('step1');
 			                        show('step2');
 			                        document.getElementById('back_rep').disabled = false;
@@ -485,7 +486,7 @@ function changeSteps()
                                 }
                         }
         	        );
-	
+
 		}
 
 	}
@@ -499,7 +500,7 @@ function changeStepsback()
 	hide('step2');
 	show('step1');
 	document.getElementById('back_rep').disabled = true;
-	getObj('step1label').className = 'settingsTabSelected'; 
+	getObj('step1label').className = 'settingsTabSelected';
 	getObj('step2label').className = 'settingsTabList';
 }
 function editReport(id)
@@ -507,8 +508,10 @@ function editReport(id)
 	var arg = 'index.php?module=Reports&action=ReportsAjax&file=NewReport0&record='+id;
 	fnPopupWin(arg);
 }
-function CreateReport(module)
+function CreateReport(element)
 {
+	if($(element) == null) return;
+	var module = $(element).value;
 	var arg ='index.php?module=Reports&action=ReportsAjax&file=NewReport0&folder='+gcurrepfolderid+'&reportmodule='+module;
 	fnPopupWin(arg);
 }
@@ -582,7 +585,7 @@ function re_patternValidate(fldval,fldLabel,type) {
 
 
 	if (type.toUpperCase()=="TIMESECONDS") {//TIME validation
-		var re = new RegExp("^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$");
+		var re = new RegExp("^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$|^([0-1][0-9]|[2][0-3]):([0-5][0-9])$");
 	}
 	if (!re.test(fldval)) {
 		alert(alert_arr.ENTER_VALID + fldLabel)
@@ -594,7 +597,7 @@ function re_patternValidate(fldval,fldLabel,type) {
 //added to fix the ticket #5117
 function standardFilterDisplay()
 {
-	if(document.NewReport.stdDateFilterField.options.length <= 0 || (document.NewReport.stdDateFilterField.selectedIndex > -1 && document.NewReport.stdDateFilterField.options[document.NewReport.stdDateFilterField.selectedIndex].value == "Not Accessible")) 
+	if(document.NewReport.stdDateFilterField.options.length <= 0 || (document.NewReport.stdDateFilterField.selectedIndex > -1 && document.NewReport.stdDateFilterField.options[document.NewReport.stdDateFilterField.selectedIndex].value == "Not Accessible"))
 	{
 		getObj('stdDateFilter').disabled = true;
 		getObj('startdate').disabled = true;getObj('enddate').disabled = true;
@@ -618,12 +621,12 @@ function updateRelFieldOptions(sel, opSelName) {
 
     var currOption = selObj.options[selObj.selectedIndex];
     var currField = sel.options[sel.selectedIndex];
- 
+
     if(currField.value != null && currField.value.length != 0)
     {
 	fieldtype = trimfValues(currField.value);
 	ops = rel_fields[fieldtype];
- 	
+
 	var off = 0;
 	if(ops != null)
 	{
@@ -679,9 +682,51 @@ function fnLoadRepValues(tab1,tab2,block1,block2){
 	document.getElementById(tab1).className='dvtSelectedCell';
 	document.getElementById(tab2).className='dvtUnSelectedCell';
 }
+function addChartsToHomepage(reportid){
+	var windowtitle = $('windowtitle_id').value;
+        if(windowtitle.length == 0){
+			alert(alert_arr.LBL_ENTER_WINDOW_TITLE);
+            return false;
+        }
+	var charttype = $('selreportcharttype_id').value;
+	new Ajax.Request(
+		'index.php',
+		{queue: {position: 'end', scope: 'command'},
+			method: 'post',
+			postBody: 'module=Reports&action=ReportsAjax&file=UpdatedashbordReportRel&ajax=true&reportid='+reportid+'&windowtitle='+windowtitle+'&charttype='+charttype,
+			onComplete: function(response) {
+				if((response.responseText != '')){
+					alert(response.responseText);
+				}
+                fnhide('addcharttoHomepage');
+                $('widgetsuccess').style.display = 'block';
+                $('widgetsuccess').style.display = 'none';
+                Effect.Appear('widgetsuccess');
+                setTimeout(hidewidgetmessage,3000);
+		    }
+		}
+    );
+        return true;
+}
+function hidewidgetmessage(){
+    Effect.Fade('widgetsuccess');
+
+}
+function getDateFieldGrouping(group1){
+	var selectfield = document.getElementById(group1).value;
+	var selectfieldname = selectfield.split(':');
+	var typeofdata = selectfieldname[4];
+	var id_div = group1+"time";
+	if(typeofdata == 'D'){
+		show(id_div);
+	}else{
+		var id = document.getElementById(id_div);
+	    id.style.display = 'none';
+	}
+}
 
 /**
- * IE has a bug where document.getElementsByName doesnt include result of dynamically created 
+ * IE has a bug where document.getElementsByName doesnt include result of dynamically created
  * elements
  */
 function vt_getElementsByName(tagName, elementName) {
@@ -733,3 +778,20 @@ function setScheduleOptions() {
 					break;
 	}
 }
+
+/*
+* javascript function to display the div tag
+* @param divId :: div tag ID
+*/
+function showAddChartPopup()
+{
+	jQuery('#addcharttoHomepage').css('display', 'inline');
+	placeAtCenterChartPopup(jQuery('#addcharttoHomepage'));
+}
+
+function placeAtCenterChartPopup(element){
+	element.css("position","absolute");
+	element.css("top", (((jQuery(window).height()-800) - element.outerHeight()) / 2) + jQuery(window).scrollTop() + "px");
+	element.css("left", ((jQuery(window).width() - element.outerWidth()) / 2) + jQuery(window).scrollLeft() + "px");
+}
+

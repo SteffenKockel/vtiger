@@ -46,7 +46,7 @@
 			<td class="listTableRow small" valign=top>{$dependencyvalues.targetfieldlabel|@getTranslatedString:$FIELD_MODULE}</td>
 			<td class="listTableRow small" valign=top nowrap>
 	  			<a href="javascript:void(0);" onclick="editDependencyPicklist('{$FIELD_MODULE}','{$dependencyvalues.sourcefield}','{$dependencyvalues.targetfield}');"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EDIT}" title="{$APP.LBL_EDIT}" border="0" align="absmiddle"></a>&nbsp;|
-				<a href="javascript:void(0);" onClick="deleteDependencyPicklist('{$FIELD_MODULE}','{$dependencyvalues.sourcefield}','{$dependencyvalues.targetfield}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_DELETE}" title="{$APP.LBL_DELETE}" border="0" align="absmiddle"></a>
+				<a href="javascript:void(0);" onClick="deleteDependencyPicklist('{$FIELD_MODULE}','{$dependencyvalues.sourcefield}','{$dependencyvalues.targetfield}','{'NTC_DELETE_CONFIRMATION'|@getTranslatedString}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_DELETE}" title="{$APP.LBL_DELETE}" border="0" align="absmiddle"></a>
 			</td>
   		</tr>
 		{/foreach}

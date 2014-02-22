@@ -11,11 +11,24 @@
 <script language="JavaScript" type="text/javascript" src="include/js/customview.js"></script>
 <script language="javascript">
 {literal}
-function CustomFieldMapping()
-{
-        document.form.action="index.php?module=Settings&action=LeadCustomFieldMapping";
-        document.form.submit();
+
+function confirmAction(msg){
+	return confirm(msg);
 }
+
+function deleteForm(formname,address){
+	var status=confirmAction(alert_arr["SURE_TO_DELETE_CUSTOM_MAP"]);
+	if(!status){
+		return false;
+	}
+	submitForm(formname, address);
+		return true;
+}
+
+function submitForm(formName,action){
+		document.forms[formName].action=action;
+		document.forms[formName].submit();
+	}
 var gselected_fieldtype = '';
 function getCustomFieldList(customField)
 {
@@ -105,8 +118,8 @@ var gselected_fieldtype = '';
 				<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%" >
 					<tbody>
 						<tr align="left">
-							<td rowspan="2" valign="top" width="50"><img src="{'custom.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48" onmouseover="tooltip.tip(this,'{$MOD.LEADS_CUSTOM_FIELD_MAPPING}');" onmouseout="tooltip.untip(true);"></td>
-							<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; <a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{$MODULE}</a> &gt; {$MOD.LBL_CUSTOM_FIELD_SETTINGS}</b></td>
+							<td rowspan="2" valign="top" width="50"><img src="{'custom.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48" onmouseover="tooltip.tip(this,'{'LBL_FIELD_SETTINGS'|@getTranslatedString:$MODULE}');" onmouseout="tooltip.untip(true);"></td>
+							<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; <a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{$MODULE}</a> &gt; {'LBL_FIELD_SETTINGS'|@getTranslatedString:$MODULE}</b></td>
 						</tr>
 					</tbody>
 				</table>

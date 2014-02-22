@@ -10,19 +10,19 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Administration/language/en_us.lang.php,v 1.3 2005/01/25 05:54:44 jack Exp $
- * Description:  Defines the English language pack for the Account module.
+ * Description:  Defines the English language pack for the Administration module.
  ********************************************************************************/
 
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Administração',
 'LBL_MODULE_TITLE'=>'Administracão: Principal',
 
-'LBL_NEW_FORM_TITLE'=>'Nova Conta',
-'ERR_DELETE_RECORD'=>"Defina um registro para apagar a Conta.",
+'LBL_NEW_FORM_TITLE'=>'Nova Organização',
+'ERR_DELETE_RECORD'=>"Defina um registro para apagar a Organização.",
 );
 
 ?>

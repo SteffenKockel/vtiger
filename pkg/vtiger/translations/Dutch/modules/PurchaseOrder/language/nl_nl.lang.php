@@ -1,28 +1,39 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
+
+/*******************************************************************************
+ * The contents of this file are subject to the following licences:
+ * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
+ * - vtiger CRM Public License Version 1.0 
+ * You may not use this file except in compliance with the License
+ * Software distributed under the License is distributed on an  "AS IS" basis,
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
  * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
+ * The Original Code is: SugarCRM Open Source
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Contributor(s): vertaling door: Weltevree.org  www.weltevree.org
+ * Feel free to use / redistribute these languagefiles under the VPL 1.0.
+ * This translations is based on earlier work of: 
+ * - IT-Online.nl <www.it-online.nl>
+ * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
 
- * Description:  Defines the English language pack 
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): Vertaling door: Weltevree.org  www.weltevree.org
+/*******************************************************************************
+ * Vicus eBusiness Solutions Version Control
+ * @package 	NL-Dutch
+ * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * @author	$Author: luuk $
+ * @version 	$Revision: 1.5 $ $Date: 2011/11/14 17:07:26 $
+ * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/PurchaseOrder/language/nl_nl.lang.php,v $
+ * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
+
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Inkooporder',
-'LBL_RELATED_PRODUCTS'=>'Produkt details',
+'LBL_RELATED_PRODUCTS'=>'Productdetails',
 'LBL_MODULE_TITLE'=>'Inkooporder: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Zoek inkooporder',
 'LBL_LIST_FORM_TITLE'=>'Inkooporder lijst',
@@ -30,11 +41,11 @@ $mod_strings = Array(
 'LBL_MEMBER_ORG_FORM_TITLE'=>'Leden organisatie',
 
 'LBL_LIST_ACCOUNT_NAME'=>'Accountnaam',
-'LBL_LIST_CITY'=>'Stad',
+'LBL_LIST_CITY'=>'Plaats',
 'LBL_LIST_WEBSITE'=>'Website',
 'LBL_LIST_STATE'=>'Provincie',
 'LBL_LIST_PHONE'=>'Telefoon',
-'LBL_LIST_EMAIL_ADDRESS'=>'e-Mail adres',
+'LBL_LIST_EMAIL_ADDRESS'=>'e-mailadres',
 'LBL_LIST_CONTACT_NAME'=>'Contactnaam',
 
 //DON'T CONVERT THESE THEY ARE MAPPINGS
@@ -50,40 +61,40 @@ $mod_strings = Array(
 'LBL_WEBSITE'=>'Website:',
 'LBL_FAX'=>'Fax:',
 'LBL_TICKER_SYMBOL'=>'Ticker Symbool:',
-'LBL_OTHER_PHONE'=>'Mobiele telefoon:',
-'LBL_ANY_PHONE'=>'Prive telefoon:',
-'LBL_MEMBER_OF'=>'Lid van:',
-'LBL_EMAIL'=>'e-Mail:',
+'LBL_OTHER_PHONE'=>'Telefoon Mobiel:',
+'LBL_ANY_PHONE'=>'Telefoon Prive:',
+'LBL_MEMBER_OF'=>'Onderdeel van:',
+'LBL_EMAIL'=>'E-mail:',
 'LBL_EMPLOYEES'=>'Werknemers:',
-'LBL_OTHER_EMAIL_ADDRESS'=>'Prive e-Mail:',
-'LBL_ANY_EMAIL'=>'Bedrijfs e-Mail:',
+'LBL_OTHER_EMAIL_ADDRESS'=>'Prive e-mail:',
+'LBL_ANY_EMAIL'=>'Bedrijfs e-mail:',
 'LBL_OWNERSHIP'=>'Eigenaar:',
 'LBL_RATING'=>'Beoordeling:',
 'LBL_INDUSTRY'=>'Industrie:',
-'LBL_SIC_CODE'=>'KvK nummer:',
+'LBL_SIC_CODE'=>'SBI code:',
 'LBL_TYPE'=>'Type:',
 'LBL_ANNUAL_REVENUE'=>'Jaarlijkse omzet:',
-'LBL_ADDRESS_INFORMATION'=>'Adres informatie',
-'LBL_Quote_INFORMATION'=>'Account informatie',
-'LBL_CUSTOM_INFORMATION'=>'Klant informatie',
-'LBL_BILLING_ADDRESS'=>'Factuuradres:',
-'LBL_SHIPPING_ADDRESS'=>'Expeditie Adres:',
+'LBL_ADDRESS_INFORMATION'=>'Adresinformatie',
+'LBL_Quote_INFORMATION'=>'Accountinformatie',
+'LBL_CUSTOM_INFORMATION'=>'Klantinformatie',
+'LBL_BILLING_ADDRESS'=>'Postadres:',
+'LBL_SHIPPING_ADDRESS'=>'Afleveradres:',
 'LBL_ANY_ADDRESS'=>'Postadres:',
-'LBL_CITY'=>'Stad:',
+'LBL_CITY'=>'Plaats:',
 'LBL_STATE'=>'Provincie:',
 'LBL_POSTAL_CODE'=>'Postcode:',
 'LBL_COUNTRY'=>'Land:',
-'LBL_DESCRIPTION_INFORMATION'=>'Omschrijvings informatie',
-'LBL_TERMS_INFORMATION'=>'Algemene voorwaarden',
+'LBL_DESCRIPTION_INFORMATION'=>'Omschrijving',
+'LBL_TERMS_INFORMATION'=>'Algemene Voorwaarden',
 'LBL_DESCRIPTION'=>'Omschrijving:',
-'NTC_COPY_BILLING_ADDRESS'=>'Kopie factuuradres naar distributie adres',
-'NTC_COPY_SHIPPING_ADDRESS'=>'Kopie distributie adres naar factuuradres',
-'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Weet u zeker dat u dit veld wilt verwijderen als lid van de organisatie?',
-'LBL_DUPLICATE'=>'Potentiele duplicatie accounts',
-'MSG_DUPLICATE' => 'Bij het aanmaken van deze account creert u waarschijnlijk een duplicatie van de accountgegevens. U kunt een account selecteren van de lijst of u klikt op nieuw account om verder te gaan met de ingevoerde gegevens.',
+'NTC_COPY_BILLING_ADDRESS'=>'Kopieer Postadres naar Afleveradres',
+'NTC_COPY_SHIPPING_ADDRESS'=>'Kopieer Afleveradres naar Postadres',
+'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Weet u zeker dat u dit veld wilt verwijderen als Onderdeel van de organisatie?',
+'LBL_DUPLICATE'=>'Mogelijk dubbel Account',
+'MSG_DUPLICATE' => 'Bij het aanmaken van dit account creert u waarschijnlijk een duplicaat van de accountgegevens. U kunt een account selecteren van de lijst of u klikt op nieuw account om verder te gaan met de ingevoerde gegevens.',
 
 'LBL_INVITEE'=>'Contacten',
-'ERR_DELETE_RECORD'=>"Een veld moet gespecificeerd zijn om de account te verwijderen.",
+'ERR_DELETE_RECORD'=>"Een veld moet gespecificeerd zijn om de accountgegevens te verwijderen.",
 
 'LBL_SELECT_ACCOUNT'=>'Selecteer account',
 'LBL_GENERAL_INFORMATION'=>'Algemene informatie',
@@ -98,14 +109,14 @@ $mod_strings = Array(
 'LBL_CALL_TITLE'=>'Telefoongesprekken',
 'LBL_NEW_MEETING'=>'Nieuwe vergaderingen',
 'LBL_MEETING_TITLE'=>'Vergaderingen',
-'LBL_NEW_EMAIL'=>'Nieuwe e-Mail',
-'LBL_EMAIL_TITLE'=>'e-Mail',
+'LBL_NEW_EMAIL'=>'Nieuwe e-mail',
+'LBL_EMAIL_TITLE'=>'E-mail',
 'LBL_NEW_CONTACT'=>'Nieuw contact',
 'LBL_CONTACT_TITLE'=>'Contacten',
 
 //Added fields after RC1 - Release
 'LBL_ALL'=>'Alles',
-'LBL_PROSPECT'=>'Verkoop potentieel',
+'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investeerder',
 'LBL_RESELLER'=>'Wederverkoper',
 'LBL_PARTNER'=>'Partner',
@@ -119,41 +130,41 @@ $mod_strings = Array(
 'Requisition No'=>'Vorderingsnummer',
 'Tracking Number'=>'Volgnummer',
 'Contact Name'=>'Contactnaam',
-'Due Date'=>'Einddatum',
+'Due Date'=>'Vervaldatum',
 'Carrier'=>'Vervoerder',
 'Type'=>'Type',
-'Sales Tax'=>'BTW',
-'Sales Commission'=>'Verkoop commissie',
-'Excise Duty'=>'Belasting',
+'Sales Tax'=>'Verkoopbelasting',
+'Sales Commission'=>'Verkoopcommissie',
+'Excise Duty'=>'Accijnzen', // inland taxes
 'Total'=>'Totaal',
-'Product Name'=>'Produktnaam',
+'Product Name'=>'Productnaam',
 'Assigned To'=>'Toegewezen aan',
-'Billing Address'=>'Factuuradres',
-'Shipping Address'=>'Expeditie adres',
-'Billing City'=>'Stad',
-'Billing State'=>'Provincie',
-'Billing Code'=>'Postcode',
-'Billing Country'=>'Land',
-'Billing Po Box'=>'Postbus',
-'Shipping Po Box'=>'Postbus',
-'Shipping City'=>'Stad',
-'Shipping State'=>'Provincie',
-'Shipping Code'=>'Postcode',
-'Shipping Country'=>'Land',
-'City'=>'Stad',
+'Billing Address'=>'P Postadres',
+'Shipping Address'=>'Afleveradres',
+'Billing City'=>'P Plaats',
+'Billing State'=>'P Provincie',
+'Billing Code'=>'P Postcode',
+'Billing Country'=>'P Land',
+'Billing Po Box'=>'P Postbus',
+'Shipping Po Box'=>'A Postbus',
+'Shipping City'=>'A Plaats',
+'Shipping State'=>'A Provincie',
+'Shipping Code'=>'A Postcode',
+'Shipping Country'=>'A Land',
+'City'=>'Plaats',
 'State'=>'Provincie',
 'Code'=>'Postcode',
 'Country'=>'Land',
 'Created Time'=>'Gemaakt',
-'Modified Time'=>'Veranderd',
+'Modified Time'=>'Gewijzigd',
 'Description'=>'Omschrijving',
 'Potential Name'=>'Naam potentieel',
 'Customer No'=>'Klantnummer',
 'Purchase Order'=>'Inkooporder',
-'Vendor Terms'=>'Leverancier voorwaarden',
-'Pending'=>'Wachtend',
+'Vendor Terms'=>'Leveranciersvoorwaarden',
+'Pending'=>'Wacht op',
 'Account Name'=>'Accountnaam',
-'Terms & Conditions'=>'Voorwaarden & Condities',
+'Terms & Conditions'=>'Algemene Voorwaarden',
 //Quote Info
 'LBL_PO_INFORMATION'=>'Inkooporder informatie',
 'LBL_PO'=>'Inkooporder:',
@@ -164,9 +175,9 @@ $mod_strings = Array(
 'LBL_SUBJECT_TITLE'=>'Onderwerp',
 'LBL_VENDOR_NAME_TITLE'=>'Leveranciersnaam',
 'LBL_TRACKING_NO_TITLE'=>'Volgnummer:',
-'LBL_PO_SEARCH_TITLE'=>'Zoek Inkooporder',
-'LBL_SO_SEARCH_TITLE'=>'Zoek Verkooporder',
-'LBL_QUOTE_NAME_TITLE'=>'Offerte naam',
+'LBL_PO_SEARCH_TITLE'=>'Zoek inkooporder',
+'LBL_SO_SEARCH_TITLE'=>'Zoek verkooporder',
+'LBL_QUOTE_NAME_TITLE'=>'Offertenaam',
 'Order Id'=>'Ordernummer',
 'Status'=>'Status',
 'PurchaseOrder'=>'Inkooporder',
@@ -187,18 +198,17 @@ $mod_strings = Array(
 'Received Shipment'=>'Goederen ontvangen',
 
 //Added for Reports (5.0.4)
-'Tax Type'=>'Belasting type',
-'Discount Percent'=>'Kortings percentage',
-'Discount Amount'=>'Kortings bedrag',
-'Terms & Conditions'=>'Voorwaarden & Condities',
-'Adjustment'=>'Aanpassing',
-'Sub Total'=>'Sub totaal',
-'S&H Amount'=>'Verwerkingskosten',
+'Tax Type'=>'Belastingsoort',
+'Discount Percent'=>'Kortingspercentage',
+'Discount Amount'=>'Kortingsbedrag',
+'Terms & Conditions'=>'Voorwaarden',
+'Adjustment'=>'Bijstelling',
+'Sub Total'=>'Subtotaal',
+'S&H Amount'=>'Handling en Verzendtoeslag',
 
 //Added after 5.0.4 GA
-'PurchaseOrder No'=>'Inkooporder nr',
-
-
+'PurchaseOrder No'=>'Inkoopordernummer',
+'SINGLE_PurchaseOrder'=>'Inkooporder',
 );
 
 ?>

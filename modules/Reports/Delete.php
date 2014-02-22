@@ -64,5 +64,20 @@ function DeleteReport($reportid)
 
 	$reportsql = 'DELETE FROM vtiger_scheduled_reports WHERE reportid=?';
 	$adb->pquery($reportsql, array($reportid));
+
+/******************** Mnolithic Phase 6 Customization****************/
+
+    $query = "SELECT * FROM vtiger_homereportchart WHERE reportid=?";
+    $result =$adb->pquery($query,array($reportid));
+    $num_rows = $adb->num_rows($result);
+    if($num_rows){
+        for($i=0;$i<$num_rows;$i++){
+            $stuffid = $adb->query_result($result,$i,'stuffid');
+            $delHomeSql="delete from vtiger_homestuff where stuffid=?";
+            $delResult=$adb->pquery($delHomeSql, array($stuffid));
+        }
+    }
+
+    /*================ End of Customization =========================*/
 }
 ?>

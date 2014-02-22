@@ -10,20 +10,20 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Help/language/en_us.lang.php,v 1.3 2005/01/25 06:05:36 jack Exp $
- * Description:  Defines the English language pack for the Account module.
+ * Description:  Defines the English language pack for the Help.
  ********************************************************************************/
 
 $mod_strings = Array(
-'LBL_MODULE_NAME'=>'Contas',
-'LBL_MODULE_TITLE'=>'Contas: Principal',
-'LBL_SEARCH_FORM_TITLE'=>'Busca Conta',
-'LBL_LIST_FORM_TITLE'=>'Lista Conta',
-'LBL_NEW_FORM_TITLE'=>'Nova Conta',
-'ERR_DELETE_RECORD'=>"Defina um número de registro para deletar a Conta.",
+'LBL_MODULE_NAME'=>'Organizações',
+'LBL_MODULE_TITLE'=>'Organizações: Principal',
+'LBL_SEARCH_FORM_TITLE'=>'Busca Organização',
+'LBL_LIST_FORM_TITLE'=>'Lista Organização',
+'LBL_NEW_FORM_TITLE'=>'Nova Organização',
+'ERR_DELETE_RECORD'=>"Defina um número de registro para deletar a Organização.",
 );
 
 ?>

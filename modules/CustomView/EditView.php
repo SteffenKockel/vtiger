@@ -105,13 +105,8 @@ if($recordid == "") {
 		$stdfiltercolhtml = getStdFilterHTML($cv_module,$stdfilterlist["columnname"]);
 		$stdfilterjs = $oCustomView->getCriteriaJS();
 	
-		if(isset($stdfilterlist["startdate"]) && isset($stdfilterlist["enddate"])) {
-			$smarty->assign("STARTDATE",DateTimeField::convertToUserFormat($stdfilterlist["startdate"]));
-			$smarty->assign("ENDDATE",DateTimeField::convertToUserFormat($stdfilterlist["enddate"]));
-		} else {
-			$smarty->assign("STARTDATE",$stdfilterlist["startdate"]);
-			$smarty->assign("ENDDATE",$stdfilterlist["enddate"]);
-		}
+		$smarty->assign("STARTDATE",$stdfilterlist["startdate"]);
+		$smarty->assign("ENDDATE",$stdfilterlist["enddate"]);
 		
 		$smarty->assign("STDFILTERCOLUMNS",$stdfiltercolhtml);
 		$smarty->assign("STDCOLUMNSCOUNT",count($stdfiltercolhtml));

@@ -10,11 +10,11 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Home/language/en_us.lang.php,v 1.5 2005/03/04 15:18:47 jack Exp $
- * Description:  Defines the English language pack
+ * Description:  Defines the English language pack for Home Module.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -22,8 +22,8 @@ $mod_strings = Array(
 'LBL_FIRST_NAME'=>'Nome:',
 'LBL_LAST_NAME'=>'Sobrenome:',
 'LBL_LIST_LAST_NAME'=>'Sobrenome',
-'LBL_ACCOUNT_NAME'=>'Nome da Conta:',
-'LBL_LIST_ACCOUNT_NAME'=>'Nome da Conta',
+'LBL_ACCOUNT_NAME'=>'Nome da Organização:',
+'LBL_LIST_ACCOUNT_NAME'=>'Nome da Organização',
 'LBL_PHONE'=>'Telefone:',
 'LBL_EMAIL_ADDRESS'=>'Email:',
 'LBL_TOTAL'=>'Total : ',
@@ -100,7 +100,7 @@ $mod_strings = Array(
 // END
 
 // Default home page widget's title
-'Top Accounts'=>'Principais Contas',
+'Top Accounts'=>'Principais Organizações',
 'Top Potentials'=>'Principais Oportunidades',
 'Top Quotes'=>'Principais Cotações',
 'Top Trouble Tickets'=>'Principais Tickets',
@@ -119,6 +119,15 @@ $mod_strings = Array(
 'MSG_NO_FILTERS' => 'Nenhum Filtro Disponível',
 'MSG_NO_FIELDS' => 'Nenhum Campo Disponível',
 
+//Customization Phase 6 -- Monolithic
+'LBL_REPORTCHARTS' => 'Gráficos Relatórios',
+'LBL_HOME_REPORT_NAME'=> 'Nome Relatório',
+'LBL_HOME_REPORT_TYPE' => 'Tipo Relatório',
+//END
+
+//added for Default Widgets
+'LBL_DEFAULT_WIDGET'=>'Widgets Padrão',
+'LBL_NO_WIDGETS_HIDDEN'=>'Nenhum widgets padrão oculto',
 );
 
 ?>

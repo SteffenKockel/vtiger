@@ -2,10 +2,10 @@
 /***********************************************************
 *  Module       : General
 *  Language     : ES Spanish
-*  Version      : vt5.0.4
+*  Version      : vt5.4.0
 *  Created Date : 2008-01-18 17:46:07 Last change : 2008-01-18 18:11:37
-*  Author       : rasomu
-*  License      : 
+*  Author       : Odin Consultores  - rasomu
+*  License      : MPL 1.1
 *  Es_mx Author : Francisco Hernandez Odin Consultores www.odin.mx
 ***********************************************************/
 
@@ -155,7 +155,7 @@ $app_strings = array (
       'SINGLE_Rss' => 'Rss',
       'SINGLE_Reports' => 'Informe',
       'SINGLE_Portal' => 'Portal',
-      'SINGLE_Webmails' => 'Email',
+      'SINGLE_Webmails' => 'Webmail',
       'SINGLE_Users' => 'Usuario',
       'ServiceContracts' => 'Contratos de Servicio',
       'Service Contracts' => 'Contratos de Servicio',
@@ -179,7 +179,7 @@ $app_strings = array (
       'ERR_CREATING_FIELDS' => 'Error al completar detalles adicionales de campo: ',
       'ERR_MISSING_REQUIRED_FIELDS' => 'Faltan campos requeridos:',
       'ERR_INVALID_EMAIL_ADDRESS' => 'Dirección de Email no válida.',
-      'ERR_INVALID_YAHOO_EMAIL_ADDRESS' => 'no es una dirección de email de yahoo válida',
+      'ERR_INVALID_SECONDARY_EMAIL_ADDRESS' => 'no es una dirección de email alternativa válida',
       'ERR_INVALID_DATE_FORMAT' => 'El formato de la fecha debe ser: aaaa-mm-dd',
       'ERR_INVALID_MONTH' => ' Por favor, introduzca un mes válido.',
       'ERR_INVALID_DAY' => 'Por favor, introduzca un dia válido.',
@@ -196,6 +196,7 @@ $app_strings = array (
       'NTC_LOGIN_MESSAGE' => 'Conectar',
       'LBL_NONE' => '-Ninguno-',
       'LBL_BACK' => 'Volver',
+      'LBL_TIMEFIELD'=>'(HH:mm:ss)',
       'LBL_IMPORT' => 'Importar',
       'LBL_EXPORT' => 'Exportar',
       'LBL_EXPORT_ALL' => 'Exportar todas/os las/los',
@@ -393,7 +394,7 @@ $app_strings = array (
       'Vendors' => 'Proveedores',
       'Rss' => 'RSS',
       'Portal' => 'Webs Favoritas',
-      'Webmails' => 'Emails',
+      'Webmails' => 'Webmails',
       'Activity History' => 'Histórico de eventos',
       'Ticket History' => 'Histórico de tickets',
       'Purchase Order' => 'Órdenes de Compra',
@@ -434,7 +435,7 @@ $app_strings = array (
       'Dashboard' => 'Indicadores',
       'Report' => 'Informes',
       'Vendor' => 'Proveedor',
-      'Webmail' => 'Email',
+      'Webmail' => 'Webmail',
       'LBL_NONE_INCLUDED' => 'Sin Asignar',
       'LBL_ADD_TO' => 'Agregar a',
       'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE' => 'Seleccione una plantilla para enviar el Mailing:',
@@ -466,6 +467,8 @@ $app_strings = array (
       'End Date & Time' => 'Fecha y Hora de Vencimiento',
       'Start Date' => 'Fecha de Inicio',
       'Start Date & Time' => 'Fecha y Hora de Inicio',
+      'Start Time' => 'Hora Inicio',
+      'End Time' => 'Hora Fin',
       'Recurring Type' => 'Periodicidad',
       'SalesOrders' => 'Pedidos',
       'LBL_QUOTE_NAME' => 'Cotización',
@@ -508,9 +511,10 @@ $app_strings = array (
       'LBL_JSCALENDAR_LANG' => 'es',
       'LNK_CV_EDIT' => 'Editar',
       'LNK_CV_DELETE' => 'Borrar',
-      'LNK_CV_CREATEVIEW' => 'Nueva',
+      'LNK_CV_CREATEVIEW' => 'Crear Filtro',
       'LBL_UPD_FIELD_ORD' => 'Actualizar el Orden de los Campos',
       'LBL_SEND_CUSTOM_MAIL_BUTTON' => 'Enviar Email Personalizado',
+      'LBL_BY' => 'Por ',
       'LBL_UPDATED_TODAY' => 'Actualizado hoy',
       'LBL_UPDATED' => 'Actualizado hace',
       'LBL_DAY_AGO' => 'día',
@@ -570,7 +574,6 @@ $app_strings = array (
       'LBL_NO' => 'No',
       'LBL_FOUND' => 'Encontrados',
       'LBL_YOU_CAN_CREATE' => 'Crear',
-      'LBL_NOW' => 'ahora',
       'LBL_CLICK_THE_LINK' => 'Pulse el enlace inferior',
       'LBL_CREATE' => 'Crear',
       'LBL_A' => 'un',
@@ -780,7 +783,7 @@ $app_strings = array (
       'SELECT_VALID_IMAGE' => 'Seleccione una imágen válida',
       'EMAIL_FILED_IS' => 'en el campo email ',
       'OTHER_EMAIL_FILED_IS' => 'en el campo otro email ',
-      'YAHOO_EMAIL_FILED_IS' => 'en el yahoo email ',
+      'SECONDARY_EMAIL_FILED_IS' => 'en el email alternativo ',
       'INVALID_ADD_IN_EMAILFIELD' => ' del campo email no es válido',
       'INVALID_ADD_IN_OTHER_EMAILFIELD' => ' del campo otro email no es válido',
       'ENTER_VALID_4DIGIT_YEAR' => 'Entre un año válido de 4 dígitos entre',
@@ -884,9 +887,9 @@ $app_strings = array (
       'Mailing Street' => 'Dirección (Envío)',
       'Other Street' => 'Dirección (Alternativa)',
       'Mailing City' => 'Deleg./Mpio. (Envío)',
-      'Other City' => 'Deleg./Mpio.(Alternativa)',
+      'Other City' => 'Deleg./Mpio.(Alternativo)',
       'Mailing State' => 'Estado (Envío)',
-      'Other State' => 'Estado(Alternativa)',
+      'Other State' => 'Estado(Alternativo)',
       'Mailing Zip' => 'Cód. Postal (Envío)',
       'Other Zip' => 'Cód. Postal (Envío)',
       'Mailing Country' => 'País (Envío)',
@@ -934,7 +937,7 @@ $app_strings = array (
       'LBL_MAIL_NOT_SENT_TO_USER' => 'No ha sido posible enviar el correo',
       'LBL_PLS_CHECK_EMAIL_N_SERVER' => 'Compruebe el Email o la configuración del servidor',
       'PLEASE_FILL_QUANTITY' => 'Introduzca la cantidad',
-      'LBL_SOLUTION' => 'SOLUCIÓN',
+      'LBL_SOLUTION' => 'SOLUCION',
       'LBL_COMMENTS' => 'COMENTARIOS',
       'RELATED' => 'Relacionados',
       'SHOW_ALL' => 'Mostrar todos',
@@ -1056,7 +1059,7 @@ $app_strings = array (
       'LBL_SELECT_TO_ENABLE_MERGING' => 'Selecciona esta opción para habilitar y configurar el criterio de combinación de duplicados',
 
       // Local Backup Feature
-      'LBL_BACKEDUPSUCCESSFULLY_TO_FILE' => 'Copia seguridad a archivo correcta',//BACKUP
+      'LBL_BACKEDUPSUCCESSFULLY_TO_FILE' => 'Copia de seguridad a archivo correcta',//BACKUP
       'APP.LBL_NOW'=>'Ahora',//BACKUP
       'LBL_NOW'=>'Ahora',//BACKUP
       
@@ -1190,6 +1193,17 @@ $app_strings = array (
 
      'CANNOT_CONVERT' => 'No se puede Convertir',
 
+     'Project'=>'Proyecto',
+     'ProjectTask'=>'Actividades',
+     'ProjectMilestone'=>'Hito',
+     'Tooltip' => 'Ayuda rápida',
+     'ModComments' => 'Comentarios',
+     'VtigerBackup'=>'Copia Seguridad',
+     'SMSNotifier' => 'Mensajeria SMS',
+     'ConfigEditor' => 'Editor Configuración',
+     'MailManager' => 'Administrador Correo',
+     'RecycleBin' => 'Papelera de Reciclaje',
+
      // For note link on the detailview
      'LBL_ADD_NOTE'=>'Agregar Nota',
 
@@ -1202,7 +1216,57 @@ $app_strings = array (
      'LBL_LOADING'=>'Cargando...',
      'LBL_REFRESH' => 'Actualizar',
      'LBL_Reminder' => 'Recordatorio',
+	'LBL_RESET_PASSWORD' => 'Reiniciar contraseña',
+	'LBL_PHP_UPGRADE' => 'Se ha actualizado la versión de PHP. Dados los cambios en crypt API de la librería, tu contraseña ya no funciona, por favor reestablece tu contraseña.',
+	'LBL_RESET_PASSWORD_DESCRIPTION' => 'Puede reiniciar las contraseñas para todos los usuarios utilizando un script y estableciendo la misma igual a su nombre de usuario.',
 
+'LBL_CRITERIA_AND'=>'y',
+'LBL_CRITERIA_OR'=>'o',
+'LBL_NEW_GROUP'=>'Nuevo Grupo',
+'LBL_DELETE_GROUP'=>'Borrar Grupo',
+'LBL_NEW_CONDITION'=>'Nueva Condición',
+'LBL_ADVANCED_FILTER' => 'Búsqueda avanzada',
+
+'LBL_CHANGE'=>'Cambiar',
+'LBL_CHANGE_TITLE'=>'Cambiar [Alt+C]',
+     'LBL_NEXT_BUTTON_LABEL' => 'Siguiente',
+
+     'LBL_MAX_SIZE'=> 'Tamaño máximo de archivo aceptado es', //added for uploadsize limit message
+     'LBL_FILESIZEIN_MB'=> 'MB', //added to show filesize in MB
+
+     // Unified Cron Job language strings
+     'LBL_DISABLED' => 'Deshabilitado',
+     'LBL_RUNNING' => 'En ejecución',
+     'LBL_LAST_SCAN_TIMED_OUT' => 'Tiempo agotado en última revisión',
+     'LBL_LAST_SCAN_AT' => 'Ultima revisión @',
+     'LBL_TIME_TAKEN' => 'Tiempo invertido',
+     'LBL_SHORT_SECONDS' => 'seg',
+
+     //Added missing labels in the vtigercrm
+     'Projects' => 'Proyectos',
+     'End Time' => 'Hora Fin',
+     'Start Time' => 'Hora Inicio',
+     'Email2' => 'Email2',
+     'Comments' => 'Comentarios',
+     'Issued Date' => 'Fecha Emisión',
+     'Shipping & Handling Charges' => 'Gastos Envío y Manejo',
+     'Shipping & Handling Tax:' => 'Impuestos Envío y Manejo:',
+     'Quantity' => 'Cantidad',
+     'Net Total' => 'Total Neto',
+     'Send SMS' => 'Enviar SMS',
+
+     'LBL_MORE'=>'Más',
+     'LBL_CRM_SETTINGS' => 'Configuración CRM',
+     'LBL_RELATED_TO_THIS' =>'relacionado con esto',
+     'LBL_DESELECT_ALL' => 'Desmarcar todo',
+     'LBL_RECORDS_IN' => 'registros en',
+     'LBL_FOLDER' => 'carpeta',
+
+     //added for creating a custom lead map row in UI
+     'LBL_ADD_MAPPING'=> 'Agregar Vinculación',
+     'LBL_FIELD_MAPPING' => 'Vinculación de Campos',
+
+	'LBL_NEXT_BUTTON_LABEL' => 'Siguiente',
 );
 $app_list_strings = array (
       'moduleList' => array(
@@ -1234,17 +1298,22 @@ $app_list_strings = array (
                              ),
       'opportunity_relationship_type_dom' => array(
             '0' => '',
+
+
             'Primary Decision Maker' => 'Toma la Decisión',
             'Business Decision Maker' => 'Decide viabilidad de la propuesta',
             'Business Evaluator' => 'Evalua económicamente la propuesta',
             'Technical Decision Maker' => 'Decide la viabilidad técnica',
             'Technical Evaluator' => 'Evalua técnicamente la propuesta',
-            'Executive Sponsor' => 'Pagador',
+            'Executive Sponsor' => 'Patrocinador',
             'Influencer' => 'Influye',
             'Other' => 'Otra',
                              ),
       'case_relationship_type_dom' => array(
             '0' => '',
+
+
+
             'Primary Contact' => 'Contacto Principal',
             'Alternate Contact' => 'Contacto Alternativo',
                              ),
@@ -1255,11 +1324,11 @@ $app_list_strings = array (
                              ),
       'task_status_dom' => array(
             'Planned' => 'Programada',
-            'Completed' => 'Finalizada',
+            'Completed' => 'Completada',
             'Deferred' => 'Retrasada',
                              ),
       'meeting_status_dom' => array(
-            'Planned' => '',
+            'Planned' => 'Planeada',
             'Held' => 'Realizada',
             'Not Held' => 'No Realizada',
                              ),
@@ -1412,8 +1481,11 @@ $app_currency_strings = array(
     'Kenya, Shilling' => 'Kenya, Shilling',
     'MADAGASCAR, Malagasy Ariary' => 'MADAGASCAR, Malagasy Ariary',
     'United Arab Emirates, Dirham' => 'United Arab Emirates, Dirham',
-    'United Republic OF Tanzania, Shilling' => 'United Republic OF Tanzania, Shilling',
+    'United Republic of Tanzania, Shilling' => 'United Republic of Tanzania, Shilling',
     'Yemen, Rials'			=> 'Yemen, Rials',
     'Zambia, Kwacha' => 'Zambia, Kwacha',
+	'Malawi, kwacha'		=> 'Malawi, kwacha',
+	'Tunisian, Dinar'		=> 'Tunisian, Dinar',
+	'Moroccan, Dirham'		=> 'Moroccan, Dirham',
 );
 ?>

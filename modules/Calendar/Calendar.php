@@ -82,7 +82,7 @@ class Calendar
 				break;
 			case 'week':
 				$weekview_days = 7;
-				for($i=0;$i<$weekview_days;$i++)
+				for($i=1;$i<=$weekview_days;$i++)
 				{
 					$layout = new Layout('day',$this->date_time->getThisweekDaysbyIndex($i));
 					$this->week_array[$layout->start_time->get_formatted_date()] = $layout;
@@ -188,8 +188,8 @@ class Calendar
 			$this->day_end_hour=23;
 		}
 		if ( $this->view == 'week'){
-			$start_datetime = $this->date_time->getThisweekDaysbyIndex(0);
-			$end_datetime = $this->date_time->getThisweekDaysbyIndex(6);
+			$start_datetime = $this->date_time->getThisweekDaysbyIndex(1);
+			$end_datetime = $this->date_time->getThisweekDaysbyIndex(7);
         } elseif($this->view == 'month') {
 			$start_datetime = $this->date_time->getThismonthDaysbyIndex(0);
 			$end_datetime = $this->date_time->getThismonthDaysbyIndex($this->date_time->daysinmonth-1);
@@ -294,7 +294,7 @@ function getCalendarDaysInMonth($date_time){
 	$firstday_of_month = $date_time->getThisMonthsDayByIndex(0);
 	$fdom = $firstday_of_month;
 	
-	$num_of_prev_days = ($fdom->dayofweek+1)%7-1;
+	$num_of_prev_days = ($fdom->dayofweek+7)%7-1;
 	for($i=-$num_of_prev_days;$i<42;$i++){
 		$pd = $date_time->getThisMonthsDayByIndex($i);
 		

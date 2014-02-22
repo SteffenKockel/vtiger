@@ -10,11 +10,11 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|27/10/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/language/en_us.lang.php,v 1.18 2005/04/19 14:45:38 ray Exp $
- * Description:  Defines the English language pack for the Account module.
+ * Description:  Defines the English language pack for the Users module.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -121,7 +121,7 @@ $mod_strings = Array(
 'ERR_LAST_ADMIN_1'=>'O nome de usuário',
 'ERR_LAST_ADMIN_2'=>' é o único usuário Admin.  Pelo menos um usuário deve ser o Admininstrador do Sistema.<br>Verifique as configurações do usuário Administrador.',
 
-'ERR_DELETE_RECORD'=>"Um número de registro deve ser especificado para apagar a Conta.",
+'ERR_DELETE_RECORD'=>"Um número de registro deve ser especificado para apagar a Organização.",
 
 // Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2
 // Users--listroles.php , createrole.php , ListPermissions.php , editpermissions.php
@@ -140,7 +140,7 @@ $mod_strings = Array(
 'LBL_CREATE_EDIT'=>'Criar/Editar',
 'LBL_DELETE'=>'Apagar',
 'LBL_LEADS'=>'Leads',
-'LBL_ACCOUNTS'=>'Contas',
+'LBL_ACCOUNTS'=>'Organizações',
 'LBL_CONTACTS'=>'Contatos',
 'LBL_OPPURTUNITIES'=>'Oportunidades',
 'LBL_TASKS'=>'Tarefas',
@@ -151,7 +151,7 @@ $mod_strings = Array(
 'LBL_CALLS'=>'Chamadas',
 'LBL_IMPORT_PERMISSIONS'=>'Importar Permissões',
 'LBL_IMPORT_LEADS'=>'Importar Leads',
-'LBL_IMPORT_ACCOUNTS'=>'Importar Contas',
+'LBL_IMPORT_ACCOUNTS'=>'Importar Organizações',
 'LBL_IMPORT_CONTACTS'=>'Importar Contatos',
 'LBL_IMPORT_OPPURTUNITIES'=>'Importar Oportunidades',
 
@@ -186,7 +186,7 @@ $mod_strings = Array(
 'LBL_SELECT_FIELD_TYPE'=>'Selecionar Tipo Campo',
 'LBL_SELECT_FIELD'=>'Selecionar Campo:',
 'LBL_MERGE_FIELD_VALUE'=>'Copia Valor Campo Mesclado:',
-'LBL_ACCOUNT_FIELDS'=>'Campos Conta',
+'LBL_ACCOUNT_FIELDS'=>'Campos Organização',
 'LBL_CONTACT_FIELDS'=>'Campos Contato',
 'LBL_LEAD_FIELDS'=>'Campos Lead',
 'LBL_COPY_AND_PASTE_MERGE_FIELD'=>'Copie e cole o valor do campo mesclado no Modelo abaixo.',
@@ -435,7 +435,7 @@ $mod_strings = Array(
 //Added after pathc2
 'LBL_LEAD_FIELD_ACCESS'=>'Acesso Campos Lead',
 
-'LBL_ACCOUNT_FIELD_ACCESS'=>'Acesso Campos Conta',
+'LBL_ACCOUNT_FIELD_ACCESS'=>'Acesso Campos Organização',
 
 'LBL_CONTACT_FIELD_ACCESS'=>'Acesso Campos Contato',
 
@@ -466,8 +466,8 @@ $mod_strings = Array(
 //Added to change Home page order
 'LBL_HOMEPAGE_ORDER_UPDATE'=>'Atualização Ordem dos Blocos na Pagina Principal',
 'LBL_HOMEPAGE_ID'=>'Ordem Blocos',
-'ERR_INVALID_USER'=>'Acesso Inválido--Por favor chame a partir de Minhas Contas',
-'ALVT'=>'Principais Contas',
+'ERR_INVALID_USER'=>'Acesso Inválido--Por favor chame a partir de Minhas Organizações',
+'ALVT'=>'Principais Organizações',
 'PLVT'=>'Principais Oportunidades',
 'QLTQ'=>'Principais Cotações',
 'CVLVT'=>'Métricas Chave',
@@ -479,7 +479,7 @@ $mod_strings = Array(
 'HDB'=>'Home Page Painel',
 'OLTPO'=>'Principais Pedidos Compra',
 'LTFAQ'=>'FAQs Recentes',
-'UA'=>'Atualizar Atividades',
+'UA'=>'Próximas Atividades',
 'PA'=>'Atividades Pendentes',
 
 //Added for 5.0 alpha
@@ -588,7 +588,7 @@ $mod_strings = Array(
 
 //Added for About Us
 
-'LBL_CONTACT_US'=>'Contate-nos',
+'LBL_CONTACT_US'=>'Contacte-nos',
 'LBL_READ_LICENSE'=>'Ler Licença',
 'LBL_VERSION'=>'Versão',
 'LBL_TEAM'=>'Equipe',
@@ -600,20 +600,20 @@ $mod_strings = Array(
 
 //Moved from Settings to here for Webmail client integration (for 5.0.3 release)
 
-'LBL_ADD_MAIL_ACCOUNT'=>'Adicionar Conta Correio',
-'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Nova Conta Correio [Alt+M]',
+'LBL_ADD_MAIL_ACCOUNT'=>'Adicionar Organização Correio',
+'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Nova Organização Correio [Alt+M]',
 'LBL_NEW_MAIL_ACCOUNT_KEY'=>'M',
-'LBL_NEW_MAIL_ACCOUNT_LABEL'=>'Nova Conta Correio',
+'LBL_NEW_MAIL_ACCOUNT_LABEL'=>'Nova Organização Correio',
 'LBL_GENERAL_INFO'=>'Informação Geral',
 'LBL_DISPLAY_NAME'=>'Nome Exibição',
 'LBL_MAIL_PROTOCOL'=>'Protocolo Correio',
 'LBL_LIST_PASSWORD'=>'Senha',
 'LBL_MAIL_SERVER_NAME'=>'Nome ou IP do Servidor Correio',
 'LBL_INCOME_SERVER_SETTINGS'=>'Servidor Recebimento Correio',
-'LBL_TEST_SETTINGS'=>'Testar configuração da minha Conta imediatamente',
-'LBL_TEST_BUTTON_TITLE'=>'Testar minha Conta agora! [Alt+T]',
+'LBL_TEST_SETTINGS'=>'Testar configuração da minha Organização imediatamente',
+'LBL_TEST_BUTTON_TITLE'=>'Testar minha Organização agora! [Alt+T]',
 'LBL_TEST_BUTTON_KEY'=>'T',
-'LBL_TEST_BUTTON_LABEL'=>'Testar minha Conta agora!',
+'LBL_TEST_BUTTON_LABEL'=>'Testar minha Organização agora!',
 'LBL_DEFAULT'=>'Padrão',
 'LBL_IMAP2'=>'IMAP2',
 'LBL_IMAP4'=>'IMAP4',
@@ -631,7 +631,7 @@ $mod_strings = Array(
 'LBL_DONOT_VAL_SSL_CERT'=>'Não Validar SSL',
 'LBL_WEB_MAIL_CONFIG'=>'Configuração Webmail',
 'LBL_CONFIGURE_WEB_MAIL'=>' - Configurar Webmail',
-'LBL_LIST_MAIL_ACCOUNT'=>'  Listar Conta Correio',
+'LBL_LIST_MAIL_ACCOUNT'=>'  Listar Organização Correio',
 'LBL_MY_MAIL_SERVER_DET'=>'Detalhes Servidor Recebimento Mensagem',
 'LBL_MY_DETAILS'=>'Meus Detalhes',
 'LBL_EMAIL_ID'=>'ID Email',
@@ -688,21 +688,16 @@ $mod_strings = Array(
 // Added for Create Custom Fields 
 'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Criar Campos Customizados para Usuários',
 'LBL_USER_CUSTOMFIELDS' => 'Campos Customizados Usuários',
-'LBL_USER_CUSTOMFIELDS' => 'Campos Customizados Usuários',
-
 'LBL_CURRENCY_CONFIGURATION'=> 'Configuração Moeda',
 
-//Tradução Campos vtiger CRM 5.3.0 RC - by Valmir Carlos Trindade | valmir@ttcasolucoes.com.br
+//vtiger CRM 5.3.0 RC fields translated by Valmir Carlos Trindade | valmir@ttcasolucoes.com.br
 'Digit Grouping Pattern'=>'Padrão Agrupamento Dígitos',
 'Decimal Separator'=>'Separador Decimal',
 'Symbol Placement'=>'Localização Símbolo',
 'Digit Grouping Separator'=>'Separador Agrupamento Dígitos',
-'Theme'=>'Tema',
-'Secondary Email'=>'Email Secundário',
-'Language'=>'Idioma',
 
 //Time zones-Dont change any value
-'Kwajalein' => '(UTC-12:00) Linha Hora Internacional Oeste',
+'Kwajalein' => '(UTC-12:00) Data Internacional Linha Oeste',
 'Pacific/Midway' => '(UTC-11:00) Hora Coordenada Universal-11',
 'Pacific/Samoa' => '(UTC-11:00) Samoa',
 'Pacific/Honolulu' => '(UTC-10:00) Hawai',
@@ -799,6 +794,11 @@ $mod_strings = Array(
 'Pacific/Auckland' => '(UTC+12:00) Auckland',
 'Asia/Magadan' => '(UTC+12:00) Magadan',
 'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
+
+'Theme'=>'Tema',
+'Language'=>'Idioma',
+'Secondary Email'=>'Email Secundário',
+'Time Zone'=>'Fuso Horário',
 
 );
 

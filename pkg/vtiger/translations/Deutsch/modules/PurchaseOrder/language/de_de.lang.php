@@ -10,7 +10,9 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
+ * Contributor(s): ______________________________________.
  ********************************************************************************/
+
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Bestellungen',
 'LBL_RELATED_PRODUCTS'=>'Artikel',
@@ -181,7 +183,6 @@ $mod_strings = Array(
 'Tax Type'=>'Steuertyp',
 'Discount Percent'=>'Rabatt (%)',
 'Discount Amount'=>'Rabatt',
-'Terms & Conditions'=>'Geschäftsbedingungen',
 'Adjustment'=>'Anpassung',
 'Sub Total'=>'Sub Total',
 'S&H Amount'=>'Versandkosten',
@@ -189,6 +190,10 @@ $mod_strings = Array(
 //Added after 5.0.4 GA
 'PurchaseOrder No'=>'Einkaufsbestellungen Nr.',
 
+'SINGLE_PurchaseOrder'=>'Einkaufsbestellung',
+'PurchaseOrder ID'=>'Einkaufsbestellungs-ID',
+
+'Terms & Conditions'=>'Geschäftsbedingungen',
 );
 
 ?>

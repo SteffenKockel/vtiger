@@ -199,6 +199,10 @@ class SyncServer {
                             array($clientModifiedTime,$serverModifiedTime,$appid, $clientid));
     }
 
+	function getDestinationHandleDetails(){
+		return wsapp_getHandler('vtigerCRM');
+	}
+
 	
 	/*****************
 	 * Web services
@@ -240,6 +244,7 @@ class SyncServer {
 		return array ($name, $key);
 	}
 	
+	
 	/**
 	 * Handles Create/Update/Delete operations on record
 	 */
@@ -257,7 +262,7 @@ class SyncServer {
         //hardcoded since the destination handler will be vtigerCRM
         $serverKey = wsapp_getAppKey("vtigerCRM");
         $serverAppId = $this->appid_with_key($serverKey);
-        $handlerDetails  = wsapp_getHandler('vtigerCRM');
+        $handlerDetails  = $this->getDestinationHandleDetails();
         require_once $handlerDetails['handlerpath'];
         $this->destHandler = new $handlerDetails['handlerclass']($serverKey);
 
@@ -276,7 +281,7 @@ class SyncServer {
 			if (empty($clientRecordId)) continue;
 		
 			$lookupRecordId = false;
-			$lookupResult = $db->pquery("SELECT serverid FROM vtiger_wsapp_recordmapping WHERE appid=? AND clientid=?", array($appid, $clientRecordId));
+			$lookupResult = $db->pquery("SELECT serverid,clientmodifiedtime FROM vtiger_wsapp_recordmapping WHERE appid=? AND clientid=?", array($appid, $clientRecordId));
 			if ($db->num_rows($lookupResult)) $lookupRecordId = $db->query_result($lookupResult, 0, 'serverid');
             if (empty($lookupRecordId) && $record['mode'] !="delete") {
                 $createRecords[$clientRecordId] = $record['values'];
@@ -287,6 +292,9 @@ class SyncServer {
                     $deleteRecords[$clientRecordId] = $lookupRecordId;
                 }
                 else if (!(empty($lookupRecordId))) {
+					$clientLastModifiedTime = $db->query_result($lookupResult,0,'clientmodifiedtime');
+					if($clientLastModifiedTime >= $record['values']['modifiedtime'])
+						continue;
                     $record['values']['id'] = $lookupRecordId;
                     $updateRecords[$clientRecordId] = $record['values'];
                     $updateRecords[$clientRecordId]['module'] = $record['module'];
@@ -300,15 +308,34 @@ class SyncServer {
        $recordDetails['deleted'] = $deleteRecords;
 
        $result = $this->destHandler->put($recordDetails,$user);
+	   
+	   $response= array();
+	   $response['created'] = array();
+	   $response['updated'] = array();
+	   $response['deleted'] = array();
+	   
        $nextSyncDeleteRecords = $this->destHandler->getAssignToChangedRecords();
        foreach($result['created'] as $clientRecordId=>$record){
            $this->idmap_put($appid, $record['id'], $clientRecordId,$clientModifiedTimeList[$clientRecordId],$record['modifiedtime'],$serverAppId,$this->create);
+		   $responseRecord = $record;
+		   $responseRecord['_id'] = $record['id'];
+		   $responseRecord['id'] = $clientRecordId;
+		   $responseRecord['_modifiedtime'] = $record['modifiedtime'];
+		   $responseRecord['modifiedtime'] = $clientModifiedTimeList[$clientRecordId];
+		   $response['created'][] = $responseRecord;
        }
        foreach($result['updated'] as $clientRecordId=>$record){
            $this->idmap_put($appid, $record['id'], $clientRecordId,$clientModifiedTimeList[$clientRecordId],$record['modifiedtime'],$serverAppId,$this->update);
+		   $responseRecord = $record;
+		   $responseRecord['_id'] = $record['id'];
+		   $responseRecord['id'] = $clientRecordId;
+		   $responseRecord['_modifiedtime'] = $record['modifiedtime'];
+		   $responseRecord['modifiedtime'] = $clientModifiedTimeList[$clientRecordId];
+		   $response['updated'][] = $responseRecord;
        }
        foreach($result['deleted'] as $clientRecordId=>$record){
            $this->idmap_put($appid, $record, $clientRecordId,"","",$serverAppId,$this->delete);
+		   $response['deleted'][] = $clientRecordId;
        }
        $queueRecordIds = array();
        $queueRecordDetails = array();
@@ -326,7 +353,7 @@ class SyncServer {
 			   }
            }
        }
-		return true;
+		return $response;
 	}
 	
 	/**
@@ -338,11 +365,13 @@ class SyncServer {
 		if (empty($appid)) {
 			throw new WebServiceException('WSAPP04',"Access restricted to app");
 		}
+		$clientApplicationSyncType = wsapp_getAppSyncType($key);
         //hardcoded since the destination handler will be vtigerCRM
         $serverKey = wsapp_getAppKey("vtigerCRM");
         $handlerDetails  = wsapp_getHandler('vtigerCRM');
         require_once $handlerDetails['handlerpath'];
         $this->destHandler = new $handlerDetails['handlerclass']($serverKey);
+		$this->destHandler->setClientSyncType($clientApplicationSyncType);
         $result = $this->destHandler->get($module, $token,$user);
         // Lookup Ids
 		$updatedIds = array(); $deletedIds = array();
@@ -368,6 +397,7 @@ class SyncServer {
         foreach ($result['updated'] as $u) {
             if(in_array($u['id'],$updatedIds)){
                 if (isset($updatedLookupIds[$u['id']]) && ($u['modifiedtime'] > $updatedLookupIds[$u['id']]['servermodifiedtime'])) {
+					$u['_id'] = $u['id'];
                     $u['id'] = $updatedLookupIds[$u['id']]['clientid']; // Replace serverid with clientid
                     $u['_modifiedtime'] = $u['modifiedtime'];
                     $filteredUpdates[] = $u;

@@ -98,12 +98,12 @@ else
 }
 $result = $adb->pquery($query1, $params1);
 $y=$adb->num_rows($result);
-$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
-			'vtiger_users.last_name'));
-$contactUserNameSql = getSqlForNameInDisplayFormat(array('f'=>'usersContacts.first_name', 'l' => 
-			'usersContacts.last_name'));
-$accountUserNameSql = getSqlForNameInDisplayFormat(array('f'=>'usersAccounts.first_name', 'l' => 
-			'usersAccounts.last_name'));
+$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
+							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+$contactUserNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'usersContacts.first_name', 'last_name' =>
+			'usersContacts.last_name'), 'Users');
+$accountUserNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'usersAccounts.first_name', 'last_name' =>
+			'usersAccounts.last_name'), 'Users');
 	
 for ($x=0; $x<$y; $x++)
 { 

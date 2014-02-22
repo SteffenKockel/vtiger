@@ -154,7 +154,13 @@ $mod_strings = Array (
     'LBL_MAILMANAGER_ADD_Emails' => 'E-Mail anhängen',
     'LBL_MAILMANAGER_ADD_ModComments' => 'Kommentar hinzufügen',
     'LBL_ADD' => 'Hinzufügen',
-    'or' => 'oder',
+	'JSLBL_SendWith_EmptyText' => 'Wollen Sie wirklich eine leere Email versenden?',
+	'LBL_ALLMAILS' => 'Alle Emails',
+	'LBL_TO_CONTACTS' => 'zu Person',
+	'LBL_TO_ACCOUNTS' => 'zu Organisation',
+	'LBL_TO_LEADS' => 'zu Lead',
+	'LBL_TO_USERS' => 'zu Benutzer',
+	'LBL_SENT_MAILS' => 'Sende Emails'
 );
 
 ?>

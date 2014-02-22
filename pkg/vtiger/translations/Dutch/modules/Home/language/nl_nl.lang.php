@@ -1,35 +1,49 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
+
+/*******************************************************************************
+ * The contents of this file are subject to the following licences:
+ * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
+ * - vtiger CRM Public License Version 1.0 
+ * You may not use this file except in compliance with the License
+ * Software distributed under the License is distributed on an  "AS IS" basis,
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
  * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
+ * The Original Code is: SugarCRM Open Source
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Contributor(s): Vertaling door Weltevree.org  www.weltevree.org
+ * Feel free to use / redistribute these languagefiles under the VPL 1.0.
+ * This translations is based on earlier work of: 
+ * - IT-Online.nl <www.it-online.nl>
+ * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Home/language/en_us.lang.php,v 1.5 2005/03/04 15:18:47 jack Exp $
- * Description:  Defines the English language pack 
+
+/*******************************************************************************
+ * Vicus eBusiness Solutions Version Control
+ * @package 	NL-Dutch
+ * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * @author	$Author: luuk $
+ * @version 	$Revision: 1.4 $ $Date: 2012/02/28 23:40:22 $
+ * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Home/language/nl_nl.lang.php,v $
+ * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
  
 $mod_strings = Array(
-'LBL_NEW_FORM_TITLE'=>'Nieuw Contact',
+'LBL_NEW_FORM_TITLE'=>'Nieuw contact',
 'LBL_FIRST_NAME'=>'Voornaam:',
 'LBL_LAST_NAME'=>'Achternaam:',
 'LBL_LIST_LAST_NAME'=>'Achternaam',
-'LBL_ACCOUNT_NAME'=>'Account Naam:',
-'LBL_LIST_ACCOUNT_NAME'=>'Account Naam',
+'LBL_ACCOUNT_NAME'=>'Accountnaam:',
+'LBL_LIST_ACCOUNT_NAME'=>'Accountnaam',
 'LBL_PHONE'=>'Telefoon:',
-'LBL_EMAIL_ADDRESS'=>'e-Mail:',
+'LBL_EMAIL_ADDRESS'=>'E-mail:',
 'LBL_TOTAL'=>'Totaal : ',
 
 'LBL_MY_HOME'=>'Mijn Home',
-'LBL_MODIFIED_TIME'=>'Tijd Gewijzigd',
+'LBL_MODIFIED_TIME'=>'Gewijzigd',
 'LBL_LOGIN_ID'=>'ID',
 'LBL_MODIFIED_BY'=>'Gewijzigd door',
 'LBL_TYPE'=>'Type',
@@ -40,27 +54,27 @@ $mod_strings = Array(
 
 'LBL_OPEN_TASKS'=>'Mijn Open Taken',
 
-'LBL_LEADS_BY_SOURCE'=>'Leads Volgens Bron',
-'LBL_LEADS_BY_STATUS'=>'Leads Volgens Status',
+'LBL_LEADS_BY_SOURCE'=>'Leads per bron',
+'LBL_LEADS_BY_STATUS'=>'Leads per status',
 
-'LBL_UPCOMING_EVENTS'=>'Komende Activiteiten',
-'LBL_PENDING_EVENTS'=>'Wachtende Activiteiten',
-'LBL_SINGLE_PENDING_EVENT'=>'Gebeurtenissen laatste Tien Dagen',
-'LBL_MULTIPLE_PENDING_EVENTS'=>'Gebeurtenissen laatste Tien Dagen',
+'LBL_UPCOMING_EVENTS'=>'Nieuwe Afspraken',
+'LBL_PENDING_EVENTS'=>'Afwachtende Afspraken',
+'LBL_SINGLE_PENDING_EVENT'=>'Laatste 10 dagen',
+'LBL_MULTIPLE_PENDING_EVENTS'=>'Laatste 10 dagen',
 
-'recordsforuser'=>'Records voor',
+'recordsforuser'=>'Bestand voor gebruiker',
 
 'Today'=>'Vandaag',
-'This Week'=>'Deze Week',
-'This Month'=>'Deze Maand',
-'This Year'=>'Dit Jaar',
+'This Week'=>'Deze week',
+'This Month'=>'Deze maand',
+'This Year'=>'Dit jaar',
 'Last Week'=>'Afgelopen Week',
 'Last 2 Days'=>'Afgelopen 2 Dagen',
 'Last Ten Days'=>'Afgelopen 10 Dagen',
 
 // Added/Updated for vtiger CRM 5.0.4 
-'TITLE_AJAX_CSS_POPUP_CHAT'=>'Ajax Css-Popup kaart',
-'User List'=>'Gebruikers Lijst',
+'TITLE_AJAX_CSS_POPUP_CHAT'=>'Chatkanaal',
+'User List'=>'Gebruikerslijst',
 
 // Added after 5.0.4 GA
 
@@ -68,56 +82,60 @@ $mod_strings = Array(
 'LBL_HOME_MODULE' => 'Module',
 'LBL_HOME_RSS' => 'RSS',
 'LBL_HOME_DASHBOARD' => 'Dashboard',
-'LBL_HOME_STUFFTITLE'=>'Window Titel',
+'LBL_HOME_STUFFTITLE'=>'Venster titel',
 'LBL_HOME_SHOW'=>'Toon',
-'LBL_HOME_FILTERBY'=>'Filter Volgens',
-'LBL_HOME_Fields'=>'Velden Te Tonen <br>(selecteer willekeurig twee)',
-'LBL_HOME_PRESSCTRL'=>'(Druk "Ctrl" <br> voor meerdere selecties)',
+'LBL_HOME_FILTERBY'=>'Filter op',
+'LBL_HOME_Fields'=>'Weer te geven velden <br>(selecteer er twee)',
+'LBL_HOME_PRESSCTRL'=>'(Klik "Ctrl" <br> voor meerdere selecties)',
 'LBL_HOME_RSSURL'=>'RSS URL',
 'LBL_HOME_DASHBOARD_NAME'=>'DashBoard Naam', 
 'LBL_HOME_DASHBOARD_TYPE'=>'DashBoard Type',
-'LBL_HOME_HORIZONTAL_BARCHART'=>'Horizontale Staaf Diagram',
-'LBL_HOME_VERTICAL_BARCHART'=>'Verticale Staaf Diagram',
+'LBL_HOME_HORIZONTAL_BARCHART'=>'Horizontale Staafdiagram',
+'LBL_HOME_VERTICAL_BARCHART'=>'Verticale Staafdiagram',
 'LBL_HOME_PIE_CHART'=>'Taart Diagram',
 'LBL_HOME_ITEMS'=>'item(s)',
 'LBL_MORE'=>'Meer',
-'LBL_SCROLL'=>'Rol',
+'LBL_SCROLL'=>'Blader',
 
 // vtiger CRM News
-'LBL_NEWS_NO'=>'Geen Nieuws',
+'LBL_NEWS_NO'=>'Geen nieuws',
 
 //added for home page changes
-'LBL_NOTEBOOK'=>'Notebook',
-'LBL_NOTEBOOK_TITLE'=>'Dubbel-Klik om te wijzigen.',
-'LBL_NOTEBOOK_SAVE_TITLE'=>'Klik ergens willekeurig anders op de pagina om te bewaren.',
+'LBL_NOTEBOOK'=>'Aantekeningen',
+'LBL_NOTEBOOK_TITLE'=>'Dubbel-klik om te wijzigen.',
+'LBL_NOTEBOOK_SAVE_TITLE'=>'Klik ergens op het scherm om te bewaren.',
 
 'LBL_URL'=>'Website',
-'LBL_HOME_LAYOUT'=>'Verander layout',
-'LBL_NUMBER_OF_COLUMNS'=>'Aantal Kolommen',
-'LBL_TWO_COLUMN'=>'Twee Kolommen',
-'LBL_THREE_COLUMN'=>'Drie Kolomen',
-'LBL_FOUR_COLUMN'=>'Vier Kolommen',
+'LBL_HOME_LAYOUT'=>'Wijzig layout',
+'LBL_NUMBER_OF_COLUMNS'=>'Aantal kolommen',
+'LBL_TWO_COLUMN'=>'Twee kolommen',
+'LBL_THREE_COLUMN'=>'Drie kolommen',
+'LBL_FOUR_COLUMN'=>'Vier kolommen',
 // END
 
 // Default home page widget's title
 'Top Accounts'=>'Top Accounts',
-'Top Potentials'=>'Top Potentielen',
+'Top Potentials'=>'Top Verkoopkansen',
 'Top Quotes'=>'Top Offertes',
-'Top Trouble Tickets'=>'Top Helpdesk Tickets',
+'Top Trouble Tickets'=>'Top Help/tickets',
 'Top Invoices'=>'Top Facturen',
-'Top Sales Orders'=>'Top Verkoop Orders',
-'Top Purchase Orders'=>'Top Inkoop Orders',
-'My New Leads'=>'Mijn Nieuwe Leads',
-'Key Metrics'=>'Belangrijkste Metrics',
-'My Group Allocation'=>'Mijn Groep Toewijzing',
-'My Recent FAQs'=>'Mijn Recente Meest Gestelde Vragen',
-'Upcoming Activities'=>'Aankomende Activiteiten',
-'Pending Activities'=>'In Afwachting Van Activiteiten',
-'Home Page Dashboard'=>'Home Pagina Dashboard',
+'Top Sales Orders'=>'Top Verkooporders',
+'Top Purchase Orders'=>'Top Inkooporders',
+'My New Leads'=>'Mijn nieuwe Leads',
+'Key Metrics'=>'Kerngetallen',
+'My Group Allocation'=>'Mijn Groepstoewijzing',
+'My Recent FAQs'=>'Mijn recente FAQs',
+'Upcoming Activities'=>'Aankomende activiteiten',
+'Pending Activities'=>'Geparkeerde activiteiten',
+'Home Page Dashboard'=>'Home Page Dashboard',
 'Tag Cloud'=>'Tag Cloud',
 
-'MSG_NO_FILTERS' => 'Geen Filters Beschikbaar',
+'MSG_NO_FILTERS' => 'Geen filters beschikbaar',
 'MSG_NO_FIELDS' => 'Geen Velden Beschikbaar',
+
+//added for Default Widgets
+'LBL_DEFAULT_WIDGET'=>'Standaard Widgets',
+'LBL_NO_WIDGETS_HIDDEN'=>'Er zijn Geen standaard widgets verborgen',
 
 );
 

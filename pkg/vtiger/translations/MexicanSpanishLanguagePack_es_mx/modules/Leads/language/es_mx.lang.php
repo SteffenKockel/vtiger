@@ -14,10 +14,10 @@
  ********************************************************************************
 *  Module       : Leads
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-28
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
@@ -250,6 +250,15 @@ $mod_strings = Array(
 // END
 
 'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Transferir elementos relacionados a',
+
+'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'A continuación se detallan algunas de las posibles causas',
+'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'No se han vinculado todos los campos obligatorios',
+'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Algún campo obligatorio está vacío',
+'LBL_LEADS_FIELD_MAPPING' => 'Vinculación de Campos Personalizados',
+
+'LBL_FIELD_SETTINGS' => 'Configuración Campos',
+'Leads ID' => 'Id Prospecto',
+
 );
 
 ?>

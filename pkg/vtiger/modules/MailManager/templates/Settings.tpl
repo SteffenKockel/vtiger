@@ -6,15 +6,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-<div class="mm_outerborder">
 <form action="javascript:void(0);" method="POST" style="display:inline;">
+<span class="dvHeaderText" id="settings_mail_fldrname">{'JSLBL_Settings'|@getTranslatedString}</span>
+<div class="mm_outerborder" id="settings_email_con" name="settings_email_con">
     <input type=hidden id="selected_servername" value="{$SERVERNAME}" >
     <table width="100%" cellpadding=5 cellspacing=0 border=0 class="small" style='clear: both;'>
-        <tr valign=top>
-            <td colspan=2>
-                <span class="dvHeaderText">{'JSLBL_Settings'|@getTranslatedString}</span>
-            </td>
-        </tr>
         <tr>
             <td width="15%">{'LBL_SELECT_ACCOUNT_TYPE'|@getTranslatedString}</td>
             <td><select id="_mbox_helper" class="small" onchange="MailManager.handle_settings_confighelper(this);">

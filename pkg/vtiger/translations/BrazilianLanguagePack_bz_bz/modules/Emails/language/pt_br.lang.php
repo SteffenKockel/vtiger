@@ -10,11 +10,11 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Emails/language/en_us.lang.php,v 1.17 2005/03/28 06:31:38 rank Exp $
- * Description:  Defines the English language pack for the Account module.
+ * Description:  Defines the English language pack for the Emails module.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -33,7 +33,7 @@ $mod_strings = Array(
 'LBL_LIST_DATE'=>'Data Envio',
 'LBL_LIST_TIME'=>'Hora Envio',
 
-'ERR_DELETE_RECORD'=>"Defina um número de registro para apagar a Conta.",
+'ERR_DELETE_RECORD'=>"Defina um número de registro para apagar a Organização.",
 'LBL_DATE_SENT'=>'Data Envio:',
 'LBL_DATE_AND_TIME'=>'Data & Hora Envio:',
 'LBL_DATE'=>'Data Envio:',
@@ -45,7 +45,7 @@ $mod_strings = Array(
 'LBL_DETAILVIEW_EMAIL'=>'E-Mail',
 'LBL_COLON'=>':',
 'LBL_CHK_MAIL'=>'Checar Email',
-'LBL_COMPOSE'=>'Compor',
+'LBL_COMPOSE'=>'Nova Mensagem',
 //Single change for 5.0.3
 'LBL_SETTINGS'=>'Configurações Servidor',
 'LBL_EMAIL_FOLDERS'=>'Folders Email',
@@ -55,7 +55,7 @@ $mod_strings = Array(
 'LBL_JUNK_MAILS'=>'Mensagens não Solicitadas ',
 'LBL_TO_LEADS'=>'Para Leads',
 'LBL_TO_CONTACTS'=>'Para Contatos',
-'LBL_TO_ACCOUNTS'=>'Para Contas',
+'LBL_TO_ACCOUNTS'=>'Para Organizações',
 'LBL_MY_MAILS'=>'Meus Emails',
 'LBL_QUAL_CONTACT'=>'Emails Qualificados',
 'LBL_MAILS'=>'Mensagens',
@@ -72,7 +72,7 @@ $mod_strings = Array(
       
 // Added Fields
 // Contacts-SubPanelViewContactsAndUsers.php
-'LBL_BULK_MAILS'=>'E-mail em Massa',
+'LBL_BULK_MAILS'=>'Mensagens em Massa',
 'LBL_ATTACHMENT'=>'Anexos',
 'LBL_UPLOAD'=>'Upload',
 'LBL_FILE_NAME'=>'Nome Arquivo',
@@ -95,8 +95,8 @@ $mod_strings = Array(
 'LBL_PRODUCT_TITLE'=>'Produtos',
 'LBL_NEW_CONTACT'=>'Novo Contato',
 'LBL_CONTACT_TITLE'=>'Contatos',
-'LBL_NEW_ACCOUNT'=>'Nova Conta',
-'LBL_ACCOUNT_TITLE'=>'Contas',
+'LBL_NEW_ACCOUNT'=>'Nova Organização',
+'LBL_ACCOUNT_TITLE'=>'Organizações',
       
 // Added vtiger_fields after vtiger4 - Beta
 'LBL_USER_TITLE'=>'Usuários',
@@ -130,8 +130,8 @@ $mod_strings = Array(
 'LBL_ALL'=>'Todos',
 'MESSAGE_CONTACT_NOT_WANT_MAIL'=>'Este Contato não deseja receber Emails.',
 'LBL_WEBMAILS_TITLE'=>'WebMails',
-'LBL_EMAILS_TITLE'=>'Emails',
-'LBL_MAIL_CONNECT_ERROR_INFO'=>'Erro ao conectar o Servidor de Mensagem!<br> Verifique em Minhas Contas->Lista Servidor de Mensagem -> Lista Contas de Email',
+'LBL_EMAILS_TITLE'=>'Email',
+'LBL_MAIL_CONNECT_ERROR_INFO'=>'Erro ao conectar Servidor de Mensagem!<br> Verifique em Minhas Organizações->Lista Servidor de Mensagem -> Lista Organizações de Email',
 'LBL_ALLMAILS'=>'Todos Emails',
 'LBL_TO_USERS'=>'Para Usuários',
 'LBL_TO'=>'Para:',
@@ -144,12 +144,12 @@ $mod_strings = Array(
 'LBL_MAILSELECT_INFO1'=>'O(s) seguinte(s) Email(s) está(ão) disponível(eis) para ser selecionado(s) em',
 'LBL_MAILSELECT_INFO2'=>'Selecione o(s) tipo(s) de Email(s) para o qual a mensagem deve ser enviada:',
 'LBL_MULTIPLE'=>'Multiplo',
-'LBL_COMPOSE_EMAIL'=>'Compor E-Mail',
+'LBL_COMPOSE_EMAIL'=>'Novo E-Mail',
 'LBL_VTIGER_EMAIL_CLIENT'=>'Cliente Webmail vtiger',
       
 //Added for 5.0.3
 'TITLE_VTIGERCRM_MAIL'=>'Correio vtigerCRM',
-'TITLE_COMPOSE_MAIL'=>'Compor Mensagem',
+'TITLE_COMPOSE_MAIL'=>'Nova Mensagem',
       
 'MESSAGE_MAIL_COULD_NOT_BE_SEND'=>'A mensagem não pode ser enviada para o usuário responsável.',
 'MESSAGE_PLEASE_CHECK_ASSIGNED_USER_EMAILID'=>'Por favor verifique o endereço de email atribuído ao usuário....',

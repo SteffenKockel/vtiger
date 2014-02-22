@@ -13,10 +13,10 @@
  ********************************************************************************
 *  Module       : Quotes
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
@@ -144,7 +144,6 @@ $mod_strings = Array(
 'Modified Time'=>'Última Modificación',
 'Description'=>'Descripción',
 'Account Name'=>'Nombre de la Cuenta',
-'Terms & Conditions'=>'Condiciones Generales',
 //Quote Info
 'LBL_QUOTE_INFORMATION'=>'Información del Presupuesto',
 'LBL_TERMS_INFORMATION'=>'Condiciones Generales',
@@ -184,6 +183,8 @@ $mod_strings = Array(
 
 //Added after 5.0.4 GA
 'Quote No'=>'No Presupuesto',
+'Add Service Contract'=>'Añadir Contrato Servicio',
+'Quotes ID'=>'Id Presupuesto',
 );
 
 ?>

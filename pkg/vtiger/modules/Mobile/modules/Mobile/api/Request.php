@@ -17,9 +17,9 @@ class Mobile_API_Request {
 		$this->rawvaluemap = $rawvalues;
 	}
 
-	function get($key, $defvalue = '') {
+	function get($key, $defvalue = '', $purify=true) {
 		if(isset($this->valuemap[$key])) {
-			return vtlib_purify($this->valuemap[$key]);
+			return $purify ? vtlib_purify($this->valuemap[$key]) : $this->valuemap[$key];
 		}
 		if($defvalue === '' && isset($this->defaultmap[$key])) {
 			$defvalue = $this->defaultmap[$key];

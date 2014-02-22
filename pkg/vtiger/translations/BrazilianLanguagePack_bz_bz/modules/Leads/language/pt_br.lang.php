@@ -10,7 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|07/09/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -67,7 +67,7 @@ $mod_strings = Array(
 
 'LBL_CONVERT_LEAD'=>'Converter Lead:',
 'LBL_CONVERT_LEAD_INFORMATION'=>'Converte Informação Lead',
-'LBL_ACCOUNT_NAME'=>'Nome Conta',
+'LBL_ACCOUNT_NAME'=>'Nome Organização',
 'LBL_POTENTIAL_NAME'=>'Nome Oportunidade',
 'LBL_POTENTIAL_CLOSE_DATE'=>'Data Oportunidade Fechada',
 'LBL_POTENTIAL_AMOUNT'=>'Valor Oportunidade',
@@ -240,6 +240,17 @@ $mod_strings = Array(
 // END
 
 'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Transferir registros relacionados para',
+
+'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'O seguinte pode ser uma das possíveis razões',
+'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'Todos os campos obrigatórios não são mapeados',
+'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Alguns dos valores dos campos obrigatórios estão vazios',
+'LBL_LEADS_FIELD_MAPPING' => 'Mapeamento Campos Customizados do Lead',
+'LBL_FIELD_SETTINGS' => 'Configurações do Campo',
+'Leads ID' => 'ID Leads',
+
+//Missing label in vtiger CRM
+'Secondary Email'=>'Email Alternativo', 
+
 );
 
 ?>

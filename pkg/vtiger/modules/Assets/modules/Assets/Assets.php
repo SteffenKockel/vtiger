@@ -17,6 +17,9 @@ class Assets extends CRMEntity {
 	var $table_index= 'assetsid';
 	var $column_fields = Array();
 
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = true;
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -105,32 +108,6 @@ class Assets extends CRMEntity {
 		$this->column_fields = getColumnFields('Assets');
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
-	}
-
-	function getSortOrder() {
-		global $currentModule;
-
-		$sortorder = $this->default_sort_order;
-		if($_REQUEST['sorder']) $sortorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		else if($_SESSION[$currentModule.'_Sort_Order'])
-			$sortorder = $_SESSION[$currentModule.'_Sort_Order'];
-
-		return $sortorder;
-	}
-
-	function getOrderBy() {
-		global $currentModule;
-
-		$use_default_order_by = '';
-		if(PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
-			$use_default_order_by = $this->default_order_by;
-		}
-
-		$orderby = $use_default_order_by;
-		if($_REQUEST['order_by']) $orderby = $this->db->sql_escape_string($_REQUEST['order_by']);
-		else if($_SESSION[$currentModule.'_Order_By'])
-			$orderby = $_SESSION[$currentModule.'_Order_By'];
-		return $orderby;
 	}
 
 	function save_module($module){
@@ -277,77 +254,11 @@ class Assets extends CRMEntity {
 	}
 
 	/**
-	 * Initialize this instance for importing.
-	 */
-	function initImport($module) {
-		$this->db = PearDatabase::getInstance();
-		$this->initImportableFields($module);
-	}
-
-	/**
-	 * Create list query to be shown at the last step of the import.
-	 * Called From: modules/Import/UserLastImport.php
-	 */
-	function create_import_query($module) {
-		global $current_user;
-		$query = "SELECT vtiger_crmentity.crmid, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name, $this->table_name.* FROM $this->table_name
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
-			LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=vtiger_crmentity.crmid
-			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_users_last_import.assigned_user_id='$current_user->id'
-			AND vtiger_users_last_import.bean_type='$module'
-			AND vtiger_users_last_import.deleted=0";
-
-		return $query;
-	}
-
-	/**
-	 * Delete the last imported records.
-	 */
-	function undo_import($module, $user_id) {
-		global $adb;
-		$count = 0;
-		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='$module' AND deleted=0";
-		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error());
-		while ( $row1 = $adb->fetchByAssoc($result1))
-		{
-			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
-			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error());
-			$count++;
-		}
-		return $count;
-	}
-
-	/**
 	 * Transform the value while exporting
 	 */
 	function transform_export_value($key, $value) {
 		if($key == 'owner') return getOwnerName($value);
 		return parent::transform_export_value($key, $value);
-	}
-
-	/**
-	 * Function which will set the assigned user id for import record.
-	 */
-	function set_import_assigned_user()
-	{
-		global $current_user, $adb;
-		$record_user = $this->column_fields["assigned_user_id"];
-
-		if($record_user != $current_user->id){
-			$sqlresult = $adb->pquery("select id from vtiger_users where id = ? union select groupid as id from vtiger_groups where groupid = ?", array($record_user, $record_user));
-			if($this->db->num_rows($sqlresult)!= 1) {
-				$this->column_fields["assigned_user_id"] = $current_user->id;
-			} else {
-				$row = $adb->fetchByAssoc($sqlresult, -1, false);
-				if (isset($row['id']) && $row['id'] != -1) {
-					$this->column_fields["assigned_user_id"] = $row['id'];
-				} else {
-					$this->column_fields["assigned_user_id"] = $current_user->id;
-				}
-			}
-		}
 	}
 
 	/**
@@ -422,18 +333,7 @@ class Assets extends CRMEntity {
 	 * @param - $module primary module name
 	 * returns the query string formed on fetching the related data for report for secondary module
 	 */
-	function generateReportsQuery($module){
-		global $current_user;
-			$query = "from vtiger_assets
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_assets.assetsid
-				left join vtiger_assetscf on vtiger_assets.assetsid = vtiger_assetscf.assetsid
-				left join vtiger_account as vtiger_accountAssets on vtiger_accountAssets.accountid=vtiger_assets.account
-				left join vtiger_products as vtiger_productAssets on vtiger_productAssets.productid=vtiger_assets.product
-				left join vtiger_invoice as vtiger_invoiceAssets on vtiger_invoiceAssets.invoiceid=vtiger_assets.invoiceid
-				left join vtiger_users as vtiger_usersAssets on vtiger_usersAssets.id=vtiger_crmentity.smownerid
-				left join vtiger_groups as vtiger_groupsAssets on vtiger_groupsAssets.groupid=vtiger_crmentity.smownerid";
-			return $query;
-	}
+	// function generateReportsQuery($module){ }
 
 	/*
 	 * Function to get the secondary query part of a report
@@ -441,19 +341,7 @@ class Assets extends CRMEntity {
 	 * @param - $secmodule secondary module name
 	 * returns the query string formed on fetching the related data for report for secondary module
 	 */
-	function generateReportsSecQuery($module,$secmodule){
-		global $current_user;
-		$query = $this->getRelationQuery($module,$secmodule,"vtiger_assets","assetsid");
-		$query .= " left join vtiger_crmentity as vtiger_crmentityAssets on vtiger_crmentityAssets.crmid=vtiger_assets.assetsid and vtiger_crmentityAssets.deleted=0
-                            left join vtiger_assetscf on vtiger_assets.assetsid = vtiger_assetscf.assetsid
-                            left join vtiger_account as vtiger_accountAssets on vtiger_accountAssets.accountid=vtiger_assets.account
-                            left join vtiger_products as vtiger_productAssets on vtiger_productAssets.productid=vtiger_assets.product
-                            left join vtiger_invoice as vtiger_invoiceAssets on vtiger_invoiceAssets.invoiceid=vtiger_assets.invoiceid
-                            left join vtiger_users as vtiger_usersAssets on vtiger_usersAssets.id=vtiger_crmentity.smownerid
-                            left join vtiger_groups as vtiger_groupsAssets on vtiger_groupsAssets.groupid=vtiger_crmentity.smownerid
-                                ";
-                return $query;
-	}
+	// function generateReportsSecQuery($module,$secmodule){ }
 
 	// Function to unlink all the dependent entities of the given Entity by Id
 	function unlinkDependencies($module, $id) {
@@ -473,12 +361,8 @@ class Assets extends CRMEntity {
  		if($eventType == 'module.postinstall') {
 			//Add Assets Module to Customer Portal
 			global $adb;
-			$visible=1;
-			$query = $adb->pquery("SELECT max(sequence) AS max_tabseq FROM vtiger_customerportal_tabs",array());
-			$maxtabseq = $adb->query_result($query, 0, 'max_tabseq');
-			$newTabSeq = ++$maxtabseq;
-			$tabid = getTabid('Assets');
-			$adb->pquery("INSERT INTO vtiger_customerportal_tabs(tabid, visible, sequence) VALUES(?,?,?)", array($tabid,$visible,$newTabSeq));
+
+			$this->addModuleToCustomerPortal();
 
 			include_once('vtlib/Vtiger/Module.php');
 
@@ -511,8 +395,28 @@ class Assets extends CRMEntity {
 		} else if($eventType == 'module.preupdate') {
 		// TODO Handle actions before this module is updated.
 		} else if($eventType == 'module.postupdate') {
-		// TODO Handle actions after this module is updated.
+			$this->addModuleToCustomerPortal();
 		}
  	}
+
+	function addModuleToCustomerPortal() {
+		$adb = PearDatabase::getInstance();
+
+		$assetsResult = $adb->pquery('SELECT tabid FROM vtiger_tab WHERE name=?', array('Assets'));
+		$assetsTabId = $adb->query_result($assetsResult, 0, 'tabid');
+		if(getTabid('CustomerPortal') && $assetsTabId) {
+			$checkAlreadyExists = $adb->pquery('SELECT 1 FROM vtiger_customerportal_tabs WHERE tabid=?', array($assetsTabId));
+			if($checkAlreadyExists && $adb->num_rows($checkAlreadyExists) < 1) {
+				$maxSequenceQuery = $adb->query("SELECT max(sequence) as maxsequence FROM vtiger_customerportal_tabs");
+				$maxSequence = $adb->query_result($maxSequenceQuery, 0, 'maxsequence');
+				$nextSequence = $maxSequence+1;
+				$adb->query("INSERT INTO vtiger_customerportal_tabs(tabid,visible,sequence) VALUES ($assetsTabId,1,$nextSequence)");
+			}
+			$checkAlreadyExists = $adb->pquery('SELECT 1 FROM vtiger_customerportal_prefs WHERE tabid=?', array($assetsTabId));
+			if($checkAlreadyExists && $adb->num_rows($checkAlreadyExists) < 1) {
+				$adb->query("INSERT INTO vtiger_customerportal_prefs(tabid,prefkey,prefvalue) VALUES ($assetsTabId,'showrelatedinfo',1)");
+			}
+		}
+	}
 }
 ?>

@@ -194,6 +194,11 @@ if($adb->num_rows($checkresult) > 0) {
 		$type = "C(255) default () "; //adodb type
 		$uichekdata='V~O';
 	}
+	elseif($fldType == 'Time'){
+		$uitype = 14;
+		$type = "TIME";
+		$uichekdata='T~O';
+	}
 	// No Decimal Pleaces Handling
 
    	//1. add the customfield vtiger_table to the vtiger_field vtiger_table as Block4

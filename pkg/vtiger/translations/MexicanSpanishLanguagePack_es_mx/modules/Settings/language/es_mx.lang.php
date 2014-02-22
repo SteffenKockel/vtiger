@@ -2,10 +2,10 @@
 /***********************************************************
 *  Module       : Settings
 *  Language     : ES Spanish
-*  Version      : vt5.0.4
+*  Version      : vt5.4.0
 *  Created Date : 2008-01-18 17:46:07
-*  Author       : rasomu
-*  Last change  : 2008-09-20
+*  Author       : JPL TSolucio, S.L.  -  rasomu
+*  Last change  : 2012-02-28
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
 ***********************************************************/
@@ -104,6 +104,7 @@ $mod_strings = array (
       'PickList' => 'Lista',
       'LBL_MULTISELECT_COMBO' => 'Lista de Multi-Selección',
       'Skype' => 'Skype',
+      'Time'=>'Tiempo',
       'USERGROUPLIST' => 'Grupos',
       'EMAILTEMPLATES' => 'Plantillas de Email',
       'WORDINTEGRATION' => 'Plantillas de Mailing',
@@ -871,23 +872,23 @@ $mod_strings = array (
       'LBL_PUBLISHED_ON' => 'Publicado el',
       'LBL_LICENSE'   => 'Licencia',
       'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'No se ha podido descargar la extensión!',
-      'LBL_DEFAULT'=>'Por defecto, el servidor de correo saliente SMTP es od1.vtiger.com. Para evitar problemas, recomendamos que utilice una de estas opciones.',
+      'LBL_DEFAULT'=>'Por defecto, el servidor de correo saliente SMTP es od1.vtiger.com. Para evitar problemas, recomendamos que utilices una de estas opciones.',
       'LBL_OPTIONS1'=>'Enviar emails desde su servidor de correo<br>
       				- Introducir la configuración (Servidor, Usuario, Contraseña) de la misma cuenta de correo utilizada en la cuenta de respuesta.',
       'LBL_OPTIONS2'=>"Añadir el servidor od1.vtiger.com como dominio autorizado desde su dominio.<br>
-      				- Si prefiere mantener el servidor saliente de vtiger, recomendamos que configure el registro SPF de su dominio para incluir el servidor de vtiger como servidor autorizado.
+      				- Si prefiere mantener el servidor saliente de vtiger, recomendamos que configure el registro SPF de tu dominio para incluir el servidor de vtiger como servidor autorizado.
       				  Para obtener instrucciones adicionales sobre cómo definir un registro SPF, contacte con od-support@vtiger.com .",
       'LBL_ALREADY_EXISTS' => 'Ya Existe',
       'LBL_EXTENSION_INCOMPATIBLE' => 'Extensión Incompatible',
       'LBL_INSTALL' => 'Instalar',
       'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Reestablecer configuración por Defecto',
-      'LBL_CONFIRM_DEFAULT_SETTINGS' => '¿Está seguro que quiere cambiar los valores del servidor a sus valores por defecto?',
+      'LBL_CONFIRM_DEFAULT_SETTINGS' => '¿Estás seguro que quiere cambiar los valores del servidor a sus valores por defecto?',
       'EXISTING_DEFAULT_VALUES' => 'Los valores del servidor ya están en sus valores por defecto',
       'LBL_NOTE' => 'Nota:',
       'LBL_HIDE' => 'Esconder Detalles',
       'LBL_SHOW' => 'Mostrar Detalles',
       // END
-      'LBL_USER_ADDITION_INFO'=>"Para agergar un nuevo usuario, haga click en  
+      'LBL_USER_ADDITION_INFO'=>"Para agregar un nuevo usuario, haga click en  
       			   <span style='font-style:italic;color:blue;'>OD-Menú Configuración -> On Demand Admin -> Añadir / Invitar Usuario </span>",
       
       'LBL_READ_ONLY_ACCESS_MSG' => 'Acceso Solo-Lectura',
@@ -903,6 +904,24 @@ $mod_strings = array (
       'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Establece Dependencias entre los elementos de las listas desplegables en cada módulo',
 
       'Settings' => 'Configuración',
+      'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Este impuesto ya existe.',
+      'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Algunos impuestos tienen el nombre repetido y no han sido guardados.',
+      'LBL_EDIT_COMPANY_INFO' => "Para editar la información de la empresa, haz click sobre
+                          <span style='font-style:italic;color:blue;'>Icono Configuración > Administrador > Empresa </span>",
+
+      'Configuration Editor'=>'Editor de Configuración',
+
+      'ModTracker' => 'Control de Cambios',
+      'LBL_MODTRACKER_DESCRIPTION' => 'Selecciona módulos para seguimiento',
+
+      'LBL_MENUS_TO_SHOW'=>'Selecciona módulos a mostrar en menú principal',
+      'LBL_MENU_DESC'=>'Personalizar Secuencia de Menú',
+      'LBL_MENU_EDITOR'=>'Editor de Menú',
+      'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'Utiliza las flechas para ordenar los elementos del menú. Los primeros 10 elementos aparecen en el menú, los demás se muestran en el desplegable <b><i>Más</i></b>',
+      'LBL_ALL_MODULES' => 'Todos los Módulos',
+      'LBL_SELECTED_MODULES' => 'Módulos Seleccionados',
+
+      'LBL_CRM_SETTINGS' => 'Configuración CRM',
 
 );
 $mod_list_strings = array (

@@ -1,20 +1,17 @@
 <?php
 /***********************************************************
 *  Module       : Administration
-*  Language     : Francais
-*  Version      : 5.1.0 GA*  Created Date : 2009-06-23 21:36:13 
-*  Last change  : 2009-07-21 00:49:17
-*  Author       : french-vtiger.fr 
+*  Language     : French
+*  Version      : 5.4.0 
 *  License      : GPL
-
+*  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
-
 
 $mod_strings = array (
 	'LBL_MODULE_NAME' => 'Administration',
-	'LBL_MODULE_TITLE' => 'Administration : accueil',
+	'LBL_MODULE_TITLE' => 'Administration : ',
 	'LBL_NEW_FORM_TITLE' => 'Nouveau compte',
-	'ERR_DELETE_RECORD' => 'Un numéro d\'enregistrement doit être spécifié pour supprimer le compte.',
+	'ERR_DELETE_RECORD' => 'Un numéro d\'enregistrement doit être renseigné pour supprimer le compte.',
 );
 $mod_list_strings = array (
 );

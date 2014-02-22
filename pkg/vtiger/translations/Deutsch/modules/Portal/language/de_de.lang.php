@@ -6,7 +6,9 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
+*
  ********************************************************************************/
+
 $mod_strings = Array(
 // added for 5.0 beta
 'LBL_BOOKMARKED_URL'=>"URL's mit Lesezeichen",

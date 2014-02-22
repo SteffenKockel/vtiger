@@ -130,7 +130,8 @@ else
 	$rowList = $result->GetRows();
 	foreach ($rowList as $row) {
 		$cryptType = $row['crypt_type'];
-		if(strtolower($cryptType) == 'md5' && version_compare(PHP_VERSION, '5.3.0') >= 0) {
+		/* PHP 5.3 WIN implementation of crypt API not compatible with earlier version */
+		if(strtolower($cryptType) == 'md5' && version_compare(PHP_VERSION, '5.3.0') >= 0 && strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ) {
 			header("Location: modules/Migration/PHP5.3_PasswordHelp.php");
 			die;
 		}

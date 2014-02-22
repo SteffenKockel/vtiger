@@ -143,10 +143,10 @@ $data['endhr'] = $time_arr['endhour'];
 $data['endmin'] = $time_arr['endmin'];
 $data['endfmt'] = $time_arr['endfmt'];
 $data['record'] = $focus->id;
-if(isset($finaldata['sendnotification']) && $finaldata['sendnotification'] == 'yes')
-        $data['sendnotification'] = $mod_strings['LBL_YES'];
+if(isset($finaldata['sendnotification']) && $finaldata['sendnotification'] == strtolower($mod_strings['LBL_YES'])) 
+	$data['sendnotification'] = $mod_strings['LBL_YES'];
 else
-        $data['sendnotification'] = $mod_strings['LBL_NO'];
+	$data['sendnotification'] = $mod_strings['LBL_NO'];
 $data['subject'] = $finaldata['subject'];
 $data['date_start'] = $stdate;
 $data['due_date'] = $enddate;
@@ -157,6 +157,7 @@ else
 	$data['taskpriority'] = $finaldata['taskpriority'];
 $data['modifiedtime'] = $finaldata['modifiedtime'];
 $data['createdtime'] = $finaldata['createdtime'];
+$data['modifiedby'] = $finaldata['modifiedby'];
 $data['parent_name'] = $finaldata['parent_id'];
 $data['description'] = $finaldata['description'];
 if($activity_mode == 'Task')
@@ -205,20 +206,29 @@ elseif($activity_mode == 'Events')
 		$data['recurringcheck'] = getTranslatedString('LBL_NO', $currentModule);
 		$data['repeat_str'] = '';
 	}
-	$sql = 'select vtiger_users.user_name,vtiger_invitees.* from vtiger_invitees left join vtiger_users on vtiger_invitees.inviteeid=vtiger_users.id where activityid=?';
+	$sql = 'select vtiger_users.*,vtiger_invitees.* from vtiger_invitees left join vtiger_users on vtiger_invitees.inviteeid=vtiger_users.id where activityid=?';
 	$result = $adb->pquery($sql, array($focus->id));
 	$num_rows=$adb->num_rows($result);
 	$invited_users=Array();
 	for($i=0;$i<$num_rows;$i++)
 	{
 		$userid=$adb->query_result($result,$i,'inviteeid');
-		$username=$adb->query_result($result,$i,'user_name');
+		$username = getFullNameFromQResult($result, $i, 'Users');
 		$invited_users[$userid]=$username;
 	}
 	$smarty->assign("INVITEDUSERS",$invited_users);
 	$related_array = getRelatedListsInformation("Calendar", $focus);
-	
-	$smarty->assign("CONTACTS",$related_array['Contacts']['entries']);
+	$fieldsname = $related_array['Contacts']['header'];
+	$contact_info = $related_array['Contacts']['entries'];
+
+	$entityIds = array_keys($contact_info);
+	$displayValueArray = getEntityName('Contacts', $entityIds);
+	if (!empty($displayValueArray)) {
+		foreach ($displayValueArray as $key => $field_value) {
+			$entityname[] = '<a href="index.php?module=Contacts&action=DetailView&record=' . $key . '">' . $field_value . '</a>';
+		}
+	}
+	$smarty->assign("CONTACTS",$entityname);
 	
 	$is_fname_permitted = getFieldVisibilityPermission("Contacts", $current_user->id, 'firstname');
 	$smarty->assign("IS_PERMITTED_CNT_FNAME",$is_fname_permitted);

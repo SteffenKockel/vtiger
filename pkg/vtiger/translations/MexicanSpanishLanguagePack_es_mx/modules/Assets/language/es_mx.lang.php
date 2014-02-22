@@ -7,6 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * Translated to mexican spanish by Francisco Hernandez Odin Consultores Odin.mx
  * All Rights Reserved.
+ * 
+ * ***********************************************************
+*  Module       : Assets
+*  Language     : ES Mexico
+*  Version      : vt5.4.0
+*  Created Date : 2012-02-27
+*  Author       : Odin Consultores S de R.L. de C.V.
+*  License      : MPL 1.1
  ************************************************************************************/
 
 $mod_strings = Array(
@@ -38,6 +46,6 @@ $mod_strings = Array(
 /*picklist values*/
 'In Service'=>'En Servicio',
 'Out-of-service'=>'Fuera de servicio',
-
+'Assets ID'=>'Id de Activo',
 );
 ?>

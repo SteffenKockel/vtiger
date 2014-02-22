@@ -35,15 +35,15 @@ if(!is_admin($current_user)) {
 }
 
 $modules = Vtiger_DependencyPicklist::getDependentPickListModules();
-if(!empty($_REQUEST['moduleName'])){
+if(!empty($_REQUEST['moduleName'])) {
 	$fld_module = vtlib_purify($_REQUEST['moduleName']);
 }
 
 $smarty = new vtigerCRM_Smarty;
 
-if($fld_module == 'Events'){
+if($fld_module == 'Events') {
 	$temp_module_strings = return_module_language($current_language, 'Calendar');
-}else{
+}else {
 	$temp_module_strings = return_module_language($current_language, $fld_module);
 }
 
@@ -61,39 +61,43 @@ $smarty->assign("SUBMODE",vtlib_purify($_REQUEST['submode']));
 
 if($_REQUEST['directmode'] == 'ajax') {
 	$subMode = vtlib_purify($_REQUEST['submode']);
-	
+
 	if($subMode == 'getpicklistvalues') {
 		$fieldName = vtlib_purify($_REQUEST['fieldname']);
 		$fieldValues = getAllPickListValues($fieldName);
 		$picklistValues = array();
-		for($i=0;$i<count($fieldValues);++$i){
+		for($i=0;$i<count($fieldValues);++$i) {
 			$picklistValues[$fieldValues[$i]] = getTranslatedString($fieldValues[$i], $fld_module);
 		}
 		$json = new Zend_Json();
 		echo $json->encode($picklistValues);
-		
+
 	} elseif($subMode == 'editdependency') {
 		$sourceField = vtlib_purify($_REQUEST['sourcefield']);
 		$targetField = vtlib_purify($_REQUEST['targetfield']);
-		
+
 		$cyclicDependencyExists = Vtiger_DependencyPicklist::checkCyclicDependency($fld_module, $sourceField, $targetField);
 
 		if($cyclicDependencyExists) {
 			$smarty->assign('RETURN_URL', 'index.php?module=PickList&action=PickListDependencySetup&parenttab=Settings&moduleName='.$fld_module);
 			$smarty->display("modules/PickList/PickListDependencyCyclicError.tpl");
-			
+
 		} else {
 			$available_module_picklist = Vtiger_DependencyPicklist::getAvailablePicklists($fld_module);
 			$smarty->assign("ALL_LISTS",$available_module_picklist);
 			$dependencyMap = array();
 			if(!empty($sourceField) && !empty($targetField)) {
 
-				$sourceFieldValues = getAllPickListValues($sourceField);
+				$sourceFieldValues = array();
 				$targetFieldValues = getAllPickListValues($targetField);
+
+				foreach (getAllPickListValues($sourceField) as $key => $value) {
+					$sourceFieldValues[htmlentities($value,ENT_QUOTES,'UTF-8')] = $value;
+				}
 
 				$smarty->assign("SOURCE_VALUES", $sourceFieldValues);
 				$smarty->assign("TARGET_VALUES", $targetFieldValues);
-				
+
 				$dependentPicklists = Vtiger_DependencyPicklist::getDependentPicklistFields($fld_module);
 				$smarty->assign("DEPENDENT_PICKLISTS",$dependentPicklists);
 
@@ -103,25 +107,25 @@ if($_REQUEST['directmode'] == 'ajax') {
 
 			$smarty->display("modules/PickList/PickListDependencyContents.tpl");
 		}
-			
+
 	} else {
-		
+
 		if($subMode == 'savedependency') {
 			$dependencyMapping = vtlib_purify($_REQUEST['dependencymapping']);
 			$json = new Zend_Json();
 			$dependencyMappingData = $json->decode($dependencyMapping);
 			Vtiger_DependencyPicklist::savePickListDependencies($fld_module, $dependencyMappingData);
-			
+
 		} elseif($subMode == 'deletedependency') {
 			$sourceField = vtlib_purify($_REQUEST['sourcefield']);
 			$targetField = vtlib_purify($_REQUEST['targetfield']);
 			Vtiger_DependencyPicklist::deletePickListDependencies($fld_module, $sourceField, $targetField);
 		}
-	 	$dependentPicklists = Vtiger_DependencyPicklist::getDependentPicklistFields($fld_module);
+		$dependentPicklists = Vtiger_DependencyPicklist::getDependentPicklistFields($fld_module);
 		$smarty->assign("DEPENDENT_PICKLISTS",$dependentPicklists);
 		$smarty->display("modules/PickList/PickListDependencyList.tpl");
 	}
-} else {	
+} else {
 	$dependentPicklists = Vtiger_DependencyPicklist::getDependentPicklistFields($fld_module);
 	$smarty->assign("DEPENDENT_PICKLISTS",$dependentPicklists);
 	$smarty->display("modules/PickList/PickListDependencySetup.tpl");

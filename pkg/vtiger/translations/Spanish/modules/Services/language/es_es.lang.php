@@ -6,6 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * 
+ *  ********************************************************************************
+ *  Module       : Services
+ *  Language     : Español
+ *  Version      : 5.4.0 
+ *  Last change  : 2012-02-27
+ *  Author       : Joe Bordes JPL TSolucio, S.L.
  ************************************************************************************/
 
 $mod_strings = Array(
@@ -52,7 +59,7 @@ $mod_strings = Array(
 'LBL_SUPPORT_START_DATE'=>'Fecha inicio soporte',
 'LBL_SUPPORT_EXPIRY_DATE'=>'Fecha fin soporte',
 
-'Commission Rate'=>'Comisión (%)',
+'Commission Rate'=>'Comisión',
 'Unit Price'=>'Precio unitario',
 'Price'=>'Precio',
 'No of Units' => 'Número unidades',
@@ -116,7 +123,7 @@ $mod_strings = Array(
 'Incidents'=>'Incidentes',
 
 'LBL_NO_TAXES_ASSOCIATED'=>'No hay impuestos asociados a este servicio',
-
+'Services ID'=>'Id Servicio',
 );
 
 ?>

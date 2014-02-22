@@ -11,38 +11,156 @@
 -->*}
 <script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 
-<table border=0 cellspacing=0 cellpadding=5 width="350px" align="" class="dvtContentSpace">
-<tr>
-	<td class="colHeader small">{$MOD.Module}</td>
-	<td class="colHeader small">{$MOD.Sequence}</td>
-	<td class="colHeader small">{$MOD.Visible}</td>
-</tr>					
-{foreach item=module from=$PORTALMODULES name=pname}
-<tr onmouseover="this.className='prvPrfHoverOn'" onmouseout="this.className='prvPrfHoverOff'">
-	<td class="listTableRow small" width="50%">{$module.name|@getTranslatedString}</td>
+<script type="text/javascript">
+	var moduleInfo = JSON.parse('{$PORTALMODULES}');
+	function initialModuleSettings(){ldelim}
+		renderModuleSettings(moduleInfo);
+	{rdelim}
+	function visibleValue(sequence,tabid){ldelim}
+		visibleValueChange(sequence,tabid,moduleInfo);
+	{rdelim}
+	function prefValue(sequence,tabid){ldelim}
+		prefValueChange(sequence,tabid,moduleInfo);
+	{rdelim}
+	function moveModules(sequence,move){ldelim}
+		if(move == "Up")
+			moveUp(moduleInfo,sequence);
+		else
+			moveDown(moduleInfo,sequence);
+	{rdelim}
+	function renderModuleSettings(moduleInfo){ldelim}
 	
-	{if $smarty.foreach.pname.first neq true}
-		<td  align="center" class="listTableRow"><a href="javascript:move_module('{$module.tabid}','Up');" ><img src="{'arrow_up.png'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" /></a>
+		var upImage = "{'arrow_up.png'|@vtiger_imageurl:$THEME}";
+		var downImage = "{'arrow_down.png'|@vtiger_imageurl:$THEME}";
+		var blankImage = "{'blank.gif'|@vtiger_imageurl:$THEME}";
+		var displayData =
+				'<table id="my_table" border=0 cellspacing=0 cellpadding=5 width="100%" class="dvtContentSpace" align="center">'+
+				'<tr>'+
+					'<td class="detailedViewHeader" colspan="4" ><b>{'LBL_MODULE_INFORMATION'|@getTranslatedString:$MODULE}</b></td>'+
+				'</tr>'+
+				'<tr align="left">'+
+					'<td class="colHeader small">{'LBL_MODULE'|@getTranslatedString:$MODULE}</td>'+
+					'<td class="colHeader small">{'LBL_SEQUENCE'|@getTranslatedString:$MODULE}</td>'+
+					'<td class="colHeader small">{'LBL_VISIBLE'|@getTranslatedString:$MODULE}</td>'+
+					'<td class="colHeader small">{'LBL_VIEW_ALL_RECORD'|@getTranslatedString:$MODULE}</td>'+
+				'</tr>';
+			
+		for(i=1;i<=moduleInfo.size();i++){ldelim}
+			var upImageTag = '<img src="'+upImage+'" style="width:16px;height:16px;" border="0"/>';
+			var downImageTag = '<img src="'+downImage+'" style="width:16px;height:16px;" border="0"/>';
+			var blankImageTag = '<img src="'+blankImage+'" style="width:16px;height:16px;" border="0"/>';
+			
+			if(moduleInfo[i].sequence == 1) {ldelim}
+				upImageTag = '';
+			{rdelim}
+			else if(moduleInfo[i].sequence == moduleInfo.size()){ldelim}
+				downImageTag = '';
+			{rdelim}
+			else {ldelim}
+				blankImageTag = '';
+			{rdelim}
+			var visibleTag;
+			if(moduleInfo[i].visible == 1){ldelim}
+				visibleTag = '<input type="checkbox" id="enable_disable_'+moduleInfo[i].name+'" onclick="javascript:visibleValue(\''+moduleInfo[i].sequence+'\',\''+moduleInfo[i].tabid+'\');" name="enable_disable_'+moduleInfo[i].name+'" checked>';
+			{rdelim}
+			else{ldelim}
+				visibleTag = '<input type="checkbox" id="enable_disable_'+moduleInfo[i].name+'" onclick="javascript:visibleValue(\''+moduleInfo[i].sequence+'\',\''+moduleInfo[i].tabid+'\');" name="enable_disable_'+moduleInfo[i].name+'">';
+			{rdelim}
+			//alert(upImageTag);
+			var valueTag = '';
+			if(moduleInfo[i].value == 1){ldelim}
+				valueTag = '{'LBL_YES'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'"  checked="checked" value="showall"> '+
+							'{'LBL_NO'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'" onclick="javascript:prefValue(\''+moduleInfo[i].sequence+'\',\''+moduleInfo[i].tabid+'\');"  value="onlymine">';
+			{rdelim}
+			else{ldelim}
+				valueTag = '{'LBL_YES'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'" onclick="javascript:prefValue(\''+moduleInfo[i].sequence+'\',\''+moduleInfo[i].tabid+'\');"  value="showall"> '+
+							'{'LBL_NO'|@getTranslatedString:$MODULE}<input type="radio" name="view_'+moduleInfo[i].name+'" id="view_'+moduleInfo[i].name+'"  checked="checked" value="onlymine">';
+			{rdelim}
+			displayData +=
+				'<tr><td class="listTableRow small" width="35%">'+moduleInfo[i].name+'</td>' +
+				'<input type="hidden" name="seq_'+moduleInfo[i].name+'" value="'+moduleInfo[i].sequence+'">' +
+				'<td  align="center" class="listTableRow">' +
+				'<a href="javascript:moveModules(\''+moduleInfo[i].sequence+'\',\'Up\');">' +
+					upImageTag + '</a>' +
+				blankImageTag +
+				'<a href="javascript:moveModules(\''+moduleInfo[i].sequence+'\',\'Down\');">' +
+					downImageTag + '</a>' +
+				'</td>' +
+				'<td class="listTableRow cellText small"  align="center">' +
+					visibleTag +
+				'</td>' +
+				'<td class="listTableRow">' +
+					valueTag +
+				'</td>' +
+				'</tr>';
+		{rdelim}
+	displayData += '</table>';
+	document.getElementById('displayData').innerHTML = displayData;
+{rdelim}
+</script>
+
+<table width="100%" border=0>
+	<tr>
+		<td width="55%">
+			<div id="displayData" ></div>
+		</td>
+		<td valign="top">
+			<table border=0 cellspacing=0 cellpadding=3 width="100%" align="center" class="dvtContentSpace">
+				<tr>
+					<td class="detailedViewHeader" colspan="4" ><b>{'LBL_USER_INFORMATION'|@getTranslatedString:$MODULE}</b></td>
+				</tr>
+				<tr>
+					<td  class="dvtCellLabel" align="right" width="40%">{'LBL_SELECT_USERS'|@getTranslatedString:$MODULE}</td>
+					<td  class="dvtCellInfo" align="left">
+						<select name="userid" class="small">
+							{foreach item=user from=$USERS}
+								{if $USERID eq $user.id}
+									<option value="{$user.id}" selected>{$user.name}</option>
+								{else}
+									<option value="{$user.id}">{$user.name}</option>
 	{/if}
-	{if $smarty.foreach.pname.last eq true}
-		<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />
+							{/foreach}
+						</select>
+						<br><br>
+						<span class="helpmessagebox" style="font-style: italic;">{'LBL_USER_DESCRIPTION'|@getTranslatedString:$MODULE}</span>
+					</td>
+				</tr>
+				<tr>
+					<td  class="dvtCellLabel" align="right">{'LBL_DEFAULT_USERS'|@getTranslatedString:$MODULE}</td>
+					<td  class="dvtCellInfo" align="left">
+						<select name="defaultAssignee" class="small">
+							<optgroup style="border: none" label="Users" >
+								{foreach item=user from=$USERS}
+									{if $DEFAULTASSIGNEE eq $user.id}
+										<option value="{$user.id}" selected>{$user.name}</option>
+									{else}
+										<option value="{$user.id}">{$user.name}</option>
 	{/if}	
-	{if $smarty.foreach.pname.first eq true}
-		<td align="center" class="listTableRow"><img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />
-			<a href="javascript:move_module('{$module.tabid}','Down');" ><img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" /></a></td>
-	{/if}
-	
-	{if $smarty.foreach.pname.last neq true && $smarty.foreach.pname.first neq true}
-		<a href="javascript:move_module('{$module.tabid}','Down');" ><img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" /></a></td>
-	{/if}
-	
-	<td class="listTableRow cellText small"  align="center">
-		{if $module.visible eq 1}
-			<a href="javascript:void(0);" onclick="toggleModule('{$module.tabid}', 'module_disable');"><img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_DISABLE} {$module.name}" title="{$MOD.LBL_DISABLE} {$module.name|@getTranslatedString}"></a>
+								{/foreach}
+							</optgroup>
+							<optgroup style="border: none" label="Groups">
+								{foreach item=group from=$GROUPS}
+									{if $DEFAULTASSIGNEE eq $group.groupid}
+										<option value="{$group.groupid}" selected>{$group.groupname}</option>
 		{else}
-			<a href="javascript:void(0);" onclick="toggleModule('{$module.tabid}', 'module_enable');"><img src="{'disabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_ENABLE} {$module.name}" title="{$MOD.LBL_ENABLE} {$module.name|@getTranslatedString}"></a>
+										<option value="{$group.groupid}">{$group.groupname}</option>
 		{/if}
+								{/foreach}
+							</optgroup>
+						</select>
+						<br><br>
+						<span class="helpmessagebox" style="font-style: italic;">{'LBL_GROUP_DESCRIPTION'|@getTranslatedString:$MODULE}</span>
+					</td>
+				</tr>
+			</table>
 	</td>
-</tr>								
-{/foreach}
+	</tr>
 </table>	
+<br><br>
+		<center><input class="crmbutton small save" type="Submit" style="width:70px" title="{$APP.LBL_SAVE_LABEL}" value="{$APP.LBL_SAVE_LABEL}" alt="{$APP.LBL_SAVE_LABEL}" onclick=VtigerJS_DialogBox.block();></center>
+		
+<script>
+	window.onload=function(){ldelim}
+		initialModuleSettings();
+	{rdelim}
+</script>

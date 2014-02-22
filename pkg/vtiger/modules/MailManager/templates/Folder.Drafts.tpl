@@ -6,13 +6,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-<div class="mailClientBg mm_outerborder">
+<span class="moduleName" id="mail_fldrname">{'LBL_Drafts'|@getTranslatedString}</span>
+<div class="mailClientBg mm_outerborder" id="email_con" name="email_con">
 
 	<table width="100%" cellpadding=3 cellspacing=0 border=0 class="small">
 		{if $FOLDER->mails()}
 		<tr>
 			<td>
-				<span class="moduleName">{'LBL_Drafts'|@getTranslatedString}</span>
+				
 			</td>
 			<td align="right" colspan=2>
 				<table><tr>
@@ -31,7 +32,7 @@
 			<table class="mm_tableHeadBg small" width="100%" cellspacing="0" border="0" cellpadding="2px" >
 				<tr>
 					<td align="left" style="width: 10%;" nowrap="nowrap">
-					<input align="left" type="checkbox" class='small'  name="selectall" onClick='MailManager.toggleSelect(this.checked,"mc_box");'/>&nbsp;&nbsp;
+					<input align="left" type="checkbox" class='small'  name="selectall" id="parentCheckBox" onClick='MailManager.toggleSelect(this.checked,"mc_box");'/>&nbsp;&nbsp;
 					<input type=button class='crmbutton small delete' onclick="MailManager.massMailDelete('__vt_drafts');" name="{'LBL_Delete'|@getTranslatedString}" value="{'LBL_Delete'|@getTranslatedString}" />
 				</td>
 				<td class="moduleName" align="right">{'LBL_Search'|@getTranslatedString}
@@ -66,7 +67,7 @@
 		{/foreach}
 	</table>
 	{/if}
-	
+
 	{if $FOLDER->mails() eq null}
 	<table  cellpadding="0" cellspacing="0" border="0" width="100%">
 		<tr>

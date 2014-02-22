@@ -592,18 +592,17 @@ var colOpts;
 var manCheck = new Array({$MANDATORYCHECK});
 {literal}
 if(document.CustomView.record.value == '') {
-  for(k=0;k<manCheck.length;k++)
-  {
-      selname = "column"+(k+1);
-      colOpts = document.getElementById(selname).options;
-      for (l=0;l<colOpts.length;l++)
-      {
-        if(colOpts[l].value == manCheck[k])
-        {
-          colOpts[l].selected = true;
-        }
-      }
-  }
+	for(k=0;k<manCheck.length;k++) {
+		selname = "column"+(k+1);
+		selelement = document.getElementById(selname);
+		if(selelement == null || typeof selelement == 'undefined') continue;
+		colOpts = selelement.options;
+		for (l=0;l<colOpts.length;l++) {
+			if(colOpts[l].value == manCheck[k]) {
+				colOpts[l].selected = true;
+			}
+		}
+	}
 }
 
 function validateCV() {

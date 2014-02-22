@@ -6,7 +6,9 @@
   * The Initial Developer of the Original Code is vtiger.
   * Portions created by vtiger are Copyright (C) vtiger.
   * All Rights Reserved.
+ *
   ********************************************************************************/
+
 $app_strings = array (
 	'Groups'=>'Gruppen',
 	'DocumentFolders'=>'Dokumentenverzeichnisse',
@@ -22,4 +24,5 @@ $webservice_strings = array(
 	'LBL_DATABASE_QUERY_ERROR' => 'Ihre Anfrage konnte aufgrund eines Datenbankfehlers nicht verarbeitet werden.',
 	'LBL_CHANGE_PASSWORD_FAILURE' => 'Passwort konnte nicht geändert werden.Failed to change password',
 );
+
 ?>

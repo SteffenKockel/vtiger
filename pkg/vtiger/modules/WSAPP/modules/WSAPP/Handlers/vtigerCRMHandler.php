@@ -21,6 +21,7 @@ require_once 'modules/WSAPP/Handlers/SyncHandler.php';
 class vtigerCRMHandler extends SyncHandler {
 
     private $assignToChangedRecords;
+	protected $clientSyncType='user';
 
     public function  __construct($appkey){
         $this->key = $appkey;
@@ -31,7 +32,11 @@ class vtigerCRMHandler extends SyncHandler {
         $syncModule = $module;
         $this->user = $user;
         $syncModule = $module;
-        $result = vtws_sync($token, $syncModule, $this->user);
+		$syncType = 'user';
+		if(!$this->isClientUserSyncType()){
+			$syncType = 'application';
+		}
+		$result = vtws_sync($token, $syncModule, $syncType, $this->user);
         
         $result['updated']  = $this->translateTheReferenceFieldIdsToName($result['updated'],$syncModule,$user);
         return $this->nativeToSyncFormat($result);
@@ -136,14 +141,15 @@ class vtigerCRMHandler extends SyncHandler {
             foreach($referenceFieldDetails as $referenceFieldName=>$referenceModuleDetails){
                 $recordReferenceFieldNames = array();
                 foreach($records as $index=>$recordDetails){
+                    if(!empty($recordDetails[$referenceFieldName])) {
                     $recordReferenceFieldNames[$recordDetails['id']] = $recordDetails[$referenceFieldName];
+                }
                 }
                 $entityNameIds = wsapp_getRecordEntityNameIds(array_values($recordReferenceFieldNames), $referenceModuleDetails, $user);
                 foreach($records as $index=>$recordInfo){
                     if(!empty($entityNameIds[$recordInfo[$referenceFieldName]])){
                         $recordInfo[$referenceFieldName] = $entityNameIds[$recordInfo[$referenceFieldName]];
-                    }
-                    else{
+                    } else {
                         $recordInfo[$referenceFieldName] = "";
                     }
                     $records[$index] = $recordInfo;
@@ -192,7 +198,7 @@ class vtigerCRMHandler extends SyncHandler {
                 $record = $records[$i];
                 if(!empty($record[$referenceFieldName])){
                     $wsId = vtws_getIdComponents($record[$referenceFieldName]);
-                    $record[$referenceFieldName] = $referenceIdsName[$wsId[1]];
+                    $record[$referenceFieldName] = decode_html($referenceIdsName[$wsId[1]]);
                 }
                 $records[$i]= $record;
             }
@@ -229,6 +235,15 @@ class vtigerCRMHandler extends SyncHandler {
 			$recordList[$index]= $recordDetails;
 		}
 		return $recordList;
+	}
+
+	public function setClientSyncType($syncType='user'){
+		$this->clientSyncType = $syncType;
+		return $this;
+	}
+
+	public function isClientUserSyncType(){
+		return ($this->clientSyncType == 'user')?true:false;
 	}
 }
 ?>

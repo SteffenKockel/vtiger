@@ -100,9 +100,10 @@ $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("MODULE",$currentModule);
-$smarty->assign("SINGLE_MOD",'Document');
+$smarty->assign("SINGLE_MOD",getTranslatedString('SINGLE_'.$currentModule, $currentModule));
 $smarty->assign("BUTTONS",$other_text);
 $smarty->assign("CATEGORY",$category);
+$smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
 
 //Retreive the list from Database
 //<<<<<<<<<customview>>>>>>>>>

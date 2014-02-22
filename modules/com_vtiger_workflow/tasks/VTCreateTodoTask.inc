@@ -23,9 +23,9 @@ require_once("modules/Users/Users.php");
 
 class VTCreateTodoTask extends VTTask{
 	public $executeImmediately = true;
-	
+
 	public function getFieldNames(){return array('todo', 'description', 'sendNotification', 'time', 'date', 'status', 'priority', 'days', 'direction', 'datefield', 'sendNotification');}
-	
+
 	function getAdmin(){
 		$user = Users::getActiveAdminUser();
 		global $current_user;
@@ -33,8 +33,11 @@ class VTCreateTodoTask extends VTTask{
 		$current_user = $user;
 		return $user;
 	}
-	
+
 	public function doTask($entityData){
+		if(!vtlib_isModuleActive('Calendar')) {
+			return;
+		}
 		global $adb, $current_user;
 		$userId = $entityData->get('assigned_user_id');
 		if($userId===null){
@@ -42,6 +45,9 @@ class VTCreateTodoTask extends VTTask{
 		}
 
 		$baseDate = $entityData->get($this->datefield);
+		if($baseDate == '') {
+			$baseDate = date('Y-m-d');
+		}
 		$time = explode(' ',$baseDate);
 		if(count($time) < 2) {
 			$time[] = date('H:i');
@@ -71,7 +77,7 @@ class VTCreateTodoTask extends VTTask{
 		$id = $entityData->getId();
 		if($moduleName=='Contacts'){
 			$fields['contact_id'] = $id;
-		}else{ 
+		}else{
 			$data = vtws_describe('Calendar', $adminUser);
 			$fieldInfo = $data['fields'];
 			foreach($fieldInfo as $field){
@@ -80,12 +86,12 @@ class VTCreateTodoTask extends VTTask{
 				}
 			}
 			$refersTo = $parentIdField['type']['refersTo'];
-			
+
 			if(in_array($moduleName, $refersTo)){
 				$fields['parent_id'] = $id;
 			}
 		}
-		
+
 		vtws_create('Calendar', $fields, $adminUser);
 		global $current_user;
 		$current_user = $this->originalUser;

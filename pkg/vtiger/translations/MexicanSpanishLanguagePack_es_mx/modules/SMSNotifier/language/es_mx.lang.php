@@ -34,7 +34,7 @@ $mod_strings = Array (
 'LBL_RECEPIENTS'              => 'Destinatarios',
 'SMSCheckStatus'              => 'Verificar Estado',
 'StatusInformation'           => 'Información Estado',
-
+'SMSNotifier ID'              => 'Id SMS',
 );
 
 ?>

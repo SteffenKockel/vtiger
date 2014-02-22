@@ -4,7 +4,7 @@
 <name>ServiceContracts</name>
 <label>Service Contracts</label>
 <parent>Support</parent>
-<version>1.5</version>
+<version>2.1</version>
 <dependencies>
 <vtiger_version>5.1.0</vtiger_version>
 <vtiger_max_version>5.*</vtiger_max_version>
@@ -28,7 +28,7 @@
 				<name>vtiger_servicecontracts</name>
 				<sql><![CDATA[ALTER TABLE vtiger_servicecontracts MODIFY COLUMN used_units decimal(5,2) default NULL]]></sql>
 			</table>
-		</tables>		
+		</tables>
 	</migration>
 </migrations>
 <tables>
@@ -453,6 +453,26 @@
 <quickcreate>3</quickcreate>
 <quickcreatesequence></quickcreatesequence>
 <displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>modifiedby</fieldname>
+<uitype>52</uitype>
+<columnname>modifiedby</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Last Modified By</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>17</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>3</displaytype>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
 <masseditable>0</masseditable>

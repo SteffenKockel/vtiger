@@ -46,5 +46,9 @@ $mod_strings = array(
 	'LBL_CONFIGURE_DEPENDENCY_HELP_2' => "If you want to see or change the mapping for the other picklist values of Source field, <br/>
 										then you can select the values by clicking on <b>'Select Source values'</b> button on the right side",
 	'LBL_CONFIGURE_DEPENDENCY_HELP_3' => 'Selected values of the Target field values, are highlighted as',
+	'LBL_ADD_BUTTON' => 'Add Item',
+	'LBL_EDIT_BUTTON' => 'Rename Item',
+	'LBL_DELETE_BUTTON' => 'Delete Item',
+	'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this picklist dependency?', 
 );
 ?>

@@ -55,12 +55,6 @@ class MailManager_IndexController extends MailManager_Controller {
 	}
 }
 
-// FOR DEBUGGING
-ini_set('display_errors', 'on'); error_reporting(E_ALL & ~E_NOTICE);
-
-// FOR PRODUCTION
-//error_reporting(E_FATAL);
-
 $controller = new MailManager_IndexController();
 $controller->process(new MailManager_Request($_REQUEST));
 

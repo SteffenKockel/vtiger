@@ -9,10 +9,10 @@
  ********************************************************************************
 *  Module       : Vendors
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-28
 *  Author       : Joe Bordes  JPL TSolucio, S.L.
  ********************************************************************************/
 
@@ -22,7 +22,6 @@ $mod_strings = array (
 'LBL_CUSTOM_INFORMATION'=>'Información Personalizada',
 'LBL_VENDOR_ADDRESS_INFORMATION'=>'Información sobre la Dirección:',
 'LBL_DESCRIPTION_INFORMATION'=>'Nombre Descriptivo:',
-
 
 'Vendor Name'=>'Proveedor',
 'Name'=>'Nombre',
@@ -71,6 +70,7 @@ $mod_strings = array (
 
 // Module Sequence Numbering
 'Vendor No' => 'Núm. Proveedor',
+'Vendors ID'=>'Id Proveedor',
 // END
 
 /*

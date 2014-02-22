@@ -38,6 +38,9 @@ function wsapp_getApplicationName($key){
 function wsapp_getRecordEntityNameIds($entityNames,$modules,$user){
     $entityMetaList = array();
     $db = PearDatabase::getInstance();
+    
+    if(empty($entityNames)) return;
+
     if(!is_array($entityNames))
         $entityNames = array($entityNames);
     if(empty($modules))
@@ -64,7 +67,7 @@ function wsapp_getRecordEntityNameIds($entityNames,$modules,$user){
         $num_rows = $db->num_rows($result);
         for($i=0;$i<$num_rows;$i++){
             $id = $db->query_result($result, $i,'id');
-            $entityName = $db->query_result($result, $i,'entityname');
+            $entityName = $entityNames[$i];
             $entityNameIds[$entityName] = vtws_getWebserviceEntityId($moduleName, $id);
         }
     }
@@ -121,5 +124,30 @@ function wsapp_getAppKey($appName){
     }
     return $appKey;
 }
+
+function wsapp_getAppSyncType($appKey){
+	$db = PearDatabase::getInstance();
+    $query = "SELECT type FROM vtiger_wsapp WHERE appkey=?";
+    $params = array($appKey);
+    $result = $db->pquery($query,$params);
+    $syncType="";
+    if($db->num_rows($result)>0){
+        $syncType = $db->query_result($result,0,'type');
+    }
+    return $syncType;
+}
+
+function wsapp_RegisterHandler($type,$handlerClass,$handlerPath){
+	$db = PearDatabase::getInstance();
+	$query = "SELECT 1 FROM vtiger_wsapp_handlerdetails where type=?";
+	$result = $db->pquery($query,array($type));
+	if($db->num_rows($result)>0){
+		$saveQuery = "UPDATE vtiger_wsapp_handlerdetails SET handlerclass=?,handlerpath=? WHERE type=?";
+		$parameters = array($handlerClass,$handlerPath,$type);
+	} else{
+		$saveQuery = "INSERT INTO vtiger_wsapp_handlerdetails VALUES(?,?,?)";
+		$parameters = array($type,$handlerClass,$handlerPath);
+	}
+	$db->pquery($saveQuery,$parameters);}
 
 ?>

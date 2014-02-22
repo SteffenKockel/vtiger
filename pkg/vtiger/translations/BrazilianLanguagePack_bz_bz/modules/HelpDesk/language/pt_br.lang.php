@@ -14,17 +14,17 @@
  ********************************************************************************/
 /*********************************************************************************
  * $Header$
- * Description:  Defines the English language pack
+ * Description:  Defines the English language pack for Help Desk
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|07/09/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
 $mod_strings = Array(
 // Added in release 4.0
 'LBL_MODULE_NAME'=>'Tickets',
 'LBL_GROUP'=>'Grupo',
-'LBL_ACCOUNT_NAME'=>'Nome Conta',
+'LBL_ACCOUNT_NAME'=>'Nome Organização',
 'LBL_CONTACT_NAME'=>'Nome Contato',
 'LBL_SUBJECT'=>'Assunto',
 'LBL_NEW_FORM_TITLE' => 'Novo Ticket',
@@ -33,13 +33,13 @@ $mod_strings = Array(
 'LBL_CUSTOM_FIELD_SETTINGS'=>'Configurações Campos Customizados:',
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Configurações Campos Lista Opções:',
 'Leads'=>'Lead',
-'Accounts'=>'Conta',
+'Accounts'=>'Organização',
 'Contacts'=>'Contato',
 'Opportunities'=>'Oportunidade',
 'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
 'LBL_DESCRIPTION_INFORMATION'=>'Descrição',
 
-'LBL_ACCOUNT'=>'Conta',
+'LBL_ACCOUNT'=>'Organização',
 'LBL_OPPURTUNITY'=>'Oportunidade',
 'LBL_PRODUCT'=>'Produto',
 
@@ -221,6 +221,9 @@ $mod_strings = Array(
 
 'Hours' => 'Horas',
 'Days' => 'Dias',
+
+'From Portal' => 'Do Portal',
+'HelpDesk ID' => 'ID Tickets',
 );
 
 ?>

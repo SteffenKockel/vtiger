@@ -58,7 +58,7 @@ $mod_strings = Array (
 	'JSLBL_PASSWORD_CANNOT_BE_EMPTY'=>'Password cannot be empty',
 	'JSLBL_SERVERNAME_CANNOT_BE_EMPTY'=>'Server Name cannot be empty',
 	'JSLBL_USERNAME_CANNOT_BE_EMPTY'=>'User Name cannot be empty',
-	'JSLBL_ACCOUNTNAME_CANNOT_EMPTY'=>'Account Name cannot be empty',
+	'JSLBL_ACCOUNTNAME_CANNOT_EMPTY'=>'Organization Name cannot be empty',
 	'JSLBL_FROM'=>'From:',
 	'JSLBL_DATE'=>'Date: ',
 	'JSLBL_SUBJECT'=>'Subject: ',
@@ -120,7 +120,7 @@ $mod_strings = Array (
 	'LBL_Certificate_Validations' => 'Certificate Validations',
 	'LBL_Validate_Cert'           => 'Validate cert',
 	'LBL_Do_Not_Validate_Cert'    => 'Do not validate cert',
-	'LBL_SELECT_ACCOUNT_TYPE'     => 'Select Account Type',
+	'LBL_SELECT_ACCOUNT_TYPE'     => 'Select Organization Type',
 	
 	'LBL_FROM'        => 'From',
 	'LBL_TO'          => 'To',
@@ -147,13 +147,20 @@ $mod_strings = Array (
 	'LBL_10_MIN' => '10 Minutes',
 	'LBL_MOVE_TO'=>'Move To...',
     'LBL_MAILMANAGER_ADD_Contacts' => 'Add Contact',
-    'LBL_MAILMANAGER_ADD_Accounts' => 'Add Account',
+    'LBL_MAILMANAGER_ADD_Accounts' => 'Add Organization',
     'LBL_MAILMANAGER_ADD_Leads' => 'Add Lead',
     'LBL_MAILMANAGER_ADD_Calendar' => 'Add ToDo',
     'LBL_MAILMANAGER_ADD_HelpDesk' => 'Add Ticket',
     'LBL_MAILMANAGER_ADD_Emails' => 'Attach Email',
     'LBL_MAILMANAGER_ADD_ModComments' => 'Add Comment',
-    'LBL_ADD' => 'Add'
+    'LBL_ADD' => 'Add',
+	'JSLBL_SendWith_EmptyText' => 'Send without text in the body?',
+	'LBL_ALLMAILS' => 'All Mails',
+	'LBL_TO_CONTACTS' => 'To Contacts',
+	'LBL_TO_ACCOUNTS' => 'To Organizations',
+	'LBL_TO_LEADS' => 'To Leads',
+	'LBL_TO_USERS' => 'To Users',
+	'LBL_SENT_MAILS' => 'Sent Mails'
 );
 
 ?>

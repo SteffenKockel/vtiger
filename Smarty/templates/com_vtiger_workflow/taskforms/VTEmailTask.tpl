@@ -25,7 +25,9 @@ var moduleName = '{$entityName}';
 	</tr>
 	<tr>
 		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b><font color=red>*</font> {'LBL_EMAIL_SUBJECT'|@getTranslatedString:$MODULE}</b></td>
-		<td class='dvtCellInfo'><input type="text" name="subject" value="{$task->subject}" id="save_subject" class="form_input"></td>
+		<td class='dvtCellInfo'><input type="text" name="subject" value="{$task->subject}" id="save_subject" class="form_input" style='width: 350px;'>
+			<span id="task-subjectfields-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+			<select id="task-subjectfields" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
 	</tr>
 </table>
 
@@ -42,9 +44,10 @@ var moduleName = '{$entityName}';
 		</td>
 		<td style='padding-top: 10px;'>
 			<select class="small" id="task_timefields">
-					<option >Select date & time</option>
-					<option value="{$DATE}">Current Date</option>
-					<option value="{$TIME}">Current Time</option>
+					<option value="">Select Meta Variables</option>
+					{foreach key=META_LABEL item=META_VALUE from=$META_VARIABLES}
+					<option value="{$META_VALUE}">{$META_LABEL|@getTranslatedString:$MODULE_NAME}</option>
+					{/foreach}
 			</select>	
 		</td>
 		<td align="right" style='padding-top: 10px;'>

@@ -1,14 +1,11 @@
 <?php
 /***********************************************************
 *  Module       : CustomView
-*  Language     : Francais
-*  Version      : 5.1.0 GA*  Created Date : 2009-06-23 21:36:13 
-*  Last change  : 2009-07-21 00:49:17
-*  Author       : french-vtiger.fr 
+*  Language     : French
+*  Version      : 5.4.0 
 *  License      : GPL
-
+*  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
-
 
 $mod_strings = array (
 		'LBL_MODULE_NAME' => 'Filtres',
@@ -215,6 +212,7 @@ $mod_strings = array (
 		'LBL_EDIT' => 'Editer',
 		'LBL_STATUS_PUBLIC_APPROVE' => 'Accepter',
 		'LBL_STATUS_PUBLIC_DENY' => 'Interdire',
+		'LBL_ADVANCED_FILTER' => 'Règle',
 );
 $mod_list_strings = array (
 );

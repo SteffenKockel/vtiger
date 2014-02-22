@@ -13,16 +13,17 @@
  ********************************************************************************
 *  Module       : Quotes
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Cotizaciones',
+'SINGLE_Quotes'=>'Cotización',
 'LBL_MODULE_TITLE'=>'Cotizaciones: Inicio',
 'LBL_SEARCH_FORM_TITLE'=>'Buscar Cotizaciones',
 'LBL_LIST_FORM_TITLE'=>'Lista de Cotizaciones',
@@ -180,10 +181,12 @@ $mod_strings = Array(
 'Discount Amount'=>'Descuento Importe',
 'Terms & Conditions'=>'Condiciones Generales',
 'Adjustment'=>'Ajustes',
-'S&H Amount'=>'Importe Envío y Manipulado',
+'S&H Amount'=>'Importe Envío y Manejo',
 
 //Added after 5.0.4 GA
 'Quote No'=>'No Cotización',
+'Add Service Contract'=>'Añadir Contrato de Servicio',
+'Quotes ID'=>'Id Cotización',
 );
 
 ?>

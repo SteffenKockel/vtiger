@@ -47,6 +47,7 @@ $mod_strings = Array(
     'Project Task Name' => 'Task Name',
     'Project Task No' => 'Task No',
     'Project Task Number' => 'Task Code',
+	'ProjectTask ID'=>'ProjectTask ID',
 );
 
 ?>

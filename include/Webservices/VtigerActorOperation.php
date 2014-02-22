@@ -22,10 +22,18 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 		if($this->entityTableName === null){
 			throw new WebServiceException(WebServiceErrorCode::$UNKOWNENTITY,"Entity is not associated with any tables");
 		}
-		$this->meta = new VtigerCRMActorMeta($this->entityTableName,$webserviceObject,$adb,$user);
+		$this->meta = $this->getMetaInstance();
 		$this->moduleFields = null;
 		$this->element = null;
 		$this->id = null;
+	}
+
+	protected function getMetaInstance(){
+		if(empty(WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id])){
+			WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id]  
+					= new VtigerCRMActorMeta($this->entityTableName,$this->webserviceObject,$this->pearDB,$this->user);
+		}
+		return WebserviceEntityOperation::$metaCache[$this->webserviceObject->getEntityName()][$this->user->id];
 	}
 	
 	protected function getActorTables(){
@@ -43,6 +51,8 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 				$row = $this->pearDB->query_result_rowdata($result,$i);
 				$tableName = $row['table_name'];
 			}
+			// Cache the result for further re-use
+			$actorTables[$this->webserviceObject->getEntityName()] = $tableName;
 		}
 		return $tableName;
 	}

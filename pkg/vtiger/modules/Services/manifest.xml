@@ -4,13 +4,13 @@
 <name>Services</name>
 <label>Services</label>
 <parent>Inventory</parent>
-<version>1.6</version>
+<version>2.2</version>
 <dependencies>
 <vtiger_version>5.1.0</vtiger_version>
 <vtiger_max_version>5.*</vtiger_max_version>
 </dependencies>
 <migrations>
-	<migration version='1.0'>		
+	<migration version='1.0'>
 	</migration>
 </migrations>
 <tables>
@@ -29,7 +29,6 @@
   `expiry_date` date default NULL,
   `discontinued` int(1) NOT NULL default '0',
   `service_usageunit` varchar(200) default NULL,
-  `handler` int(11) default NULL,
   `website` varchar(100) default NULL,
   `taxclass` varchar(200) default NULL,
   `currency_id` int(19) NOT NULL default '1',
@@ -255,6 +254,26 @@
 <masseditable>0</masseditable>
 </field>
 <field>
+<fieldname>modifiedby</fieldname>
+<uitype>52</uitype>
+<columnname>modifiedby</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Last Modified By</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>16</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
 <fieldname>service_usageunit</fieldname>
 <uitype>15</uitype>
 <columnname>service_usageunit</columnname>
@@ -301,9 +320,9 @@
 </field>
 <field>
 <fieldname>assigned_user_id</fieldname>
-<uitype>52</uitype>
-<columnname>handler</columnname>
-<tablename>vtiger_service</tablename>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
 <generatedtype>1</generatedtype>
 <fieldlabel>Owner</fieldlabel>
 <readonly>1</readonly>
@@ -480,6 +499,9 @@
 </fields>
 </customview>
 </customviews>
+<sharingaccess>
+<default>public_readwritedelete</default>
+</sharingaccess>
 <actions>
 <action>
 <name><![CDATA[Import]]></name>

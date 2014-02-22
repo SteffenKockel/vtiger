@@ -17,11 +17,11 @@
  * Description:  Defines the English language pack for the base application.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 07/09/2011 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'vtiger CRM 5 - Commercial Open Source CRM',
-'LBL_MY_ACCOUNT' => 'Minha Conta',
+'LBL_MY_ACCOUNT' => 'Minha Organização',
 'LBL_MY_PREFERENCES' => 'Minhas Preferências',
 'LBL_ADMIN' => 'Admin',
 'LBL_LOGOUT' => 'Desconectar',
@@ -32,7 +32,7 @@ $app_strings = array (
 'LBL_SHOW'=>'Apresentar:',
 'today'=>"Hoje",
 'all'=>'Todos',
-'LBL_UPCOMING_EVENTS'=>'Atualizando Atividades',
+'LBL_UPCOMING_EVENTS'=>'Próximas Atividades',
 'LBL_PENDING_EVENTS'=>'Atividades Pendentes',
 'NTC_WELCOME_MESSAGE'=>'Bem vindo(a) ao vtiger CRM!',
 'NTC_DESCRIPTION' => 'Utilize um nome de usuário e senha validos para acessar o vtiger CRM.',
@@ -118,7 +118,7 @@ $app_strings = array (
 'LBL_LIST_EMAIL' => 'Email',
 'LBL_LIST_PHONE' => 'Telefone',
 'LBL_LIST_CONTACT_NAME' => 'Nome Contato',
-'LBL_LIST_ACCOUNT_NAME' => 'Nome Conta',
+'LBL_LIST_ACCOUNT_NAME' => 'Nome Organização',
 'LBL_USER_LIST' => 'Listar Usuário',
 'LBL_CONTACT_LIST' => 'Listar Contato',
 'LBL_LNK_SETTINGS' => 'Configurações',
@@ -143,7 +143,7 @@ $app_strings = array (
 'LNK_VTDOCS' => 'Docs vtiger',
 'LNK_ABOUT' => 'Sobre',
 'LNK_OUTLOOK' => './include/images/outlook_download.gif',
-'SINGLE_Accounts' => 'Conta',
+'SINGLE_Accounts' => 'Organização',
 'SINGLE_Contacts' => 'Contato',
 'SINGLE_Campaigns' => 'Campanha',
 'SINGLE_HelpDesk' => 'Ticket',
@@ -176,7 +176,7 @@ $app_strings = array (
 'NTC_TIME_FORMAT' => '(24:00)',
 'NTC_DATE_TIME_FORMAT' => '(yyyy-mm-dd 24:00)',
 'NTC_DELETE_CONFIRMATION' => 'Você tem certeza que deseja apagar este registro?',
-'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Apagando esta Conta removerá as Oportunidades e Cotações relacionadas. Tem certeza que deseja apagar esta Conta?',
+'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Apagando esta Organização removerá as Oportunidades e Cotações relacionadas. Tem certeza que deseja apagar esta Organização?',
 'NTC_VENDOR_DELETE_CONFIRMATION' => 'Apagando este Fornecedor serão removidas os Pedidos de Compras relacionados. Tem certeza que deseja apagar este Fornecedor?',
 'ERR_DELETE_RECORD' => 'Um registro dever ser especificado para apagar o Contato.',
 'ERR_CREATING_TABLE' => 'Erro ao criar tabela:',
@@ -199,8 +199,8 @@ $app_strings = array (
 'LBL_CURRENT_USER_FILTER' => 'Somente meus itens:',
 'NTC_LOGIN_MESSAGE' => 'Login',
 'LBL_NONE' => '--Nada--',
-'--none--' => '--nada--', //Added for translation in Picklist
 'LBL_BACK' => 'Voltar',
+'LBL_TIMEFIELD'=>'(HH:mm:ss)',
 'LBL_IMPORT' => 'Importar',
 'LBL_EXPORT' => 'Exportar',
 'LBL_EXPORT_ALL' => 'Exportar tudo',
@@ -303,8 +303,8 @@ $app_strings = array (
 'LBL_POTENTIAL_TITLE' => 'Oportunidades',
 'LBL_NEW_POTENTIAL' => 'Nova Oportunidade',
 'LBL_LEAD_NAME' => 'Nome Lead',
-'LBL_ACCOUNT_NAME' => 'Nome Conta',
-'LBL_ACCOUNT_TYPE' => 'Tipo Conta',
+'LBL_ACCOUNT_NAME' => 'Nome Organização',
+'LBL_ACCOUNT_TYPE' => 'Tipo Organização',
 'LBL_USER_TITLE' => 'Usuários',
 'LBL_CONTACT_TITLE' => 'Contatos',
 'LBL_SHOWING' => 'Exibindo',
@@ -326,7 +326,7 @@ $app_strings = array (
 'LBL_HOUR_AND_MINUTE' => '(horas/minutos)',
 'YEAR_MONTH_DATE' => '24:00',
 'COMBO_LEADS' => 'Leads',
-'COMBO_ACCOUNTS' => 'Contas',
+'COMBO_ACCOUNTS' => 'Organizações',
 'COMBO_CONTACTS' => 'Contatos',
 'COMBO_POTENTIALS' => 'Oportunidades',
 'COMBO_PRODUCTS' => 'Produtos',
@@ -342,7 +342,7 @@ $app_strings = array (
 'Website' => 'Website',
 'Email' => 'Email',
 'Assigned To' => 'Responsável',
-'Account Name' => 'Nome Conta',
+'Account Name' => 'Nome Organização',
 'City' => 'Cidade',
 'Title' => 'Título',
 'Potential' => 'Oportunidade',
@@ -373,8 +373,8 @@ $app_strings = array (
 'LBL_CUSTOM_INFORMATION' => 'Informação Customizada',
 'LBL_NONE_SCHEDULED' => 'Nada Agendado',
 'Leads' => 'Leads',
-'Accounts' => 'Contas',
-'Accounts & Contacts' => 'Contatos & Contas',
+'Accounts' => 'Organizações',
+'Accounts & Contacts' => 'Contatos & Organizações',
 'Contacts' => 'Contatos',
 'Potentials' => 'Oportunidade',
 'Products' => 'Produto',
@@ -397,7 +397,6 @@ $app_strings = array (
 'Vendors' => 'Fornecedores',
 'Rss' => 'RSS',
 'Portal' => 'Meus Sites',
-'Recycle Bin' => 'Lixeira', //Added for translation in Tools menu
 'Webmails' => 'Webmails',
 'Activity History' => 'Histórico Atividade',
 'Ticket History' => 'Histórico Ticket',
@@ -426,7 +425,7 @@ $app_strings = array (
 'LBL_EDITING' => 'Editando',
 'LBL_NEW' => 'Novo',
 'Lead' => 'Lead',
-'Account' => 'Conta',
+'Account' => 'Organização',
 'Contact' => 'Contato',
 'Opportunity' => 'Oportunidade',
 'Product' => 'Produto',
@@ -468,7 +467,6 @@ $app_strings = array (
 'Sales Order' => 'Pedido Vendas',
 'COMBO_QUOTES' => 'Cotações',
 'End Date' => 'Data Final',
-'End Time' => 'Hora Final', //Insert by Valmir C. Trindade - TTCA Soluções - valmir@ttcasolucoes.com.br
 'End Date & Time' => 'Data & Hora Final',
 'Start Date' => 'Data Inicial',
 'Start Date & Time' => 'Data & Hora Inicial',
@@ -511,13 +509,14 @@ $app_strings = array (
 'LBL_HOME_KEY_METRICS' => 'Métricas Chave',
 'LBL_HOME_METRICS' => 'Métricas',
 'LBL_HOME_COUNT' => 'Total',
-'LBL_JSCALENDAR_LANG' => 'en',
+'LBL_JSCALENDAR_LANG' => 'br',
 'LNK_CV_EDIT' => 'Editar',
 'LNK_CV_DELETE' => 'Apagar',
 'LNK_CV_CREATEVIEW' => 'Novo',
 'LBL_UPD_FIELD_ORD' => 'Atualizar Campo Pedido',
 'LBL_SEND_CUSTOM_MAIL_BUTTON' => 'Enviar Mensagem Customizada',
 'LBL_UPDATED_TODAY' => 'Atualizado Hoje',
+'LBL_BY' => 'Por ',
 'LBL_UPDATED' => 'Atualizado',
 'LBL_DAY_AGO' => 'dia atrás',
 'LBL_DAYS_AGO' => 'dias atrás',
@@ -576,7 +575,6 @@ $app_strings = array (
 'LBL_NO' => 'Nenhum(a)',
 'LBL_FOUND' => 'Encontrado(a)',
 'LBL_YOU_CAN_CREATE' => 'Você pode Criar',
-'LBL_NOW' => 'agora',
 'LBL_CLICK_THE_LINK' => 'Clique no link abaixo',
 'LBL_CREATE' => 'Criar',
 'LBL_A' => '',
@@ -696,10 +694,10 @@ $app_strings = array (
 //Added for java script alerts
 'DELETE_CONFIRMATION' => 'Você tem certeza que deseja apagar o selecionado',
 'SELECT_ATLEAST_ONE' => 'Por favor selecione pelo menos uma entidade',
-'DELETING_ACCOUNT' => 'Apagando esta(s) Conta(s) removerá as Oportunidades, Cotações, Pedidos Vendas e Faturas relacionadas. Tem certeza que deseja apaga-la(s)',
+'DELETING_ACCOUNT' => 'Apagando esta(s) Organização(s) removerá as Oportunidades, Cotações, Pedidos Vendas e Faturas relacionadas. Tem certeza que deseja apaga-la(s)',
 'DELETING_VENDOR' => 'Apagando este(s) Fornecedor(es) você removerá o(s) Pedido de Compra(s) relacionado(s)',
 'PLEASE_SELECT_MAILID' => 'Por favor Selecione um endereço de mensagem',
-'OVERWRITE_EXISTING_ACCOUNT1' => 'Você deseja sobrescrever o endereço existente com o desta Conta selecionada(',
+'OVERWRITE_EXISTING_ACCOUNT1' => 'Você deseja sobrescrever o endereço existente com o desta Organização selecionada(',
 'OVERWRITE_EXISTING_ACCOUNT2' => ') detalhes do endereço?',
 'MISSING_FIELDS' => 'Campos requeridos ausentes:',
 'NOT_ALLOWED_TO_EDIT' => 'você não tem permissão para editar este campo',
@@ -719,15 +717,15 @@ $app_strings = array (
 'SHOULDNOTBE_EQUAL' => ' não deveria ser igual a',
 'PORTAL_PROVIDE_EMAILID' => 'Usuário do Portal deveria fornecer endereço de email para acessá-lo',
 'ADD_CONFIRMATION' => 'Você tem certeza que deseja adicionar o selecionado',
-'ACCOUNTNAME_CANNOT_EMPTY' => 'Nome da Conta não pode estar vazia',
-'CANT_SELECT_CONTACTS' => "Você não pode selecionar os contatos relacionados ao Lead",
+'ACCOUNTNAME_CANNOT_EMPTY' => 'Nome da Organização não pode estar vazia',
+'CANT_SELECT_CONTACTS' => "Você não pode selecionar os Contatos relacionados ao Lead",
 'LBL_THIS' => 'Este',
 'DOESNOT_HAVE_MAILIDS' => " não existe nenhum endereço de mensagem",
 'DOESNOT_HAVE_AN_MAILID' => '" '. "não existe um endereço de Email",
 'ARE_YOU_SURE' => 'Você tem certeza?',
 'MISSING_REPORT_NAME' => 'Nome do Relatório ausente',
 'REPORT_NAME_EXISTS' => 'Nome do Relatório já existe, tente novamente...',
-'WANT_TO_CHANGE_CONTACT_ADDR' => 'Você deseja mudar o endereço dos Contatos relacionados com esta Conta?',
+'WANT_TO_CHANGE_CONTACT_ADDR' => 'Você deseja mudar o endereço dos Contatos relacionados com esta Organização?',
 'SURE_TO_DELETE' => 'Você tem certeza que deseja apagar?',
 'RECORDS' => ' registros ?',
 'NO_PRODUCT_SELECTED' => 'Nenhum produto foi selecionado. Selecione pelo menos um Produto',
@@ -768,7 +766,7 @@ $app_strings = array (
 'ERROR' => 'Erro',
 'FIELD_TYPE_NOT_SELECTED' => 'Tipo de campo não está selecionado',
 'SPECIAL_CHARACTERS_NOT_ALLOWED' => 'Caracter especial não é permitido no campo Rótulo',
-'DUPLICATE_MAPPING_ACCOUNTS' => 'Mapear duplicados para Contas!!',
+'DUPLICATE_MAPPING_ACCOUNTS' => 'Mapear duplicados para Organizações!!',
 'DUPLICATE_MAPPING_CONTACTS' => 'Mapear duplicados para Contatos!!',
 'DUPLICATE_MAPPING_POTENTIAL' => 'Mapear duplicados para Oportunidades!!',
 'ERROR_WHILE_EDITING' => 'Erro durante a Edição',
@@ -790,7 +788,7 @@ $app_strings = array (
 'DELETE_REPORT_CONFIRMATION' => 'Você tem certeza que deseja apagar este Relatório?',
 'MOVE_REPORT_CONFIRMATION' => 'Você tem certeza que deseja mover este Relatório para',
 'FOLDER' => ' pasta ?',
-'ACCOUNT_ACCESS_INFO' => 'Acesso às Oportunidades, HelpDesk, Cotações, Pedido Vendas e Faturas deve ser configurado como Privado quando o Acesso à Conta for configurado como Privado',
+'ACCOUNT_ACCESS_INFO' => 'Acesso às Oportunidades, HelpDesk, Cotações, Pedido Vendas e Faturas deve ser configurado como Privado quando o Acesso à Organização for configurado como Privado',
 'PROFILENAME_CANNOT_BE_EMPTY' => 'Nome do Perfil não pode estar vazio',
 'PROFILE_DETAILS_UPDATED' => 'Detalhes do Perfil foi atualizado',
 'CURRENCY_CHANGE_INFO' => 'Mudança de Moeda foi realizada com Sucesso',
@@ -800,7 +798,7 @@ $app_strings = array (
 'SELECT_VALID_IMAGE' => 'Por favor selecione uma imagem válida',
 'EMAIL_FILED_IS' => "\' no campo de email é",
 'OTHER_EMAIL_FILED_IS' => "\' em outro campo de email é ",
-'YAHOO_EMAIL_FILED_IS' => "\' no campo de email do Yahoo é ",
+'SECONDARY_EMAIL_FILED_IS' => "\' no campo de email alternativo é ",
 'INVALID_ADD_IN_EMAILFIELD' => '\" endereço de email inválido no campo Email',
 'INVALID_ADD_IN_OTHER_EMAILFIELD' => '\" endereço de email inválido no campo Outro Email',
 'ENTER_VALID_4DIGIT_YEAR' => 'Por favor digite um ano válido com 4 dígitos entre',
@@ -879,7 +877,7 @@ $app_strings = array (
 'Lost Lead' => 'Lead Perdido',
 'LBL_SEND_EMAIL_PDF' => 'Enviar Email com PDF',
 //Added for incoming mail server settings form js validation
-'ERR_INVALID_PAGE_COUNT' => "Contagem Página Inválida",
+'ERR_INVALID_PAGE_COUNT' => "Organizaçãogem Página Inválida",
 //'Product Code' => 'Part Number',
 'Quotes' => 'Cotações',
 'PurchaseOrder' => 'Pedido Compra',
@@ -889,7 +887,7 @@ $app_strings = array (
 'LBL_CREATING_NEW_Contacts' => 'Criando Novo Contato',
 'LBL_CREATING_NEW_Campaigns' => 'Criando Nova Campanha',
 'LBL_CREATING_NEW_Leads' => 'Criando Novo Lead',
-'LBL_CREATING_NEW_Accounts' => 'Criando Nova Conta',
+'LBL_CREATING_NEW_Accounts' => 'Criando Nova Organização',
 'LBL_CREATING_NEW_Potentials' => 'Criando Nova Oportunidade',
 'LBL_CREATING_NEW_Quotes' => 'Criando Nova Cotação',
 'LBL_CREATING_NEW_SalesOrder' => 'Criando Novo Pedido Vendas',
@@ -903,10 +901,10 @@ $app_strings = array (
 'LBL_SEND_EMAIL_PDF' => 'Enviar Email com PDF',
 'LBL_UPDATE' => 'Atualizar',
 //Added for incoming mail server settings form js validation
-'ERR_INVALID_PAGE_COUNT' => "Contagem Página Inválida",
+'ERR_INVALID_PAGE_COUNT' => "Organizaçãogem Página Inválida",
 'LBL_CAL_LIMIT_MSG'=>'Desculpe, o ano deve estar entre 1970 e 2037',
 
-//added for fix i18n issue #4038 when importing contacts
+//added for fix i18n issue #4038 when importing Contacts
 'Mobile' => 'Celular',
 'Home Phone' => 'Telefone Residencial',
 'Other Phone' => 'Telefone Alternativo',
@@ -948,7 +946,6 @@ $app_strings = array (
 'LBL_DATA_IN_CURRENT_PAGE'=>'Exportar dados na página atual',
 'LBL_ONLY_SELECTED_RECORDS'=>'Exportar registros selecionados',
 'LBL_YES'=>'Sim',
-'LBL_NO'=>'Nenhum(a)',
 'Planned'=>'Planejado',
 'Held'=>'Confirmado',
 'Not Held'=>'Não Confirmado',
@@ -1052,7 +1049,7 @@ $app_strings = array (
 'Req. No.'=>'No. Req.',
 'Customer Name'=>'Cliente',
 'SO Number'=>'No. Pedido Venda',
-'Account Number'=>'No. Conta',
+'Account Number'=>'No. Organização',
 'Valid Till'=>'Validade',
 'Quote Number'=>'No. Cotação',
 'Invoice Number'=>'No. Fatura',
@@ -1167,7 +1164,7 @@ $app_strings = array (
 'LBL_ASTERISK_SET_ERROR'=>'Os detalhes do Servidor Asterisk não estão configurados. Configure primeiro.',
 'LBL_CREATE_LEAD'=>'Criar Lead',
 'LBL_CREATE_CONTACT'=>'Criar Contato',
-'LBL_CREATE_ACCOUNT'=>'Criar Conta',
+'LBL_CREATE_ACCOUNT'=>'Criar Organização',
 'LBL_CREATE_TICKET'=>'Criar Tickets',
 'LBL_INCOMING_CALL'=>'Chamada Recebida',
 'LBL_CALLER_INFORMATION'=>'Informação de quem liga',
@@ -1210,7 +1207,7 @@ $app_strings = array (
 'PUBLIC_FILTER'=>'Público',
 
 // Account Hierarchy
-'LBL_ACCOUNT_HIERARCHY' => 'Hierarquia Conta',
+'LBL_ACCOUNT_HIERARCHY' => 'Hierarquia Organização',
 
 //Prod Bundles
 'LBL_NO_SUB_PRODUCTS'=>'Não é um Pacote',
@@ -1227,7 +1224,6 @@ $app_strings = array (
 'CUSTOMFIELD_MAPPING'=>'Mapear Campo Customizado',
 'ADD_PORTAL'=>'Adicionar ao Portal',
 'LBL_FILE_INTEGRITY_CHECK'=>'Checar integridade desde arquivo',
-'Service Requests'=>'Serviços Solicitados', //Inserted by Valmir Carlos Trindade - TTCA Soluções - valmir@ttcasolucoes.com.br
 
 //To handle plurals of module names
 'Todos' => 'Compromissos',
@@ -1236,7 +1232,7 @@ $app_strings = array (
 'LBL_POSTPONE'=>'Adiar',
 
 // Unified Search extended support
-'LBL_SELECT_MODULES_FOR_SEARCH' => 'Selecionar Módulo pesquisar em',
+'LBL_SELECT_MODULES_FOR_SEARCH' => 'Selecionar Módulo',
 'LBL_SELECT_ALL' => 'Selecionar Tudo',
 'LBL_UNSELECT_ALL' => 'Remover Selecão',
 'LBL_FIELD_FOR_COMPARISION' => 'Campo para Comparação',
@@ -1270,7 +1266,7 @@ $app_strings = array (
 	'LBL_PHP_UPGRADE' => 'Você atualizou sua versão do php. Devido a alterações na criptografia da API, sua senha
 		  não é mais aplicável. Por favor, redefine-a.',
 	'LBL_RESET_PASSWORD_DESCRIPTION' => 'você pode redefinir a senha para todos os usuários utilizando um script e configurando-o para os respectivos
-              nomes de usuário.',
+			  nomes de usuário.',
 
 'LBL_CRITERIA_AND'=>'e',
 'LBL_CRITERIA_OR'=>'ou',
@@ -1284,9 +1280,45 @@ $app_strings = array (
 
 'LBL_NEXT_BUTTON_LABEL' => 'Próximo',
 
-//Added for SMS Notifier - by Valmir Carlos Trindade - TTCA Soluções - valmir@ttcasolucoes.com.br
-'Send SMS'=>'Enviar SMS',
+'LBL_MAX_SIZE'=> 'O tamanho máximo de upload é', //added for uploadsize limit message
+'LBL_FILESIZEIN_MB'=> 'MB', //added to show filesize in MB
 
+// Unified Cron Job language strings
+'LBL_DISABLED' => 'Desabilitado',
+'LBL_RUNNING' => 'Executando',
+'LBL_LAST_SCAN_TIMED_OUT' => 'Último Time Out do Scan',
+'LBL_LAST_SCAN_AT' => 'Último Scan @',
+'LBL_TIME_TAKEN' => 'Tempo decorrido',
+'LBL_SHORT_SECONDS' => 'sec',
+
+//Added missing labels in the vtigercrm
+'Projects' => 'Projetos',
+'End Time' => 'Hora Final',
+'Start Time' => 'Hora Inicial',
+'Email2' => 'Email2',
+'Comments' => 'Comentários',
+'Issued Date' => 'Data Emissão',
+'Shipping & Handling Charges' => 'Frete',
+'Shipping & Handling Tax:' => 'Imposto Frete:',
+'Quantity' => 'Quantidade',
+'Net Total' => 'Total Líquido',
+'Send SMS' => 'Enviar SMS',
+'Service Requests'=>'Solicitações Serviço', //Insert by Valmir Carlos Trindade - suporte@ttcasolucoes.com.br
+'--none--' => '--nada--', //Added for translation in Picklist
+'Recycle Bin' => 'Lixeira', //Added for translation in Tools menu
+
+'LBL_MORE'=>'Mais',
+'LBL_CRM_SETTINGS' => 'Configurações CRM',
+'LBL_RELATED_TO_THIS' =>'relacionado com este',
+'LBL_DESELECT_ALL' => 'Desmarcar todos',
+'LBL_RECORDS_IN' => 'registros em',
+'LBL_FOLDER' => 'pasta',
+
+//added for creating a custom lead map row in UI
+'LBL_ADD_MAPPING'=> 'Adicionar Mapeamento',
+'LBL_FIELD_MAPPING' => 'Mapeamento Campo',
+
+'LBL_MANDATORY_FIELD_MISSING'=>'Esta faltando valor campo obrigatório',
 );
 
 $app_list_strings = array (
@@ -1296,7 +1328,7 @@ $app_list_strings = array (
     'Dashboard' => 'Painel',
     'Leads' => 'Leads',
     'Contacts' => 'Contatos',
-    'Accounts' => 'Contas',
+    'Accounts' => 'Organizações',
     'Potentials' => 'Oportunidade',
     'Campaigns' => 'Campanhas',
     'Emails' => 'Emails',
@@ -1379,7 +1411,7 @@ $app_list_strings = array (
   'record_type_default_key' => 'Accounts',
   'record_type_display' =>
   array (
-    'Accounts' => 'Conta',
+    'Accounts' => 'Organização',
     'Leads' => 'Lead',
     'Opportunities' => 'Oportunidade',
   ),

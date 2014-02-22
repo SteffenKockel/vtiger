@@ -1,131 +1,79 @@
 <?php
-
-/*********************************************************************************
-
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
-
- * ("License"); You may not use this file except in compliance with the
-
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
-
- * Software distributed under the License is distributed on an  "AS IS"  basis,
-
+/*******************************************************************************
+ * The contents of this file are subject to the following licences:
+ * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
+ * - vtiger CRM Public License Version 1.0 
+ * You may not use this file except in compliance with the License
+ * Software distributed under the License is distributed on an  "AS IS" basis,
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
-
  * the specific language governing rights and limitations under the License.
-
- * The Original Code is:  SugarCRM Open Source
-
+ * The Original Code is: SugarCRM Open Source
  * The Initial Developer of the Original Code is SugarCRM, Inc.
-
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
-
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
-
- * Contributor(s): Vertaling Weltevree.org  www.weltevree.org
-
+ * Feel free to use / redistribute these languagefiles under the VPL 1.0.
+ * This translations is based on earlier work of: 
+ * - IT-Online.nl <www.it-online.nl>
+ * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
 
-/*********************************************************************************
-
- * $Header: /cvsroot/vtigercrm/vtiger_crm/modules/Settings/language/en_us.lang.php,v 1.45 2006/02/03 05:19:44 mangai Exp $
-
- * Description:  Defines the English language pack
-
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
-
- * All Rights Reserved.
-
- * Contributor(s): Vertaling Weltevree.org  www.weltevree.org
-
+/*******************************************************************************
+ * Vicus eBusiness Solutions Version Control
+ * @package 	NL-Dutch
+ * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * @author	$Author: luuk $
+ * @version 	$Revision: 1.6 $ $Date: 2012/02/28 23:40:22 $
+ * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Settings/language/nl_nl.lang.php,v $
+ * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
-
-
 
 $mod_strings = Array(
-
 'LBL_MODULE_NAME'=>'Instellingen',
-
 'LBL_MODULE_TITLE'=>'Instellingen: Home',
-
 'LBL_LIST_CONTACT_ROLE'=>'Rol',
 
-
-
 'LBL_LIST_LAST_NAME'=>'Achternaam',
-
 'LBL_FIRST_NAME'=>'Voornaam:',
-
 'LBL_LAST_NAME'=>'Achternaam:',
-
 'LBL_PHONE'=>'Telefoon:',
-
-'LBL_EMAIL_ADDRESS'=>'e-Mail',
-
+'LBL_EMAIL_ADDRESS'=>'E-mail',
 'LBL_TRANSCURR'=>'Verander de gebruikers valuta naar',
-
 'LBL_CURRDEL'=>'Valuta verwijderen',
-
 'LBL_NEW_FORM_TITLE'=>'Nieuw contact',
-
 'LBL_NEW_CURRENCY'=>'Nieuwe valuta',
-
 'LBL_VIEWING'=>'Bekijken',
-
 'LBL_CURRENCY_NAME'=>'Valuta naam',
-
 'LBL_CURRENCY_CODE'=>'Valuta code',
-
 'LBL_CURRENCY_SYMBOL'=>'Symbol',
-
 'LBL_CURRENCY_CRATE'=>'Omreken koers',
-
 'LBL_CURRENCY_STATUS'=>'Status',
-
 'LBL_CURRENCY_TOOL'=>'Gereedschap',
-
 'LBL_CURRENCY_LIST'=>'Valuta lijst',
 
-
 'NTC_DELETE_CONFIRMATION'=>'Weet u zeker dat u deze informatie wilt verwijderen?',
-
 'LEADCUSTOMFIELDS'=>'Lead velden',
-
 'ACCOUNTCUSTOMFIELDS'=>'Account velden',
-
 'CONTACTCUSTOMFIELDS'=>'Contact velden',
-
 'OPPORTUNITYCUSTOMFIELDS'=>'Verkoopkans velden',
-
 'HELPDESKCUSTOMFIELDS'=>'Helpdesk velden',
-
 'PRODUCTCUSTOMFIELDS'=>'Product velden',
-
 'VENDORCUSTOMFIELDS'=>'Leverancier velden',
-
 'PRICEBOOKCUSTOMFIELDS'=>'Prijslijst velden',
-
 'POCUSTOMFIELDS'=>'Inkooporder velden',
 'SOCUSTOMFIELDS'=>'Verkooporder velden',
 'QUOTESCUSTOMFIELDS'=>'Offerte velden',
 'INVOICECUSTOMFIELDS'=>'Factuur velden',
-
 'EDITLEADPICKLISTVALUES'=>'Verander lead selectielijst ',
-
 'EDITACCOUNTPICKLISTVALUES'=>'Verander account selectielijst ',
-
 'EDITCONTACTPICKLISTVALUES'=>'Verander contact selectielijst ',
-
 'EDITOPPORTUNITYPICKLISTVALUES'=>'Verander verkoopkans selectielijst ',
-
 'EDITHELPDESKPICKLISTVALUES'=>'Verander helddesk selectielijst ',
-
 'EDITPRODUCTPICKLISTVALUES'=>'Verander product selectielijst ',
-
 'EDITEVENTPICKLISTVALUES'=>'Verander afspraak selectielijst ',
-
 'EDITTASKPICKLISTVALUES'=>'Verander taak selectielijst ',
-
 'EDITRSSPICKLISTVALUES'=>'Verander Rss selectielijst',
 'EDITVENDORPICKLISTVALUES'=>'Verander leverancier selectielijst',
 'EDITPBPICKLISTVALUES'=>'Verander prijslijst selectielijst',
@@ -134,190 +82,104 @@ $mod_strings = Array(
 'EDITQUOTEPICKLISTVALUES'=>'Verander offerte selectielijst',
 'EDITINVOICEPICKLISTVALUES'=>'Verander factuur selectielijst',
 
-
 // Added for Release vtigerCRM 3.2 PATCH 1.0
 
 //Settings/index.php
 
-
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Selectie veld instellingen:',
 
-
-
 //SETTINGS/CustomFieldList.php,ComboFieldList.php,CreateCustomField.php
-
-'Leads'=>'Leads',
-
+'Leads'=>'Lead',
 'Accounts'=>'Accounts',
-
 'Contacts'=>'Contacten',
-
 'Potentials'=>'Verkoopkansen',
-
 'HelpDesk'=>'Helpdesk',
-
 'Products'=>'Producten',
-
-'Events'=>'Gebeurtenissen',
-
+'Events'=>'Afspraken',
 'Activities'=>'Activiteiten',
 
 
-
-
-
-'CustomFields'=>' Maatwerk velden',
-
-'NewCustomField'=>'Nieuw maatwerk veld',
-
-'NewCustomFieldAltC'=>'Nieuw maatwerk veld [Alt+c]:',
-
+'CustomFields'=>' Aangepaste velden',
+'NewCustomField'=>'Nieuw aangepast veld',
+'NewCustomFieldAltC'=>'Nieuw aangepast veld [Alt+c]:',
 'FieldName'=>'Veld naam',
-
 'FieldType'=>'Veld type',
-
 'FieldLabel'=>'Veld label',
-
 'Delete'=>'Verwijder',
-
 'NEW'=>'Nieuw',
-
-'CUSTOMFIELD'=>'Maatwerk veld',
-
+'CUSTOMFIELD'=>'Aangepast veld',
 'LBL_CUSTOM_FIELDS'=>'Aangepaste velden',
-
 'LBL_ADD_FIELD'=>'Veld toevoegen',
-
 'LBL_CUSTM_MSG'=>'Geeft rechten om ....',
-
 'PicklistFields'=>' Selectie velden',
 
-
-'Edit'=>'Wijzig',
-
-'LBL_EDIT_FIELD_TYPE'=>'Wijzig veld  type',
-
+'Edit'=>'Bewerk',
+'LBL_EDIT_FIELD_TYPE'=>'Bewerk veldtype',
 //Settings/CustomField.html
-
 'LBL_PROVIDE_FIELD_INFORMATION'=>'Veld informatie: ',
-
 'LBL_SELECT_FIELD_TYPE'=>'Selecteer veld type: ', 
-
 'LBL_PROVIDE_FIELD_DETAILS'=>'Veld details: ',
-
 'LBL_LABEL'=>'Label: ',
-
 'LBL_LENGTH'=>'Lengte: ',
-
 'LBL_DECIMAL_PLACES'=>'Aantal decimalen: ',
-
 'LBL_PICK_LIST_VALUES'=>'Selectielijst waarden: ',
 
-
-
 //Settings/EditComboField.php
-
-'EditPickListValues'=>'Verander selectielijst ',
-
-
+'EditPickListValues'=>'Bewerk selectielijst ',
 
 //Settings/EditField.html
-
 'LBL_FIELD_INFORMATION'=>'Veld informatie:',
-
 'Values'=>'Waarden',
-
 'EnterListOfValues'=>'Voer hier de verschillende waarden in. Elke waarde moet in zijn eigen veld staan.',
 
-
-
 //Settings/fieldtypes.php
-
 'Text'=>'Tekst',
-
 'Number'=>'Nummer',
-
 'Percent'=>'Procent',
-
 'Currency'=>'Valuta',
-
 'Date'=>'Datum',
-
-'Email'=>'e-Mail',
-
+'Email'=>'E-mail',
 'Phone'=>'Telefoon',
-
 'PickList'=>'Selectielijst',
-
 'LBL_MULTISELECT_COMBO'=>'Selectielijst',
-
 'Skype'=>'Skype',
 
-
+'Time'=>'Tijd',
 
 //added for patch2
-
 'USERGROUPLIST'=>'Groepen',
-
-'EMAILTEMPLATES'=>'e-Mail sjablonen',
-
+'EMAILTEMPLATES'=>'E-mail sjablonen',
 'WORDINTEGRATION'=>'Samenvoegen met sjablonen',
-
 'LBL_MAIL_MERGE'=>'Samenvoegen',
-
 'NOTIFICATIONSCHEDULERS'=>'Notificatie planners',
 //currency status
 'LBL_ACTIVE'=>'Actief',
-
 'LBL_INACTIVE'=>'Inactief',
-
 'LBL_NOTIFICATION'=>'Notificatie',
 'LBL_DESCRIPTION'=>'Omschrijving',
 'LBL_TOOL'=>'Gereedschap',
 
-
 //Added fields for Title Informations -- after 4 Beta
-
-'LBL_EMAIL_CONFIG'=>'Uitgaande e-Mail server configuratie',
-
+'LBL_EMAIL_CONFIG'=>'Uitgaande e-mail server configuratie',
 'LBL_WORD_INTEGRATION'=>'WORD integratie:',
-
 'LBL_GROUP_SETTINGS'=>'Groep instellingen:',
-
-'LBL_TEMPLATE_SETTINGS'=>'Sjablonen instellingen:',
-
+'LBL_TEMPLATE_SETTINGS'=>'Sjabloon instellingen:',
 'LBL_NOTIFICATION_SETTINGS'=>'Notificatie instellingen:',
-
-'LBL_EMAIL_SETTINGS'=>'e-Mail instellingen:',
-
+'LBL_EMAIL_SETTINGS'=>'E-mail instellingen:',
 'LBL_SECURITY_SETTINGS'=>'Veiligheids instellingen:',
 
-
-
 //Added fields after RC1 - Release
-
-'LBL_MAIL_SERVER_INFO'=>'e-Mail server informatie',
-
-'LBL_OUTGOING_MAIL_SERVER'=>'Uitgaande e-Mail server',
-
-'LBL_OUTGOING_MAIL_SERVER_LOGIN_USER_NAME'=>'Uitgaande e-Mail server login gebruikersnaam',
-
-'LBL_OUTGOING_MAIL_SERVER_PASSWORD'=>'Uitgaande e-Mail server password',
-
-'LBL_MAIL_SERVER_SMTP'=>'e-Mail server instellingen (SMTP)',
-
+'LBL_MAIL_SERVER_INFO'=>'E-mail server informatie',
+'LBL_OUTGOING_MAIL_SERVER'=>'Uitgaande e-mail server',
+'LBL_OUTGOING_MAIL_SERVER_LOGIN_USER_NAME'=>'Uitgaande e-mail server login gebruikersnaam',
+'LBL_OUTGOING_MAIL_SERVER_PASSWORD'=>'Uitgaande e-mail server password',
+'LBL_MAIL_SERVER_SMTP'=>'E-mail server instellingen (SMTP)',
 'LBL_BACKUP_SERVER_CONFIG'=>'Backup server configuratie',
-
 'LBL_SERVER_ADDRESS'=>'Server adres',
-
 'LBL_FTP_SERVER_NAME'=>'ftp server naam',
-
 'LBL_FTP_USER_NAME'=>'ftp gebruikersnaam',
-
 'LBL_FTP_PASSWORD'=>'ftp wachtwoord',
-
 'LBL_FTP'=>'FTP',
-
 'LBL_SYSTEM_CONFIG'=>'Systeem configuratie',
 'LBL_SYSTEM_INFO'=>'Systeem informatie',
 'LBL_PROXY_SETTINGS'=>'Proxy server instellingen',
@@ -327,198 +189,112 @@ $mod_strings = Array(
 'LBL_VIEW_AUDIT_TRAIL'=>'Bekijk controle',
 'LBL_AUDIT_TRAIL_DESC'=>'Controle lijst van gebruikers die CRM hebben gebruikt',
 'LBL_NO_DATA'=>'Geen data',
-
 'LBL_CURRENCY_CONFIGURATION'=>'- Valuta informatie',
-
 'LBL_CURRENCY_CONFIG'=>'Valuta configuratie',
-
 'LBL_CURRENCY_INFO'=>'Valuta informatie',
-
 'LBL_CURRENCY_TITLE'=>'Valuta',
-
 'LBL_CURRENCY_SETTINGS'=>'Valuta instellingen',
-
 
 'LBL_USERNAME'=>'Gebruikersnaam',
 'LBL_PASWRD'=>'Wachtwoord',
 'LBL_REQUIRES_AUTHENT'=>'Inloggen is hier verplicht!',
-'LBL_FROM_EMAIL_FIELD'=>'Van e-Mail',
-
+'LBL_FROM_EMAIL_FIELD'=>'Van e-mail',
 //Fields for Settings
-
 'LBL_USER_MANAGEMENT'=>'Gebruikers & Toegang Management',
-
 'LBL_USERS'=>'Gebruikers',
-
 'LBL_USERS_LIST'=>'Gebruikerslijst',
 'LBL_GROUP_LIST'=>'Groepenlijst',
-
 'LBL_CREATE_AND_MANAGE_USERS'=>'- Maak en regel gebruikers (bijv. admin)',
 
-
 'LBL_CREATE_AND_MANAGE_USER_ROLES'=>'- Maak en regel gebruikers rollen (bijv. Administrator, Standard Gebruiker, etc.)',
-
 'LBL_PROFILES'=>'Profielen',
-
 'LBL_PROFILES_LIST'=>'Profielenlijst',
-
 'LBL_CREATE_AND_MANAGE_USER_PROFILES'=>'- Maak en regel gebruikers profielen (bijv. Directeur, Verkoop Manager, etc.)',
-
 'LBL_CREATE_AND_MANAGE_USER_GROUPS'=>'- Maak en regel gebruikers groepen',
-
 'LBL_SHARING_ACCESS'=>'Toegang delen',
-
 'LBL_FIELDS_ACCESS'=>'Velden toegang',
-
 'LBL_DEFAULT_ORGANIZATION_FIELDS'=>'Standaard organisatie velden toegang',
-
 'LBL_SETTING_DEFAULT_ORGANIZATION_FIELDS'=>' - Bepaal standaard veld toegang binnen de organisatie',
-
 'LBL_SETTING_DEFAULT_SHARING_ACCESS'=>'- Bepaal standaard gedeelde toegang binnen de organisatie',
-
 'LBL_FIELD_ACCESSIBILITY'=>'Veld toegang',
-
 'LBL_SETTING_FIELD_ACCESSIBILITY'=>' - Bepaal veld toegang voor elk profiel',
 //<<<<<<<<for edit ordering blocks>>>>>>
 'LBL_FIELD_ORDERING_DESC'=>' - Verander veld volgorde',
-
 'LBL_FIELD_ORDERING'=>'Verander veld blokken',
 //<<<<<<<<<<end>>>>>>>>>>>>>
 'LBL_LEAD_FIELD_ACCESS'=>'Lead veld toegang',
-
-'LBL_ACCOUNT_FIELD_ACCESS'=>'Account veld Toegang',
-
+'LBL_ACCOUNT_FIELD_ACCESS'=>'Account veld toegang',
 'LBL_CONTACT_FIELD_ACCESS'=>'Contact veld toegang',
-
 'LBL_OPPORTUNITY_FIELD_ACCESS'=>'Verkoopkans veld toegang',
-
 'LBL_HELPDESK_FIELD_ACCESS'=>'Helpdesk veld toegang',
-
 'LBL_PRODUCT_FIELD_ACCESS'=>'Product veld toegang',
-
 'LBL_NOTE_FIELD_ACCESS'=>'Notitie veld toegang',
-
-'LBL_EMAIL_FIELD_ACCESS'=>'e-Mail veld toegang',
-
+'LBL_EMAIL_FIELD_ACCESS'=>'E-mail veld toegang',
 'LBL_TASK_FIELD_ACCESS'=>'Taak veld toegang',
-
 'LBL_EVENT_FIELD_ACCESS'=>'Afspraak veld toegang',
-
 'LBL_DELETE_DEMO_DATA'=>'Verwijder demo data',
-
 'LBL_DELETE_DEMO_DATA_INFO'=>'- Verwijder de demo data die tijdens de installatie is toegevoegd',
 
-
-
 'LBL_STUDIO'=>'Studio',
-
 'LBL_CUSTOM_FIELD_SETTINGS'=>'Aangepaste veld instellingen',
-
 'LBL_CREATE_AND_MANAGE_USER_DEFINED_FIELDS'=>'Regel gebruiker definieerde velden...',
-
 'LBL_SELECT_MODULE'=>'Selecteer module',
-
 'LBL_SELECT_CF_TEXT'=>'Selecteer de CRM module:',
 
-
-
 'LBL_PICKLIST_SETTINGS'=>'Selectie instellingen',
-
-'LBL_EDIT_PICKLIST_VALUES'=>' - Verander waarden van selectie velden',
-
-'LBL_EDIT'=>'Verandering',
-
-'LBL_COMMUNICATION_TEMPLATES'=>'Communicatie sjabloon',
-
-'LBL_CREATE_EMAIL_TEMPLATES'=>'Nieuw e-Mail sjabloon',
-
-'LBL_UPLOAD_MSWORD_TEMPLATES'=>' - Verstuur MS Word templates voor e-Mail merge',
-
-'LBL_SCHEDULE_EMAIL_NOTIFICATION'=>' - Plan e-Mail notificaties',
-
+'LBL_EDIT_PICKLIST_VALUES'=>' - Bewerk waarden van selectie velden',
+'LBL_EDIT'=>'Bewerken',
+'LBL_COMMUNICATION_TEMPLATES'=>'Communicatie sjablonen',
+'LBL_CREATE_EMAIL_TEMPLATES'=>'Nieuw e-mail sjabloon',
+'LBL_UPLOAD_MSWORD_TEMPLATES'=>' - Verstuur MS Word templates voor e-mail merge',
+'LBL_SCHEDULE_EMAIL_NOTIFICATION'=>' - Plan e-mail notificaties',
 'LBL_EXPAND_CLOSE_MENU'=>'Open/Sluit menu',
-
 'LBL_CONFIGURATION'=>'Configuratie',
-
-'LBL_CONFIGURE_MAIL_SERVER'=>' - Configureer uitgaande e-Mail server',
-
+'LBL_CONFIGURE_MAIL_SERVER'=>' - Configureer uitgaande e-mail server',
 'LBL_BACKUP_SERVER_CONFIGURATION'=>'Backup server configuratie',
-
 'LBL_BACKUP_SERVER_INFO'=>'Backup server informatie',
-
 'LBL_BACKUP_SERVER_SETTINGS'=>'Backup server instellingen',
-
 'LBL_CONFIGURE_BACKUP_SERVER'=>' - Configureer backup server',
-
 'LBL_SYSTEM_CONFIGURATION'=>' - Systeem configuratie',
-
 'LBL_PROXY_SERVER_CONFIGURATION'=>'Proxy server configuratie',
-
 'LBL_PROXY_SERVER_INFO'=>'Proxy server informatie',
-
 'LBL_PROXY_SERVER_SETTINGS'=>'Proxy server instellingen',
-
 'LBL_CONFIGURE_PROXY_SERVER'=>' - Configureer proxy server',
-
 'LBL_PROXY_PORT'=>'Poortnummer',
 
-
-
 //Field Types for custom fields
-
 'LBL_URL'=>'URL',
-
 'LBL_CHECK_BOX'=>'Checkbox',
 
-
-
 //PickList Settings
-
 'LBL_STANDARD_FIELDS'=>'Standaard velden',
-
 'LBL_LEAD_SOURCE'=>'Lead bron',
-
 'LBL_SALUTATION'=>'Begroeting',
-
 'LBL_LEAD_STATUS'=>'Lead status',
-
 'LBL_INDUSTRY'=>'Industrie',
-
 'LBL_RATING'=>'Beoordeling',
-
 'LBL_ACCOUNT_TYPE'=>'Account type',
-
 'LBL_BUSINESS_TYPE'=>'Handel type',
-
 'LBL_CURRENCY_TYPE'=>'Valuta type',
-
 'LBL_SALES_STAGE'=>'Verkoop stadium',
-
 'LBL_PRIORITY'=>'Prioriteit',
-
 'LBL_STATUS'=>'Status',
-
 'LBL_CATEGORY'=>'Ticket categorie',
-
 'LBL_MANUFACTURER'=>'Fabrikant',
-
-'LBL_PRODUCT_CATEGORY'=>'Product categorie',
-
+'LBL_PRODUCT_CATEGORY'=>'Productcategorie',
 'LBL_RSS_CATEGORY'=>'Rss categorie',
-
 //Added for Web based Email client integration (post 4.0.1 release)
-
-'LBL_ADD_MAIL_ACCOUNT'=>'e-Mail account toevoegen',
-'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Nieuw e-Mail account [Alt+M]',
+'LBL_ADD_MAIL_ACCOUNT'=>'E-mail account toevoegen',
+'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'Nieuw e-mail account [Alt+M]',
 'LBL_NEW_MAIL_ACCOUNT_KEY'=>'M',
-'LBL_NEW_MAIL_ACCOUNT_LABEL'=>'Nieuw e-Mail account',
+'LBL_NEW_MAIL_ACCOUNT_LABEL'=>'Nieuw e-mail account',
 'LBL_GENERAL_INFO'=>'Algemene informatie',
-'LBL_DISPLAY_NAME'=>'Laat naam zien',
-'LBL_MAIL_PROTOCOL'=>'e-Mail protocol',
+'LBL_DISPLAY_NAME'=>'Toon naam',
+'LBL_MAIL_PROTOCOL'=>'E-mail protocol',
 'LBL_LIST_PASSWORD'=>'Wachtwoord',
-'LBL_MAIL_SERVER_NAME'=>'e-Mail server naam of IP',
-'LBL_MAIL_SERVER_SETTINGS'=>'Uitgaande Server',
-'LBL_INCOME_SERVER_SETTINGS'=>'Inkomende Server',
+'LBL_MAIL_SERVER_NAME'=>'E-mail servernaam of IP',
+'LBL_MAIL_SERVER_SETTINGS'=>'Uitgaande server',
+'LBL_INCOME_SERVER_SETTINGS'=>'Inkomende server',
 'LBL_TEST_SETTINGS'=>'Test mijn account instellingen onmiddelijk',
 'LBL_TEST_BUTTON_TITLE'=>'Test mijn account nu! [Alt+T]',
 'LBL_TEST_BUTTON_KEY'=>'T',
@@ -533,32 +309,31 @@ $mod_strings = Array(
 'LBL_TLS'=>'TLS',
 'LBL_NO_TLS'=>'Geen TLS',
 'LBL_CERT_VAL'=>'Certificaat validaties',
-'LBL_INT_MAILER'=>'Gebruik de interne e-Mail?',
+'LBL_INT_MAILER'=>'Gebruik de interne e-mail?',
 'LBL_INT_MAILER_USE'=>'Ja',
 'LBL_INT_MAILER_NOUSE'=>'Nee',
-'LBL_VAL_SSL_CERT'=>'Validatie SSL cert',
+'LBL_VAL_SSL_CERT'=>'Valideer SSL certificaat',
 'LBL_DONOT_VAL_SSL_CERT'=>'Niet valideren voor SSL cert',
-'LBL_WEB_MAIL_CONFIG'=>'Web e-Mail configuratie',
-'LBL_CONFIGURE_WEB_MAIL'=>' - Web e-Mail instellen',
-'LBL_LIST_MAIL_ACCOUNT'=>'  e-Mail accountlijst',
+'LBL_WEB_MAIL_CONFIG'=>'Web e-mail configuratie',
+'LBL_CONFIGURE_WEB_MAIL'=>'Web e-mail instellen',
+'LBL_LIST_MAIL_ACCOUNT'=>'E-mail accountlijst',
 'LBL_USAGEUNIT'=>'Gebruikseenheid',
 'LBL_GLACCT'=>'Financieel account',
 'LBL_QUOTE_STAGE'=>'Offerte stadium',
-'LBL_CARRIER'=>'Koerier',
-'LBL_TAXCLASS'=>'BTW',
+'LBL_CARRIER'=>'Vervoerder',
+'LBL_TAXCLASS'=>'Belastingklasse',
 'LBL_MY_DETAILS'=>'Mijn details',
-'LBL_MY_MAIL_SERVER_DET'=>'Mijn inkomende e-Mail server details',
-'LBL_EMAIL_ID'=>'e-Mail ID',
-'LBL_NAME_EXAMPLE'=>'(voorbeeld : John Fenner)',
-'LBL_EMAIL_EXAMPLE'=>'(voorbeeld : johnfenner@xyz.com)',
+'LBL_MY_MAIL_SERVER_DET'=>'Mijn inkomende e-mail server details',
+'LBL_EMAIL_ID'=>'E-mail ID',
+'LBL_NAME_EXAMPLE'=>'(voorbeeld : Luuk Roovers)',
+'LBL_EMAIL_EXAMPLE'=>'(voorbeeld : luukroovers@vtiger-experts.nl)',
 'LBL_REFRESH_TIMEOUT'=>'Verversen tijd',
 'LBL_1_MIN'=>'1 minuut',
 'LBL_2_MIN'=>'2 minuten',
 'LBL_3_MIN'=>'3 minuten',
 'LBL_4_MIN'=>'4 minuten',
 'LBL_5_MIN'=>'5 minuten',
-'LBL_EMAILS_PER_PAGE'=>'e-Mails per pagina',
-
+'LBL_EMAILS_PER_PAGE'=>'E-mails per pagina',
 //Added for Organization Details (4.2 release)
 'LBL_ORGANIZATION_NAME'=>'Bedrijfsnaam',
 'LBL_ORGANIZATION_ADDRESS'=>'Adres',
@@ -575,53 +350,48 @@ $mod_strings = Array(
 'LBL_UPLOAD'=>'Versturen',
 'LBL_FILENAME'=>'Bestandsnaam',
 'LBL_SETTINGS'=>'Instellingen',
+'LBL_COMPANY_INFO'=>'Bedrijfsinformatie',
 'LBL_COMPANY_DETAILS'=>'Bedrijfsinformatie',
-
-'LBL_SEVERITY'=>'Probleem status',
-'LBL_FAQ_CATEGORY'=>'Categorie veel gestelde vragen',
-'LBL_VENDOR_FIELD_ACCESS'=>'Leverancier veld toegang',
-'LBL_PB_FIELD_ACCESS'=>'Prijslijst veld toegang',
-'LBL_QUOTE_FIELD_ACCESS'=>'Offerte veld toegang',
-'LBL_PO_FIELD_ACCESS'=>'Inkooporder veld toegang',
-'LBL_SO_FIELD_ACCESS'=>'Verkooporder toegang',
-'LBL_INVOICE_FIELD_ACCESS'=>'Factuur veld toegang',
+'LBL_SEVERITY'=>'Ernstigheid',
+'LBL_FAQ_CATEGORY'=>'Categorie FAQ',
+'LBL_VENDOR_FIELD_ACCESS'=>'Toegang veld leverancier',
+'LBL_PB_FIELD_ACCESS'=>'Toegang veld prijslijst',
+'LBL_QUOTE_FIELD_ACCESS'=>'Toegang veld offerte',
+'LBL_PO_FIELD_ACCESS'=>'Toegang veld inkooporder',
+'LBL_SO_FIELD_ACCESS'=>'Toegang veld verkooporder',
+'LBL_INVOICE_FIELD_ACCESS'=>'Toegang veld factuur',
 'INVENTORYNOTIFICATION'=>'Voorraad notificatie',
-'LBL_INVENTORY_NOTIFICATIONS'=>' - Verander voorraad e-Mail notificatie',
-'INVENTORYTERMSANDCONDITIONS'=>'Voorraad Algemene Voorwaarden',//newly added for Inventory terms and conditions
-'LBL_INVENTORY_TERMSANDCONDITIONS'=>' - Verander voorraad algemene voorwaarden',//newly added
-'LBL_TANDC_TEXT'=>'Algemene voorwaarden tekst',
-'LBL_INVENTORY_TANDC'=>'Algemene voorwaarden',
-
+'LBL_INVENTORY_NOTIFICATIONS'=>' - Verander voorraad e-mail notificatie',
+'INVENTORYTERMSANDCONDITIONS'=>'Algemene Voorwaarden',//newly added for Inventory terms and conditions
+'LBL_INVENTORY_TERMSANDCONDITIONS'=>' - Verander Algemene Voorwaarden',//newly added
+'LBL_TANDC_TEXT'=>'Tekst Algemene Voorwaarden',
+'LBL_INVENTORY_TANDC'=>'Algemene Voorwaarden',
 'LBL_OTHER_SETTINGS'=>'Oude instellingen',
 'LBL_SCROLL'=>'[Ga naar boven]',
-
-'LBL_INV_NOT_DESC'=>'De volgende lijst van notificaties worden gestuurd aan de Product manager over de minimum voorraad tijdens het maken van een offerte, verkooporder en factuur.',
-
+'LBL_INV_NOT_DESC'=>'De volgende lijst van notificaties worden gestuurd aan de product manager over de minimum voorraad tijdens het maken van een offerte, verkooporder en factuur.',
 'InvoiceNotification'=>'Product voorraad notificatie tijdens het maken van een factuur',
-'InvoiceNotificationDescription'=>'Als de minimum voorraad is bereikt zal er een notificatie worden gestuurd aan de Product manager',
-'Vendor'=>'Verkoper',
+'InvoiceNotificationDescription'=>'Als de minimum voorraad is bereikt zal er een notificatie worden gestuurd aan de product manager',
+'Vendor'=>'Leverancier',
 'PriceBook'=>'Prijslijst',
 'Quotes'=>'Offerte',
-'PurchaseOrder'=>'Inkoop Order',
-'SalesOrder'=>'Verkoop Order',
+'PurchaseOrder'=>'Inkooporder',
+'SalesOrder'=>'Verkooporder',
 'Invoice'=>'Factuur',
-
 //For Custom Fields
 'LBL_LEAD_MAP_CUSTOM_FIELD'=>'Koppel lead aangepaste velden',
 'leadCustomFieldDescription'=>'Koppel elk van uw organisatie lead aangepaste velden aan elk van uw aangepaste accounts
 ,contacten, of verkoopkans velden. Deze koppeling wordt gebruikt als u uw leads converteerd',
 'LBL_MAPPING_INFO'=>'Koppel informatie',
-'LBL_ACCOUNT_FIELD'=>'Account aangepast veld',
-'LBL_CONTACT_FIELD'=>'Contact aangepast veld',
-'LBL_POTENTIAL_FIELD'=>'Verkoopkans aangepast veld',
-'CUSTOMFIELDMAPPING'=>'Aangepast veld koppel',
-'LBL_FIELD_MAPPING'=>'Veld koppel',
-'LBL_LEAD_FIELD'=>'Lead aangepast veld',
+'LBL_ACCOUNT_FIELD'=>'Aangepast veld accounts',
+'LBL_CONTACT_FIELD'=>'Aangepast veld contact',
+'LBL_POTENTIAL_FIELD'=>'Aangepast veld verkoopkans',
+'CUSTOMFIELDMAPPING'=>'Koppel aangepast veld',
+'LBL_FIELD_MAPPING'=>'Koppel veld',
+'LBL_LEAD_FIELD'=>'Aangepast veld lead',
 //After 4.2 GA
 'LBL_TEXT_AREA'=>'Tekst gebied',
 //for Edit ordering the blocks
-'NOTESCUSTOMFIELDS'=>'Notities aangepaste velden',
-
+'NOTESCUSTOMFIELDS'=>'Aangepaste velden notities',
 //Added fields after 4.2 ptach 2
 'LBL_ASSIGN_MODULE_OWNERS'=>'Benoem module eigenaren',
 'LBL_MODULE_OWNERS'=>'Module eigenaren',
@@ -630,94 +400,91 @@ $mod_strings = Array(
 'LBL_OWNER'=>'Eigenaar',
 'LBL_MIGRATION'=>'Migreer van een vorige versie',
 'LBL_MIGRATION_INFO'=>' - Migreer van een vorige vTiger versie',
-
 //Added for 5 GA - Description of Settings UI
-
 'LBL_USER_DESCRIPTION'=>'Definieer de gebruikers die CRM gebruiken',
 'LBL_ROLE_DESCRIPTION'=>'Definieer de hierarchie van de rollen en voeg gebruikers toe',
-'LBL_PROFILE_DESCRIPTION'=>'Definieer de profielen om toegangsrechten te geven per rol',
-'LBL_GROUP_DESCRIPTION'=>'Definieer de groepen gebaseerd op rollen, gebruikers, profielen etc',
-'LBL_SHARING_ACCESS_DESCRIPTION'=>'Definieer de rechten voor elke rol om met CRM modules te werken',
+'LBL_PROFILE_DESCRIPTION'=>'Definieer profielen om toegangsrechten te geven per rol',
+'LBL_GROUP_DESCRIPTION'=>'Definieer groepen gebaseerd op rollen, gebruikers, profielen etc',
+'LBL_SHARING_ACCESS_DESCRIPTION'=>'Definieer rechten voor elke rol om met CRM modules te werken',
 'LBL_SHARING_FIELDS_DESCRIPTION'=>'Velden activeren of verbergen per CRM module',
 'LBL_MODULE_OWNERS_DESCRIPTION'=>'Per CRM module eigenaren toewijzen',
 'LBL_ANNOUNCEMENT_DESCRIPTION'=>'Verander de teksten van de aankondigingen',
-'LBL_CUSTOM_FIELDS_DESCRIPTION'=>'Maak en regel gebruiker-definieerde velden',
-'LBL_PICKLIST_DESCRIPTION'=>'Manage de inhoud van selecties in alle CRM modules',
-'LBL_EMAIL_TEMPLATE_DESCRIPTION'=>'Manage de sjablonen voor de e-Mail module',
-'LBL_MAIL_MERGE_DESCRIPTION'=>'Manage de sjablonen voor e-Mail merging',
-'LBL_NOTIF_SCHED_DESCRIPTION'=>'Manage de notificaties van alle belangrijke acties waar u een alarm voor wilt hebben',
-'LBL_INV_NOTIF_DESCRIPTION'=>'Verander de instellingen van voorraad gerelateerde notificaties',
-'LBL_INV_TANDC_DESCRIPTION'=>'Definieer de tekst van uw algemene voorwaarden',
-'LBL_COMPANY_DESCRIPTION'=>'Definieer de details van uw bedrijf',
-'LBL_MAIL_SERVER_DESCRIPTION'=>'Verander de instellingen van de uitgaande e-Mail (SMTP) server',
-'LBL_BACKUP_SERVER_DESCRIPTION'=>'Verander de instellingen van de backup server',
-'LBL_CURRENCY_DESCRIPTION'=>'Definieer de valuta en wissel koersen',
-'LBL_TAX_DESCRIPTION'=>'Definieer de waarden van de BTW',
+'LBL_CUSTOM_FIELDS_DESCRIPTION'=>'Maak en bewerk gedefinieerde gebruikersvelden',
+'LBL_PICKLIST_DESCRIPTION'=>'Inhoud van selectielijstjes in alle CRM modules',
+'LBL_EMAIL_TEMPLATE_DESCRIPTION'=>'Regel sjablonen voor de e-mail module',
+'LBL_MAIL_MERGE_DESCRIPTION'=>'Regel sjablonen voor e-mail merging',
+'LBL_NOTIF_SCHED_DESCRIPTION'=>'Regel notificaties van alle belangrijke acties waar u een alarm voor wilt hebben',
+'LBL_INV_NOTIF_DESCRIPTION'=>'Verander instellingen van voorraad gerelateerde notificaties',
+'LBL_INV_TANDC_DESCRIPTION'=>'Tekstinhoud vand e Algemene Voorwaarden',
+'LBL_COMPANY_DESCRIPTION'=>'Details van uw bedrijf',
+'LBL_MAIL_SERVER_DESCRIPTION'=>'Instellingen van de uitgaande e-mail server',
+'LBL_BACKUP_SERVER_DESCRIPTION'=>'Instellingen van de backup server',
+'LBL_CURRENCY_DESCRIPTION'=>'Instellen valuta en wissel koersen',
+'LBL_TAX_DESCRIPTION'=>'Instellen waarden voor belastingen',
 'LBL_SYSTEM_DESCRIPTION'=>'Systeem instellingen',
-'LBL_PROXY_DESCRIPTION'=>'Verander de instellingen voor de internet connectie',
+'LBL_PROXY_DESCRIPTION'=>'Verander instellingen voor internet connectie',
 'LBL_AUDIT_DESCRIPTION'=>'Controle instellingen',
 'LBL_TAX_DESC'=>'Definieer de BTW en andere belasting instellingen',
 'LBL_COMPANY_DESC'=>'Informatie & contact details van uw bedrijf',
 'LBL_SELECT_LOGO'=>'Selecteer een nieuw logo :',
-'LBL_INVEN_TANDC_DESC'=>'Verander de tekst van uw algemene voorwaarden in de voorraad module',
-'LBL_MAIL_SERVER_DESC'=>'Configureer uw e-Mail server instellingen',
-'LBL_BACKUP_SERVER_DESC'=>'Configureer uw backup server instellingen',
+'LBL_INVEN_TANDC_DESC'=>'Verander de tekst van uw Algemene Voorwaarden in de voorraad module',
+'LBL_MAIL_SERVER_DESC'=>'Regel uw e-mail server instellingen',
+'LBL_BACKUP_SERVER_DESC'=>'Regel uw backup server instellingen',
 'LBL_MODULES_AND_OWNERS'=>'Module & eigenaren',
 'LBL_GROUP_DESC'=>'Regel Gebruikersgroepen',
-'LBL_MAIL_MERGE_DESC'=>'Manage e-Mail merge sjablonen die u gebruikt in de CRM modules',
-
+'LBL_MAIL_MERGE_DESC'=>'Regel e-mail merge sjablonen die u gebruikt in de CRM modules',
 
 //Added fields after 5.0 Alpha
-'LBL_REQUIRE_SMTP_AUTHENTICATION'=>'SMTP authenticatie vereist?',
+'LBL_REQUIRE_SMTP_AUTHENTICATION'=>'Heeft u SMTP authenticatie?',
 'LBL_ANNOUNCEMENT'=>'Aankondiging',
 'LBL_SETTING_ANNOUNCEMENT'=>'Aankondiging',
 'LBL_ANNOUNCE_TEXT'=>'Aankondigings tekst',
 'LBL_UPDATE_BUTTON'=>'Update',
-'LBL_ANNOUNCEMENT_INFO'=>'Type de aankondigings tekst, en klik op de update button.',
+'LBL_ANNOUNCEMENT_INFO'=>'Type de aankondigingstekst, en klik op de Update button.',
 'LBL_ANNOUNCEMENT_DESC'=>'Verander de tekst die in de aankondiging verschijnt bovenaan elke pagina',
-'LBL_EMAIL_CONTENTS'=>'e-Mail inhoud',
+'LBL_EMAIL_CONTENTS'=>'E-mail inhoud',
 'LBL_SUBJECT'=>'Onderwerp',
 'LBL_MESSAGE'=>'Bericht',
-'LBL_PICKLIST_EDITOR'=>'Selectie Lijsten',
+'LBL_PICKLIST_EDITOR'=>'Picklijst editor',
 'LBL_PICKLIST_AVAIL'=>'Selecties beschikbaar in',
 'LBL_PICKLIST_AVAILINFO1'=>'Selectie beschikbaar in',
 'LBL_PICKLIST_AVAILINFO2'=>'zijn hier. Klik hier om de inhoud van de lijst te veranderen.',
-'LBL_EDIT_PICKLIST'=>'Verander selectie lijst',
+'LBL_EDIT_PICKLIST'=>'Bewerk selectielijst',
 'LBL_PICKLIST_SAVEINFO'=>'Type de velden 1 voor 1 in en klik op bewaren.',
 'LBL_SELECT_CRM_MODULE'=>'Selecteer een CRM module',
-'LBL_TAX_SETTINGS'=>'BTW instellingen',
+'LBL_TAX_SETTINGS'=>'Belasting instellingen',
 'LBL_INVENTORY_TAX_CONFIG'=>'Voorraad BTW configuratie',
 'LBL_CUSTOM_MAPP_INFO'=>'Alleen de Leads module laat toe om veld selecties te maken met andere modules.',
-'LBL_MAPPING_OTHER_MODULES'=>'Selcties met andere modules',
+'LBL_MAPPING_OTHER_MODULES'=>'Selecties met andere modules',
 'LBL_CUSTOM_FILED_IN'=>'Aangepaste velden in ',
-'LBL_ROLE_HIERARCHY_TREE'=>'Rollen & hierarchie boom',
-'LBL_EDIT_FIELD_MAPPING'=>'Verandering veld selectie',
+'LBL_ROLE_HIERARCHY_TREE'=>'Rollen & hierarchie organigram',
+'LBL_EDIT_FIELD_MAPPING'=>'Bewerk veldselectie',
 'LBL_LOGIN_HISTORY_DETAILS'=>'Gebruiker login geschiedenis',
 'LBL_LOGIN_HISTORY_DESCRIPTION'=>'Beschrijving van de login geschiedenis van de gebruikers',
-'LBL_NON_EDITABLE_PICKLIST_ENTRIES'=>'Deze selectielijst kunt u niet veranderen',
-
+'LBL_NON_EDITABLE_PICKLIST_ENTRIES'=>'Deze selectielijst kunt u niet bewerken',
 //Added for Tax settings
 'LBL_PRODUCT_TAX_SETTINGS'=>'Product & service belasting',
 'LBL_SHIPPING_HANDLING_TAX_SETTINGS'=>'Transport belasting',
 'LBL_PROXY_SERVER_DESC'=>'Instellingen voor de Proxy om toegang te krijgen via het Internet van uw RSS feeds',
-
 'LBL_NEW_CURRENCTY'=>'Nieuwe valuta',
 'LBL_BASE_CURRENCY'=>'Basis valuta - US Dollar',
 'LBL_DELETE_CURRENCY'=>'Verwijder valuta',
-
-//Added for singlepane view in modules 
-
+//Added for singlepane view in modules
 'LBL_DEFAULT_DETAIL_VIEW'=>'Standaard detail overzicht',
 'LBL_DEFAULT_MODULE_VIEW'=>'Standaard module overzicht',
 'LBL_DEFAULT_MODULE_VIEW_DESC'=>'Standaard detail overzicht voor alle modules instellen',
-'LBL_ENABLE_SINGLEPANE_VIEW'=>'Activeer Singlepane View',
-
-'LBL_CLEAR_DATA'=>'Wijzig data',
-'LBL_ENABLE'=>'Autoriseren',
-'LBL_FAQ_FIELD_ACCESS'=>'Toegang veld veel gestelde vragen',
+'LBL_ENABLE_SINGLEPANE_VIEW'=>'Enkelvoudig scherm aanzetten',
+'LBL_CLEAR_DATA'=>'Leegmaken',
+'LBL_LENGTHALERT'=>'Sorry, u kunt geen velden synchroniseren met verschillende karakters. Synchroniseer de data met dezelfde of meer karakters.',
+'LBL_DECIMALALERT'=>'Sorry, u kunt geen velden synchroniseren met verschillende decimale plaatsen. Synchroniseer de data met dezelfde of meerdere decimale plaatsen.',
+'LBL_TYPEALERT_1'=>'Sorry, u kunt niet synchroniseren',
+'LBL_WITH'=>'met',
+'LBL_TYPEALERT_2'=>'Data type. Synchroniseer dezelfde data types.',
+'LBL_ENABLE'=>'Aanzetten',
+'LBL_FAQ_FIELD_ACCESS'=>'Toegang veld FAQ',
 'LBL_ADD_TAX_BUTTON'=>'BTW Toevoegen',
 'LBL_NO_TAXES_AVAILABLE'=>'Geen BTW beschikbaar',
-'LBL_PLEASE'=>'s.v.p.',
+'LBL_PLEASE'=>'Alstublieft',
 //Added while moving role file from User to Setting Module
 'LBL_ROLES'=>'Rollen',
 'LBL_CREATE_NEW_ROLE'=>'Maak een nieuwe rol',
@@ -735,10 +502,10 @@ $mod_strings = Array(
 'LBL_ASSOCIATED_PROFILES'=>'Vergelijkbare profielen:',
 'LBL_ASSOCIATED_USERS'=>'Vergelijkbare gebruikers:',
 //Added while moving email templates from Users to Settings
-'LBL_EMAIL_TEMPLATES'=>'e-Mail sjabloon',
-'LBL_EMAIL_TEMPLATE_DESC'=>'Beheer e-Mail sjablonen voor gebruik campagnes en bulk mailing',
+'LBL_EMAIL_TEMPLATES'=>'E-mail sjabloon',
+'LBL_EMAIL_TEMPLATE_DESC'=>'Beheer e-mail sjablonen voor gebruik campagnes en bulk mailing',
 'LBL_LIST_SELECT'=>'Selecteer',
-'LBL_EMAIL_TEMPLATE'=>'e-Mail sjabloon',
+'LBL_EMAIL_TEMPLATE'=>'E-mail sjabloon',
 'LBL_TEMPLATE_TOOLS'=>'Gereedschap',
 'LBL_NEW_TEMPLATE' =>'Nieuw sjabloon',
 'LBL_FOLDER'=>'Mappen',
@@ -749,197 +516,201 @@ $mod_strings = Array(
 'LBL_CONTACT_FIELDS'=>'Contact velden',
 'LBL_LEAD_FIELDS'=>'Lead velden',
 'LBL_USER_FIELDS'=>'Gebruikers velden',
-'LNK_SAMPLE_EMAIL'=>'Bekijk e-Mail voorbeeld',
+'LNK_SAMPLE_EMAIL'=>'Bekijk e-mail voorbeeld',
 //Added while moving Mail Merge templates from Users to Settings
 'LBL_TEMPLATE_FILE'=>'Sjabloon bestand',
 'LBL_MODULENAMES'=>'Module',
 'LBL_DOWNLOAD'=>'Downloaden',
 'LBL_ADD_TEMPLATE'=>'Sjabloon toevoegen',
-'LBL_WORD_TEMPLATES'=>'Adressen samenvoegen met MSWord-Sjabloon',
+'LBL_WORD_TEMPLATES'=>'Adressen samenvoegen met MSWord-template',
 //Added while moving Notification Schedulers from Users to Settings
 'LBL_TASK_NOTIFICATION'=>'Uitstel taak notificatie',
 'LBL_BIG_DEAL'=>'Grote actie notificatie',
 'LBL_PENDING_TICKETS'=>'Onbehandelde ticket notificatie',
 'LBL_MANY_TICKETS'=>'Te veel tickets notificatie',
-'LBL_START_NOTIFICATION'=>'Support start  notificatie',
+'LBL_START_NOTIFICATION'=>'Ondersteuning start notificatie',
+'LBL_SUPPORT_NOTICIATION'=>'Ondersteuning einde notificatie',
+'LBL_SUPPORT_NOTICIATION_MONTH'=>'Ondersteuning einde notificatie voor einde maand' ,
 'LBL_ACTIVITY_NOTIFICATION'=>'Herinnering evenement notificatie',
-
-'LBL_TASK_NOTIFICATION_DESCRITPION'=>'Notificeer wanneer een taak 24 hrs is vertraagt',
-'LBL_BIG_DEAL_DESCRIPTION'=>'Notificeer wanneer een grote deal is afgesloten',
-'LBL_TICKETS_DESCRIPTION'=>'Notificeer om status te verkrijgen voor afwachtend tickets',
-'LBL_MANY_TICKETS_DESCRIPTION'=>'Notificeer wanneer een bepaalde entiteit te veel tickets krijgt toegeschreven, dit kan de service beinvloeden',
-'LBL_START_DESCRIPTION'=>'Notificeer wanneer support/service aanvangt',
-'LBL_ACTIVITY_REMINDER_DESCRIPTION'=>'Notificeer waneer een taak zal plaatsvinden gebaseerd op een herinnering',
+'LBL_TASK_NOTIFICATION_DESCRITPION'=>'Notificeer wanneer een taak meer dan 24 uur vertraagd is',
+'LBL_BIG_DEAL_DESCRIPTION'=>'Notificeer wanneer een verkoopovereenkomst gesloten is',
+'LBL_TICKETS_DESCRIPTION'=>'Notificeer wanneer teveel tickets openstaan',
+'LBL_MANY_TICKETS_DESCRIPTION'=>'Notificeer wanneer een bepaalde entiteit teveel tickets heeft toegekend, dit kan het service niveau schaden',
+'LBL_START_DESCRIPTION'=>'Notificeer wanneer men gestart is met Ondersteuning/service',
+'LBL_SUPPORT_DESCRIPTION'=>'Notificeer wanneer Ondersteuning zal eindigen',
+'LBL_SUPPORT_DESCRIPTION_MONTH'=>'Notificeer 1 maand voordat Ondersteuning wordt beeindigd',
+'LBL_ACTIVITY_REMINDER_DESCRIPTION'=>'Notificeer voordat een afspraak aanvangt gebaseerd op de alarm instelling',
 //Added while moving Inventory Notifications from Users to Settings
-'QuoteNotificationDescription'=>'Als tijdens het maken van een offerte, de voorraad minder is dan de hoeveelheid in de offerte zal er een notificatie gestuurd worden aan de magazijn medewerker',
-'SalesOrderNotificationDescription'=>'Als tijdens het maken van een bestelling, de voorraad minder is dan de hoeveelheid in de order zal er een notificatie gestuurd worden aan de magazijn mederwerker',
+'QuoteNotificationDescription'=>'Als tijdens het aanmaken van een offerte de voorraad minder is dan de genoemde hoeveelheid in het magazijn dan zal hiervan een bericht worden gestuurd naar de magazijnbeheerder',
+'SalesOrderNotificationDescription'=>'Als tijdens het aanmaken van een verkooporder de voorraad minder is dan de genoemde voorraad in het magazijn dan zal hiervan een bericht worden gestuurd naar de magazijnbeheerder',
 'Tools'=>'Gereedschap',
-'QuoteNotification'=>'Voorraad notificatie tijdens het maken van een offerte',
-'SalesOrderNotification'=>'Voorraad notificatie tijden het maken van een bestelling',
-'LBL_NOTE_DO_NOT_REMOVE_INFO'=>'Notificatie: Verwijder of wijzig geen waarden binnen {  }',
-
+'QuoteNotification'=>'Product voorraad notificatie tijdens offerte verwerking',
+'SalesOrderNotification'=>'Product voorraad notificatie tijdens verkooporder verwerking',
+'LBL_NOTE_DO_NOT_REMOVE_INFO'=>'Notitie: Geen waardes verwijderen of veranderen in {  }',
 //Added while moving Profile file from User to Setting Module
 'LBL_TOTAL'=>'Totaal :',
 'LBL_NEW_PROFILE'=>'Nieuw profiel',
 'LBL_LIST_NO'=>'#',
 'LBL_NEW_PROFILE_NAME'=>'Profielnaam',
 'LBL_LIST_TOOLS'=>'Gereedschap',
-'LBL_PROFILE_MESG'=>'Bekijk rechten voor',
-'LBL_PROFILE_PRIVILEGES'=>'Profiel rechten',
-'LBL_DEFINE_PRIV_FOR'=>' Omschrijf rechten voor ',
-'LBL_USE_OPTION_TO_SET_PRIV'=>'Gebruik de benedenstaande opties om de rechten vast te stellen',
-'LBL_SUPER_USER_PRIV'=>'Algemene rechten',
-'LBL_SET_PRIV_FOR_EACH_MODULE'=>'Stel rechten vast voor elke module ',
-'LBL_FIELDS_AND_TOOLS_SETTINGS'=>'Velden & Gereedschap instellingen',
-'LBL_VIEW_ALL'=>'bekijk alles',
-'LBL_EDIT_ALL'=>'Wijzig alles',
+'LBL_PROFILE_MESG'=>'Bekijk privilege toegang voor',
+'LBL_PROFILE_PRIVILEGES'=>'Profiel privileges',
+'LBL_DEFINE_PRIV_FOR'=>' Omschrijf privileges voor ',
+'LBL_USE_OPTION_TO_SET_PRIV'=>'Gebruik onderstaande opties om privileges in te schakelen',
+'LBL_SUPER_USER_PRIV'=>'Algemene privileges',
+'LBL_SET_PRIV_FOR_EACH_MODULE'=>'Privileges inschakelen voor elke module',
+'LBL_FIELDS_AND_TOOLS_SETTINGS'=>'Velden en gereedschap instelling',
+'LBL_VIEW_ALL'=>'Bekijk alles',
+'LBL_EDIT_ALL'=>'Bewerk alles',
 'LBL_ALLOW'=>'Toegestaan',
 'LBL_MESG_VIEW'=>'Alle informatie bekijken / modules van vTiger CRM',
-'LBL_MESG_EDIT'=>'Alle informatie wijzigen / modules van vTiger CRM',
-'LBL_TAB_MESG_OPTION'=>'modules om te bekijken',
-'LBL_CREATE_EDIT'=>'Maak/Wijzig',
+'LBL_MESG_EDIT'=>'Alle informatie bewerken / modules van vTiger CRM',
+'LBL_TAB_MESG_OPTION'=>'Te bezichtigen modules',
+'LBL_CREATE_EDIT'=>'Aanmaken/Bewerken',
 'LBL_VIEW'=>'Bekijk',
 'LBL_MANDATORY_MSG'=>'Verplichte velden',
-'LBL_DISABLE_FIELD_MSG'=>'Velden gedeactiveerd voor Globale Velden Toegangs Instellingen',
+'LBL_DISABLE_FIELD_MSG'=>'Velden onbevoegd van instellingen algemene toegangsvelden',
 'LBL_DELETE'=>'Verwijder',
 
-'LBL_STEP_2_2'=>'Stap 2 uit 2',
-'LBL_FINISH_BUTTON'=>'Gereed',
+'LBL_STEP_2_2'=>'Stap 2 van 2',
+'LBL_FINISH_BUTTON'=>'Einde',
 
 //Added while moving Groups file from User to Setting Module
 'LBL_NEW_GROUP'=>'Nieuwe Groep',
 'LBL_GROUPS'=>'Groepen',
 'LBL_GROUP_NAME'=>'Groepsnaam',
 'LBL_ROLES_SUBORDINATES'=>'Rollen en ondergeschikten',
-'LBL_MEMBER_AVLBL'=>'Beschikbare entiteiten & leden',
+'LBL_MEMBER_AVLBL'=>'Beschikbare entiteiten en leden',
 'LBL_MEMBER_SELECTED'=>'Geselecteerde leden',
 'LBL_ENTITY'=>'Entiteit',
 'LBL_OF'=>'van',
-'LBL_CREATE_NEW_GROUP'=>'Maak een nieuwe groep',
+'LBL_CREATE_NEW_GROUP'=>'Nieuwe groep aanmaken',
 'LBL_ADD_GROUP_BUTTON'=>'Groep toevoegen',
-'LBL_GROUP_MESG1'=>'Groepen zijn makkelijk om toegangsrechten te geven, wanneer complexe toegangsrechten moeten worden weergegeven. Men kan meerdere entiteiten combineren zoals rollen, gebruikers, profielen etc in een enkele groep.',
-'LBL_GROUP_MESG2'=>'Om toe te voegen, selecteer het entiteits lid en klik op de ">>" knop.',
-'LBL_GROUP_MESG3'=>'Om te verwijderen, selecteer de groep rechts en klik op de "<<" knop.',
+'LBL_GROUP_MESG1'=>'Groepen hebben een flexibele manier om toegangsrechten toe te kennen, wanneer complexe toegangsrechten moeten worden gedefinieerd. U kan meerdere entiteiten combineren zoals rollen, gebruikers, profielen etc in een enkele groep.',
+'LBL_GROUP_MESG2'=>'Om toe te voegen, selecteer de entiteit leden links en klik de ">>" knop.',
+'LBL_GROUP_MESG3'=>'Om te verwijderen, selecteer de groep leden rechts en klik de "<<" knop.',
 
 //Sharing Privileges
-'LBL_GLOBAL_ACCESS_PRIVILEGES'=>'Delen van taken op organisatie niveau',
+'LBL_GLOBAL_ACCESS_PRIVILEGES'=>'Organisatie niveau regels delen',
 'LBL_RECALCULATE_BUTTON'=>'Herberekenen',
-'LBL_CHANGE'=>'Verander',
+'LBL_CHANGE'=>'Wijzig',
 'LBL_PRIVILEGES'=>'Privileges',
-'LBL_CUSTOM_ACCESS_PRIVILEGES'=>'Standaard gedeelde taken',
-'LBL_ADD_PRIVILEGES_BUTTON'=>'Toevoegen privileges',
-'LBL_RULE_NO'=>'Regel nummer.',
-'LBL_CAN_BE_ACCESSED'=>'Kan toegetreden worden door',
-'LBL_CUSTOM_ACCESS_MESG'=>'Geen standaard toegangs taak weergegeven.',
-'LNK_CLICK_HERE'=>'Hier klikken om',
-'LBL_CREATE_RULE_MESG'=>'een nieuwe taak aan te maken',
-'LBL_RECALC_MSG'=>'Weet u het zeker dat u opnieuw de gedeelde toegang wilt berekenen?',
+'LBL_CUSTOM_ACCESS_PRIVILEGES'=>'Standaard regels delen',
+'LBL_ADD_PRIVILEGES_BUTTON'=>'Privileges toevoegen',
+'LBL_RULE_NO'=>'Regel nr.',
+'LBL_CAN_BE_ACCESSED'=>'kan benaderd worden door',
+'LBL_CUSTOM_ACCESS_MESG'=>'Geen standaard toegang weergegeven.',
+'LNK_CLICK_HERE'=>'Klik hier',
+'LBL_CREATE_RULE_MESG'=>'Een nieuwe regel aanmaken',
+'LBL_RECALC_MSG'=>'Weet u zeker dat u gedeelde toegang wilt herzien?',
 'LBL_YES'=>'Ja',
 'LBL_NO'=>'Nee',
-'LBL_IN_PERMISSION'=>'Met toegang van',
+'LBL_IN_PERMISSION'=>'Permissie',
 'LBL_RELATED_MODULE_RIGHTS'=>'Gerelateerde module rechten',
-'LBL_USR_CAN_ACCESS'=>'Gebruiker kan ',
-'LBL_USR_OTHERS'=>' Ander gebruikers ',
-'LBL_USR_CANNOT_ACCESS'=>'Gebruikers kunnen niet bij andere gebruikers ',
+'LBL_USR_CAN_ACCESS'=>'Gebruikers kunnen',
+'LBL_USR_OTHERS'=>' Andere gebruikers',
+'LBL_USR_CANNOT_ACCESS'=>'Gebruikers kunnen geen toegang verkrijgen tot andere gebruikers',
  
-'LBL_ORG_SHARING_PRIVILEGES'=>'Organisatie Delen  Privileges',
-'LBL_EDIT_PERMISSIONS'=>'Wijzig Permissies',
-'LBL_SAVE_PERMISSIONS'=>'Bewaar Permissies',
-'LBL_READ_ONLY'=>'Public: Alleen Lezen',
-'LBL_EDIT_CREATE_ONLY'=>'Publiek: Lezen, Aanmaken/Wijzigen',
-'LBL_READ_CREATE_EDIT_DEL'=>'Publiek: Lezen, Aanmaken/Wijzigen, Wissen',
+'LBL_ORG_SHARING_PRIVILEGES'=>'Gedeelde organisatie privileges',
+'LBL_EDIT_PERMISSIONS'=>'Bewerk permissies',
+'LBL_SAVE_PERMISSIONS'=>'Bewaar permissie',
+'LBL_READ_ONLY'=>'Public: Alleen lezen',
+'LBL_EDIT_CREATE_ONLY'=>'Publiek: Lezen, Bewerken',
+'LBL_READ_CREATE_EDIT_DEL'=>'Publiek: Lezen, Bewerken, Verwijder',
 'LBL_PRIVATE'=>'Prive',
  
-'Public: Read Only'=>'Publiek: Alleen Lezen',
-'Public: Read, Create/Edit'=>'Publiek: Lezen, Aanmaken/Wijzigen',
-'Public: Read, Create/Edit, Delete'=>'Publiek: Lezen, Aanmaken/Wijzigen, Wissen',
+'Public: Read Only'=>'Publiek: Alleen lezen',
+'Public: Read, Create/Edit'=>'Publiek: Lezen, Verander/Wijzig',
+'Public: Read, Create/Edit, Delete'=>'Publiek: Lezen, Verander/Wijzig, Verwijder',
 'Private'=>'Prive',
-'Hide Details'=>'Verberg Details',
-'Hide Details and Add Events'=>'Verberg Details en gebeurtenissen toevoegen',
-'Show Details'=>'Toon Details',
-'Show Details and Add Events'=>'Toon Details en gebeurtenissen toevoegen',
+'Hide Details'=>'Details verbergen',
+'Hide Details and Add Events'=>'Details verbergen en afspraken toevoegen',
+'Show Details'=>'Details bekijken',
+'Show Details and Add Events'=>'Details bekijken en afspraken toevoegen',
 
 //Added for User Login History While moving from User to Settings
-'LBL_LOGIN_HISTORY'=>'Login Historie',
+'LBL_LOGIN_HISTORY'=>'Login geschiedenis',
 //Sharing Access module moved to Setting
-'Read/Write'=>'Lees/Schrijf',
-'Read Only '=>'Alleen Lezen',
+'Read/Write'=>'Lezen/Schrijven',
+'Read Only '=>'Alleen lezen',
 'LBL_GROUP'=>'Groep',
-'LBL_ACCESS_RIGHTS_FOR_MODULES'=>'Toegangs rechten voor relative modules',
-'LBL_ADD_RULE'=>'Rol Toevoegen',
-'LBL_ADD_CUSTOM_RULE'=>'Toevoegen Maatwerk Privilege Rol',
-'LBL_RULE_CONSTRUCTION'=>'Rol Constructie Weergave',
+'LBL_ACCESS_RIGHTS_FOR_MODULES'=>'Toegangsrechten voor toepasselijke modules',
+'LBL_ADD_RULE'=>'Regel toevoegen',
+'LBL_ADD_CUSTOM_RULE'=>'Toevoegen standaard privilege regel',
+'LBL_RULE_CONSTRUCTION'=>'Regel constructie vertoning',
 'LBL_STEP'=>'Stap',
-'LBL_SELECT_ENTITY'=>'Selecteer een entiteit beneden',
-'LBL_CAN_BE_ACCESSED_BY'=>'Kan benaderd worden door',
-'LBL_PERMISSIONS'=>'Rechten',
-'LBL_DOC_MSWORD'=>'Bestand moet een Document zijn van het type doc/msword (sluit het bron bestand!)',
-'LBL_NODOC'=>'Geen doc Bestand in deze map (sluit het bron bestand!). Probeer opnieuw!',
+'LBL_SELECT_ENTITY'=>'Selecteer uit een onderstaande entiteit',
+'LBL_CAN_BE_ACCESSED_BY'=>'Toegang verkrijgen door',
+'LBL_PERMISSIONS'=>'Permissie',
+'LBL_DOC_MSWORD'=>'Bestand moet een document of een type doc/msword zijn',
+'LBL_NODOC'=>'Geen doc bestand in deze directory. aub Probeer opnieuw!',
 
 //Added for error messages on Company Info.
-'LOGO_ERROR'=>'Logo moet van het beeld type jpeg/png zijn',
-'Error_Message'=>'Fout Bericht',
-'Invalid_file'=>'Corrupt bestand OF',
-'File_has_no_data'=>'Bestand is leeg',
+'LOGO_ERROR'=>'Logo moet een plaatje of een type jpeg/png zijn',
+'Error_Message'=>'Foutmelding',
+'Invalid_file'=>'Ongeldig bestand OF',
+'File_has_no_data'=>'Bestand heeft geen gegevens',
 'Sorry'=>'Sorry',
-'uploaded_file_exceeds_maximum_limit'=>'het geuploade bestand is groter dan de maximum vtiger_filesize limit',
-'try_file_smaller'=>'Probeer een bestand kleiner dan 800000 bytes',
-'Problems_in_upload'=>'Problemen tijdens bestand upload',
-'Please_try_again'=>'Probeer opnieuw!',
+'uploaded_file_exceeds_maximum_limit'=>'Het opgehaalde bestand overschrijdt het maximum vtiger_bestandsmaat limiet',
+'try_file_smaller'=>'Probeer een bestand kleiner dan 800.000 bytes',
+'Problems_in_upload'=>'Problemen met het ophalen van het bestand',
+'Please_try_again'=>'aub Probeer opnieuw!',
 //5.0.3 fixes
-'LBL_TESTMAILSTATUS'=>'Test Mail Status : ',
-'LBL_CHECK_ASSIGNEDTO_MAILID'=>'Controleer het toegewezen-aan emailid',
-'LBL_MAILSENDERROR'=>'Mail niet verstuurd naar de admin user. Check het admin emailid',
-'LBL_RECORD_NOEXIST'=>'Record niet aanwezig',
-'LBL_ENTER_PROFILE'=>'Geef Profiel Naam',
-'LBL_ENABLE'=>'Activeer',
-'LBL_DISABLE'=>'Deactiveer',
+'LBL_TESTMAILSTATUS'=>'Test e-mail status : ',
+'LBL_CHECK_ASSIGNEDTO_MAILID'=>'aub Controleer het toegekende e-mailid',
+'LBL_MAILSENDERROR'=>'E-mail kon niet verstuurd worden aan de admin gebruiker. aub Controleer het admin e-mailid',
+'LBL_RECORD_NOEXIST'=>'Veld niet aanwezig',
+'LBL_ENTER_PROFILE'=>'Geef profielnaam',
+'LBL_ENABLE'=>'Aanzetten',
+'LBL_DISABLE'=>'Uitzetten',
 'LBL_PROXY'=>'proxy',
-'LBL_FIELDS_TO_BE_SHOWN'=>'Velden te tonen',
+'LBL_FIELDS_TO_BE_SHOWN'=>'Aanwezige velden',
 //Added for alerts
-'SPECIFY_FILE_TO_MERGE' => 'Specificeer een bestand om te Merge(en)',
-'FILESIZE_EXCEEDS_INFO_CONFIG_INC' => 'Sorry, het uploaded bestand is groter dan de maximum bestands groote limit in config.inc.php. Probeer een kleiner bestand',
-'FILESIZE_EXCEEDS_INFO_PHP_INI' => 'Sorry, het uploaded bestand is groter dan de maximum bestands groote limit in php.ini. Probeer een kleiner bestand',
-'PROBLEMS_IN_FILEUPLOAD' => 'Problemen in bestands upload. Probeer opnieuw!',
+'SPECIFY_FILE_TO_MERGE' => 'Specificeer een bestand om samen te voegen',
+'FILESIZE_EXCEEDS_INFO_CONFIG_INC' => 'Sorry, het opgehaalde bestand overschrijdt het maximum bestandsmaat limiet in config.inc.php. Probeer een kleiner bestand',
+'FILESIZE_EXCEEDS_INFO_PHP_INI' => 'Sorry, het opgehaalde bestand overschrijdt het maximum bestandsmaat limiet in php.ini. Probeer een kleiner bestand',
+'PROBLEMS_IN_FILEUPLOAD' => 'Problemen met het ophalen van het bestand. aub Probeer opnieuw!',
 
 //Added fields for Invoice Number labels
-'LBL_CUSTOMIZE_INVOICE_NUMBER'=>'Maatwerk Factuur Nummer',
-'LBL_CUSTOMIZE_INVOICE_NUMBER_DESCRIPTION'=>'Factuur Nummer Maatwerk',
-'LBL_CUSTOM_INVOICE_NUMBER_VIEW'=>'Factuur Nummer Maatwerk',
-'LBL_CUSTOMINVOICE_STRING'=>'Maatwerk Factuur String',
-'LBL_CUSTOMINVOICE_NUMBER'=>'Maatmerk Factuur Nummer',
-'LBL_INVOICE_NUMBER_PREVIEW'=>'Preview',
-'LBL_INVOICE_NUMBER_BUTTON'=>'Update Factuur Nummer',
-'LBL_PROXY_AUTHENTICATION_REQUIRED'=>'Proxy Authenticatie Vereist',
-'LBL_ENABLE_FTP' => 'U moet FTP support hebben geactiveerd in php',
+'LBL_CUSTOMIZE_INVOICE_NUMBER'=>'Factuurnummer veranderen',
+'LBL_CUSTOMIZE_INVOICE_NUMBER_DESCRIPTION'=>'Verandering factuurnummer',
+'LBL_CUSTOM_INVOICE_NUMBER_VIEW'=>'Verandering factuurnummer',
+'LBL_CUSTOMINVOICE_STRING'=>'Standaard factuur regel',
+'LBL_CUSTOMINVOICE_NUMBER'=>'Standaard factuurnummer',
+'LBL_INVOICE_NUMBER_PREVIEW'=>'Voorbeeld',
+'LBL_INVOICE_NUMBER_BUTTON'=>'Factuurnummer updaten',
+'LBL_PROXY_AUTHENTICATION_REQUIRED'=>'Proxy authenticatie nodig',
+'LBL_ENABLE_FTP' => 'U moet FTP support aanzetten in php',
 
 //Added for Role Labels
-'LBL_ADD_ROLE'=>'Toevoegen Rol',
-'LBL_EDIT_ROLE'=>'Wijzig Rol',
-'LBL_MOVE_ROLE'=>'Verplaatst Rol',
-'LBL_BACKUP_DESC'=>' Het CRM systeem geeft u de mogelijkheid om de database te backuppen naar uw FTP server. De CRM zal een backup maken van alle data elke keer wanneer een admin user uitlogt. Zorg ervoor dat er voldoende schrijfruimte beschikbaar is op de FTP server. Het aangemaakte backup bestand heeft de volgende notatie: "backup-datum-tijd.sql".',
+'LBL_ADD_ROLE'=>'Rol toevoegen',
+'LBL_EDIT_ROLE'=>'Rol wijzigen',
+'LBL_MOVE_ROLE'=>'Rol verwijderen',
+'LBL_SELECT_ROLE'=>'Rol selecteren',
+'LBL_BACKUP_DESC'=>' Het CRM system staat toe dat u een backup kan maken van de database naar uw FTP server. Het CRM zal een backup maken van alle data wanneer een admin gebruiker niet is ingelogd. Zorg ervoor dat u genoeg disk ruimte heeft op uw FTP server. Het gemaakte backup bestand zal in het volgende formaat zijn weergegeven: "backup-date-time.sql".',
 
 // Added/Updated for vtiger CRM 5.0.4
-'LBL_SUPPORT_NOTICIATION'=>'Support Einde Notificatie eerder dan een week',
-'LBL_SUPPORT_NOTICIATION_MONTH'=>'Support Einde Notificatie eerder dan een maand' ,
-'LBL_SUPPORT_DESCRIPTION'=>'Waarschuw bij een week voor support einde',
-'LBL_SUPPORT_DESCRIPTION_MONTH'=>'Waarschuw bij een maandvoor support einde',
+'LBL_SUPPORT_NOTICIATION'=>'Ondersteuning Einde Notificatie eerder dan een week',
+'LBL_SUPPORT_NOTICIATION_MONTH'=>'Ondersteuning Einde Notificatie eerder dan een maand' ,
+'LBL_SUPPORT_DESCRIPTION'=>'Waarschuw bij een week voor Ondersteuning einde',
+'LBL_SUPPORT_DESCRIPTION_MONTH'=>'Waarschuw bij een maandvoor Ondersteuning einde',
 'LBL_SELECT_ROLE'=>'Selecteer Rol',
 'LBL_TEMPLATE'=>'Sjabloon',
-'LBL_SELECT_EMAIL_TEMPLATE_FOR'=>'Selecteer het Email sjabloon voor',
+'LBL_SELECT_EMAIL_TEMPLATE_FOR'=>'Selecteer een e-mail sjabloon voor',
+
 
 'ERR_CUSTOM_FIELD_WITH_NAME'=>'Custom veld met de naam ',
 'ERR_ALREADY_EXISTS'=>' bestaat reeds.',
-'ERR_SPECIFY_DIFFERENT_LABEL'=>'Geef een anderLabel',
+'ERR_SPECIFY_DIFFERENT_LABEL'=>'Geef een ander Label',
 'LBL_TOOLS_TO_BE_SHOWN'=>'Gereedschap zichtbaar',
 'LBL_PICKLIST_GLOBAL_DELETE'=>'Globaal Wissen',
 'LBL_PICKLIST_TRANSFER'=>'Transporteren waardes Van ',
 'LBL_REPLACE_VALUE_WITH'=>'Vervangen waarde van ',
-'LBL_EDIT_CUSTOM_RULE'=>'Wijzig Maatwerk Privilege Regel',
+'LBL_EDIT_CUSTOM_RULE'=>'Bewerk Maatwerk Privilege Regel',
 
 /*for global add/delete in picklist*/
 'DELETE_PICKLIST_VALUES'=>'Wissen Selectielijst Waarden',
-'EDIT_PICKLIST_VALUE'=>'Wijzig Selectielijst Waarde',
+'EDIT_PICKLIST_VALUE'=>'Bewerk Selectielijst Waarde',
 'ADD_PICKLIST_VALUES'=>'Toevoegen Selectielijst Waarden',
 'LBL_PICKLIST_ADDINFO'=>'Type de nieuwe waarden een-bij-een hieronder',
 'LBL_SELECT_ROLES'=> 'Selecteer the Rollen die de nieuwe waarden gaan gebruiken',
@@ -955,21 +726,21 @@ $mod_strings = Array(
 //Added fields for Inventory Number labels
 'LBL_CUSTOMIZE_INVENTORY_NUMBER'=>'Maatwerk Voorraad Sequentie',
 'LBL_CUSTOMIZE_INVENTORY_NUMBER_DESCRIPTION'=>'Voorraad Sequentie Maatwerk',
-'LBL_CUSTOM_QUOTE_NUMBER_VIEW'=>'Offerte Nummer Maatwerk',
-'LBL_CUSTOMQUOTE_STRING'=>'Maatwerk Offerte Regel',
-'LBL_CUSTOMQUOTE_NUMBER'=>'Maatwerk Offerte Nummer',
+'LBL_CUSTOM_QUOTE_NUMBER_VIEW'=>'Offertenummer Maatwerk',
+'LBL_CUSTOMQUOTE_STRING'=>'Maatwerk Offerteregel',
+'LBL_CUSTOMQUOTE_NUMBER'=>'Maatwerk Offertenummer',
 'LBL_QUOTE_NUMBER_PREVIEW'=>'Preview',
-'LBL_QUOTE_NUMBER_BUTTON'=>'Update Offerte Nummer',
-'LBL_CUSTOM_SO_NUMBER_VIEW'=>'Verkoop Order Nummer Maatwerk',
-'LBL_CUSTOMSO_STRING'=>'Maatwerk Verkoop Order Regel',
-'LBL_CUSTOMSO_NUMBER'=>'Maatwerk Verkoop Order Nummer',
+'LBL_QUOTE_NUMBER_BUTTON'=>'Update Offertenummer',
+'LBL_CUSTOM_SO_NUMBER_VIEW'=>'Verkoop Ordernummer Maatwerk',
+'LBL_CUSTOMSO_STRING'=>'Maatwerk Verkoop Orderregel',
+'LBL_CUSTOMSO_NUMBER'=>'Maatwerk Verkoop Ordernummer',
 'LBL_SO_NUMBER_PREVIEW'=>'Preview',
-'LBL_SO_NUMBER_BUTTON'=>'Update Verkoop Order Nummer',
-'LBL_CUSTOM_PO_NUMBER_VIEW'=>'Maatwerk Inkoop Order Nummer',
-'LBL_CUSTOMPO_STRING'=>'Maatwerk Inkoop Order Regel',
-'LBL_CUSTOMPO_NUMBER'=>'Maatwerk Inkoop Order Nummer',
+'LBL_SO_NUMBER_BUTTON'=>'Update Verkooporder Nummer',
+'LBL_CUSTOM_PO_NUMBER_VIEW'=>'Maatwerk Inkooporder Nummer',
+'LBL_CUSTOMPO_STRING'=>'Maatwerk Inkooporder Regel',
+'LBL_CUSTOMPO_NUMBER'=>'Maatwerk Inkooporder Nummer',
 'LBL_PO_NUMBER_PREVIEW'=>'Preview',
-'LBL_PO_NUMBER_BUTTON'=>'Update Inkoop Order Nummer',
+'LBL_PO_NUMBER_BUTTON'=>'Update Inkooporder Nummer',
 
 // Added after 5.0.4 GA
 
@@ -1022,7 +793,7 @@ $mod_strings = Array(
 'LBL_RULES'=>'Regels',
 'LBL_FOR'=>'Voor',
 
-'LBL_FROM'=>'Van',
+'LBL_FROM'=>'van',
 'LBL_TO'=>'Aan',
 
 'LBL_ACTION'=>'Actie',
@@ -1037,13 +808,13 @@ $mod_strings = Array(
 'LBL_TO_CAPS'=>'AAN',
 'LBL_TO_SMALL'=>'aan',
 
-'LBL_CONTAINS'=>'Inhoud',
+'LBL_CONTAINS'=>'Bevat',
 'LBL_EQUALS'=>'Gelijk aan',
 
-'LBL_BEGINS'=>'Begint',
+'LBL_BEGINS'=>'Start',
 
 'LBL_REGEX'=>'Regex',
-'LBL_ENDS'=>'Endigd',
+'LBL_ENDS'=>'Eindigd',
 'LBL_BODY'=>'Body',
 
 'LBL_NOT'=>'Niet',
@@ -1071,7 +842,7 @@ $mod_strings = Array(
 
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Werkstromen',
-'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Maak en Wijzig workflows voor de CRM',
+'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Maak en bewerk de CRM workflows',
 'LBL_TASK_TITLE'=>'Taak Titel',
 'LBL_PARENT_WORKFLOW'=>'Ouder Werkstroom',
 'MSG_EXECUTE_TASK_DELAY'=>'Uitvoeren van taak na enige vertraging',
@@ -1084,7 +855,7 @@ $mod_strings = Array(
 'LBL_WHEN_TO_RUN_WORKFLOW'=>'Wanneer een werkstroom starten',
 'LBL_ONLY_ON_FIRST_SAVE'=>'Alleen bij de eerste keer opslaan',
 'LBL_UNTIL_FIRST_TIME_CONDITION_TRUE'=>'Totdat de eerste keer een voorwaarde waar is',
-'LBL_EVERYTIME_RECORD_SAVED'=>'Elke keer dat een recors opgeslagen wordt',
+'LBL_EVERYTIME_RECORD_SAVED'=>'Elke keer dat een record opgeslagen wordt',
 'LBL_ON_MODIFY' => 'Elke keer als een record gewijzigd is',
 'LBL_CONDITIONS'=>'Voorwaarden',
 'LBL_NEW_CONDITION_BUTTON_LABEL'=>'Nieuwe Voorwaarde',
@@ -1097,24 +868,24 @@ $mod_strings = Array(
 'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Manage Verplichte velden van alle modulen',
 // Module Sequence Numbering
 'LBL_CUSTOMIZE_MODENT_NUMBER'=>'Maatwerk Record Nummering',
-'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Module Entiteit Nummer Maatwerk',
+'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Op maat instellen van nummerschema\'s',
 // END
 
 //added for softphone integration
 'LBL_SOFTPHONE_SERVER_SETTINGS'=>'SoftPhone Server Instellingen',
 'LBL_SOFTPHONE_SERVER_SETTINGS_DESCRIPTION'=>'Configureer uw softphone hier',
-'ASTERISK_SERVER_IP'=>'Sterretje server IP ',
-'ASTERISK_PORT'=>'Sterretje server port',
-'ASTERISK_USERNAME'=>'Sterretje gebruikersnaam',
-'ASTERISK_PASSWORD'=>'Sterretje wachtwoord',
-'ASTERISK_SERVER_IP_TITLE'=>'De URL van de sterretje server',
-'ASTERISK_PORT_TITLE'=>'De poort waar de sterretje call manager API kan verbinden met Sterreje (default 5038)',
-'ASTERISK_USERNAME_TITLE'=>'De sterretje gebruikersnaam (meestal de admin gebruikersnaam)',
-'ASTERISK_PASSWORD_TITLE'=>'Wachtwoord voor de sterretje gebruiker',
+'ASTERISK_SERVER_IP'=>'Asterisk server IP ',
+'ASTERISK_PORT'=>'Asterisk server port',
+'ASTERISK_USERNAME'=>'Asterisk gebruikersnaam',
+'ASTERISK_PASSWORD'=>'Asterisk wachtwoord',
+'ASTERISK_SERVER_IP_TITLE'=>'De URL van de Asterisk server',
+'ASTERISK_PORT_TITLE'=>'De poort waar de Asterisk call manager API kan verbinden met Astersisk (default 5038)',
+'ASTERISK_USERNAME_TITLE'=>'De Asterisk gebruikersnaam (meestal de admin gebruikersnaam)',
+'ASTERISK_PASSWORD_TITLE'=>'Wachtwoord voor de Asterisk gebruiker',
 'LBL_CANCEL_BUTTON'=>'Annuleer',
-'ASTERISK_VERSION' => 'Sterretje Versie',
-'ASTERISK_VERSION_TITLE'=>'Selecteer uw Sterretje versie hier; Kies versie 1.4 als u de versie niet weet',
-'ASTERISK_CONFIGURATION'=>'Sterretje Configuratie',
+'ASTERISK_VERSION' => 'Asterisk Versie',
+'ASTERISK_VERSION_TITLE'=>'Selecteer uw Asterisk versie hier; Kies versie 1.4 als u de versie niet weet',
+'ASTERISK_CONFIGURATION'=>'Asterisk Configuratie',
 //softphone integration ends
 'LBL_SELECT_FIELD_TO_MOVE' => 'Selecteer Velden te verplaatsen',
 'VTLIB_LBL_SELECT_PACKAGE_FILE'=>'Selecteer het Package bestand',
@@ -1203,7 +974,70 @@ $mod_strings = Array(
 'LBL_FIELDFORMULAS' => 'Veld Formules',
 'LBL_FIELDFORMULAS_DESCRIPTION' => 'Voeg maatwerk vergelijkingen toe aan maatwerk velden',
 
+// @todo since vtiger 5.3 by Vicus to be translated
+'LBL_ADD_CUSTOMFIELD' => 'Add Custom Field',
+
+'ERR_INVALID_PROFILE_ID' => 'Invalid Profile Id. Please specify valid Profile Id',
+
+// Customization
+// @todo Vicus vtiger 3.5 partly translated
+'LBL_PUBLISHER' => 'Publisher',
+'LBL_PUBLISHED_ON' => 'Published On',
+'LBL_LICENSE'   => 'Licentie',
+'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Failed to download the extension package!',
+'LBL_DEFAULT'=>'By default, SMTP account settings for the outgoing server are configured to od1.vtiger.com mail server. To avoid outgoing emails getting filtered out by spam filters on your recipient ISP mail server, we recommend you implement one of the following.',
+'LBL_OPTIONS1'=>'Send emails from your mail server<br>
+				- Enter the SMTP account details (Server Name, User Name, Password) for the same account as entered in the FROM email address.',
+'LBL_OPTIONS2'=>"Add od1.vtiger.com server as a authorized sender for your domain.<br>
+				- If you prefer to retain the vtiger server as the outgoing server, we recommend that you configure your domain's SPF record to include the vtiger server as a valid sender for your domain.
+				  For additonal instruction on setting up SPF record, please email od-support@vtiger.com .",
+'LBL_ALREADY_EXISTS' => 'Bestaat al',
+'LBL_EXTENSION_INCOMPATIBLE' => 'Add-on is niet compatible',
+'LBL_INSTALL' => 'Installeren',
+'LBL_DEFAULT_SETTINGS_BUTTON_TITLE' => 'Reset naar Standaard',
+'LBL_CONFIRM_DEFAULT_SETTINGS' => 'Are you sure that you want to change the server details to the default server values',
+'EXISTING_DEFAULT_VALUES' => 'The server details are already set to the default values',
+'LBL_NOTE' => 'Note:',
+'LBL_HIDE' => 'Hide Details',
+'LBL_SHOW' => 'Show Details',
 // END
+'LBL_USER_ADDITION_INFO'=>"To add a new user, please click on  
+			   <span style='font-style:italic;color:blue;'>OD-Settings Menu -> On Demand Admin -> Add / Invite User </span>",
+
+'LBL_READ_ONLY_ACCESS_MSG' => 'Alleen-Lezen toegang',
+'LBL_READ_WRITE_ACCESS_MSG' => 'Lezen-Schrijven toegang',
+
+'LBL_DEFAULT_VALUE' => 'Standaard waarde',
+
+'LBL_DESCRIPTION_Public: Read Only'=>'Users can Read Only other users ',
+'LBL_DESCRIPTION_Public: Read, Create/Edit'=>'Users can Read, Create/Edit other users ',
+'LBL_DESCRIPTION_Public: Read, Create/Edit, Delete'=>'Users can Read, Create/Edit, Delete other users ',
+
+// For Dependency picklist
+'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Instellingen Picklijst relaties ',
+'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Instellen van de afhankelijkheden tussen de picklijstwaarden voor alle modules',
+
+'Settings' => 'Instellingen',
+'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Dit belastinglabel bestaat al.',
+'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Sommige belastinglabels bestaan al, maar nog niet opgeslagen.',
+
+'Configuration Editor' => 'Configuratie bewerker',
+'Update configuration file of the application' => 'Bewerk de configuratie van deze toepassing.',
+
+'ModTracker' => 'ModTracker',
+'LBL_MODTRACKER_DESCRIPTION' => 'Selecteer modules voor tracking',
+
+'LBL_MENUS_TO_SHOW'=>'Selecteer modules om in het hoofdmenu te tonen',
+'LBL_MENU_DESC'=>'Pas de Menuvolgorde aan',
+'LBL_MENU_EDITOR'=>'Menubewerker',
+'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'Gebruik de pijlen om de voglenorde in ' .
+		'het menu aan te passen. De top 10 menuitems worden in het hoofdmenu getoond' .
+		'en de rest wordt getoond onder de <b><i>Meer</i></b> dropdown',
+'LBL_ALL_MODULES' => 'Alle Modules',
+'LBL_SELECTED_MODULES' => 'Geselecteerde Modules',
+
+'LBL_CRM_SETTINGS' => 'CRM Instellingen',
+
 
 );
 ?>

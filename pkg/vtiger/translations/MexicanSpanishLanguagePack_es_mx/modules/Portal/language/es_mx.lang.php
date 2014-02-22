@@ -10,7 +10,7 @@
  ********************************************************************************
 *  Module       : Portal
 *  Language     : Español
-*  Version      : 504
+*  Version      : 540
 *  Created Date : 2007-03-30 Last change : 2007-10-10
 *  Author       : Rafael Soler
  *  Author       : Francisco Hernandez Odin Consultores www.odin.mx

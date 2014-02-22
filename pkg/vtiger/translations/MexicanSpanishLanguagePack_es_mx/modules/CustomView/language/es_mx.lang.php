@@ -278,6 +278,8 @@ $mod_strings = array (
 'LBL_NEW'=>'Nuevo',
 'LBL_EDIT'=>'Editar',
 'LBL_STATUS_PUBLIC_APPROVE'=>'Aprobar',
-'LBL_STATUS_PUBLIC_DENY'=>'Denegar'
+'LBL_STATUS_PUBLIC_DENY'=>'Denegar',
+
+'LBL_ADVANCED_FILTER' => 'Regla',
 ); 
 ?>

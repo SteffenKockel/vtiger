@@ -13,9 +13,10 @@
  ********************************************************************************
 *  Module       : Reports
 *  Language     : Español
-*  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
-*  Author       : Rafael Soler
+*  Version      : 5.4.0
+*  Created Date : 2007-03-30
+*  Last change  : 2012-02-28
+*  Author       : JPL TSolucio, S.L. Joe Bordes
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -122,7 +123,7 @@ $mod_strings = Array(
 'Product Reports'=>'Informes de Productos',
 'Quote Reports'=>'Informes de Presupuestos',
 'PurchaseOrder Reports'=>'Informes de Pedidos de Compra',
-'SalesOrder Reports'=>'Informes de Pedidos',
+'SalesOrder Reports'=>'Informes de Ordenes de Venta',
 'Invoice Reports'=>'Informes de Facturación',
 'Campaign Reports'=>'Informes de Campaña',
 'Contacts by Accounts'=>'Contactos por Cuenta',
@@ -148,14 +149,14 @@ $mod_strings = Array(
 'Open Quotes'=>'Presupuestos Pendientes',
 'Quotes Detailed Report'=>'Informes de Presupuestos Detallados',
 'Quotes that are Open'=>'Presupuestos Pendientes',
-'PurchaseOrder by Contacts'=>'Órdenes de Compra por Contactos',
-'PurchaseOrder Detailed Report'=>'Informes detallado de Órdenes de Compra',
-'PurchaseOrder related to Contacts'=>'Órdenes de Compra relacionadas con Contactos',
+'PurchaseOrder by Contacts'=>'Ordenes de Compra por Contactos',
+'PurchaseOrder Detailed Report'=>'Informes detallado de Ordenes de Compra',
+'PurchaseOrder related to Contacts'=>'Ordenes de Compra relacionadas con Contactos',
 'Invoice Detailed Report'=>'Informes detallado de Facturas ',
 'Last Month Activities'=>'Tareas del Mes Pasado',
 'This Month Activities'=>'Tareas de este Mes',
 'Campaign Expectations and Actuals'=>'Expectativas y Realidad de Campaña',
-'SalesOrder Detailed Report'=>'Informes detallado de Pedidos',
+'SalesOrder Detailed Report'=>'Informes detallado de Ordenes de Venta',
 
 'LBL_DELETE'=>'Borrar',
 'Create_Reports'=>'Crear Informe',
@@ -221,6 +222,11 @@ $mod_strings = Array(
 'LBL_FLDR_NOT_EMPTY'=>'La carpeta que intentas eliminar no esta vacía, Mueve o Elimina los Informes que contiene.',
 'NO_REL_MODULES'=>'No hay módulos relacionados con el módulo seleccionado',
 'LBL_REPORT_GENERATION_FAILED'=>'Error generando informe!',
+
+'LBL_OR'=>'o',
+'LBL_NEW_GROUP'=>'Grupo Nuevo',
+'LBL_DELETE_GROUP'=>'Eliminar Grupo',
+'LBL_NEW_CONDITION'=>'Nueva Condición',
 'LBL_SHARING_TYPE'=>'Compartir',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecciona el método de compartir para controlar el acceso al Informe', 
 'LBL_ACTION' => 'Acción',
@@ -263,6 +269,19 @@ $mod_strings = Array(
 
 'LBL_SAVE_REPORT' => 'Guardar',
 'LBL_SAVE_REPORT_AS' => 'Guardar como...',
+
+//Report Charts
+'LBL_VIEW_CHARTS' => 'Ver Gráficos',
+'LBL_ADD_CHARTS' => 'Añadir Gráfico a Portada',
+'LBL_HOME_REPORT_NAME' => 'Nombre Informe',
+'LBL_HOME_HORIZONTAL_BARCHART' => 'Gráfico Barras Horizontal',
+'LBL_HOME_VERTICAL_BARCHART' => 'Gráfico Barras Vertical',
+'LBL_HOME_PIE_CHART' => 'Gráfico Tarta',
+'LBL_HOME_REPORT_TYPE' => 'Tipo Informe',
+'LBL_HOME_WINDOW_TITLE' => 'Título Ventana',
+'LBL_GROUPING_TIME' => 'Agrupar por Tiempo',
+'LBL_WIDGET_ADDED' => 'Widget Añadido Correctamente.',
+
 )
 
 ?>

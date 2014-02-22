@@ -18,10 +18,10 @@ License for
  ********************************************************************************/
 /*********************************************************************************
  * $Header$
- * Description:  Defines the English language pack for the Account module.
+ * Description:  Defines the English language pack for the Custom View.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|07/09/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Customizar Visualização',
@@ -127,7 +127,7 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 'State'=>'Estado',
       
 //Strings added for Accounts module fields
-'Account Name'=>'Nome Conta',
+'Account Name'=>'Nome Organização',
 'Ticker Symbol'=>'Cód. Bolsa',
 'Other Phone'=>'Fone Alternativo',
 'Member Of'=>'Membro de',
@@ -259,13 +259,13 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 'Details'=>'Detalhes',
 'New_Custom_View'=>'Nova Visualização Customizada',
 'Edit_Custom_View'=>'Editar Visualização Customizada',
-'LBL_AF_HDR5'=>'Filtro Simples de Data permite-lhe selecionar dados baseados na
-<b>Data Criação da Conta</b> ou <b>Data Modificação da Conta</b>',
+'LBL_AF_HDR5'=>'O Filtro Simples de Data permite-lhe selecionar dados baseados na
+<b>Data Criação da Organização</b> ou <b>Data Modificação da Organização</b>',
 'Select_Duration'=>'Selecione Duração',
 'Simple_Time_Filter'=>'Filtro Simples de Data',
 'Start_Date'=>'Data Inicial',
 'End_Date'=>'Data Final',
-'LBL_RULE'=>'FUNÇÃO',
+'LBL_RULE'=>'REGRA',
 
 // Added/Updated for vtiger CRM 5.0.4
 'not equal to'=>'Diferente de',

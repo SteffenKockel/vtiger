@@ -7,5 +7,6 @@
  * All Rights Reserved.
  ************************************************************************************}
 <br>
+<div id='mm_selected_folder'></div>
 <div id="_folderdiv_">{include file="modules/MailManager/Folder.List.tpl"}</div>
 <input type="hidden" name="refresh_timeout" id="refresh_timeout" value="{$MAILBOX->refreshTimeOut()}"/>

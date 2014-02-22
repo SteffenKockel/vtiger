@@ -19,7 +19,7 @@ $image_path=$theme_path."images/";
 $visible = vtlib_purify($_REQUEST['visible']);
 $disable = vtlib_purify($_REQUEST['disable']);
 $label = getTranslatedString(vtlib_purify($_REQUEST['label']));
-require_once($theme_path.'layout_utils.php');
+require_once('modules/Vtiger/layout_utils.php');
 
 $fieldModule = vtlib_purify($_REQUEST['fld_module']);
 $fieldId = vtlib_purify($_REQUEST['fieldid']);

@@ -2,10 +2,10 @@
 /***********************************************************
 *  Module       : Settings
 *  Language     : ES Spanish
-*  Version      : vt5.0.4
+*  Version      : vt5.4.0
 *  Created Date : 2008-01-18 17:46:07
 *  Author       : JPL TSolucio, S.L.  -  rasomu
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-28
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 ***********************************************************/
 
@@ -39,7 +39,7 @@ $mod_strings = array (
       'PRODUCTCUSTOMFIELDS' => 'Campos Personalizados de Productos',
       'VENDORCUSTOMFIELDS' => 'Campos Personalizados de Proveedores',
       'PRICEBOOKCUSTOMFIELDS' => 'Campos Personalizados de Tarifas',
-      'POCUSTOMFIELDS' => 'Campos Personalizados de Órdenes de Compra',
+      'POCUSTOMFIELDS' => 'Campos Personalizados de Ordenes de Compra',
       'SOCUSTOMFIELDS' => 'Campos Personalizados de Pedidos',
       'QUOTESCUSTOMFIELDS' => 'Campos Personalizados de Presupuestos',
       'INVOICECUSTOMFIELDS' => 'Campos Personalizados de Facturas',
@@ -54,7 +54,7 @@ $mod_strings = array (
       'EDITRSSPICKLISTVALUES' => 'Editar listas de Rss',
       'EDITVENDORPICKLISTVALUES' => 'Editar listas de Proveedores',
       'EDITPBPICKLISTVALUES' => 'Editar listas de Tarifas',
-      'EDITPOPICKLISTVALUES' => 'Editar listas de Órdenes de Compra',
+      'EDITPOPICKLISTVALUES' => 'Editar listas de Ordenes de Compra',
       'EDITSOPICKLISTVALUES' => 'Editar listas de Pedidos',
       'EDITQUOTEPICKLISTVALUES' => 'Editar listas de Presupuestos',
       'EDITINVOICEPICKLISTVALUES' => 'Editar listas de Facturas',
@@ -103,6 +103,7 @@ $mod_strings = array (
       'PickList' => 'Lista',
       'LBL_MULTISELECT_COMBO' => 'Lista de Multi-Selección',
       'Skype' => 'Skype',
+      'Time'=>'Tiempo',
       'USERGROUPLIST' => 'Grupos',
       'EMAILTEMPLATES' => 'Plantillas de Email',
       'WORDINTEGRATION' => 'Plantillas de Mailing',
@@ -294,7 +295,7 @@ $mod_strings = array (
       'LBL_VENDOR_FIELD_ACCESS' => 'Acceso a campos de Proveedores',
       'LBL_PB_FIELD_ACCESS' => 'Acceso a campos de Tarifas',
       'LBL_QUOTE_FIELD_ACCESS' => 'Acceso a campos de Presupuestos',
-      'LBL_PO_FIELD_ACCESS' => 'Acceso a campos de Órdenes de Compra',
+      'LBL_PO_FIELD_ACCESS' => 'Acceso a campos de Ordenes de Compra',
       'LBL_SO_FIELD_ACCESS' => 'Acceso a campos de Pedidos',
       'LBL_INVOICE_FIELD_ACCESS' => 'Acceso a campos de Facturas',
       'INVENTORYNOTIFICATION' => 'Notificaciones de Inventario',
@@ -311,8 +312,8 @@ $mod_strings = array (
       'Vendor' => 'Proveedores',
       'PriceBook' => 'Tarifas',
       'Quotes' => 'Presupuestos',
-      'PurchaseOrder' => 'Órdenes de Compra',
-      'SalesOrder' => 'Pedidos',
+      'PurchaseOrder' => 'Ordenes de Compra',
+      'SalesOrder' => 'Ordenes de Venta',
       'Invoice' => 'Facturas',
       'LBL_LEAD_MAP_CUSTOM_FIELD' => 'Crear correspondencia de campos personalizados',
       'leadCustomFieldDescription' => 'Crear correspondencias entre un campo personalizado de los Pre-Contactos y otro de Contacto',
@@ -323,7 +324,7 @@ $mod_strings = array (
       'CUSTOMFIELDMAPPING' => 'Correspondencia de campos personalizados',
       'LBL_FIELD_MAPPING' => 'Correspondencia de campos',
       'LBL_LEAD_FIELD' => 'Campo Personalizado de Pre-Contactos',
-      'LBL_TEXT_AREA' => 'Área de Texto',
+      'LBL_TEXT_AREA' => 'Area de Texto',
       'NOTESCUSTOMFIELDS' => 'Campo Personalizado de Documentos',
       'LBL_ASSIGN_MODULE_OWNERS' => 'Asignar Propietarios de Módulos',
       'LBL_MODULE_OWNERS' => 'Propietarios de Módulos',
@@ -386,7 +387,7 @@ $mod_strings = array (
       'LBL_CUSTOM_MAPP_INFO' => 'Solamente el módulo de Pre-Contactos permite la vinculación de campos con otros Módulos.',
       'LBL_MAPPING_OTHER_MODULES' => 'Vinculación con otros Módulos',
       'LBL_CUSTOM_FILED_IN' => 'Campos Personalizados en ',
-      'LBL_ROLE_HIERARCHY_TREE' => 'Árbol de Roles y Jerarquía',
+      'LBL_ROLE_HIERARCHY_TREE' => 'Arbol de Roles y Jerarquía',
       'LBL_EDIT_FIELD_MAPPING' => 'Editando vínculos entre Campos',
       'LBL_LOGIN_HISTORY_DETAILS' => 'Histórico de Accesos',
       'LBL_LOGIN_HISTORY_DESCRIPTION' => 'Muestra el Histórico de Accesos de todos los Usuarios',
@@ -455,10 +456,10 @@ $mod_strings = array (
       'LBL_START_DESCRIPTION' => 'Notifica que se inicia el periodo de soporte contratado',
       'LBL_ACTIVITY_REMINDER_DESCRIPTION' => 'Notificar los Eventos basándose en la configuración de Recordatorios',
       'QuoteNotificationDescription' => 'Cuando se genera un Presupuesto, si el Stock del producto almacenado es menor a la cantidad presupuestada se envía un aviso al responsable del producto.',
-      'SalesOrderNotificationDescription' => 'Cuando se genera un Pedido, si el Stock del producto almacenado es menor a la cantidad pedida se envía un aviso al responsable del producto.',
+      'SalesOrderNotificationDescription' => 'Cuando se genera una Orden de Venta, si el Stock del producto almacenado es menor a la cantidad pedida se envía un aviso al responsable del producto.',
       'Tools' => 'Herramientas',
       'QuoteNotification' => 'Notificación de stock de producto bajo durante la generación de un presupuesto',
-      'SalesOrderNotification' => 'Notificación de stock de producto bajo durante la generación de un Pedido',
+      'SalesOrderNotification' => 'Notificación de stock de producto bajo durante la generación de una Orden de Venta',
       'LBL_NOTE_DO_NOT_REMOVE_INFO' => 'Nota:  No quite ni altere los valores dentro de {  }',
       'LBL_TOTAL' => 'Total :',
       'LBL_NEW_PROFILE' => 'Nuevo Perfil',
@@ -742,7 +743,7 @@ $mod_strings = array (
       'LBL_SUMMARY'=>'Resumen',
       'LBL_WHEN_TO_RUN_WORKFLOW'=>'Cuando ejecutar el flujo de trabajo',
       'LBL_ONLY_ON_FIRST_SAVE'=>'Solo al crear',
-      'LBL_UNTIL_FIRST_TIME_CONDITION_TRUE'=>'Hasta que se cumpla la condición por primera vez',
+      'LBL_UNTIL_FIRST_TIME_CONDITION_TRUE'=>'Solo la primera vez que se cumple la condición',
       'LBL_EVERYTIME_RECORD_SAVED'=>'Cada vez que se guarda la entidad',
       'LBL_ON_MODIFY' => 'Cada vez que se modifica la entidad',
       'LBL_CONDITIONS'=>'Condiciones',
@@ -837,8 +838,8 @@ $mod_strings = array (
       'ARRANGE_RELATEDLIST' => 'Organizar Lista Relacionada',
       'CUSTOMFIELD_MAPPING' => 'Vinculación Campos Personalizados',
       'LBL_MAPPED_FIELDS' => 'Campos Vinculados',
-      'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Vincula campos personalizados de Precontactos con Cuentas, Contactos y Potenciales',
-      'LEADS_CUSTOM_FIELD_MAPPING'=> 'Vinculación Campos Personalizados de Precontactos',
+      'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Vincula campos de Precontactos con Cuentas, Contactos y Potenciales',
+      'LEADS_CUSTOM_FIELD_MAPPING'=> 'Vinculación Campos de Precontactos',
       'LBL_CALENDER_CUSTOMFIELDS' => 'Campos Personalizados Calendario',
       'LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION' => 'Crear Campos Personalizados para el Calendario',
       'LBL_GO_BACK'=>'Atrás',
@@ -902,6 +903,23 @@ $mod_strings = array (
       'Settings' => 'Configuración',
       'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Este impuesto ya existe.',
       'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Algunos impuestos tienen el nombre repetido y no han sido guardados.',
+      'LBL_EDIT_COMPANY_INFO' => "Para editar la información de la empresa, haz click sobre
+                          <span style='font-style:italic;color:blue;'>Icono Configuración > Administrador > Empresa </span>",
+
+      'Configuration Editor'=>'Editor de Configuración',
+
+      'ModTracker' => 'Control de Cambios',
+      'LBL_MODTRACKER_DESCRIPTION' => 'Selecciona módulos para seguimiento',
+
+      'LBL_MENUS_TO_SHOW'=>'Selecciona módulos a mostrar en menú principal',
+      'LBL_MENU_DESC'=>'Personalizar Secuencia de Menú',
+      'LBL_MENU_EDITOR'=>'Editor de Menú',
+      'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'Utiliza las flechas para ordenar los elementos del menú. Los primeros 10 elementos aparecen en el menú, los demás se muestran en el desplegable <b><i>Más</i></b>',
+      'LBL_ALL_MODULES' => 'Todos los Módulos',
+      'LBL_SELECTED_MODULES' => 'Módulos Seleccionados',
+
+      'LBL_CRM_SETTINGS' => 'Configuración CRM',
+
 );
 $mod_list_strings = array (
 );

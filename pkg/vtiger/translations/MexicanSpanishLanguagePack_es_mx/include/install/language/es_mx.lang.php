@@ -16,10 +16,15 @@ $optionalModuleStrings = array(
 	'RecycleBin_description'=>'Módulo de control de entidades eliminadas, permite restaurar y eliminar definitivamente',
 	'Tooltip_description'=>'Configuración de referencias de campos que pueden ser una combinación de otros',
 	'Webforms_description'=>'Soporte para webforms. Captura de información externa.',
-	'SMSNotifier_description'=>'Envío de mensajes SMS a Cuentas, Contactos y Prospectos',
-	'Assets_description'=>'Gestión de Activos',
-	'ModComments_description' => 'Permite agregar comentarios a las entidades relacionadas',
-    'Projects_description' => 'Gestión de Proyectos, Tareas e Hitos',
+	'SMSNotifier_description'=>'Envío de mensajes SMS a Cuentas, Contactos y PreContactos',
+	'Assets_description'=>'Gestión de Recursos',
+	'ModComments_description' => 'Permite añadir comentarios a las entidades relacionadas',
+	'Projects_description' => 'Gestión de Proyectos, Tareas e Hitos',
+	'Dutch_description' => 'Dutch Language pack',
+	'French_description' => 'Pack de langue Francais',
+	'Hungarian_description' => 'Hungarian Language pack',
+	'Spanish_description' => 'Paquete Idioma Español',
+	'Deutsch_description' => 'Paquete Idioma Alemán',
 );
 
 $installationStrings = array(
@@ -29,7 +34,7 @@ $installationStrings = array(
 	'LBL_WELCOME_CONFIG_WIZARD' => 'Bienvenido al Asistente de Configuración',
 	'LBL_ABOUT_CONFIG_WIZARD' => 'Este asistente de configuración te ayuda a instalar vtigerCRM ',
 	'LBL_ABOUT_VTIGER' => 'vtiger CRM es un proyecto de aplicación CRM totalmente código abierto y dirigido por la comunidad. <br><br>
-							El objetivo del proyecto es suministrar la mejor y más abierta solución CRM al menor costo total de propiedad para la PYME.<br><br> 
+							El objetivo del proyecto es suministrar la mejor y más abierta solución CRM al menor costo total de propiedad para la PyME.<br><br> 
 							El producto está siendo utilizado ampliamente en el mundo entero, con más de mil descargas diarias. <br><br>
 							vtiger CRM tiene una comunidad de desarrolladores y usuario activa, con colaboradores de muchos países distintos.<br> <br>
 							Está disponible en muchos idiomas, con una extensa red de asociados en docenas de países.',
@@ -46,7 +51,7 @@ $installationStrings = array(
 	'LBL_CHECK_AGAIN' => 'Verificar de nuevo',
 	'LBL_CONFIRM_SETTINGS' => 'Confirmar Configuración',
 	'LBL_CONFIRM_CONFIG_SETTINGS' => 'Confirmar Datos de Configuración',
-	'LBL_CONFIG_FILE_CREATION' => 'Creando archivo Configuración',
+	'LBL_CONFIG_FILE_CREATION' => 'Creando archivo de Configuración',
 	'LBL_OPTIONAL_MODULES' => 'Módulos Opcionales',
 	'LBL_SELECT_OPTIONAL_MODULES_TO_install' => 'Selecciona los Módulos Opcionales a Instalar',
 	'LBL_SELECT_OPTIONAL_MODULES_TO_update' => 'Selecciona los Módulos Opcionales a Actualizar',
@@ -54,7 +59,7 @@ $installationStrings = array(
 	'MSG_CONFIG_FILE_CREATED' => 'archivo de Configuración (config.inc.php) creado correctamente',
 	'LBL_FINISH' => 'Terminar',
 	'LBL_CONFIG_COMPLETED' => 'Configuración Completada',
-	'LBL_PHP_VERSION_GT_5' => 'Versión PHP >= 5.0',
+	'LBL_PHP_VERSION_GT_5' => 'Versión PHP >= 5.2',
 	'LBL_YES' => 'Sí',
 	'LBL_NO' => 'No',
 	'LBL_NOT_CONFIGURED' => 'No Configurado',
@@ -90,7 +95,7 @@ $installationStrings = array(
 	'LBL_EMAIL' => 'Correo',
 	'LBL_POPULATE_DEMO_DATA' => 'Crear información de demostración',
 	'LBL_DATABASE' => 'Base de Datos',
-	'LBL_SITE_URL' => 'URL Servidor',
+	'LBL_SITE_URL' => 'URL del Servidor',
 	'LBL_PATH' => 'Ruta',
 	'LBL_MISSING_REQUIRED_FIELDS' => 'Faltan campos obligatorios',
 	'ERR_ADMIN_EMAIL_INVALID' => 'La cuenta de correo del usuario admin es inválida',
@@ -134,11 +139,11 @@ $installationStrings = array(
 	'LBL_TALK_TO_US_AT_FORUMS' => 'Habla con nosotros en <a href="http://forums.vtiger.com" target="_blank">forums</a>',
 	'LBL_DISCUSS_WITH_US_AT_BLOGS' => 'Comenta con nosotros en <a href="http://blogs.vtiger.com" target="_blank">blogs</a>',
 	'LBL_WE_AIM_TO_BE_BEST' => 'Nuestro objetivo - simplemente el mejor',
-	'LBL_SPACE_FOR_YOU' => 'Vente, hay espacio para ti también!',	
+	'LBL_SPACE_FOR_YOU' => 'Ven, hay espacio para ti también!',	
 	'LBL_NO_OPTIONAL_MODULES_FOUND' => 'No se han encontrado Módulos Opcionales',
 	'LBL_PREVIOUS_INSTALLATION_INFORMATION' => 'Información de Instalación Anterior',
 	'LBL_PREVIOUS_INSTALLATION_PATH' => 'Ruta de la Instalación Anterior',
-	'LBL_PREVIOUS_INSTALLATION_VERSION' => 'Versión Instalación Anterior ',
+	'LBL_PREVIOUS_INSTALLATION_VERSION' => 'Versión de la Instalación Anterior ',
 	'LBL_MIGRATION_DATABASE_NAME' => 'Nombre de la base de datos para la Migración',
 	'LBL_IMPORTANT_NOTE' => 'Nota Importante',
 	'MSG_TAKE_DB_BACKUP' => 'Asegurate de hacer una <b>copia de seguridad (volcado) de la base de datos</b> antes de seguir',
@@ -232,9 +237,8 @@ $installationStrings = array(
 	'LBL_DOCUMENTATION_TUTORIAL' => 'Documentación y Tutorial',
 	'LBL_WELCOME_FEEDBACK' => 'Agradecemos tus comentarios',
 	'LBL_TUTORIAL_TEXT' => 'Hay tutoriales en videos disponibles en',
-	'LBL_DROP_A_MAIL' => 'Mándanos un email a',
+	'LBL_DROP_A_MAIL' => 'Envíanos un email a',
 	'LBL_LOGIN_PAGE' => 'La página de acceso: ',
-);
-?>
+
 );
 ?>

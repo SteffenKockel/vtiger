@@ -12,24 +12,16 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/vtigercrm/modules/uploads/language/en_us.lang.php,v 1.1 2005/01/20 05:29:32 saraj Exp $
- * Description:  Defines the English language pack
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 $mod_strings = Array(
-
-//Added fields for uploads (attach files)
-'LBL_ATTACH_FILE'=>'Datei anhängen',
-'LBL_ATTACH'=>'Hinzufügen',
-'LBL_CANCEL'=>'Abbrechen',
-'LBL_STEP_SELECT_FILE'=>'1. Schritt : Datei auswählen',
-'LBL_BROWSE_FILES'=>'Klicken Sie auf den Durchsuchen Button und wählen Sie die Datei für den Anhang aus.',
-'LBL_DESCRIPTION'=>'2. Schritt : Beschreiben Sie diese Datei.',
-'LBL_OPTIONAL'=>'(optional)',
+    //Added fields for uploads (attach files)
+    'LBL_ATTACH_FILE'=>'Datei anhängen',
+    'LBL_ATTACH'=>'Hinzufügen',
+    'LBL_CANCEL'=>'Abbrechen',
+    'LBL_STEP_SELECT_FILE'=>'1. Schritt : Datei auswählen',
+    'LBL_BROWSE_FILES'=>'Klicken Sie auf den Durchsuchen Button und wählen Sie die Datei für den Anhang aus.',
+    'LBL_DESCRIPTION'=>'2. Schritt : Beschreiben Sie diese Datei.',
+    'LBL_OPTIONAL'=>'(optional)',
 );
 
 ?>

@@ -12,7 +12,7 @@ function editworkflowscript($, conditions){
 	var fieldValidator;
 	var desc = null;
 	var editpopupobj;
-    
+
 	function id(v){
 		return v;
 	}
@@ -63,7 +63,7 @@ function editworkflowscript($, conditions){
 		});
 		return out;
 	}
-	
+
 	function diff(reflist, list) {
 		var out = [];
 		$.each(list, function(i, v) {
@@ -168,12 +168,12 @@ function editworkflowscript($, conditions){
 			$('#new_template_popup').css('display', 'block');
 			center($('#new_template_popup'));
 		}
-		
-		
-		
+
+
+
 		$('#new_template_popup_save').click(function(){
 			var messageBoxPopup = MessageBoxPopup();
-		
+
 			if(trim(this.form.title.value) == '') {
 				messageBoxPopup.show();
 				$('#'+ 'empty_fields_message').show();
@@ -214,7 +214,7 @@ function editworkflowscript($, conditions){
 						"ends with", "has changed"],
 			number:["equal to", "less than", "greater than", "does not equal",
 						"less than or equal to", "greater than or equal to", "has changed"],
-			value:['is', "has changed"]
+			value:['is', 'is not', "has changed"]
 		};
 		var mapping = [
 			['string', ['string', 'text', 'url', 'email', 'phone']],
@@ -268,7 +268,7 @@ function editworkflowscript($, conditions){
 		fillOptions(ops, l);
 		defaultValue(opType.name)(opType, condno);
 	}
-	
+
 	function defaultValue(fieldType){
 
 		function forPicklist(opType, condno){
@@ -380,10 +380,10 @@ function editworkflowscript($, conditions){
 				return a.concat(newfields);
 			}
 			var relatedModules = reduceR(union, referenceFieldModules, [parent['name']]);
-			
+
 			// Remove modules that is no longer accessible
 			relatedModules = diff(accessibleModules, relatedModules);
-			
+
 			function executer(parameters){
 				var failures = filter(function(e){
 					return e[0]==false;
@@ -409,7 +409,7 @@ function editworkflowscript($, conditions){
 			});
 		}));
 	}
-	
+
 	function editFieldExpression(fieldValueNode, fieldType) {
 		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.attr('value'), fieldType);
 	}
@@ -448,7 +448,7 @@ function editworkflowscript($, conditions){
 						},
 						filteredFields(v['fields'])));
 					});
-	
+
 					function getFieldType(fullFieldName){
 						var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
 						if(group==null){
@@ -460,25 +460,25 @@ function editworkflowscript($, conditions){
 						}
 						return moduleFieldTypes[fieldModule][fieldName];
 					}
-	
+
 					function fieldReferenceNames(referenceField){
 						var name = referenceField['name'];
 						var label = referenceField['label'];
 						function forModule(moduleName){
 							// If module is not accessible return no field information
 							if(!contains(accessibleModules, moduleName)) return [];
-				
+
 							return map(function(field){
-								return [name+' : '+'('+moduleName+') '+field['name'], label+' : '+'('+moduleName+') '+field['label']];},
+								return [name+' : '+'('+moduleName+') '+field['name'], label+' : '+'('+modules[moduleName]['label']+') '+field['label']];},
 								filteredFields(modules[moduleName]['fields'])
 							);
 						}
 						return reduceR(concat, map(forModule,referenceField['type']['refersTo']),[]);
 					}
-	
+
 					var referenceFields = reduceR(concat, map(fieldReferenceNames, referenceFieldTypes), []);
 					var fieldLabels = dict(parentFields.concat(referenceFields));
-                    
+
 					function addCondition(groupid, condid){
 						if($("#save_condition_group_"+groupid).length <= 0) {
 							var group_condition_html = '';
@@ -509,12 +509,12 @@ function editworkflowscript($, conditions){
 							gpcond.bind("click", function(){
 								addCondition(groupid, condno++);
 							});
-                            
+
 							var rem_group_img = $("#save_condition_group_"+groupid+"_remove");
 							rem_group_img.bind("click", function(){
 								removeConditionGroup(groupid);
 							});
-                            
+
 							// First set groupno to highest groupid
 							if(groupno < groupid) {
 								groupno = groupid;
@@ -524,7 +524,7 @@ function editworkflowscript($, conditions){
 								groupno += 1;
 							}
 						}
-                        
+
 						$("#save_condition_group_"+groupid).append(
 							'<div id="save_condition_'+condid+'" style=\'margin-bottom: 5px\'> \
 								<input type="hidden" id="save_condition_'+condid+'_groupid" class="groupid" value="'+groupid+'" /> \
@@ -541,20 +541,20 @@ function editworkflowscript($, conditions){
                             </div>'
 							);
 						resetJoinCondition(groupid, condid);
-                        
+
 						var fe = $("#save_condition_"+condid+"_fieldname");
 						var i = 1;
 						fillOptions(fe, fieldLabels);
 
 						var fullFieldName = fe.attr("value");
-	
+
 						resetFields(getFieldType(fullFieldName), condid);
-                        
+
 						var re = $("#save_condition_"+condid+"_remove");
 						re.bind("click", function(){
 							removeCondition(groupid, condid);
 						});
-	
+
 						fe.bind("change", function(){
 							var select = $(this);
 							var condNo = select.attr("id").match(/save_condition_(\d+)_fieldname/)[1];
@@ -562,12 +562,12 @@ function editworkflowscript($, conditions){
 							resetFields(getFieldType(fullFieldName), condNo);
 						});
 					}
-	
+
 					var newTaskPopup = NewTaskPopup();
 					$("#new_task").click(function(){
 						newTaskPopup.show();
 					});
-	
+
 					var newTemplatePopup = NewTemplatePopup();
 					$("#new_template").click(function(){
 						newTemplatePopup.show();
@@ -597,11 +597,11 @@ function editworkflowscript($, conditions){
 							condno+=1;
 						});
 					}
-	
+
 					$("#save_conditions_add").bind("click", function(){
 						addCondition(groupno, condno++);
 					});
-	
+
 					$("#save_submit").bind("click", function(){
 						var conditions = [];
 						i=0;

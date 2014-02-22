@@ -14,9 +14,6 @@ if(isset($_REQUEST['campaignid'])) {
 	$smarty->assign("campaignid",vtlib_purify($_REQUEST['campaignid']));
 }
 
-if($focus->mode == 'edit')
 $smarty->display("salesEditView.tpl");
-else
-$smarty->display("CreateView.tpl");
 
 ?>

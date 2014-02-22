@@ -14,10 +14,10 @@
  ********************************************************************************
 *  Module       : Sales Orders
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
@@ -189,7 +189,7 @@ $mod_strings = Array(
 'Sub Total'=>'Sub Total',
 'AutoCreated'=>'Automática',
 'Sent'=>'Enviada',
-'Credit Invoice'=>'Abono',
+'Credit Invoice'=>'a Crédito',
 'Paid'=>'Pagada',
 
 //Added for Reports (5.0.4)
@@ -219,6 +219,7 @@ $mod_strings = Array(
 'Net 45 days' => '45 días',
 'Net 60 days' => '60 días',
 
+'SalesOrder ID' => 'Id Orden de Venta',
 );
 
 ?>

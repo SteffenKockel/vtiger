@@ -13,10 +13,10 @@
  ********************************************************************************
 *  Module       : Purchase Orders
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
@@ -194,10 +194,11 @@ $mod_strings = Array(
 'Terms & Conditions'=>'Condiciones Generales',
 'Adjustment'=>'Ajustes',
 'Sub Total'=>'Subtotal',
-'S&H Amount'=>'Importe Envío y Manipulado',
+'S&H Amount'=>'Importe Envío y Manejo',
 
 //Added after 5.0.4 GA
-'PurchaseOrder No'=>'Nº Orden Compra',
+'PurchaseOrder No'=>'No Orden Compra',
+'PurchaseOrder ID'=>'Id Orden Compra',
 );
 
 ?>

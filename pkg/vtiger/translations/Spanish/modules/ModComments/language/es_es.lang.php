@@ -6,6 +6,14 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ *
+ ************************************************************
+*  Module       : ModComments
+*  Language     : ES Spanish
+*  Version      : vt5.4.0
+*  Created Date : 2012-02-27
+*  Author       : JPL TSolucio, S.L.
+*  License      : MPL 1.1
  ************************************************************************************/
 $mod_strings = Array (
 'ModComments' => 'Comentarios',
@@ -29,6 +37,7 @@ $mod_strings = Array (
 'LBL_MINE' => 'Mio',
 'LBL_LAST5'=> 'Ultimos 5',
 
+'ModComments ID' => 'Id Comentario',
 );
 
 ?>

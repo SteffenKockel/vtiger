@@ -11,12 +11,12 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  ********************************************************************************
-*  Module       : invoice
+*  Module       : Invoice
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-27
 *  Author       : Joe Bordes  JPL TSolucio, S.L.
  ********************************************************************************/
  
@@ -157,7 +157,6 @@ $mod_strings = Array(
 'Sales Order'=>'Pedido',
 'Pending'=>'Pendientes',
 'Account Name'=>'Nombre de la cuenta',
-'Terms & Conditions'=>'Condiciones Generales',
 //Quote Info
 'LBL_INVOICE_INFORMATION'=>'Información de la Facturación',
 'LBL_INVOICE'=>'Facturación:',
@@ -198,6 +197,7 @@ $mod_strings = Array(
 // Added affter 5.0.4 GA
 //Added for Documents module
 'Documents'=>'Documentos',
+'Invoice ID'=>'Id Factura',
 );
 
 ?>

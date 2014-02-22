@@ -23,9 +23,6 @@ if($_REQUEST['record'] != '') {
 	$smarty->assign("COMMENT_BLOCK",$focus->getCommentInformation($_REQUEST['record']));
 }
 
-if($focus->mode == 'edit')
 	$smarty->display("salesEditView.tpl");
-else
-	$smarty->display("CreateView.tpl");
 
 ?>

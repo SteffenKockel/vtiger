@@ -10,7 +10,7 @@
 require_once('include/database/PearDatabase.php');
 @include_once('user_privileges/default_module_view.php');
 
-global $adb, $singlepane_view, $currentModule;
+global $singlepane_view, $currentModule;
 $idlist            = vtlib_purify($_REQUEST['idlist']);
 $destinationModule = vtlib_purify($_REQUEST['destination_module']);
 $parenttab         = getParentTab();
@@ -45,7 +45,7 @@ if($mode == 'delete') {
 		$ids = $_REQUEST['entityid'];
 	}
 	if(!empty($ids)) {
-		$focus->save_related_module($currentModule, $forCRMRecord, $destinationModule, $ids);
+		relateEntities($focus, $currentModule, $forCRMRecord, $destinationModule, $ids);
 	}
 }
 

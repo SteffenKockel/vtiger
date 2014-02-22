@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Produtos',
@@ -195,7 +195,7 @@ $mod_strings = Array(
 'Reams'=>'Resma',
 'Sheet'=>'Folhas',
 'Spiral Binder'=>'',
-'Sq Ft'=>'',
+'Sq Ft'=>'', // Square Foot = Pé quadrado
 
 //Added for 5.0.3
 'MSG_STOCK_LEVEL'=>'O Nível de Estoque está baixo',
@@ -216,6 +216,9 @@ $mod_strings = Array(
 // END
 
 'LBL_NO_TAXES_ASSOCIATED'=>'Nenhum Imposto associado a este Produto',
+'Parent Product' => 'Produto Pai',
+
+'Products ID' => 'ID Produtos',
 );
 
 ?>

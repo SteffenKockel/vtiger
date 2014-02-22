@@ -18,9 +18,6 @@ if(isset($_REQUEST['product_id'])) {
 	$smarty->assign("PRODUCTID", vtlib_purify($_REQUEST['product_id']));
 }
 
-if($focus->mode == 'edit')
 	$smarty->display("salesEditView.tpl");
-else
-	$smarty->display("CreateView.tpl");
 
 ?>

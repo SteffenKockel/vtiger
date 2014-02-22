@@ -9,10 +9,10 @@
  ********************************************************************************
 *  Module       : Products
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-28
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
@@ -93,7 +93,7 @@ $mod_strings = Array(
 //'Product Code'=>'Part Number',
 'Part Number'=>'Código de Producto',
 'Product Active'=>'Producto Activo',
-'Commission Rate'=>'Comisión (%)',
+'Commission Rate'=>'Comisión',
 'Qty/Unit'=>'Cantidad/Unidad',
 'Unit Price'=>'Precio Unitario',
 'Manufacturer'=>'Fabricante',
@@ -227,6 +227,8 @@ $mod_strings = Array(
 'Parent Product' => 'Product Paterno',
 
 'LBL_NO_TAXES_ASSOCIATED'=>'No hay impuestos asociados a este producto',
+'Products ID' => 'Id Producto',
+
 );
 
 ?>

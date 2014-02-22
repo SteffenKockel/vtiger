@@ -66,5 +66,21 @@ $mod_strings = array(
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: Todas las fechas, horas e información recurrente configurada para el evento,
 											serán respecto a la zona horaria por defecto, configurada en config.inc.php',
 
+'Select Meta Variables' => 'Selecciona Meta Variables',
+'Current Date' => 'Fecha Actual',
+'Current Time' => 'Hora Actual',
+'System Timezone' => 'Zona Horaria del Sistema',
+'CRM Detail View URL' => 'URL Vista Detalle del CRM',
+'Portal Detail View URL' => 'URL Vista Detalle del Portal',
+'Site Url' => 'Url CRM',
+'Portal Url' => 'Url Portal',
+
+'Workflow'=>'Flujo de Trabajo',
+
+'VTCreateEntityTask' => 'Crear Entidad',
+'LBL_ENTITY_TYPE' => 'Tipo Entidad',
+'LBL_SELECT_ENTITY_TYPE' => '-- Selecciona Tipo Entidad --',
+'LBL_NO_ENTITIES_FOUND' => 'No se han encontrado entidades para crear',
+
 );
 ?>

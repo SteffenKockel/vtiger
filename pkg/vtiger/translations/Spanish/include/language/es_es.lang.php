@@ -2,11 +2,12 @@
 /***********************************************************
 *  Module       : General
 *  Language     : ES Spanish
-*  Version      : vt5.2.0
-*  Created Date : 2008-01-18 17:46:07 Last change : 2008-01-18 18:11:37
+*  Version      : vt5.4.0
+*  Created Date : 2008-01-18 17:46:07
 *  Author       : JPL TSolucio, S.L.  -  rasomu
-*  License      : 
-
+*  License      : MPL 1.1
+*  Last change  : 2012-02-28
+*  Author       : Joe Bordes  JPL TSolucio, S.L.
 ***********************************************************/
 
 $app_strings = array (
@@ -36,7 +37,7 @@ $app_strings = array (
       'LBL_SEND_MAIL_BUTTON' => 'Enviar un Email',
       'LBL_SAVE_BUTTON_TITLE' => 'Guardar [Alt+S]',
       'LBL_EDIT_BUTTON_TITLE' => 'Editar [Alt+E]',
-      'LBL_CONVERTSO_BUTTON_TITLE' => 'Crear Pedido',
+      'LBL_CONVERTSO_BUTTON_TITLE' => 'Crear Orden Venta',
       'LBL_CONVERTINVOICE_BUTTON_TITLE' => 'Crear Factura',
       'LBL_EDIT_BUTTON' => 'Editar',
       'LBL_DUPLICATE_BUTTON_TITLE' => 'Duplicar [Alt+U]',
@@ -81,7 +82,7 @@ $app_strings = array (
       'LBL_SELECT_BUTTON_KEY' => 'T',
       'LBL_SAVE_BUTTON_LABEL' => 'Guardar',
       'LBL_EDIT_BUTTON_LABEL' => 'Editar',
-      'LBL_CONVERTSO_BUTTON_LABEL' => 'Crear Pedido',
+      'LBL_CONVERTSO_BUTTON_LABEL' => 'Crear Orden Venta',
       'LBL_CONVERTINVOICE_BUTTON_LABEL' => 'Crear Factura',
       'LBL_DUPLICATE_BUTTON_LABEL' => 'Duplicar',
       'LBL_DELETE_BUTTON_LABEL' => 'Borrar',
@@ -151,7 +152,7 @@ $app_strings = array (
       'SINGLE_PriceBooks' => 'Tarifa',
       'SINGLE_Quotes' => 'Presupuesto',
       'SINGLE_PurchaseOrder' => 'Orden de Compra',
-      'SINGLE_SalesOrder' => 'Pedido',
+      'SINGLE_SalesOrder' => 'Orden de Venta',
       'SINGLE_Rss' => 'Rss',
       'SINGLE_Reports' => 'Informe',
       'SINGLE_Portal' => 'Portal',
@@ -172,8 +173,8 @@ $app_strings = array (
       'NTC_TIME_FORMAT' => '(24:00)',
       'NTC_DATE_TIME_FORMAT' => '(aaaa-mm-dd 24:00)',
       'NTC_DELETE_CONFIRMATION' => '¿Está seguro que desea eliminar este expediente?',
-      'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Borrar esta cuenta eliminará sus relaciones con Potenciales, Presupuestos, Pedidos y Facturas. ¿Quiere Borrar la Cuenta?',
-      'NTC_VENDOR_DELETE_CONFIRMATION' => 'Borrar este proveedor eliminará sus relaciones con Potenciales, Presupuestos, Pedidos y Facturas. ¿Quiere Borrar el Proveedor?',
+      'NTC_ACCOUNT_DELETE_CONFIRMATION' => 'Borrar esta cuenta eliminará sus relaciones con Potenciales, Presupuestos, Ordenes de Venta y Facturas. ¿Quiere Borrar la Cuenta?',
+      'NTC_VENDOR_DELETE_CONFIRMATION' => 'Borrar este proveedor eliminará sus relaciones con Potenciales, Presupuestos, Ordenes de Venta y Facturas. ¿Quiere Borrar el Proveedor?',
       'ERR_DELETE_RECORD' => ' Debe especificar un registro para poder eliminar el contacto.',
       'ERR_CREATING_TABLE' => 'Error al crear la tabla: ',
       'ERR_CREATING_FIELDS' => 'Error al completar detalles adicionales de campo: ',
@@ -196,6 +197,7 @@ $app_strings = array (
       'NTC_LOGIN_MESSAGE' => 'Conectar',
       'LBL_NONE' => '-Ninguno-',
       'LBL_BACK' => 'Volver',
+      'LBL_TIMEFIELD'=>'(HH:mm:ss)',
       'LBL_IMPORT' => 'Importar',
       'LBL_EXPORT' => 'Exportar',
       'LBL_EXPORT_ALL' => 'Exportar todas/os las/los',
@@ -396,12 +398,12 @@ $app_strings = array (
       'Webmails' => 'Webmails',
       'Activity History' => 'Histórico de eventos',
       'Ticket History' => 'Histórico de tickets',
-      'Purchase Order' => 'Órdenes de Compra',
+      'Purchase Order' => 'Ordenes de Compra',
       'Sales Stage History' => 'Histórico de ventas',
       'Users' => 'Usuarios',
       'Admin' => 'Admin',
-      'PurchaseOrder Status History' => 'Histórico de Órdenes de Compra',
-      'SalesOrder Status History' => 'Histórico de Pedidos',
+      'PurchaseOrder Status History' => 'Histórico de Ordenes de Compra',
+      'SalesOrder Status History' => 'Histórico de Ordenes de Venta',
       'Quote Stage History' => 'Histórico de Presupuestos',
       'Invoice Status History' => 'Histórico de Facturas',
       'LBL_TROUBLE_TICKET' => 'Ticket de Problema',
@@ -460,7 +462,7 @@ $app_strings = array (
       'Quote Name' => 'Referencia del Presupuesto',
       'Invoice No' => 'Nº de Factura',
       'Quote No' => 'Id de Presupuesto',
-      'Sales Order' => 'Pedido',
+      'Sales Order' => 'Orden de Venta',
       'COMBO_QUOTES' => 'Presupuestos',
       'End Date' => 'Fecha de Vencimiento',
       'End Date & Time' => 'Fecha y Hora de Vencimiento',
@@ -469,15 +471,15 @@ $app_strings = array (
       'Start Time' => 'Hora Inicio',
       'End Time' => 'Hora Fin',
       'Recurring Type' => 'Periodicidad',
-      'SalesOrders' => 'Pedidos',
+      'SalesOrders' => 'Ordenes de Venta',
       'LBL_QUOTE_NAME' => 'Presupuesto',
       'LBL_NEW_QUOTE_BUTTON_TITLE' => 'Nuevo Presupuesto [Alt+Q]',
       'LBL_NEW_QUOTE_BUTTON_KEY' => 'Q',
       'LBL_NEW_QUOTE_BUTTON' => 'Nuevo Presupuesto',
       'COMBO_PORDER' => 'Ordenes de Compra',
-      'COMBO_SORDER' => 'Pedidos',
+      'COMBO_SORDER' => 'Ordenes de Venta',
       'LBL_PORDER_NAME' => 'Orden de Compra',
-      'LBL_SORDER_NAME' => 'Pedido',
+      'LBL_SORDER_NAME' => 'Orden de Venta',
       'COMBO_INVOICES' => 'Facturas',
       'LBL_INVOICE_NAME' => 'Factura',
       'LBL_QUOTES_NAME' => 'Presupuesto',
@@ -486,9 +488,9 @@ $app_strings = array (
       'LBL_NEW_INVOICE_BUTTON_TITLE' => 'Nueva Factura [Alt+I]',
       'LBL_NEW_INVOICE_BUTTON_KEY' => 'I',
       'LBL_NEW_INVOICE_BUTTON' => 'Nueva Factura',
-      'LBL_NEW_SORDER_BUTTON_TITLE' => 'Nuevo Pedido [Alt+E]',
+      'LBL_NEW_SORDER_BUTTON_TITLE' => 'Nueva Orden de Venta [Alt+E]',
       'LBL_NEW_SORDER_BUTTON_KEY' => 'E',
-      'LBL_NEW_SORDER_BUTTON' => 'Nuevo Pedido',
+      'LBL_NEW_SORDER_BUTTON' => 'Nueva Orden de Venta',
       'LBL_PRODUCT_DETAILS' => 'Detalles del Producto',
       'LBL_QTY_IN_STOCK' => 'Cantidad en Stock',
       'LBL_QTY' => 'Cantidad',
@@ -501,7 +503,7 @@ $app_strings = array (
       'LBL_ADJUSTMENT' => 'Descuento',
       'LBL_GRAND_TOTAL' => 'Total',
       'LBL_QUOTE_ID' => 'Importe Total',
-      'LBL_SALES_ORDER_ID' => 'Número de Pedido',
+      'LBL_SALES_ORDER_ID' => 'Número de Orden de Venta',
       'LBL_PURCHASE_ORDER_ID' => 'Número Orden de Compra',
       'LBL_EXPORT_TO_PDF' => 'Exportar a PDF',
       'LBL_HOME_KEY_METRICS' => 'Estadísticas',
@@ -510,9 +512,10 @@ $app_strings = array (
       'LBL_JSCALENDAR_LANG' => 'es',
       'LNK_CV_EDIT' => 'Editar',
       'LNK_CV_DELETE' => 'Borrar',
-      'LNK_CV_CREATEVIEW' => 'Nueva',
+      'LNK_CV_CREATEVIEW' => 'Crear Filtro',
       'LBL_UPD_FIELD_ORD' => 'Actualizar el Orden de los Campos',
       'LBL_SEND_CUSTOM_MAIL_BUTTON' => 'Enviar Email Personalizado',
+      'LBL_BY' => 'Por ',
       'LBL_UPDATED_TODAY' => 'Actualizado hoy',
       'LBL_UPDATED' => 'Actualizado hace',
       'LBL_DAY_AGO' => 'día',
@@ -547,7 +550,7 @@ $app_strings = array (
       'LBL_TAG_CLOUD' => 'Nube de Etiquetas',
       'LBL_FOR' => 'para',
       'LBL_PO_STATUS' => 'Estado de Orden de Compra',
-      'LBL_SO_STATUS' => 'Estado de Pedido',
+      'LBL_SO_STATUS' => 'Estado de Orden de Venta',
       'LBL_INVOICE_STATUS' => 'Estado de Presupuesto',
       'LBL_MODULE' => 'Módulo',
       'Active' => 'Activo',
@@ -572,7 +575,6 @@ $app_strings = array (
       'LBL_NO' => 'No',
       'LBL_FOUND' => 'Encontrados',
       'LBL_YOU_CAN_CREATE' => 'Crear',
-      'LBL_NOW' => 'ahora',
       'LBL_CLICK_THE_LINK' => 'Pulse el enlace inferior',
       'LBL_CREATE' => 'Crear',
       'LBL_A' => 'un',
@@ -611,7 +613,7 @@ $app_strings = array (
       'LBL_RECORD_DELETE' => 'El Registro que pretende ver ha sido borrado.',
       'Part Number' => 'Nº Pieza',
       'Salutation' => 'Saludo ',
-      'Rating' => 'Ratio',
+      'Rating' => 'Importancia',
       'industry' => 'Industria',
       'Severity' => 'Urgencia',
       'Product Category' => 'Categoría de Producto',
@@ -643,13 +645,13 @@ $app_strings = array (
       'less_than' => 'menor que',
       'greater_or_equal' => 'mayor o igual',
       'less_or_equal' => 'menor o igual',
-      'LABEL_SET_DISCOUNT_FOR_COLON' => 'Establecer descuento para:',
-      'LABEL_SET_TAX_FOR' => 'Establecer Impuesto para',
-      'LABEL_SET_DISCOUNT_FOR' => 'Establecer descuento para',
-      'LABEL_SET_GROUP_TAX_FOR_COLON' => 'Establecer Impuesto para:',
-      'LABEL_SET_DISCOUNT_FOR_X_COLON' => 'Establecer Descuento para x:',
-      'LABEL_SET_TAX_FOR_X' => 'Establecer Impuesto para x:',
-      'LABEL_SET_SH_TAX_FOR_COLON' => 'Establecer Impuesto de Manipulación y Transportes para:',
+      'LABEL_SET_DISCOUNT_FOR_COLON' => 'Descuento para:',
+      'LABEL_SET_TAX_FOR' => 'Impuesto para',
+      'LABEL_SET_DISCOUNT_FOR' => 'Descuento para',
+      'LABEL_SET_GROUP_TAX_FOR_COLON' => 'Impuesto para:',
+      'LABEL_SET_DISCOUNT_FOR_X_COLON' => 'Descuento para x:',
+      'LABEL_SET_TAX_FOR_X' => 'Impuesto para x:',
+      'LABEL_SET_SH_TAX_FOR_COLON' => 'Impuesto M&T para:',
       'NO_DATA_AVAILABLE_WITH_SPECIFIED_PERIOD' => 'No hay datos disponible para ese periodo',
       'Files_Maximum_6' => 'Máximo 6 archivos',
       'To' => 'Para:',
@@ -675,7 +677,7 @@ $app_strings = array (
       'Dear_Team_Time_to_Party' => 'Estimado equipo, hemos cerrado un acuerdo por más de (poner el valor que queráis) €.< br/> Mi más sincera Enhorabuena.',
       'Task_Not_completed' => 'Tarea no Terminada',
       'Too_many_pending_tickets' => 'Demasiados Partes pendientes',
-      'Dear_Admin_too_ many_tickets_pending' => 'Estimado Administrador,<br /> Hay demasiados Partes pendientes, le rogamos tome las medidas oportunas asignandolos a quien corresponda. <br /> Gracias y Saludos,<br /> El Equipo de Soporte Técnico.',
+      'Dear_Admin_too_many_tickets_pending' => 'Estimado Administrador,<br /> Hay demasiados Partes pendientes, le rogamos tome las medidas oportunas asignandolos a quien corresponda. <br /> Gracias y Saludos,<br /> El Equipo de Soporte Técnico.',
       'DELETE_CONFIRMATION' => '¿Está seguro de querer borrar la selección de',
       'SELECT_ATLEAST_ONE' => 'Seleccione, al menos, una entidad',
       'DELETING_ACCOUNT' => 'Al eliminar esta cuenta se eliminarán sus oportunidades, presupuestos, albaranes y facturas asociadas. ¿Estás seguro que quieres eliminar la ',
@@ -772,7 +774,7 @@ $app_strings = array (
       'DELETE_REPORT_CONFIRMATION' => '¿Borrar este informe?',
       'MOVE_REPORT_CONFIRMATION' => '¿Mover el informe a ',
       'FOLDER' => 'carpeta?',
-      'ACCOUNT_ACCESS_INFO' => 'Oportunidades, Incidencias, Presupuestos, Pedidos y Facturas deben establecerse como privado cuando Cuentas se establece como privado.',
+      'ACCOUNT_ACCESS_INFO' => 'Oportunidades, Incidencias, Presupuestos, Ordenes de Venta y Facturas deben establecerse como privado cuando Cuentas se establece como privado.',
       'PROFILENAME_CANNOT_BE_EMPTY' => 'El nombre del Perfil no puede estar vacío',
       'PROFILE_DETAILS_UPDATED' => 'Los detalles del perfil se han actualizado',
       'CURRENCY_CHANGE_INFO' => 'Los ',
@@ -848,8 +850,8 @@ $app_strings = array (
       'LBL_SEND_EMAIL_PDF' => 'Enviar Email con PDF',
       'ERR_INVALID_PAGE_COUNT' => 'Paginación Inválida',
       'Quotes' => 'Presupuestos',
-      'PurchaseOrder' => 'Órdenes de Compra',
-      'SalesOrder' => 'Pedidos',
+      'PurchaseOrder' => 'Ordenes de Compra',
+      'SalesOrder' => 'Ordenes de Venta',
       'Invoice' => 'Facturas',
       'LBL_CREATING_NEW_Contacts' => 'Creando Nuevo Contacto',
       'LBL_CREATING_NEW_Campaigns' => 'Creando Nueva Campaña',
@@ -857,7 +859,7 @@ $app_strings = array (
       'LBL_CREATING_NEW_Accounts' => 'Creando Nueva Cuenta',
       'LBL_CREATING_NEW_Potentials' => 'Creando Nueva Oportunidad',
       'LBL_CREATING_NEW_Quotes' => 'Creando Nuevo Presupuesto',
-      'LBL_CREATING_NEW_SalesOrder' => 'Creando Nuevo Pedido',
+      'LBL_CREATING_NEW_SalesOrder' => 'Creando Nueva Orden de Venta',
       'LBL_CREATING_NEW_Invoice' => 'Creando Nueva Factura',
       'LBL_CREATING_NEW_Products' => 'Creando Nuevo Producto',
       'LBL_CREATING_NEW_PriceBooks' => 'Creando Nueva Tarifa',
@@ -936,7 +938,7 @@ $app_strings = array (
       'LBL_MAIL_NOT_SENT_TO_USER' => 'No ha sido posible enviar el correo',
       'LBL_PLS_CHECK_EMAIL_N_SERVER' => 'Compruebe el Email o la configuración del servidor',
       'PLEASE_FILL_QUANTITY' => 'Introduzca la cantidad',
-      'LBL_SOLUTION' => 'SOLUCIÓN',
+      'LBL_SOLUTION' => 'SOLUCION',
       'LBL_COMMENTS' => 'COMENTARIOS',
       'RELATED' => 'Relacionados',
       'SHOW_ALL' => 'Mostrar todos',
@@ -992,7 +994,7 @@ $app_strings = array (
       'Tracking No.'=>'No. Seguimiento',
       'Req. No.'=>'No. Req.',
       'Customer Name'=>'Nombre Cliente',
-      'SO Number'=>'Número Pedido',
+      'SO Number'=>'Número Orden',
       'Account Number'=>'Número Cuenta',
       'Valid Till'=>'Válido Hasta',
       'Quote Number'=>'Número Presupuesto',
@@ -1192,6 +1194,17 @@ $app_strings = array (
 
      'CANNOT_CONVERT' => 'No se puede Convertir',
 
+     'Project'=>'Proyecto',
+     'ProjectTask'=>'Actividades',
+     'ProjectMilestone'=>'Hito',
+     'Tooltip' => 'Ayuda rápida',
+     'ModComments' => 'Comentarios',
+     'VtigerBackup'=>'Copia Seguridad',
+     'SMSNotifier' => 'Mensajeria SMS',
+     'ConfigEditor' => 'Editor Configuración',
+     'MailManager' => 'Administrador Correo',
+     'RecycleBin' => 'Papelera de Reciclaje',
+
      // For note link on the detailview
      'LBL_ADD_NOTE'=>'Añadir Nota',
 
@@ -1220,6 +1233,42 @@ $app_strings = array (
 
      'LBL_NEXT_BUTTON_LABEL' => 'Siguiente',
 
+     'LBL_MAX_SIZE'=> 'Tamaño máximo de fichero aceptado es', //added for uploadsize limit message
+     'LBL_FILESIZEIN_MB'=> 'MB', //added to show filesize in MB
+
+     // Unified Cron Job language strings
+     'LBL_DISABLED' => 'Deshabilitado',
+     'LBL_RUNNING' => 'En ejecución',
+     'LBL_LAST_SCAN_TIMED_OUT' => 'Tiempo agotado en última revisión',
+     'LBL_LAST_SCAN_AT' => 'Ultima revisión @',
+     'LBL_TIME_TAKEN' => 'Tiempo invertido',
+     'LBL_SHORT_SECONDS' => 'seg',
+
+     //Added missing labels in the vtigercrm
+     'Projects' => 'Proyectos',
+     'End Time' => 'Hora Fin',
+     'Start Time' => 'Hora Inicio',
+     'Email2' => 'Email2',
+     'Comments' => 'Comentarios',
+     'Issued Date' => 'Fecha Emisión',
+     'Shipping & Handling Charges' => 'Gastos Envío y Manipulación',
+     'Shipping & Handling Tax:' => 'Impuestos Envío y Manipulación:',
+     'Quantity' => 'Unidades',
+     'Net Total' => 'Total Neto',
+     'Send SMS' => 'Enviar SMS',
+
+     'LBL_MORE'=>'Más',
+     'LBL_CRM_SETTINGS' => 'Configuración CRM',
+     'LBL_RELATED_TO_THIS' =>'relacionado con esto',
+     'LBL_DESELECT_ALL' => 'Desmarcar todo',
+     'LBL_RECORDS_IN' => 'registros en',
+     'LBL_FOLDER' => 'carpeta',
+
+     //added for creating a custom lead map row in UI
+     'LBL_ADD_MAPPING'=> 'Añadir Vinculación',
+     'LBL_FIELD_MAPPING' => 'Vinculación Campos',
+
+	'LBL_MANDATORY_FIELD_MISSING'=>'Falta rellenar un campo obligatorio',
 );
 $app_list_strings = array (
       'moduleList' => array(
@@ -1237,13 +1286,13 @@ $app_list_strings = array (
             'Faq' => 'Faq',
             'Calendar' => 'Calendario',
             'Quotes' => 'Presupuestos',
-            'PurchaseOrder' => 'Órdenes de Compra',
+            'PurchaseOrder' => 'Ordenes de Compra',
             'Invoice' => 'Facturas',
             'Rss' => 'RSS',
             'Reports' => 'Informes',
             'Vendors' => 'Proveedores',
             'PriceBooks' => 'Tarifas',
-            'SalesOrder' => 'Pedidos',
+            'SalesOrder' => 'Ordenes de Venta',
             'Portal' => 'Portal',
             
             // Added after 5.0.4 GA
@@ -1276,7 +1325,7 @@ $app_list_strings = array (
             'Deferred' => 'Retrasada',
                              ),
       'meeting_status_dom' => array(
-            'Planned' => '',
+            'Planned' => 'Planeada',
             'Held' => 'Realizada',
             'Not Held' => 'No Realizada',
                              ),

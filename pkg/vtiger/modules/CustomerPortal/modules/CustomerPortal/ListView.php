@@ -37,27 +37,16 @@ if(!$is_admin) {
 	exit;
 }
 
-if($_REQUEST['sub_mode'] != '' && isset($_REQUEST['sub_mode'])){
-	$sub_mode =$_REQUEST['sub_mode']; 
-}
-if($sub_mode == 'movemodules'){
-	$tabid = $_REQUEST['tabid'];
-	$move = $_REQUEST['move'];
-	if($tabid != ''){
-		cp_changeTabOrder($tabid,$move);
-	}
-}elseif($sub_mode == 'enable_disable') {
-	$tabid = $_REQUEST['tabid'];
-	$status =$_REQUEST['status'];
-	if($status != '' && $tabid != ''){
-		cp_changeModuleVisibility($tabid,$status);
-	} 
+$mode = $_REQUEST['mode'];
+if($mode !='' && $mode == 'save') {
+	cp_saveCustomerPortalSettings($_REQUEST);
 }
 $category = getParentTab();
 $smarty = new vtigerCRM_Smarty();
 $portalmodules = cp_getPortalModuleinfo();
+$moduleInfo = json_encode($portalmodules);
 
-$smarty->assign('PORTALMODULES',$portalmodules); 
+$smarty->assign('PORTALMODULES',$moduleInfo);
 $smarty->assign("THEME", $theme);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
@@ -67,6 +56,11 @@ $smarty->assign('BUTTONS', $list_buttons);
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('MODE',$mode);
+$smarty->assign('USERS', cp_getUsers());
+$smarty->assign('GROUPS', cp_getUserGroups());
+$smarty->assign('USERID', cp_getCurrentUser());
+$smarty->assign('DEFAULTASSIGNEE', cp_getCurrentDefaultAssignee());
+
 if($_REQUEST['ajax'] != true) {
 	$smarty->display(vtlib_getModuleTemplate($currentModule,'BasicSetttings.tpl'));
 }

@@ -13,9 +13,11 @@
  ********************************************************************************
 *  Module       : Helpdesk
 *  Language     : Español
-*  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
+*  Version      : 5.4.0
+*  Created Date : 2007-03-30
 *  Author       : Rafael Soler
+*  Last change  : 2012-02-27
+*  Author       : Joe Bordes
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -181,7 +183,7 @@ $mod_strings = Array(
 'created' => 'creado',
 'replied' => 'respondido',
 'reply' => 'Hay una respuesta a',
-'customer_portal' => 'in el "Portal de Cliente" en Vtiger',
+'customer_portal' => 'en el "Portal del Cliente" en Vtiger',
 'link' => 'Utilice el siguiente enlace para ver las respuestas dadas:',
 'Thanks' => 'Gracias',
 'Support_team' => 'Equipo de Soporte Técnico',
@@ -217,7 +219,8 @@ $mod_strings = Array(
 // Module Sequence Numbering
 'Ticket No' => 'Núm. Incidencia',
 // END
-
+'From Portal' => 'Proviene del Portal',
+'HelpDesk ID' => 'Id Incidencia',
 );
 
 ?>

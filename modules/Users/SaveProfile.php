@@ -151,8 +151,7 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 	}
 
 
-
-	$modArr=getFieldModuleAccessArray();
+$modArr=getModuleAccessArray();
  
 
 foreach($modArr as $fld_module => $fld_label)

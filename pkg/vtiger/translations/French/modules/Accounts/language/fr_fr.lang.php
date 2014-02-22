@@ -1,14 +1,11 @@
 <?php
 /***********************************************************
 *  Module       : Accounts
-*  Language     : Francais
-*  Version      : 5.1.0 GA*  Created Date : 2009-06-23 21:36:13 
-*  Last change  : 2009-07-21 00:49:17
-*  Author       : french-vtiger.fr 
+*  Language     : French
+*  Version      : 5.4.0 
 *  License      : GPL
-
+*  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
-
 
 $mod_strings = array (
 		'LBL_MODULE_NAME' => 'Comptes',
@@ -113,7 +110,7 @@ $mod_strings = array (
 		'Shipping State' => 'Département (livraison)',
 		'Billing Code' => 'Code postal (facturation)',
 		'Shipping Code' => 'Code postal (livraison)',
-		'Billing Country' => 'Pays(facturation)',
+		'Billing Country' => 'Pays (facturation)',
 		'Shipping Country' => 'Pays (livraison)',
 		'Created Time' => 'Créé le',
 		'Modified Time' => 'Modifié le',
@@ -174,7 +171,7 @@ $mod_strings = array (
 		'LBL_ACCOUNT_EXIST' => 'Ce nom de compte est déjà utilisé',
 		'LBL_MAILER_EXPORT' => 'Mailer Export',
 		'LBL_MAILER_EXPORT_CONTACTS_TYPE' => 'Selectionner le contact :',
-		'LBL_MAILER_EXPORT_CONTACTS_DESCR' => 'Les contacts peuvent également être sélectionnés via \"Champs personnalisés\" et d\'autres champs standards.',
+		'LBL_MAILER_EXPORT_CONTACTS_DESCR' => 'Les contacts peuvent également être sélectionnés via "Champs personnalisés" et d\'autres champs standards.',
 		'LBL_MAILER_EXPORT_RESULTS_TYPE' => 'Sélectionnez un type d\'export',
 		'LBL_MAILER_EXPORT_RESULTS_DESCR' => 'Les données seront prises des comptes et leurs contacts qui ont été sélectionnés de la recherche précédente.',
 		'LBL_EXPORT_RESULTS_EMAIL' => 'Données d\'export par email',
@@ -190,6 +187,7 @@ $mod_strings = array (
 
 		// Account Hierarchy
 		'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Afficher la hiérarchie des comptes', 
+		'Accounts ID' => 'Compte ID',
 );
 $mod_list_strings = array (
 );

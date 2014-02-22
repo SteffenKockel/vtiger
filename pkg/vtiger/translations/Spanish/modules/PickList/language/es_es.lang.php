@@ -46,5 +46,9 @@ $mod_strings = array(
 	'LBL_CONFIGURE_DEPENDENCY_HELP_2' => "Si quieres ver o cambiar la asignación de los otros valores de la lista origen, <br/>
                                           puedes seleccionar los valores pulsando el botón <b>'Selecciona Valores Origen'</b> en el lateral derecho",
 	'LBL_CONFIGURE_DEPENDENCY_HELP_3' => 'Valores seleccionados del campo destino, se muestran como',
+	'LBL_ADD_BUTTON' => 'Añadir Elemento',
+	'LBL_EDIT_BUTTON' => 'Renombrar Elemento',
+	'LBL_DELETE_BUTTON' => 'Eliminar Elemento',
+	'NTC_DELETE_CONFIRMATION'=>'¿Seguro que quieres eliminar esta dependencia?',
 );
 ?>

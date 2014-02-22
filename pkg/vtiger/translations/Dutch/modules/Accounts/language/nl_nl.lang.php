@@ -1,23 +1,34 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
+
+/*******************************************************************************
+ * The contents of this file are subject to the following licences:
+ * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
+ * - vtiger CRM Public License Version 1.0 
+ * You may not use this file except in compliance with the License
+ * Software distributed under the License is distributed on an  "AS IS" basis,
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
  * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
+ * The Original Code is: SugarCRM Open Source
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
+ * Feel free to use / redistribute these languagefiles under the VPL 1.0.
+ * This translations is based on earlier work of: 
+ * - IT-Online.nl <www.it-online.nl>
+ * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Accounts/language/en_us.lang.php,v 1.18 2005/03/19 08:59:20 rank Exp $
- * Description:  Defines the English language pack 
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): Vertaling door Weltevree.org www.weltevree.org
+
+/*******************************************************************************
+ * Vicus eBusiness Solutions Version Control
+ * @package 	NL-Dutch
+ * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * @author	$Author: luuk $
+ * @version 	$Revision: 1.5 $ $Date: 2011/11/14 17:07:26 $
+ * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Accounts/language/nl_nl.lang.php,v $
+ * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
  
 $mod_strings = Array(
@@ -31,13 +42,13 @@ $mod_strings = Array(
 'LBL_TOP_ACCOUNTS'=>'Mijn accounts', 
 'LBL_TOP_AMOUNT'=>'Hoeveelheid',
 'LBL_LIST_ACCOUNT_NAME'=>'Accountnaam',
-'LBL_LIST_CITY'=>'Stad',
+'LBL_LIST_CITY'=>'Plaats',
 'LBL_LIST_WEBSITE'=>'Website',
 'LBL_LIST_STATE'=>'Provincie',
 'LBL_LIST_PHONE'=>'Telefoon',
-'LBL_LIST_EMAIL_ADDRESS'=>'e-Mailadres',
+'LBL_LIST_EMAIL_ADDRESS'=>'E-mailadres',
 'LBL_LIST_CONTACT_NAME'=>'Contactnaam',
-'LBL_LIST_AMOUNT' => 'Totale Leads',
+'LBL_LIST_AMOUNT' => 'Totale verkoopkansen',
 
 //DON'T CONVERT THESE THEY ARE MAPPINGS
 'db_name' => 'LBL_LIST_ACCOUNT_NAME',
@@ -51,37 +62,37 @@ $mod_strings = Array(
 'LBL_PHONE'=>'Telefoon:',
 'LBL_WEBSITE'=>'Website:',
 'LBL_FAX'=>'Fax:',
-'LBL_TICKER_SYMBOL'=>'Ticker symbol:',
-'LBL_OTHER_PHONE'=>'Mobiel:',
-'LBL_ANY_PHONE'=>'Skype:',
-'LBL_MEMBER_OF'=>'Lid van:',
-'LBL_EMAIL'=>'e-Mail:',
+'LBL_TICKER_SYMBOL'=>'Ticker symbool:',
+'LBL_OTHER_PHONE'=>'Telefoon Mobiel:',
+'LBL_ANY_PHONE'=>'Telefoon Extra:',
+'LBL_MEMBER_OF'=>'Onderdeel van:',
+'LBL_EMAIL'=>'E-mail:',
 'LBL_EMPLOYEES'=>'Werknemers:',
-'LBL_OTHER_EMAIL_ADDRESS'=>'Bedrijfs e-Mailadres:',
-'LBL_ANY_EMAIL'=>'Persoonlijk e-Mailadres:',
+'LBL_OTHER_EMAIL_ADDRESS'=>'Bedrijfs e-mailadres:',
+'LBL_ANY_EMAIL'=>'Extra e-mailadres:',
 'LBL_OWNERSHIP'=>'Eigendom:',
 'LBL_RATING'=>'Beoordeling:',
 'LBL_INDUSTRY'=>'Industrie',
-'LBL_SIC_CODE'=>'KvK nummer:',
+'LBL_SIC_CODE'=>'SIC nummer:',
 'LBL_TYPE'=>'Type:',
 'LBL_ANNUAL_REVENUE'=>'Jaarlijkse omzet:',
-'LBL_ADDRESS_INFORMATION'=>'Adres informatie',
-'LBL_ACCOUNT_INFORMATION'=>'Account informatie',
-'LBL_CUSTOM_INFORMATION'=>'Klanten informatie',
+'LBL_ADDRESS_INFORMATION'=>'Adresinformatie',
+'LBL_ACCOUNT_INFORMATION'=>'Accountinformatie',
+'LBL_CUSTOM_INFORMATION'=>'Extra informatie',
 'LBL_BILLING_ADDRESS'=>'Postadres:',
-'LBL_SHIPPING_ADDRESS'=>'Bezoekadres:',
-'LBL_ANY_ADDRESS'=>'Vestigingsadres:',
-'LBL_CITY'=>'Stad:',
+'LBL_SHIPPING_ADDRESS'=>'Afleveradres:',
+'LBL_ANY_ADDRESS'=>'Bezoekadres:',
+'LBL_CITY'=>'Plaats:',
 'LBL_STATE'=>'Provincie:',
 'LBL_POSTAL_CODE'=>'Postcode:',
 'LBL_COUNTRY'=>'Land:',
-'LBL_DESCRIPTION_INFORMATION'=>'Omschrijvings informatie',
+'LBL_DESCRIPTION_INFORMATION'=>'Omschrijving',
 'LBL_DESCRIPTION'=>'Omschrijving:',
-'NTC_COPY_BILLING_ADDRESS'=>'Kopieer postadres naar bezoekadres',
-'NTC_COPY_SHIPPING_ADDRESS'=>'Kopieer bezoekadres naar postadres',
-'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Weet u zeker dat u dit veld wilt verwijderen als lid van deze organisatie?',
-'LBL_DUPLICATE'=>'Mogelijke accounts',
-'MSG_DUPLICATE' => 'Wanneer u deze account aanmaakt kan dit leiden tot een duplicaat. U kunt een keuze maken uit de geselecteerde accounts hieronder of u kunt klikken op nieuw account om door te gaan met uw nieuwe account en de door u ingegeven informatie.',
+'NTC_COPY_BILLING_ADDRESS'=>'Kopieer Postadres naar Bezoekadres',
+'NTC_COPY_SHIPPING_ADDRESS'=>'Kopieer Bezoekadres naar Postadres',
+'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Weet u zeker dat u dit veld wilt verwijderen als Onderdeel van deze organisatie?',
+'LBL_DUPLICATE'=>'Mogelijke dubbele Accounts',
+'MSG_DUPLICATE' => 'Wanneer u deze Account aanmaakt kan dit leiden tot een duplicaat. U kunt een keuze maken uit de geselecteerde accounts hieronder of u kunt klikken op Nieuw Account om door te gaan met uw nieuwe Account en de door u ingegeven informatie.',
 
 'LBL_INVITEE'=>'Contacten',
 'ERR_DELETE_RECORD'=>"Een veld moet gespecificeerd zijn om de account te verwijderen.",
@@ -90,8 +101,8 @@ $mod_strings = Array(
 'LBL_GENERAL_INFORMATION'=>'Algemene informatie',
 
 //for v4 release added
-'LBL_NEW_POTENTIAL'=>'Nieuwe Lead',
-'LBL_POTENTIAL_TITLE'=>'Lead',
+'LBL_NEW_POTENTIAL'=>'Nieuwe Verkoopkans',
+'LBL_POTENTIAL_TITLE'=>'Verkoopkansen',
 
 'LBL_NEW_TASK'=>'Nieuwe taak',
 'LBL_TASK_TITLE'=>'Taken',
@@ -99,8 +110,8 @@ $mod_strings = Array(
 'LBL_CALL_TITLE'=>'Telefoongesprekken',
 'LBL_NEW_MEETING'=>'Vergadering',
 'LBL_MEETING_TITLE'=>'Vergadering',
-'LBL_NEW_EMAIL'=>'Nieuwe e-Mail',
-'LBL_EMAIL_TITLE'=>'e-Mail',
+'LBL_NEW_EMAIL'=>'Nieuwe e-mail',
+'LBL_EMAIL_TITLE'=>'E-mail',
 'LBL_NEW_CONTACT'=>'Nieuwe contacten',
 'LBL_CONTACT_TITLE'=>'Contacten',
 
@@ -119,37 +130,37 @@ $mod_strings = Array(
 'Website'=>'Website',
 'Fax'=>'Fax',
 'Ticker Symbol'=>'Ticker symbool',
-'Other Phone'=>'Mobiel',
-'Member Of'=>'Lid van',
-'Email'=>'e-Mail',
+'Other Phone'=>'Telefoon Mobiel',
+'Member Of'=>'Onderdeel van',
+'Email'=>'E-mail',
 'Employees'=>'Werknemers',
-'Other Email'=>'Persoonlijk e-Mailadres',
+'Other Email'=>'Extra e-mailadres',
 'Ownership'=>'Eigendom',
 'Rating'=>'Beoordeling',
 'industry'=>'Industrie',
-'SIC Code'=>'KvK nummer',
+'SIC Code'=>'SBI code',
 'Type'=>'Type',
 'Annual Revenue'=>'Jaarlijkse omzet',
-'Assigned To'=>'Toegekend aan',
+'Assigned To'=>'Toegewezen aan',
 'Billing Address'=>'Postadres',
 'Shipping Address'=>'Bezoekadres',
-'Billing City'=>'PA Plaats',
-'Shipping City'=>'BA Plaats',
-'Billing State'=>'PA Provincie',
-'Shipping State'=>'BA Provincie',
-'Billing Code'=>'PA Postcode',
-'Shipping Code'=>'BA Postcode',
-'Billing Country'=>'PA Land',
-'Shipping Country'=>'BA Land',
+'Billing City'=>'P Plaats',
+'Shipping City'=>'B Plaats',
+'Billing State'=>'P Provincie',
+'Shipping State'=>'B Provincie',
+'Billing Code'=>'P Postcode',
+'Shipping Code'=>'B Postcode',
+'Billing Country'=>'P Land',
+'Shipping Country'=>'B Land',
 'Created Time'=>'Gemaakt',
 'Modified Time'=>'Gewijzigd',
 'Description'=>'Omschrijving',
-'Shipping Po Box'=>'BA Postbus',
-'Billing Po Box'=>'PA Postbus',
+'Billing Po Box'=>'P Postbus',
+'Shipping Po Box'=>'B Postbus',
 
 //Added after 4.2 patch 2
-'Email Opt Out'=>'e-Mail optie uit',
-'LBL_EMAIL_OPT_OUT'=>'e-Mail optie uit:',
+'Email Opt Out'=>'E-mail optie uit',
+'LBL_EMAIL_OPT_OUT'=>'E-mail optie uit:',
 
 //Added after 5Alpha5
 'Notify Owner'=>'Notificatie aan eigenaar',
@@ -184,7 +195,7 @@ $mod_strings = Array(
 'Hospitality'=>'Hotels en Conferentie gelegenheden',
 'Insurance'=>'Verzekering',
 'Machinery'=>'Machinerie',
-'Manufacturing'=>'Produktie',
+'Manufacturing'=>'Productie',
 'Media'=>'Media',
 'Not For Profit'=>'Non Profit',
 'Recreation'=>'Recreatie',
@@ -194,35 +205,33 @@ $mod_strings = Array(
 'Telecommunications'=>'Telecommunicatie',
 'Transportation'=>'Transport',
 'Utilities'=>'Nutsbedrijven',
-'Other'=>'Ander',
+'Other'=>'Anders',
 
 'Analyst'=>'Analist',
 'Competitor'=>'Concurrent',
 'Customer'=>'Klant',
-'Integrator'=>'Bemiddelaar',
+'Integrator'=>'Integrator',
 'Investor'=>'Investeerder',
 'Partner'=>'Partner',
 'Press'=>'Pers',
-'Prospect'=>'Lead',
+'Prospect'=>'Prospect',
 'Reseller'=>'Wederverkoper',
-'LBL_START_DATE' => 'Begindatum',
+'LBL_START_DATE' => 'Startdatum',
 'LBL_END_DATE' => 'Einddatum',
-
 // Added/Updated for vtiger CRM 5.0.4
 
 //added to fix the issue #4081
 'LBL_ACCOUNT_EXIST' => 'Accountnaam bestaat al!',
 
 // mailer export
-'LBL_MAILER_EXPORT' => 'Mailer Export',
+'LBL_MAILER_EXPORT' => 'Mailer export',
 'LBL_MAILER_EXPORT_CONTACTS_TYPE'=>'Selecteer contacten:',
-'LBL_MAILER_EXPORT_CONTACTS_DESCR'=>'Contacten kan u ook selecteren via "standaard velden".',
+'LBL_MAILER_EXPORT_CONTACTS_DESCR'=>'Contacten kunt u selecteren met "standaard velden" en andere velden.',
 'LBL_MAILER_EXPORT_RESULTS_TYPE'=>'Selecteer export type:',
-'LBL_MAILER_EXPORT_RESULTS_DESCR'=>'De gegevens zullen verzameld worden van de Accounts en gekoppelde Contacten, die werden weergegeven
- van de vorige zoekpdracht.',
-'LBL_EXPORT_RESULTS_EMAIL' => 'Export E-Mailer data',
-'LBL_EXPORT_RESULTS_EMAIL_CORP'=>'Export E-Mail data, met "Company Email" van het Account als het Contact "Email" leeg is',
-'LBL_EXPORT_RESULTS_FULL'=>'Export data met de Contacten, E-Mail, Account naam, Adres, Telefoon, etc.',
+'LBL_MAILER_EXPORT_RESULTS_DESCR'=>'De gegevens zullen worden verzameld van accounts en haar contacten, die zijn retourneerd van een vorige zoekopdracht.',
+'LBL_EXPORT_RESULTS_EMAIL' => 'Export e-mail data',
+'LBL_EXPORT_RESULTS_EMAIL_CORP'=>'Export e-mail data, de "bedrijfs e-mail account" zal worden gebruikt als het contact e-mail veld niet ingevuld is.',
+'LBL_EXPORT_RESULTS_FULL'=>'Export data met contacten, e-mail, Accountnaam, adres, telefoon, etc.',
 'LBL_EXPORT_RESULTS_GO'=>'Export',
 'LBL_MAILER_EXPORT_IGNORE' => '--negeer--',
 'LBL_MAILER_EXPORT_CHECKED' =>'Gecontroleerd',
@@ -236,6 +245,7 @@ $mod_strings = Array(
 
 // Account Hierarchy
 'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Toon Account Hierarchie', 
+
 
 );
 

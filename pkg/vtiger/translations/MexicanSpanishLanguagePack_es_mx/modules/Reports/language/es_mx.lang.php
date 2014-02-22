@@ -13,10 +13,10 @@
  ********************************************************************************
 *  Module       : Reports
 *  Language     : Español
-*  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
-*  Author       : Rafael Soler
-*  Author       : Francisco Hernandez Odin Consultores www.odin.mx
+*  Version      : 5.4.0
+*  Created Date : 2007-03-30
+*  Last change  : 2012-02-28
+*  Author       : Odin Consultores, Francisco Hernandez
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -44,7 +44,7 @@ $mod_strings = Array(
 'LBL_TABULAT_REPORT'=>'Informe Tabulado',
 'LBL_REPORT_TYPE_HDR1'=>'El Informe Tabular es la manera más simple y más rápida de conseguir un listado de sus datos.',
 'LBL_SUMMARY_REPORT'=>'Informe de Resumen',
-'LBL_REPORT_TYPE_HDR2'=>'Los Informes de resumen permiten que usted vea sus datos junto con los subtotales y otra información resumida',
+'LBL_REPORT_TYPE_HDR2'=>'Los Informes de resumen permiten que veas los datos junto con los subtotales y otra información en resumen',
 'LBL_AVAILABLE_COLUMNS'=>'Columnas Disponibles:',
 'LBL_SELECTED_COLUMNS'=>'Columnas Seleccionadas:',
 'LBL_ADD_BUTTON'=>'Agregar',
@@ -77,7 +77,7 @@ $mod_strings = Array(
 'LBL_EXPORTXL_BUTTON'=>'Exportar a Excel',
 
 //Added for 5 Beta
-'LBL_NO_PERMISSION'=>'Tú perfil no está autorizado a ver los informes de uno de los módulos',
+'LBL_NO_PERMISSION'=>'Tu perfil no está autorizado a ver los informes de uno de los módulos',
 'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS'=>'Seleccione columnas para generar el informe',
 'LBL_AVAILABLE_FIELDS'=>'Campos Disponibles',
 'LBL_SELECTED_FIELDS'=>'Campos Seleccionados',
@@ -100,7 +100,7 @@ $mod_strings = Array(
 'LBL_TYPE_THE_NAME'=>'Introduzca el Nombre',
 'LBL_DESCRIPTION_FOR_REPORT'=>'Descripción para el Informe',
 'LBL_REPORT_NAME'=>'Nombre del Informe',
-'LBL_DESCRIPTION'=>'Descrición',
+'LBL_DESCRIPTION'=>'Descripción',
 'LBL_TOOLS'=>'Herramientas',
 'LBL_AND'=>'y',
 'LBL_ADD_NEW_GROUP'=>'Agregar un Nuevo Grupo',
@@ -109,7 +109,7 @@ $mod_strings = Array(
 'LBL_SELECT_REPORT_TYPE_BELOW'=>'Seleccione abajo el tipo de Informe',
 'LBL_TABULAR_FORMAT'=>'Formato Tabulado',
 'LBL_TABULAR_REPORTS_ARE_SIMPLEST'=>'Los Informes Tabulados son la manera más sencilla y rápida de obtener sus datos',
-'LBL_SUMMARY_REPORT_VIEW_DATA_WITH_SUBTOTALS'=>'Los Informes de Resumen le permiten ver sus datos junto con los subtotales y otra información resumida',
+'LBL_SUMMARY_REPORT_VIEW_DATA_WITH_SUBTOTALS'=>'Los Informes de resumen permiten que veas los datos junto con los subtotales y otra información en resumen',
 'LBL_FILTERS'=>'Filtros',
 'LBL_MOVE_TO'=>'Mover a',
 'LBL_RENAME_FOLDER'=>'Renombrar Directorio',
@@ -206,7 +206,7 @@ $mod_strings = Array(
 'NO_COLUMN'=>'No Hay Columnas disponibles para Total',
 
 // Added/Updated for vtiger CRM 5.0.4
-'LBL_REPORT_DELETED' => 'El Informe que intenta ver ha sido eliminado.',
+'LBL_REPORT_DELETED' => 'El Informe que intentas ver ha sido eliminado.',
 
 //Added for Reports
 'LBL_SHARING'=>'Compartir',
@@ -268,6 +268,19 @@ $mod_strings = Array(
 
 'LBL_SAVE_REPORT' => 'Guardar',
 'LBL_SAVE_REPORT_AS' => 'Guardar como...',
+
+//Report Charts
+'LBL_VIEW_CHARTS' => 'Ver Gráficos',
+'LBL_ADD_CHARTS' => 'Añadir Gráfico a Portada',
+'LBL_HOME_REPORT_NAME' => 'Nombre Informe',
+'LBL_HOME_HORIZONTAL_BARCHART' => 'Gráfico Barras Horizontal',
+'LBL_HOME_VERTICAL_BARCHART' => 'Gráfico Barras Vertical',
+'LBL_HOME_PIE_CHART' => 'Gráfico circular',
+'LBL_HOME_REPORT_TYPE' => 'Tipo Informe',
+'LBL_HOME_WINDOW_TITLE' => 'Título de Ventana',
+'LBL_GROUPING_TIME' => 'Agrupar por Tiempo',
+'LBL_WIDGET_ADDED' => 'Widget Añadido Correctamente.',
+
 )
 
 ?>

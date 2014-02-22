@@ -10,6 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
+ * Contributor(s): ______________________________________.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -169,7 +170,6 @@ $mod_strings = Array(
 'Tax Type'=>'Steuertyp',
 'Discount Percent'=>'Rabatt (%)',
 'Discount Amount'=>'Rabatt',
-'Terms & Conditions'=>'Geschäftsbedingungen',
 'Adjustment'=>'Anpassung',
 'S&H Amount'=>'Versandkosten',
 
@@ -177,6 +177,10 @@ $mod_strings = Array(
 'Quote No'=>'Angebotsnr.',
 
 'SINGLE_Quotes'=>'Angebot',
+'Add Service Contract'=>'hinzufügen Servicevertrag',
+'Quotes ID'=>'Angebots-ID',
+
+'Terms & Conditions'=>'Geschäftsbedingungen',
 );
 
 ?>

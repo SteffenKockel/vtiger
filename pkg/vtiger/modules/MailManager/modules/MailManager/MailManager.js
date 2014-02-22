@@ -220,7 +220,7 @@ if (typeof(MailManager) == 'undefined') {
                         '_operationarg' : 'move',
                         '_msgno' : encodeURIComponent(temp),
                         '_folder' : encodeURIComponent(currentFolderName),
-                        '_moveFolder' : encodeURIComponent(moveToFolderName)
+                        '_moveFolder' : moveToFolderName.replace('�','')
                     };
                     MailManager.Request('index.php?'+MailManager._baseurl() , params, callbackFunction).
                     then( function () {
@@ -763,6 +763,7 @@ if (typeof(MailManager) == 'undefined') {
         /* Compose new mail */
         mail_compose: function(){
             MailManager.close_all();
+			jQuery('#_replydiv_').html(jQuery('#replycontentdiv').html());
             jQuery('#_replydiv_').show();
 			
             jQuery("#_mail_replyfrm_to_").val('');
@@ -773,6 +774,10 @@ if (typeof(MailManager) == 'undefined') {
             jQuery('.qq-upload-list').children().remove();
             jQuery('#attachments').children().remove();
             jQuery('#attachmentCount').val('');
+			if (MailManager.mail_reply_rteinstance) {
+                delete CKEDITOR.instances['_mail_replyfrm_body_'];
+                MailManager.mail_reply_rteinstance = false;
+            }
             MailManager.mail_reply_rteinit('');
             MailManager.createUploader();
 
@@ -928,7 +933,7 @@ if (typeof(MailManager) == 'undefined') {
 		
         /* Track and Initialize RTE instance for reply */
         mail_reply_rteinstance: false,
-        mail_reply_rteinit: function(data){
+		mail_reply_rteinit: function(data){
             if (MailManager.mail_reply_rteinstance == false) {
                 var textAreaName = '_mail_replyfrm_body_';
                 CKEDITOR.replace(textAreaName, {
@@ -947,17 +952,23 @@ if (typeof(MailManager) == 'undefined') {
         /* Close reply UI */
         mail_reply_close: function(){
             jQuery('#_replydiv_').hide();
-            var contentDiv2 = jQuery('#_contentdiv2_').html();
-            if (contentDiv2 == '') {
-                jQuery('#_contentdiv_').show();
-            } else {
-                jQuery('#_contentdiv2_').show();
-            }
+			if(jQuery('#mm_selected_folder').val()=='mm_settings'){
+				MailManager.open_settings();
+			}
+			else{
+				var contentDiv2 = jQuery('#_contentdiv2_').html();
+				if (contentDiv2 == '') {
+					jQuery('#_contentdiv_').show();
+				} else {
+					jQuery('#_contentdiv2_').show();
+				}
+			
             
-            // Updated to highlight selected folder
-            var currentSelectedFolder = jQuery('#mailbox_folder').val();
-            MailManager.updateSelectedFolder(currentSelectedFolder);
-            jQuery('#mm_selected_folder').val(currentSelectedFolder);
+				// Updated to highlight selected folder
+				var currentSelectedFolder = jQuery('#mailbox_folder').val();
+				MailManager.updateSelectedFolder(currentSelectedFolder);
+				jQuery('#mm_selected_folder').val(currentSelectedFolder);
+			}
         },
 		
         /* Forward email */
@@ -1044,7 +1055,13 @@ if (typeof(MailManager) == 'undefined') {
             if (form.subject.value == '' && !confirm(MailManager.i18n('JSLBL_SendWith_EmptySubject'))) {
                 return false;
             }
-			
+			var bodyval = $('_mail_replyfrm_body_').value.trim();
+			if (bodyval == '<br />' && !confirm(MailManager.i18n('JSLBL_SendWith_EmptyText'))) {
+				return false;
+			}
+			if (bodyval == '' && !confirm(MailManager.i18n('JSLBL_SendWith_EmptyText'))) {
+				return false;
+			}
             MailManager.progress_show(MailManager.i18n('JSLBL_Sending'), ' ...');
 
             var params = {
@@ -1202,7 +1219,7 @@ if (typeof(MailManager) == 'undefined') {
             // Based on target perform the operation
             var targetnode = $(target);
             if (targetnode) {
-                if (targetnode.value.length > 0 && !targetnode.value.substr(-1) != ',') {
+                if (targetnode.value.length > 0 && targetnode.value.substr(-1) != ',') {
                     inputstr = ',' + inputstr;
                 }
                 targetnode.value += inputstr;
@@ -1609,6 +1626,8 @@ if (typeof(MailManager) == 'undefined') {
             } else {
                 jQuery(element).parent().parent().addClass('mm_lvtColData').removeClass('mm_lvtColDataHover');
             }
+			var	name = element.name;
+			default_togglestate(name,'parentCheckBox');
         },
 
         highLightListMail : function(element) {

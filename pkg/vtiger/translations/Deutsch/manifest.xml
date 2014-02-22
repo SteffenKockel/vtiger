@@ -4,9 +4,9 @@
   <name>Deutsch</name>
   <label>DE Deutsch</label>
   <prefix>de_de</prefix>
-  <version>5.3.0</version>
+  <version>5.4.0</version>
   <dependencies>
-    <vtiger_version>5.3.0</vtiger_version>
+    <vtiger_version>5.4.0</vtiger_version>
 	<vtiger_max_version>5.*</vtiger_max_version>
   </dependencies>
   <license>
@@ -18,8 +18,9 @@
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
  * the specific language governing rights and limitations under the License.
  ********************************************************************************
+ *  Designe by Different Solutions GmbH
  *  Language     : Deutsch
- *  Version      : 5.3.0
+ *  Version      : 5.4.0
  ********************************************************************************
 ]]></inline>
   </license>

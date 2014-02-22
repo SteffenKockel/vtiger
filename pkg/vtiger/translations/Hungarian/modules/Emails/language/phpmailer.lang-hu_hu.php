@@ -7,9 +7,8 @@
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
  *********************************************************************************
-/*********************************************************************************
- * $Header:  E:\D_root\Dokumentumok\vtiger520\hungarian52\trunk\modules\Emails\language\phpmailer.lang-hu_hu.php - 19:39 2010.05.21. $
- * Description:  Defines the Hungarian language pack for the Emails module vtiger 5.2.0
+ * $Header:  \modules\Emails\language\phpmailer.lang-hu_hu.php - 11:31 2011.11.11. $
+ * Description:  Defines the Hungarian language pack for the Emails module vtiger 5.3.x
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki

@@ -131,6 +131,10 @@
 			if(isset($row[$meta->getObectIndexColumn()])){
 				unset($row[$meta->getObectIndexColumn()]);
 			}
+
+			$row = DataTransform::sanitizeDateFieldsForInsert($row,$meta);
+			$row = DataTransform::sanitizeCurrencyFieldsForInsert($row,$meta);
+
 			return $row;
 			
 		}
@@ -241,7 +245,33 @@
 			}
 			return $row;
 		}
-		
+
+		function sanitizeDateFieldsForInsert($row,$meta){
+			global $current_user;
+			$moduleFields = $meta->getModuleFields();
+			foreach($moduleFields as $fieldName=>$fieldObj){
+				if($fieldObj->getFieldDataType()=="date"){
+					if(!empty($row[$fieldName])){
+						$dateFieldObj = new DateTimeField($row[$fieldName]);
+						$row[$fieldName] = $dateFieldObj->getDisplayDate($current_user);
+					}
+				}
+			}
+			return $row;
+		}
+
+		function sanitizeCurrencyFieldsForInsert($row,$meta){
+			global $current_user;
+			$moduleFields = $meta->getModuleFields();
+			foreach($moduleFields as $fieldName=>$fieldObj){
+				if($fieldObj->getFieldDataType()=="currency"){
+					if(!empty($row[$fieldName])){
+						$row[$fieldName] = CurrencyField::convertToUserFormat($row[$fieldName],$current_user,true);
+					}
+				}
+			}
+			return $row;
+		}
 	}
 	
 ?>

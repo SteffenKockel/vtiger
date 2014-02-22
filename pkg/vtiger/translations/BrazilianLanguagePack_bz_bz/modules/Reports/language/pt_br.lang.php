@@ -14,10 +14,10 @@
  ********************************************************************************/
 /*********************************************************************************
  * $Header:
- * Description:  Defines the English language pack for the Account module.
+ * Description:   Defines the English language pack for the Reports module.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|09/11/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -116,7 +116,7 @@ $mod_strings = Array(
 'LBL_RENAME_FOLDER'=>'Renomear Folder',
 'LBL_DELETE_FOLDER'=>'Apagar Folder',
 
-'Account and Contact Reports'=>'Relatórios de Contas e Contatos',
+'Account and Contact Reports'=>'Relatórios de Organizações e Contatos',
 'Lead Reports'=>'Relatórios de Leads',
 'Potential Reports'=>'Relatórios de Oportunidades',
 'Activity Reports'=>'Relatórios de Atividades',
@@ -127,11 +127,11 @@ $mod_strings = Array(
 'SalesOrder Reports'=>'Relatórios de Pedidos de Vendas', //Added for SO
 'Invoice Reports'=>'Relatórios de Faturas',
 'Campaign Reports'=>'Relatórios de Campanhas', //Added for Campaigns
-'Contacts by Accounts'=>'Contatos por Contas',
-'Contacts without Accounts'=>'Contatos sem Contas',
+'Contacts by Accounts'=>'Contatos por Organizações',
+'Contacts without Accounts'=>'Contatos sem Organizações',
 'Contacts by Potentials'=>'Contatos por Oportunidades',
-'Contacts related to Accounts'=>'Contatos relacionados às Contas',
-'Contacts not related to Accounts'=>'Contatos não relacionados às Contas',
+'Contacts related to Accounts'=>'Contatos relacionados às Organizações',
+'Contacts not related to Accounts'=>'Contatos não relacionados às Organizações',
 'Contacts related to Potentials'=>'Contatos relacionados às Oportunidades',
 'Lead by Source'=>'Lead por Fonte',
 'Lead Status Report'=>'Relatório Status do Lead',
@@ -148,7 +148,7 @@ $mod_strings = Array(
 'Product Detailed Report'=>'Relatório Detalhado do Produto',
 'Products related to Contacts'=>'Produtos relacionados aos Contatos',
 'Open Quotes'=>'Cotações Abertas',
-'Quotes Detailed Report'=>'Relatório Detalhado das Contações',
+'Quotes Detailed Report'=>'Relatório Detalhado das Cotações',
 'Quotes that are Open'=>'Cotações que estão Abertas',
 'PurchaseOrder by Contacts'=>'Pedido Compra por Contatos',
 'PurchaseOrder Detailed Report'=>'Relatório Detalhado dos Pedidos Compras',
@@ -224,6 +224,10 @@ $mod_strings = Array(
 'NO_REL_MODULES'=>'Nenhum Módulo Relacionado para o Módulo Selecionado',
 'LBL_REPORT_GENERATION_FAILED'=>'Falha ao Gerar Relatório!',
 
+'LBL_OR'=>'ou',
+'LBL_NEW_GROUP'=>'Novo Grupo',
+'LBL_DELETE_GROUP'=>'Apagar Grupo',
+'LBL_NEW_CONDITION'=>'Nova Condição',
 'LBL_SHARING_TYPE'=>'Compartilhar Tipo',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecionar Compartilhar Tipo para Controlar Acesso ao Relatório', 
 'LBL_ACTION' => 'Ação',
@@ -266,6 +270,19 @@ $mod_strings = Array(
 
 'LBL_SAVE_REPORT' => 'Salvar',
 'LBL_SAVE_REPORT_AS' => 'Salvar Relatório como...',
+
+//Report Charts
+'LBL_VIEW_CHARTS' => 'Visualizar Gráficos',
+'LBL_ADD_CHARTS' => 'Adicionar Gráfico na Página Principal',
+'LBL_HOME_REPORT_NAME' => 'Nome Relatório',
+'LBL_HOME_HORIZONTAL_BARCHART' => 'Gráfico de Barras Horizontal',
+'LBL_HOME_VERTICAL_BARCHART' => 'Gráfico de Barras Vertical',
+'LBL_HOME_PIE_CHART' => 'Gráfico Pizza',
+'LBL_HOME_REPORT_TYPE' => 'Tipo Relatório',
+'LBL_HOME_WINDOW_TITLE' => 'Título Janela',
+'LBL_GROUPING_TIME' => 'Grupo por Data',
+'LBL_WIDGET_ADDED' => 'Widget Adicionado com Sucesso.',
+'LBL_UNDEFINED' => 'Indefinido',
 )
 
 ?>

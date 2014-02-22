@@ -14,10 +14,10 @@
  ********************************************************************************/
 /*********************************************************************************
  * $Header$
- * Description:  Defines the English language pack
+ * Description:  Defines the English language pack for FAQ Module
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -78,10 +78,10 @@ $mod_strings = Array(
 'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar endereço de Entrega para endereço de Faturamento',
 'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Você tem certeza que deseja remover este registro como uma organização membro?',
 'LBL_DUPLICATE'=>'Possibilidade de FAQ Duplicada',
-'MSG_DUPLICATE' => 'Criando esta Conta pode ser que a vtiger_potentialy crie uma vtiger_account duplicada. Você pode seleciona uma outra Conta da lista abaixo ou clicar sobre Criar Nova FAQ para continuar criando uma nova Conta com os dados previamente inseridos.',
+'MSG_DUPLICATE' => 'Criando esta Organização pode ser que a vtiger_potentialy crie uma vtiger_account duplicada. Você pode seleciona uma outra Organização da lista abaixo ou clicar sobre Criar Nova FAQ para continuar criando uma nova Organização com os dados previamente inseridos.',
 
 'LBL_INVITEE'=>'Contatos',
-'ERR_DELETE_RECORD'=>"Defina um número de registro para deletar a Conta.",
+'ERR_DELETE_RECORD'=>"Defina um número de registro para deletar a Organização.",
 
 'LBL_SELECT_ACCOUNT'=>'Selecione FAQ',
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
@@ -138,7 +138,7 @@ $mod_strings = Array(
 // Module Sequence Numbering
 'Faq No' => 'No. Faq',
 // END
-
+'Faq ID' => 'ID FAQ',
 );
 
 ?>

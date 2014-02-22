@@ -110,7 +110,7 @@ var validateFieldData = {
 		};
 		this.validateTime = function (value) {
 			value = trim(value);
-			var re = /^\d{1,2}\:\d{1,2}$/
+			var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/ 
 			if (!re.test(value)) {
 				return false;
 			}

@@ -37,7 +37,7 @@ $mod_strings = Array(
 /*picklist values*/
 'In Service'=>'In Service',
 'Out-of-service'=>'Out-of-service',
-
+'Assets ID'=>'Assets ID',
 
 );
 ?>

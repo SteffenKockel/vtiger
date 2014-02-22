@@ -35,40 +35,40 @@ if(!is_admin($current_user)) {
 }
 
 $modules = getPickListModules();
-if(!empty($_REQUEST['moduleName'])){
+if(!empty($_REQUEST['moduleName'])) {
 	$fld_module = vtlib_purify($_REQUEST['moduleName']);
-}else{
+}else {
 	$module = array_keys($modules);
 	$fld_module = $module[0];
 }
 
-if(!empty($_REQUEST['roleid'])){
+if(!empty($_REQUEST['roleid'])) {
 	$roleid = vtlib_purify($_REQUEST['roleid']);
-}else{
+}else {
 	$roleid = 'H2';		//set default to CEO
 }
 
-if(!empty($_REQUEST['uitype'])){
+if(!empty($_REQUEST['uitype'])) {
 	$uitype = vtlib_purify($_REQUEST['uitype']);
 }
 
 $smarty = new vtigerCRM_Smarty;
 
-if((sizeof($picklists_entries) %3) != 0){
-	$value = (sizeof($picklists_entries) + 3 - (sizeof($picklists_entries))%3); 
-}else{
+if((sizeof($picklists_entries) %3) != 0) {
+	$value = (sizeof($picklists_entries) + 3 - (sizeof($picklists_entries))%3);
+}else {
 	$value = sizeof($picklists_entries);
 }
 
-if($fld_module == 'Events'){
+if($fld_module == 'Events') {
 	$temp_module_strings = return_module_language($current_language, 'Calendar');
-}else{
+}else {
 	$temp_module_strings = return_module_language($current_language, $fld_module);
 }
 $picklists_entries = getUserFldArray($fld_module,$roleid);
 $available_module_picklist = array();
 $picklist_fields = array();
-if(!empty($picklists_entries)){
+if(!empty($picklists_entries)) {
 	$available_module_picklist = get_available_module_picklist($picklists_entries);
 	$picklist_fields = array_chunk(array_pad($picklists_entries,$value,''),3);
 }
@@ -88,9 +88,9 @@ $smarty->assign("THEME",$theme);
 $smarty->assign("UITYPE", $uitype);
 $smarty->assign("SEL_ROLEID",$roleid);
 
-if($_REQUEST['directmode'] != 'ajax'){
+if($_REQUEST['directmode'] != 'ajax') {
 	$smarty->display("modules/PickList/PickList.tpl");
-}else{
+}else {
 	$smarty->display("modules/PickList/PickListContents.tpl");
 }
 

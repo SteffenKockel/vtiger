@@ -10,11 +10,11 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Emails/language/en_us.lang.php,v 1.17 2005/03/28 06:31:38 rank Exp $
- * Description:  Defines the English language pack for the Account module.
+ * Description:  Defines the English language pack for the Webmail.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -32,7 +32,7 @@ $mod_strings = Array(
 'LBL_MOVE_TO'=>'Mover Para',
 'LBL_DELETE'=>'Apagar',
       
-'ERR_DELETE_RECORD'=>"Um registro deve ser especificado para apagar a Conta.",
+'ERR_DELETE_RECORD'=>"Um registro deve ser especificado para apagar a Organização.",
 'LBL_DATE_SENT'=>'Data Envio:',
 'LBL_SUBJECT'=>'Assunto :',
 'LBL_DATE_AND_TIME'=>'Data & Hora Envio:',
@@ -53,7 +53,7 @@ $mod_strings = Array(
 'LBL_JUNK_MAILS'=>'Lixo',
 'LBL_TO_LEADS'=>'Para Leads',
 'LBL_TO_CONTACTS'=>'Para Contatos',
-'LBL_TO_ACCOUNTS'=>'Para Contas',
+'LBL_TO_ACCOUNTS'=>'Para Organizações',
 'LBL_MY_MAILS'=>'Meus E-mails',
 'LBL_QUAL_CONTACT'=>'Mensagens Qualificadas (Como Contatos)',
 'LBL_MAILS'=>'Mensagens',
@@ -96,8 +96,8 @@ $mod_strings = Array(
 'LBL_PRODUCT_TITLE'=>'Produtos',
 'LBL_NEW_CONTACT'=>'Novo Contato',
 'LBL_CONTACT_TITLE'=>'Contatos',
-'LBL_NEW_ACCOUNT'=>'Nova Conta',
-'LBL_ACCOUNT_TITLE'=>'Contas',
+'LBL_NEW_ACCOUNT'=>'Nova Organização',
+'LBL_ACCOUNT_TITLE'=>'Organizações',
       
 // Added vtiger_fields after vtiger4 - Beta
 'LBL_USER_TITLE'=>'Usuários',
@@ -130,10 +130,10 @@ $mod_strings = Array(
 'LBL_FETCH_WEBMAIL'=>'Receber E-mail',
 //Added for 4.2 Release -- CustomView
 'LBL_ALL'=>'Todos',
-'MESSAGE_CONTACT_NOT_WANT_MAIL'=>'este Contato não deseja receber e-mails.',
+'MESSAGE_CONTACT_NOT_WANT_MAIL'=>'Este Contato não deseja receber e-mails.',
 'LBL_WEBMAILS_TITLE'=>'WebMails',
-'LBL_EMAILS_TITLE'=>'E-mails',
-'LBL_MAIL_CONNECT_ERROR_INFO'=>'Erro conectando Servidor de Mensagem!<br> Verifique em Minhas Contas->Lista Servidor Mensagem-> Lista Conta Correio',
+'LBL_EMAILS_TITLE'=>'Email',
+'LBL_MAIL_CONNECT_ERROR_INFO'=>'Erro conectando Servidor de Mensagem!<br> Verifique em Minhas Organizações->Lista Servidor Mensagem-> Lista Organização Correio',
 // Added for 5.0.3 release
 'LBL_MAIL_CONNECT_ERROR'=>'Não é possível conectar ao Servidor de Mensagem. Por favor, verifique os detalhes do Servidor de Mensagem',
 'IN_REPLY_TO_THE_MESSAGE' => 'Em resposta à mensagem enviada por',
@@ -179,5 +179,7 @@ $mod_strings = Array(
 
 'LBL_LIST_COUNT'=>'Mostrar',
 
+'LBL_INSTEAD_OF_WEBMAILS_USE' => 'Ao invés de Webmails, por favor, clique aqui para usar',
+'LBL_PLEASE_CLICK_HERE_TO_GO_TO' => 'Por favor, clique aqui para ir para',
 );
 ?>

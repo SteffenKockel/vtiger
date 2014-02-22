@@ -14,8 +14,8 @@
  ********************************************************************************
 *  Module       : FAQ
 *  Language     : Español
-*  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
+*  Version      : 5.4.0
+*  Created Date : 2007-03-30 Last change : 2012-02-28
 *  Author       : Rafael Soler
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
@@ -64,7 +64,7 @@ $mod_strings = Array(
 'LBL_TYPE'=>'Tipo:',
 'LBL_ANNUAL_REVENUE'=>'Facturación Anual:',
 'LBL_ADDRESS_INFORMATION'=>'Información de la Dirección',
-'LBL_ACCOUNT_INFORMATION'=>'Informaciaón de FAQ',
+'LBL_ACCOUNT_INFORMATION'=>'Información de FAQ',
 'LBL_BILLING_ADDRESS'=>'Dirección (Factura):',
 'LBL_SHIPPING_ADDRESS'=>'Dirección (Envío):',
 'LBL_ANY_ADDRESS'=>'Dirección (Alternativa):',
@@ -78,7 +78,7 @@ $mod_strings = Array(
 'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar Envío a Factura',
 'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'¿Está seguro que desea eliminar este registro como miembro de la organización?',
 'LBL_DUPLICATE'=>'Posible FAQ duplicada',
-'MSG_DUPLICATE'=>'Al crear esta FAQ puede crear una FAQ duplicada. Puede seleccionar una FAQ de la lista inferior o hacer pinchar en \"Crea FAQ Nuevo\" para crear una nueva FAQ con los datos introducidos.',
+'MSG_DUPLICATE'=>'Al crear esta FAQ puede crear una FAQ duplicada. Puede seleccionar una FAQ de la lista inferior o hacer pinchar en Crea FAQ Nuevo para crear una nueva FAQ con los datos introducidos.',
 
 'LBL_INVITEE'=>'Contactos',
 'ERR_DELETE_RECORD'=>'Debe especificar un registro para poder eliminar la FAQ.',
@@ -139,6 +139,7 @@ $mod_strings = Array(
 'Faq No' => 'Núm. FAQ',
 // END
 
+'Faq ID' => 'Id FAQ',
 );
 
 ?>

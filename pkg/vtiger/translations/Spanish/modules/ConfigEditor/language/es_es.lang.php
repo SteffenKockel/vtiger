@@ -6,6 +6,14 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * 
+ * ***********************************************************
+*  Module       : ConfigEditor
+*  Language     : ES Spanish
+*  Version      : vt5.4.0
+*  Created Date : 2012-02-27
+*  Author       : JPL TSolucio, S.L.
+*  License      : MPL 1.1
  ************************************************************************************/
 $mod_strings = Array (
 	
@@ -39,6 +47,7 @@ $mod_strings = Array (
 	'LBL_DOUBLE_CHECK_INFO'=>'Por favor, verifica los valores introducidos antes de guardar.',
 	'LBL_HELP_INFO'=>"Esto se utiliza como correo de respuesta al notificar un usuario recién creado,
 					notificar de la asignación de una incidencia y otras notificaciones y recordatorios en general.",
+	'LBL_RESTRICTED_CHARACTERS'=>"Caracteres especiales como ' &#34 y ; no son permitidos",
 
 );
 

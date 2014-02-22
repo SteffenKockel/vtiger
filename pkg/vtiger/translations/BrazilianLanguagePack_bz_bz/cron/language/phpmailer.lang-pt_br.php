@@ -6,7 +6,7 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-* Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|14/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+* Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|01/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
 ********************************************************************************/
 
 /**

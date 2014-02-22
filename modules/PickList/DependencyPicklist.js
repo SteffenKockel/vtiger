@@ -16,7 +16,11 @@ function changeDependencyPicklistModule(){
 	
 	new Ajax.Request(
 		'index.php',
-		{queue: {position: 'end', scope: 'command'},
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
 			method: 'post',
 			postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&moduleName='+encodeURIComponent(module),
 			onComplete: function(response) {
@@ -24,7 +28,7 @@ function changeDependencyPicklistModule(){
 				$("picklist_datas").update(response.responseText);
 			}
 		}
-	);
+		);
 }
 
 function addNewDependencyPicklist() {
@@ -38,7 +42,11 @@ function addNewDependencyPicklist() {
 	
 	new Ajax.Request(
 		'index.php',
-		{queue: {position: 'end', scope: 'command'},
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
 			method: 'post',
 			postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&moduleName='+encodeURIComponent(selectedModule),
 			onComplete: function(response) {
@@ -47,7 +55,7 @@ function addNewDependencyPicklist() {
 				$("picklist_datas").update(response.responseText);
 			}
 		}
-	);
+		);
 }
 
 function editNewDependencyPicklist(module) {
@@ -69,7 +77,11 @@ function editNewDependencyPicklist(module) {
 
 	new Ajax.Request(
 		'index.php',
-		{queue: {position: 'end', scope: 'command'},
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
 			method: 'post',
 			postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&'+urlstring,
 			onComplete: function(response) {
@@ -77,7 +89,7 @@ function editNewDependencyPicklist(module) {
 				$("picklist_datas").update(response.responseText);
 			}
 		}
-	);
+		);
 }
 
 function editDependencyPicklist(module, sourceField, targetField) {
@@ -87,7 +99,11 @@ function editDependencyPicklist(module, sourceField, targetField) {
 	
 	new Ajax.Request(
 		'index.php',
-		{queue: {position: 'end', scope: 'command'},
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
 			method: 'post',
 			postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&'+urlstring,
 			onComplete: function(response) {
@@ -96,25 +112,33 @@ function editDependencyPicklist(module, sourceField, targetField) {
 				$("picklist_datas").update(response.responseText);
 			}
 		}
-	);	
+		);
 }
 
-function deleteDependencyPicklist(module, sourceField, targetField) {
-	$("status").style.display="inline";
-
-	var urlstring = 'moduleName='+encodeURIComponent(module)+'&sourcefield='+sourceField+'&targetfield='+targetField;
-
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=deletedependency&'+urlstring,
-			onComplete: function(response) {
-				$("status").style.display="none";
-				$("picklist_datas").update(response.responseText);
+function deleteDependencyPicklist(module, sourceField, targetField, msg) {
+	if(confirm(msg)) {
+		$("status").style.display="inline";
+	
+		var urlstring = 'moduleName='+encodeURIComponent(module)+'&sourcefield='+sourceField+'&targetfield='+targetField;
+	
+		new Ajax.Request(
+			'index.php',
+			{
+				queue: {
+					position: 'end',
+					scope: 'command'
+				},
+				method: 'post',
+				postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=deletedependency&'+urlstring,
+				onComplete: function(response) {
+					$("status").style.display="none";
+					$("picklist_datas").update(response.responseText);
+				}
 			}
-		}
-	);
+		);
+	} else {
+		return false;
+	}
 }
 
 function saveDependency(module) {
@@ -130,7 +154,11 @@ function saveDependency(module) {
 	
 	new Ajax.Request(
 		'index.php',
-		{queue: {position: 'end', scope: 'command'},
+		{
+			queue: {
+				position: 'end',
+				scope: 'command'
+			},
 			method: 'post',
 			postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=savedependency&'+urlstring,
 			onComplete: function(response) {
@@ -138,7 +166,7 @@ function saveDependency(module) {
 				$("picklist_datas").update(response.responseText);
 			}
 		}
-	);	
+		);
 }
 
 function serializeData() {	
@@ -150,32 +178,37 @@ function serializeData() {
 
 	for(var i=0; i<maxMappingCount; ++i) {		
 		var sourceValueId = modifiedMappingValues[i];
-		var sourceValue = $(sourceValueId).value;
+		var sourceValue = document.getElementById(sourceValueId).value;
 		var mappingIndex = sourceValueId.replace(sourceField,'');
 		var node = $('valueMapping'+mappingIndex);
 		if (node != null && typeof(node) != 'undefined') {
 			var targetValueNodes = document.getElementsByName('valueMapping'+mappingIndex);
 			var targetValues = [];
 			for (var j=0;j<targetValueNodes.length;++j) {
-	            var targetValueNode = targetValueNodes[j];
+				var targetValueNode = targetValueNodes[j];
 				if(targetValueNode != null && targetValueNode.parentNode != null
-					&& targetValueNode.parentNode.hasClassName('selectedCell')) {
-						targetValues.push(targetValueNode.value);
+					&& jQuery(targetValueNode).parent().hasClass('selectedCell')) {
+					targetValues.push(targetValueNode.value);
 				}
-	        }
+			}
 
 			if(targetValues.length == 0) {
 				alert(alert_arr.ERR_ATLEAST_ONE_VALUE_FOR + " " + sourceValue);
 				return false;
 			}
 
-			valueMapping[i] = {"sourcevalue":sourceValue,
-								"targetvalues":targetValues
-							};
+			valueMapping[i] = {
+				"sourcevalue":sourceValue,
+				"targetvalues":targetValues
+			};
 		}
 	}
 	
-	var formData = {"sourcefield": sourceField, "targetfield": targetField, "valuemapping": valueMapping};
+	var formData = {
+		"sourcefield": sourceField,
+		"targetfield": targetField,
+		"valuemapping": valueMapping
+	};
 	return JSON.stringify(formData);
 }
 
@@ -186,68 +219,63 @@ function selectSourceValue(sourceValueIndex) {
 }
 
 function selectTargetValue(sourceIndex, targetValue) {
-	var targetElements = document.getElementsByName('valueMapping'+sourceIndex);
-	for(var i=0; i<targetElements.length; ++i) {
-		var targetElement = targetElements[i];
-		if(targetElement.value == targetValue) {
-			selectCell(targetElement.parentNode);
+	var targetElements = jQuery("input[name='valueMapping"+sourceIndex+"']");
+
+	targetElements.each(function(){
+		if(jQuery(this).val() == targetValue) {
+			selectCell(jQuery(this).parent());
 		}
-	}
+	});
 }
 
 function unselectTargetValue(sourceIndex, targetValue) {
-	var targetElements = document.getElementsByName('valueMapping'+sourceIndex);
-	for(var i=0; i<targetElements.length; ++i) {
-		var targetElement = targetElements[i];
-		if(targetElement.value == targetValue) {
-			unselectCell(targetElement.parentNode);
+	
+	var targetElements = jQuery(document.getElementsByName("valueMapping"+sourceIndex));
+	
+	targetElements.each(function(){
+		if(jQuery(this).val() == targetValue) {
+			unselectCell(jQuery(this).parent());
 		}
-	}
+	});
 }
 
 function selectCell(element) {
 	if(element != null) {
-		element.removeClassName('unselectedCell');
-		element.addClassName('selectedCell');
+		jQuery(element).removeClass('unselectedCell');
+		jQuery(element).addClass('selectedCell');
 	}
 }
 
 function unselectCell(element) {
 	if(element != null) {
-		element.removeClassName('selectedCell');
-		element.addClassName('unselectedCell');
+		jQuery(element).removeClass('selectedCell');
+		jQuery(element).addClass('unselectedCell');
 	}
 }
 
 function loadMappingForSelectedValues() {
-	var sourceElements = document.getElementsByName('selectedSourceValues');
+	var sourceElements = jQuery('input[name="selectedSourceValues"]:checked');
+	
+	var classElements = jQuery(".picklistValueMapping");
+	classElements.hide();
 
-	var classElements = $$('.picklistValueMapping');
-	for(var i=0; i<classElements.length; ++i) {
-		classElements[i].style.display = 'none';
-	}
+	sourceElements.each(function(){
+		var selectedElementId = (((jQuery(this).val()).replace(/(\W)/gi,"\\$1")).replace(/\\\s/gi,'.'));
+		var selectedElementCells = jQuery("."+selectedElementId);
+		selectedElementCells.show();
+	});
 
-	for(var i=0; i<sourceElements.length; ++i) {
-		var sourceElement = sourceElements[i];
-		if(sourceElement.checked == true) {
-			var selectedElementId = sourceElement.value;
-			var selectedElementCells = $$('.'+selectedElementId);
-			for(var j=0; j<selectedElementCells.length; ++j) {
-				selectedElementCells[j].style.display = 'table-cell';
-			}
-		}
-	}
 }
 
-function handleCellClick(event, element, selectedSourceId) {
+function handleCellClick(event, element) {
 	
 	if(element.tagName == 'TD') {
-		if(element.hasClassName('selectedCell')) {
+		if(jQuery(element).hasClass('selectedCell')) {
 			unselectCell(element);
 		} else {
 			selectCell(element);
 		}
-
+		var selectedSourceId = (jQuery(element).attr('id')).slice(7);
 		if(typeof selectedSourceId != 'undefined' && modifiedMappingValues.indexOf(selectedSourceId) == -1) {
 			modifiedMappingValues.push(selectedSourceId);
 		}
@@ -256,15 +284,15 @@ function handleCellClick(event, element, selectedSourceId) {
 
 var isMouseDown = false;
 
-function handleCellMouseDown(event, element, selectedSourceId) {
+function handleCellMouseDown(event, element) {
 	isMouseDown = true;
-	handleCellClick(event, element, selectedSourceId);
+	handleCellClick(event, element);
 	return false;
 }
 
-function handleCellMouseOver(event, element, selectedSourceId) {
+function handleCellMouseOver(event, element) {
 	if(isMouseDown) {
-		handleCellClick(event, element, selectedSourceId);
+		handleCellClick(event, element);
 	}
 }
 

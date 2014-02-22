@@ -45,7 +45,6 @@ a:hover {
 
 .loginForm {
 	padding: 30px;
-	margin-top:100px;
 }
 
 .importantLinks {
@@ -53,6 +52,17 @@ a:hover {
 	padding: 30px;
 	padding-top: 10px;
 	font-size: 0.8em;
+}
+
+.pluginsPromotionDiv {
+	background-color: #D0DDED;
+	-webkit-box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
+	-moz-box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
+	box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 50px;
+	padding-right: 50px;
 }
 
 .loginForm {
@@ -70,6 +80,7 @@ a:hover {
 	-webkit-box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
 	-moz-box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
 	box-shadow: 3px 3px 3px 3px rgba(150, 150, 150, 0.5);
+	text-align: left;
 }
 
 .loginForm .poweredBy {

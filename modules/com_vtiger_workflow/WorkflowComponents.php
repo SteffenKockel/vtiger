@@ -27,6 +27,51 @@ function vtJsonFunctions($adb) {
 	echo Zend_Json::encode($functions);
 }
 
+function vtJsonDependentModules($adb, $request) {
+	$moduleName = $request['modulename'];
+    
+	$result = $adb->pquery("SELECT fieldname, tabid, typeofdata, vtiger_ws_referencetype.type as reference_module FROM vtiger_field
+									INNER JOIN vtiger_ws_fieldtype ON vtiger_field.uitype = vtiger_ws_fieldtype.uitype
+									INNER JOIN vtiger_ws_referencetype ON vtiger_ws_fieldtype.fieldtypeid = vtiger_ws_referencetype.fieldtypeid
+							UNION
+							SELECT fieldname, tabid, typeofdata, relmodule as reference_module FROM vtiger_field
+									INNER JOIN vtiger_fieldmodulerel ON vtiger_field.fieldid = vtiger_fieldmodulerel.fieldid", array());
+    
+	$noOfFields = $adb->num_rows($result);
+	$dependentFields = array();
+	// List of modules which will not be supported by 'Create Entity' workflow task
+	$filterModules = array('Invoice', 'Quotes', 'SalesOrder', 'PurchaseOrder', 'Emails', 'Calendar', 'Events', 'Accounts');
+	$skipFieldsList = array();
+	for ($i = 0; $i < $noOfFields; ++$i) {
+		$tabId = $adb->query_result($result, $i, 'tabid');
+		$fieldName = $adb->query_result($result, $i, 'fieldname');
+		$typeOfData = $adb->query_result($result, $i, 'typeofdata');
+		$referenceModule = $adb->query_result($result, $i, 'reference_module');
+		$tabModuleName = getTabModuleName($tabId);
+		if (in_array($tabModuleName, $filterModules))
+			continue;
+		if ($referenceModule == $moduleName && $tabModuleName != $moduleName) {
+            if(!vtlib_isModuleActive($tabModuleName))continue;
+			$dependentFields[$tabModuleName] = array('fieldname' => $fieldName, 'modulelabel' => getTranslatedString($tabModuleName, $tabModuleName));            
+		} else {
+			$dataTypeInfo = explode('~', $typeOfData);
+			if ($dataTypeInfo[1] == 'M') { // If the current reference field is mandatory
+				$skipFieldsList[$tabModuleName] = array('fieldname' => $fieldName);
+			}
+		}
+	}
+	foreach ($skipFieldsList as $tabModuleName => $fieldInfo) {
+		$dependentFieldInfo = $dependentFields[$tabModuleName];
+		if ($dependentFieldInfo['fieldname'] != $fieldInfo['fieldname']) {
+			unset($dependentFields[$tabModuleName]);
+		}
+	}
+    
+	$returnValue = array('count' => count($dependentFields), 'entities' => $dependentFields);
+    
+	echo Zend_Json::encode($returnValue);
+}
+
 function vtJsonOwnersList($adb) {
 	$ownersList = array();
 	$activeUsersList = get_user_array(false);
@@ -48,6 +93,8 @@ if ($mode == 'getfieldsjson') {
 	vtJsonFields($adb, $_REQUEST);
 } elseif ($mode == 'getfunctionsjson') {
 	vtJsonFunctions($adb);
+} elseif ($mode == 'getdependentfields') {
+	vtJsonDependentModules($adb, $_REQUEST);
 } elseif ($mode == 'getownerslist') {
 	vtJsonOwnersList($adb);
 }

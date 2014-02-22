@@ -6,6 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * 
+ *  ********************************************************************************
+ *  Module       : ServiceContracts
+ *  Language     : Español
+ *  Version      : 5.4.0 
+ *  Last change  : 2012-02-27
+ *  Author       : Joe Bordes JPL TSolucio, S.L.
  ************************************************************************************/
 
 $mod_strings = Array (
@@ -26,7 +33,7 @@ $mod_strings = Array (
 'Total Units' => 'Total Unidades',
 'Used Units' => 'Unidades consumidas',
 'Subject' => 'Referencia',
-'Progress'=> 'Progreso (en %)',
+'Progress'=> 'Progreso',
 
 'Type' => 'Tipo',
 'Planned Duration'=>'Duración estimada (días)',
@@ -60,6 +67,7 @@ $mod_strings = Array (
  */
 'LBL_MODULE_NAME'=>'Contratos de Servicio',
 
+'ServiceContracts ID'=>'Id Contrato Servicio',
 );
 
 ?>

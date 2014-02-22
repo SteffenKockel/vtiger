@@ -18,8 +18,8 @@
         {foreach item=FOLDER from=$FOLDERS}
         <tr>
             <td>
-                <a class="mm_folder" id='_mailfolder_{$FOLDER->name()}' href='#{$FOLDER->name()}' onclick="MailManager.clearSearchString(); MailManager.folder_open('{$FOLDER->name()}'); "
-                >{if $FOLDER->unreadCount()}<b>{$FOLDER->name()} ({$FOLDER->unreadCount()})</b>{else}{$FOLDER->name()}{/if}</a>
+                <a class="mm_folder" id='_mailfolder_{$FOLDER->name()|@htmlentities}' href='#{$FOLDER->name()|@htmlentities}' onclick="MailManager.clearSearchString(); MailManager.folder_open('{$FOLDER->name()|@htmlentities}'); "
+                >{if $FOLDER->unreadCount()}<b>{$FOLDER->name()|@htmlentities} ({$FOLDER->unreadCount()})</b>{else}{$FOLDER->name()|@htmlentities}{/if}</a>
             </td>
         </tr>
         {/foreach}

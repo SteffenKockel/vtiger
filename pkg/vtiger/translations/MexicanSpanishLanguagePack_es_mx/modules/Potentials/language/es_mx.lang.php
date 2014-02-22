@@ -13,10 +13,10 @@
  ********************************************************************************
 *  Module       : Potentials
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
@@ -150,6 +150,7 @@ $mod_strings = Array(
 
 // Module Sequence Numbering
 'Potential No' => 'Núm. Oportunidad',
+'Potentials ID' => 'Id Oportunidad',
 // END
 
 );

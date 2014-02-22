@@ -1,12 +1,10 @@
 <?php
 /***********************************************************
 *  Module       : Contacts
-*  Language     : Francais
-*  Version      : 5.1.0 GA*  Created Date : 2009-06-23 21:36:13 
-*  Last change  : 2009-07-21 00:49:17
-*  Author       : french-vtiger.fr 
+*  Language     : French
+*  Version      : 5.4.0 
 *  License      : GPL
-
+*  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
 $mod_strings = array (
@@ -183,14 +181,14 @@ $mod_strings = array (
 		'Word of mouth' => 'Bouche à oreille',
 		'Other' => 'Autre',
 		'User List' => 'Liste des collaborateurs',
-		'Customer Portal Login Details' => 'Détail login portail client',
-		'Dear' => 'Cher',
+		'Customer Portal Login Details' => 'Détail login au portail client',
+		'Dear' => 'Cher(ère)',
 		'Your Customer Portal Login details are given below:' => 'Veuillez noter vos identifiants de connexion à notre portail de services :',
 		'User Id :' => 'Nom d\'utilisateur :',
 		'Password :' => 'Mot de passe :',
 		'Please Login Here' => 'Veuillez vous connecter ici',
 		'Note :' => 'Note :',
-		'We suggest you to change your password after logging in first time' => 'Nous vous suggérons de changer votre mot de passe dès votre première connexion.',
+		'We suggest you to change your password after logging in first time' => 'Nous vous suggérons de modifier votre mot de passe dès votre première connexion.',
 		'Support Team' => 'L\'équipe support',
 		'TITLE_AJAX_CSS_POPUP_CHAT' => 'Chat',
 		'LBL_DUPLICATE_DATA_IN' => 'Dupliquer ',
@@ -198,10 +196,11 @@ $mod_strings = array (
 		'LBL_MERGE_SELECT' => 'Fusionner la sélection',
 		'LBL_MERGE' => 'Fusionner',
 		'LBL_MERGE_DATA_IN' => 'Fusionner les enregistrements',
-		'LBL_ACTION' => 'Effet',
+		'LBL_ACTION' => 'Action',
 		'LBL_FIELDLISTS' => 'Liste des champs',
 		'LBL_RECORD' => 'Enregistrement #',
-'Contact Id' => 'N° Contact',
+		'Contact Id' => 'N° Contact',
+
 );
 $mod_list_strings = array (
 );

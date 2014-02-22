@@ -14,10 +14,10 @@
  ********************************************************************************
 *  Module       : Users
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-28
 *  Author       : Joe Bordes  JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
@@ -116,7 +116,7 @@ $mod_strings = Array(
 'ERR_ENTER_OLD_PASSWORD'=>'Por favor, introduzca su contraseña actual.',
 'ERR_ENTER_NEW_PASSWORD'=>'Por favor, introduzca su nueva contraseña.',
 'ERR_ENTER_CONFIRMATION_PASSWORD'=>'Por favor, confirme su nueva contraseña.',
-'ERR_REENTER_PASSWORDS'=>'Por favor, vuelva a introducir sus contraseñas. Los valores de \\\\\"Nueva Contraseña\\\\\" y \\\\\"Confirmar Contraseña\\\\\" no coinciden.',
+'ERR_REENTER_PASSWORDS'=>"Por favor, vuelve a introducir tus contraseñas. Los valores de 'Nueva Contraseña' y 'Confirmar Contraseña' no coinciden.",
 'ERR_INVALID_PASSWORD'=>'Debe especificar un nombre de usuario y contraseña válidos.',
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'El Cambio de contraseña ha fallado para ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' Error. La nueva contraseña debe ser fijada.',
@@ -557,7 +557,7 @@ $mod_strings = Array(
 'Date Format'=>'Formato de Fecha',
 'Tag Cloud'=>'Nube de Etiquetas',
 'Signature'=>'Firma',
-'Documents'=>'Notas',
+'Documents'=>'Documentos',
 'Street Address'=>'Dirección',
 'City'=>'Deleg./Mpio.',
 'State'=>'Estado',
@@ -793,6 +793,11 @@ $mod_strings = Array(
 'Pacific/Auckland' => '(UTC+12:00) Auckland',
 'Asia/Magadan' => '(UTC+12:00) Magadan',
 'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
+
+'Theme'=>'Apariencia',
+'Language'=>'Idioma',
+'Secondary Email'=>'Email Segundario',
+'Time Zone'=>'Zona Horaria',
 
 );
 

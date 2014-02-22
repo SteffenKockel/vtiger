@@ -13,10 +13,10 @@
  ********************************************************************************
 *  Module       : Home
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
@@ -120,6 +120,16 @@ $mod_strings = Array(
 
 'MSG_NO_FILTERS' => 'Ningún Filtro Disponible',
 'MSG_NO_FIELDS' => 'Ningún Campo Disponible',
+
+//Customization Phase 6 -- Monolithic
+'LBL_REPORTCHARTS' => 'Informes Gráficos',
+'LBL_HOME_REPORT_NAME'=> 'Nombre Informe',
+'LBL_HOME_REPORT_TYPE' => 'Tipo Informe',
+//END
+
+//added for Default Widgets
+'LBL_DEFAULT_WIDGET'=>'Widgets por Defecto',
+'LBL_NO_WIDGETS_HIDDEN'=>'No hay widgets escondidos',
 
 );
 

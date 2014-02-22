@@ -5,6 +5,7 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
  ************************************************************************************/
 
 $mod_strings = Array(
@@ -58,7 +59,8 @@ $mod_strings = Array(
 'Migration'=>'Migration',
 'Training'=>'Schulung',
 'Customization'=>'Anpassung',
-
+'Training'=>'Schulung',
+'Services ID'=>'Dienstleistungs-ID',
 );
 
 ?>

@@ -7,10 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-/**
- * German tranlsation by mic [ http://www.joomlasupportdesk.com ] 2009.10.02
- * IMPORTANT: save file with UTF-8 without BOM!
- **/
 $mod_strings = Array(
 	 
 	'LBL_MODULE_NAME'=>'Projektmeilensteine',
@@ -44,8 +40,8 @@ $mod_strings = Array(
     'Description' => 'Beschreibung',
     //added for related lists 
     'Project Milestone Name' => 'Meilensteinname',
-    'Project Milestone No' => 'Meilensteinnr.',
-
+    'Project Milestone No' => 'Meilenstein Nr',
+	'ProjectMilestone ID' => 'Meilenstein ID',
 );
 
 ?>

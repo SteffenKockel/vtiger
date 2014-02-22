@@ -14,10 +14,10 @@
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Potentials/language/en_us.lang.php,v 1.18 2005/04/28 14:05:53 ray Exp $
- * Description:  Defines the English language pack for the Account module.
+ * Description:  Defines the English language pack for the Potentials module.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -30,14 +30,14 @@ $mod_strings = Array(
 'LBL_NAME'=>'Nome Oportunidade',
 'LBL_INVITEE'=>'Contatos',
 'LBL_LIST_OPPORTUNITY_NAME'=>'Oportunidade',
-'LBL_LIST_ACCOUNT_NAME'=>'Nome Conta',
+'LBL_LIST_ACCOUNT_NAME'=>'Nome Organização',
 'LBL_PRODUCT_NAME'=>'Nome Produto',
 'LBL_LIST_AMOUNT'=>'Valor',
 'LBL_LIST_DATE_CLOSED'=>'Previsão Fechamento',
 'LBL_LIST_SALES_STAGE'=>'Estágio Vendas',
 
 'LBL_OPPORTUNITY_NAME'=>'Nome Oportunidade:',
-'LBL_ACCOUNT_NAME'=>'Nome Conta:',
+'LBL_ACCOUNT_NAME'=>'Nome Organização:',
 'LBL_AMOUNT'=>'Montante(R$):',
 'LBL_DATE_CLOSED'=>'Data Prevista Fechamento:',
 'LBL_TYPE'=>'Tipo:',
@@ -97,7 +97,7 @@ $mod_strings = Array(
 //Added for 4GA
 'Potential Name'=>'Nome Oportunidade',
 'Amount'=>'Montante',
-'Account Name'=>'Nome Conta',
+'Account Name'=>'Nome Organização',
 'Currency'=>'Moeda',
 'Expected Close Date'=>'Previsão Data Fechamento',
 'Opportunity Type'=>'Tipo Oportunidade',
@@ -151,7 +151,8 @@ $mod_strings = Array(
 'Potential No' => 'No. Oportunidade',
 // END
 
-'Related To' => 'Relacionado à', 
+'Related To' => 'Relacionado à',
+'Potentials ID' => 'ID Oportunidades', 
 );
 
 ?>

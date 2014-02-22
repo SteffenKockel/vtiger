@@ -197,4 +197,7 @@ if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
 	@date_default_timezone_set($default_timezone);
 }
 
+/** minimum cron frequency -- In minutes */
+$MINIMUM_CRON_FREQUENCY = 15;
+
 ?>

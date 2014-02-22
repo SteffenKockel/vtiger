@@ -194,7 +194,12 @@ function addRequiredElements(columnindex) {
 		switch(fieldtype) {
 			case 'D':
 			case 'DT':
-			case 'T':var dateformat = $('jscal_dateformat').value;
+			case 'T':
+				if(fieldtype=='T' && tableName.indexOf('vtiger_crmentity')<0){
+					defaultRequiredElements(columnindex);
+					break;
+				}
+				var dateformat = $('jscal_dateformat').value;
 						var timeformat = "%H:%M:%S";
 						var showtime = true;
 						if(fieldtype == 'D' || (tableName == 'vtiger_activity' && fieldName == 'date_start')) {
@@ -273,15 +278,16 @@ function addRequiredElements(columnindex) {
                        	}              
                         
                         break;
-						
-			default	:if(document.getElementById('jscal_trigger_fval'+columnindex)) removeElement('jscal_trigger_fval'+columnindex);
-						if(document.getElementById('fval_ext'+columnindex)) removeElement('fval_ext'+columnindex);
-						if(document.getElementById('jscal_trigger_fval_ext'+columnindex)) removeElement('jscal_trigger_fval_ext'+columnindex);
-						if(document.getElementById('clear_text_ext'+columnindex)) removeElement('clear_text_ext'+columnindex);
+			default	:defaultRequiredElements(columnindex); 
 		}
 	}
 }
-
+function defaultRequiredElements(columnindex) {
+    if(document.getElementById('jscal_trigger_fval'+columnindex)) removeElement('jscal_trigger_fval'+columnindex);
+	if(document.getElementById('fval_ext'+columnindex)) removeElement('fval_ext'+columnindex);
+	if(document.getElementById('jscal_trigger_fval_ext'+columnindex)) removeElement('jscal_trigger_fval_ext'+columnindex);
+	if(document.getElementById('clear_text_ext'+columnindex)) removeElement('clear_text_ext'+columnindex);
+}
 function checkAdvancedFilter() {
 	
 	var escapedOptions = new Array('account_id','contactid','contact_id','product_id','parent_id','campaignid','potential_id','assigned_user_id1','quote_id','accountname','salesorder_id','vendor_id','time_start','time_end','lastname');

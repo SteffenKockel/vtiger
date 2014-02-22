@@ -209,7 +209,7 @@ class WebserviceField{
 		foreach ($tableFields as $fieldName => $dbField) {
 			if(strcmp($fieldName,$this->getColumnName())===0){
 				$this->setNullable(!$dbField->not_null);
-				if($dbField->has_default === true){
+				if($dbField->has_default === true && !$this->explicitDefaultValue){
 					$this->defaultValuePresent = $dbField->has_default;
 					$this->setDefault($dbField->default_value);
 				}
@@ -365,7 +365,7 @@ class WebserviceField{
 			for($i=0;$i<$numRows;++$i){
 				$elem = array();
 				$picklistValue = $this->pearDB->query_result($result,$i,$fieldName);
-				$picklistValue = html_entity_decode($picklistValue, ENT_QUOTES, $default_charset);
+				$picklistValue = decode_html($picklistValue);
 				$moduleName = getTabModuleName($this->getTabId());
 				if($moduleName == 'Events') $moduleName = 'Calendar';
 				$elem["label"] = getTranslatedString($picklistValue,$moduleName);
@@ -377,7 +377,7 @@ class WebserviceField{
 			$details = getPickListValues($fieldName,$user->roleid);
 			for($i=0;$i<sizeof($details);++$i){
 				$elem = array();
-				$picklistValue = html_entity_decode($details[$i], ENT_QUOTES, $default_charset);
+				$picklistValue = decode_html($details[$i]);
 				$moduleName = getTabModuleName($this->getTabId());
 				if($moduleName == 'Events') $moduleName = 'Calendar';
 				$elem["label"] = getTranslatedString($picklistValue,$moduleName);

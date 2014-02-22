@@ -1,18 +1,19 @@
-/*********************************************************************************
-** The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- * Vertaald door Weltevree.org  www.weltevree.org
+/*******************************************************************************
+ * Vicus eBusiness Solutions Version Control
+ * @package 	NL-Dutch
+ * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * @author	$Author: luuk $
+ * @version 	$Revision: 1.3 $ $Date: 2011/11/13 14:09:29 $
+ * @source	$Source: /var/lib/cvs/vtiger530/Dutch/include/js/nl_nl.lang.js,v $
+ * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
 	
 	var alert_arr = {       DELETE:'Wilt u de geselecteerde records wissen? ',
                                 RECORDS:' records?',
                                 SELECT:'selecteer ten minste een entiteit',
-                           DELETE_ACCOUNT:'Verwijderen van dit account(s) zal tevens gerelateerde Potentiëlen & Offertes wissen. Weet u zeker dat u wilt doorgaan? ',
+                           DELETE_ACCOUNT:'Verwijderen van dit account(s) zal tevens gerelateerde Verkoopkansen en Offertes wissen. Weet u zeker dat u wilt doorgaan? ',
                            DELETE_VENDOR:'Verwijderen van deze leverancier(s) zal tevens gerelateerde Inkoop Orders verwijderen. Weet u zeker dat u wilt doorgaan? ',
                                 SELECT_MAILID:'Selecteer een mailid',
                                 OVERWRITE_EXISTING_ACCOUNT1:'Overschrijven van het bestaande adres met dit geselecteerde account(',
@@ -70,7 +71,7 @@
                                 DUPLICATE_VALUES_FOUND:'Dubbele inhoud gevonden',
                                 DUPLICATE_MAPPING_ACCOUNTS:'Dubbele mapping voor Accounts!!',
                                 DUPLICATE_MAPPING_CONTACTS:'Dubbele mapping voor Contacts!!',
-                                DUPLICATE_MAPPING_POTENTIAL:'Dubbele mapping voor Potentiëlen!!',
+                                DUPLICATE_MAPPING_POTENTIAL:'Dubbele mapping voor Verkoopkansen!!',
                                 ERROR_WHILE_EDITING:'Fout bij Wijzigen',
                                 CURRENCY_CHANGE_INFO:'Wijzigingen succesvol toegepast',
                              CURRENCY_CONVERSION_INFO:'Gebruikt u Dollar $ als Valuta \n Klik OK om $ te behouden, Annuleer om de valuta conversie waarde te wijzigen.',
@@ -117,14 +118,14 @@
 				IN_GROUPNAME:' in Groep Naam',
 				IN_ROLENAME:' in Rol Naam',
                                 VALID_TAX_PERCENT:'Geef een geldig BTW percentage',
-                                VALID_SH_TAX:'Geef een Transport toeslag ',
+                                VALID_SH_TAX:'Geef een Transporttoeslag ',
 				ROLE_DRAG_ERR_MSG:'U kunt geen Ouder Node onder een Dochter Node plaatsen',
 				LBL_DEL:'wis',
 				VALID_DATA :' Geef geldige invoer, Probeer opnieuw... ',
                                 STDFILTER : 'Standaard Filters',
-                                STARTDATE : 'Start Datum',
-                                ENDDATE : 'Eind Datum',
-                                START_DATE_TIME : 'Start Datum & Tijd',
+                                STARTDATE : 'Startdatum',
+                                ENDDATE : 'Einddatum',
+                                START_DATE_TIME : 'Startdatum & Tijd',
                                 START_TIME : 'Start Tijd',
                                 DATE_SHOULDNOT_PAST :'Huidige datum & tijd voor Activitieiten met status zoals Geplanned',
                                 TIME_SHOULDNOT_PAST :'Huidige tijd voor Activitieiten met status zoals Geplanned',
@@ -179,7 +180,7 @@
 				ACC_MANDATORY: 'Selecteer het verplichte veld -Account Naam-',
 				PRO_MANDATORY: 'Selecteer het verplichte veld -Product Naam-',
 				TIC_MANDATORY: 'Selecteer het verplichte veld -Ticket Titel-',
-				POTEN_MANDATORY: 'Selecteer het verplichte veld -Potentieel Naam-',
+				POTEN_MANDATORY: 'Selecteer het verplichte veld -Verkoopkans Naam-',
 				VEN_MANDATORY: 'Selecteer het verplichte veld -Verkoper Naam-',
 				DEL_MANDATORY: 'U kunt niet het verplichte veld wissen',
 				
@@ -191,10 +192,10 @@
 				RECURRING_FREQNECY_NOT_ENABLED : 'Terugkerende frequentie is gegeven, maar is niet geactiveerd',
 				/* Added for Documents module */
 				NO_SPECIAL_CHARS_DOCS:'Speciale karakters zoals aanhalingstekens, backslash, + symbolen, % en ? zijn niet toegestaan',
-				FOLDER_NAME_TOO_LONG:'Map naam is te lang. Probeer opnieuw!',
-				FOLDERNAME_EMPTY:'De Map naam kan niet leeg zijn',
-				DUPLICATE_FOLDER_NAME:'Dupliceren van een bestaande map naam. Probeer opnieuw !',
-				FOLDER_DESCRIPTION_TOO_LONG:'Map omschrijving is te lang. Probeer opnieuw!',
+				FOLDER_NAME_TOO_LONG:'Mapnaam is te lang. Probeer opnieuw!',
+				FOLDERNAME_EMPTY:'De Mapnaam kan niet leeg zijn',
+				DUPLICATE_FOLDER_NAME:'Dupliceren van een bestaande Mapnaam. Probeer opnieuw !',
+				FOLDER_DESCRIPTION_TOO_LONG:'Omschrijving van de Map is te lang. Probeer opnieuw!',
 				NOT_PERMITTED:"U heeft geen permissie voor het uitvoeren van deze toepassing.",		
 				
 				ALL_FILTER_CREATION_DENIED:'Kan geen CustomView aanmaken met de naam "Alles", Probeer een andere ViewName',
@@ -237,7 +238,7 @@
 				LENGTH_OUT_OF_RANGE : 'Lengte van het Blok moet minder als 50 karakters zijn',
 				LBL_SELECT_ONE_FILE : 'Selecteer tenminste 1 bestand',
 				LBL_UNABLE_TO_ADD_FOLDER : 'Map toevoegen niet mogelijk. Probeer opnieuw.',
-				LBL_ARE_YOU_SURE_YOU_WANT_TO_DELETE_FOLDER : 'Weet u zeker dat u deze map wilt wissen?',
+				LBL_ARE_YOU_SURE_YOU_WANT_TO_DELETE_FOLDER : 'Weet u zeker dat u deze Map wilt wissen?',
 				LBL_ERROR_WHILE_DELETING_FOLDER : 'Fout bij het wissen van de map. Probeer later opnieuw.',
 				LBL_FILE_CAN_BE_DOWNLOAD : 'Bestand is beschikbaar voor download',
 				LBL_DOCUMENT_LOST_INTEGRITY:'Dit Document is niet beschikbaar. Het wordt gemarkeerd als niet Actief',

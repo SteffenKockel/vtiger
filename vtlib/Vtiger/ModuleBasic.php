@@ -34,6 +34,7 @@ class Vtiger_ModuleBasic {
 	var $presence = 0;
 	var $ownedby = 0; // 0 - Sharing Access Enabled, 1 - Sharing Access Disabled
 	var $tabsequence = false;
+	var $parent = false;
 
 	var $isentitytype = true; // Real module or an extension?
 
@@ -72,7 +73,8 @@ class Vtiger_ModuleBasic {
 		$this->presence = $valuemap['presence'];
 		$this->ownedby = $valuemap['ownedby'];
 		$this->tabsequence = $valuemap['tabsequence'];
-		
+		$this->parent = $valuemap['parent'];
+
 		$this->isentitytype = $valuemap['isentitytype'];
 
 		if($this->isentitytype || $this->name == 'Users') {
@@ -87,7 +89,7 @@ class Vtiger_ModuleBasic {
 	 */
 	function initialize2() {
 		global $adb;
-		$result = $adb->pquery("SELECT tablename,entityidfield FROM vtiger_entityname WHERE tabid=?", 
+		$result = $adb->pquery("SELECT tablename,entityidfield FROM vtiger_entityname WHERE tabid=?",
 			Array($this->id));
 		if($adb->num_rows($result)) {
 			$this->basetable = $adb->query_result($result, 0, 'tablename');
@@ -124,6 +126,7 @@ class Vtiger_ModuleBasic {
 	function __handleVtigerCoreSchemaChanges() {
 		// Add version column to the table first
 		Vtiger_Utils::AddColumn('vtiger_tab', 'version', ' VARCHAR(10)');
+        Vtiger_Utils::AddColumn('vtiger_tab', 'parent', ' VARCHAR(30)');
 	}
 
 	/**
@@ -144,8 +147,8 @@ class Vtiger_ModuleBasic {
 		$this->__handleVtigerCoreSchemaChanges();
 
 		$adb->pquery("INSERT INTO vtiger_tab (tabid,name,presence,tabsequence,tablabel,modifiedby,
-			modifiedtime,customized,ownedby,version) VALUES (?,?,?,?,?,?,?,?,?,?)", 
-			Array($this->id, $this->name, $this->presence, $this->tabsequence, $this->label, NULL, NULL, $customized, $this->ownedby, $this->version));
+			modifiedtime,customized,ownedby,version,parent) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+			Array($this->id, $this->name, $this->presence, -1, $this->label, NULL, NULL, $customized, $this->ownedby, $this->version,$this->parent));
 
 		$useisentitytype = $this->isentitytype? 1 : 0;
 		$adb->pquery('UPDATE vtiger_tab set isentitytype=? WHERE tabid=?',Array($useisentitytype, $this->id));
@@ -170,11 +173,11 @@ class Vtiger_ModuleBasic {
 				$adb->pquery("UPDATE vtiger_tab_info SET prefvalue=? WHERE tabid=? AND prefname='vtiger_max_version'", array($this->maxversion,$this->id));
 			} else {
 				$adb->pquery('INSERT INTO vtiger_tab_info(tabid, prefname, prefvalue) VALUES (?,?,?)', array($this->id, 'vtiger_max_version', $this->maxversion));
-			}			
+			}
 		}
-		
+
 		Vtiger_Profile::initForModule($this);
-		
+
 		self::syncfile();
 
 		if($this->isentitytype) {
@@ -197,11 +200,11 @@ class Vtiger_ModuleBasic {
 	 * @access private
 	 */
 	function __delete() {
-		Vtiger_Module::fireEvent($this->name, 
+		Vtiger_Module::fireEvent($this->name,
 			Vtiger_Module::EVENT_MODULE_PREUNINSTALL);
 
 		global $adb;
-		if($this->isentitytype) {		
+		if($this->isentitytype) {
 			$this->unsetEntityIdentifier();
 			$this->deleteRelatedLists();
 		}
@@ -218,7 +221,7 @@ class Vtiger_ModuleBasic {
 		$this->__handleVtigerCoreSchemaChanges();
 		global $adb;
 		$adb->pquery("UPDATE vtiger_tab SET version=? WHERE tabid=?", Array($newversion, $this->id));
-		$this->version = $newversion;		
+		$this->version = $newversion;
 		self::log("Updating version to $newversion ... DONE");
 	}
 
@@ -325,7 +328,7 @@ class Vtiger_ModuleBasic {
 		$adb->pquery("DELETE FROM vtiger_links WHERE tabid=?", Array($this->id));
 		self::log("Deleting links ... DONE");
 	}
-	
+
 	/**
 	 * Configure default sharing access for the module
 	 * @param String Permission text should be one of ['Public_ReadWriteDelete', 'Public_ReadOnly', 'Public_ReadWrite', 'Private']

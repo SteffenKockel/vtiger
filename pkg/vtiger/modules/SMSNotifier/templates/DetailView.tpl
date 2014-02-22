@@ -741,17 +741,20 @@ function sendfile_email()
 
 function getTagCloud()
 {ldelim}
-new Ajax.Request(
-        'index.php',
-        {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-        method: 'post',
-        postBody: 'module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
-        onComplete: function(response) {ldelim}
-                                $("tagfields").innerHTML=response.responseText;
-                                $("txtbox_tagfields").value ='';
+	var obj = $("tagfields");
+	if(obj != null && typeof(obj) != undefined) {ldelim}
+		new Ajax.Request(
+        	'index.php',
+        	{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
+        	method: 'post',
+        	postBody: 'module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
+        	onComplete: function(response) {ldelim}
+                        	$("tagfields").innerHTML=response.responseText;
+                            $("txtbox_tagfields").value ='';
                         {rdelim}
-        {rdelim}
-);
+	        {rdelim}
+		);
+	{rdelim}
 {rdelim}
 getTagCloud();
 </script>

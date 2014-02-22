@@ -127,7 +127,7 @@ function module_Chart_HomePageDashboard($userinfo) {
 				$cnt_val .= $modrec_count;
 
 				$modviewid = $cvidinfo[$modulename];
-				$username = getDisplayName(array('f'=>$userinfo->first_name,'l'=>$userinfo->last_name));
+				$username = getFullNameFromArray('Users', $userinfo->column_fields);
 				if($target_val!= '') $target_val.= '::';
 				$target_val.= urlencode("index.php?module=$modulename&action=ListView&from_homepagedb=true&type=dbrd&query=true&owner=$username&viewname=$modviewid");
 				if($test_target_val!='') $test_target_val.= 'K';

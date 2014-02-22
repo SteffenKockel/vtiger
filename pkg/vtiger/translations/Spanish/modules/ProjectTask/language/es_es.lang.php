@@ -6,6 +6,14 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * 
+ * ***********************************************************
+*  Module       : ProjectTask
+*  Language     : ES Spanish
+*  Version      : vt5.4.0
+*  Created Date : 2012-02-27
+*  Author       : JPL TSolucio, S.L.
+*  License      : MPL 1.1
  ************************************************************************************/
 $mod_strings = Array(
 
@@ -46,6 +54,7 @@ $mod_strings = Array(
     'Project Task Name' => 'Nombre Actividad',
     'Project Task No' => 'Nº Actividad',
     'Project Task Number' => 'Código Actividad',
+	'ProjectTask ID'=>'Id Actividad',
 );
 
 ?>

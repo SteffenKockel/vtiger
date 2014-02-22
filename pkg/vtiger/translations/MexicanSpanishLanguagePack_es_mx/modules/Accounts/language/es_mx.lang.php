@@ -14,11 +14,10 @@
  ********************************************************************************
 *  Module       : Accounts
 *  Language     : Español
-*  Version      : 51
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
-*  Author       : Joe Bordes JPL TSolucio, S. L.
+*  Last change  : 2012-02-28
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
 * *******************************************************************************/
 
@@ -81,9 +80,9 @@ $mod_strings = array(
 'LBL_DESCRIPTION'=>'Descripcion:',
 'NTC_COPY_BILLING_ADDRESS'=>'Copiar Factura a Envío',
 'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar Envío a Factura',
-'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'¿Está seguro que desea eliminar este registro de \"Miembro\"?',
+'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'¿Está seguro que desea eliminar este registro de "Miembro"?',
 'LBL_DUPLICATE'=>'Posibles cuentas duplicadas',
-'MSG_DUPLICATE'=>'Al crear cuenta estará duplicando una cuenta existente. Seleccione una cuenta de la lista de abajo o pulse en el boton Crear una Nueva Cuenta para crear un nuevo registro con los datos introducidos.',
+'MSG_DUPLICATE'=>'Al crear esta cuenta podría estar duplicando una cuenta existente. Seleccione una cuenta de la lista de abajo o pulse en el boton Crear una Nueva Cuenta para crear un nuevo registro con los datos introducidos.',
 
 'LBL_INVITEE'=>'Contactos',
 'ERR_DELETE_RECORD'=>'Debe especificar un registro para eliminar la empresa.',
@@ -238,7 +237,7 @@ $mod_strings = array(
 
 // Account Hierarchy
 'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Mostrar Jerarquía de Cuentas',
-
+'Accounts ID' => 'Id Cuenta',
 );
 
 ?>

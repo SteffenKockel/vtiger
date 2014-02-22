@@ -14,10 +14,10 @@
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Contacts/language/en_us.lang.php,v 1.14 2005/03/24 17:47:43 rank Exp $
- * Description:  Defines the English language pack
+ * Description:  Defines the English language pack for Contacts Module
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -36,7 +36,7 @@ $mod_strings = Array(
 'LBL_LIST_FIRST_NAME'=>'Nome',
 'LBL_LIST_CONTACT_NAME'=>'Nome Contato',
 'LBL_LIST_TITLE'=>'Título',
-'LBL_LIST_ACCOUNT_NAME'=>'Nome Conta',
+'LBL_LIST_ACCOUNT_NAME'=>'Nome Organização',
 'LBL_LIST_EMAIL_ADDRESS'=>'Email',
 'LBL_LIST_PHONE'=>'Fone',
 'LBL_LIST_CONTACT_ROLE'=>'Função',
@@ -65,7 +65,7 @@ $mod_strings = Array(
 'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
 'LBL_FIRST_NAME'=>'Nome:',
 'LBL_OFFICE_PHONE'=>'Telefone Escritório:',
-'LBL_ACCOUNT_NAME'=>'Nome Conta:',
+'LBL_ACCOUNT_NAME'=>'Nome Organização:',
 'LBL_ANY_PHONE'=>'Outro Telefone:',
 'LBL_PHONE'=>'Telefone:',
 'LBL_LAST_NAME'=>'Sobrenome:',
@@ -140,11 +140,11 @@ $mod_strings = Array(
 'Office Phone'=>'Telefone Escritório',
 'Last Name'=>'Sobrenome',
 'Mobile'=>'Celular',
-'Account Name'=>'Nome Conta',
+'Account Name'=>'Nome Organização',
 'Home Phone'=>'Telefone Residencial',
 'Lead Source'=>'Origem do Lead',
 'Other Phone'=>'Telefone Alternativo',
-'Title'=>'Título',
+'Title'=>'Cargo',
 'Fax'=>'Fax',
 'Department'=>'Departamento',
 'Birthdate'=>'Aniversário',
@@ -177,7 +177,7 @@ $mod_strings = Array(
 
 // Added vtiger_fields for Add Business Card
 'LBL_NEW_CONTACT'=>'Novo Contato',
-'LBL_NEW_ACCOUNT'=>'Nova Conta',
+'LBL_NEW_ACCOUNT'=>'Nova Organização',
 'LBL_NOTE_SUBJECT'=>'Assunto Documento:',
 'LBL_NOTE'=>'Nota:',
 'LBL_WEBSITE'=>'Website:',
@@ -242,8 +242,10 @@ $mod_strings = Array(
 
 // Module Sequence Numbering
 'Contact Id' => 'Cód. Contato',
+'Secondary Email'=>'Email Alternativo',
 // END
 
+'Contacts ID'=>'ID Contatos',
 );
 
 ?>

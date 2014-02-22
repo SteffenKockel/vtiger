@@ -78,7 +78,8 @@ class MailManager_Connector {
 	 *	This is used to fetch the folders of the mail box
 	 */
 	function __construct($url, $username, $password, $baseUrl=false) {
-		$this->mBoxUrl = $url;
+		$boxUrl = $this->convertCharacterEncoding(html_entity_decode($url),'UTF7-IMAP','UTF-8'); //handle both utf8 characters and html entities
+		$this->mBoxUrl = $boxUrl;
 		$this->mBoxBaseUrl = $baseUrl; // Used for folder List
 		$this->mBox = @imap_open($url, $username, $password);
 		$this->isError();
@@ -152,7 +153,9 @@ class MailManager_Connector {
 		
 		$folders = array();
 		foreach($result as $row) {
-			$folders[] = $this->folderInstance(str_replace($ref, "", $row->name));
+			$folderName = str_replace($ref, "", $row->name);
+			$folder = $this->convertCharacterEncoding( $folderName, "ISO_8859-1", "UTF7-IMAP" ); //Decode folder name
+			$folders[] = $this->folderInstance($folder);
 		}
 		$this->mFolders = $folders;
 		return $folders;
@@ -177,7 +180,8 @@ class MailManager_Connector {
 	 * @param $options imap_status flags like SA_UNSEEN, SA_MESSAGES etc
 	 */
 	function updateFolder($folder, $options) {
-		$result = @imap_status($this->mBox, $folder->name($this->mBoxUrl), $options);
+		$mailbox = $this->convertCharacterEncoding($folder->name($this->mBoxUrl), "UTF7-IMAP","ISO_8859-1"); //Encode folder name
+		$result = @imap_status($this->mBox, $mailbox, $options);
 		if ($result) {
 			if (isset($result->unseen)) $folder->setUnreadCount($result->unseen);
 			if (isset($result->messages)) $folder->setCount($result->messages);
@@ -280,8 +284,9 @@ class MailManager_Connector {
 	function moveMail($msgno, $folderName){
 		$msgno = trim($msgno,',');
 		$msgno = explode(',',$msgno);
+		$folder = $this->convertCharacterEncoding(html_entity_decode($folderName),'UTF7-IMAP','UTF-8'); //handle both utf8 characters and html entities
 		for($i = 0;$i<count($msgno);$i++){
-			@imap_mail_move($this->mBox, $msgno[$i], $folderName);
+			@imap_mail_move($this->mBox, $msgno[$i], $folder);
 		}
 		@imap_expunge($this->mBox);
 	}
@@ -363,11 +368,21 @@ class MailManager_Connector {
 			$list = @imap_list($this->mBox, $this->mBoxBaseUrl, '*');
 			if (is_array($list)) {
 				foreach ($list as $val) {
-					$folderList[] =  preg_replace("/{(.*?)}/", "", imap_utf7_decode($val));
+					$folder = $this->convertCharacterEncoding( $val, 'ISO_8859-1', 'UTF7-IMAP' ); //Decode folder name
+					$folderList[] =  preg_replace("/{(.*?)}/", "", $folder);
 				}
 			}
 		}
 		return $folderList;
+	}
+
+	 function convertCharacterEncoding($value, $toCharset, $fromCharset) {
+		if (function_exists('mb_convert_encoding')) {
+			$value = mb_convert_encoding($value, $toCharset, $fromCharset);
+		} else {
+			$value = iconv($toCharset, $fromCharset, $value);
+		}
+		return $value;
 	}
 }
 ?>

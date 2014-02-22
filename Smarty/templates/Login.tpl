@@ -10,15 +10,59 @@
 -->*}
 {include file="LoginHeader.tpl}
 
-<table class="loginWrapper" width="100%" height="100%" cellpadding="20" cellspacing="0" border="0">
+<table class="loginWrapper" width="100%" height="100%" cellpadding="10" cellspacing="0" border="0">
 	<tr valign="top">
-		<td valign="top" align="left" width="50%">
+		<td valign="top" align="left" colspan="2">
 			<img align="absmiddle" src="test/logo/{$COMPANY_DETAILS.logo}" alt="logo"/>
 			<br />
 			<a target="_blank" href="http://{$COMPANY_DETAILS.website}">{$COMPANY_DETAILS.name}</a>
+			<br />
+		</td>
+	</tr>
+
+	<tr>
+		<td valign="top" align="center" width="50%">
+			<div>
+				<table border="0" cellspacing="0" cellpadding="10" class="small pluginsPromotionDiv">
+					<tr>
+						<td colspan="2" align="center" class="small">
+							Get more out of vtiger CRM
+						</td>
+					</tr>
+					<tr>
+						<td width="50%" align="center" class=small>
+							<a target="_blank" href="http://www.vtiger.com/crm/official-add-ons/#Outlook">
+								<img align="absmiddle" border="0" src="{$IMAGE_PATH}/OutlookPlugin.png" alt="Outlook Plugin">
+							</a>
+						</td>
+						<td width="50%" align="center" class=small>
+							<a target="_blank" href="http://www.vtiger.com/crm/official-add-ons/#Exchange">
+								<img align="absmiddle" border="0" src="{$IMAGE_PATH}/ExchangeConnector.png" alt="Exchange Connector">
+							</a>
+						</td>
+					</tr>
+
+					<tr>
+						<td width="50%" align="center" class=small>
+							<a target="_blank" href="http://itunes.apple.com/us/app/vtiger-crm-mobile/id381259792?mt=8">
+								<img align="absmiddle" border="0" src="{$IMAGE_PATH}/AppStoreQRCode.png" alt="vtiger iPhone Application">
+								<br/>
+								<img align="absmiddle" border="0" src="{$IMAGE_PATH}/AppStore.png" alt="vtiger iPhone Application">
+							</a>
+						</td>
+						<td width="50%" align="center" class=small>
+							<a target="_blank" href="https://market.android.com/details?id=com.vtiger.apps.gvtigerpro&feature=search_result">
+								<img align="absmiddle" border="0" src="{$IMAGE_PATH}/GooglePlayQRCode.png" alt="vtiger Android Application">
+								<br/>
+								<img align="absmiddle" border="0" src="{$IMAGE_PATH}/GooglePlay.png" alt="vtiger Android Application">
+							</a>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</td>
 
-		<td rowspan="2">
+		<td valign="top" align="center" width="50%">
 			<div class="loginForm">
 				<div class="poweredBy">Powered by vtiger CRM - {$VTIGER_VERSION}</div>
 				<form action="index.php" method="post" name="DetailView" id="form">

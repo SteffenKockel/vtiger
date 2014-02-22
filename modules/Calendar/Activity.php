@@ -132,23 +132,6 @@ class Activity extends CRMEntity {
 		{
 			$this->deleteRelation('vtiger_cntactivityrel');
 		}
-		if(!empty($this->column_fields['sendnotification'])){
-
-			$mail_data = Array();
-			$mail_data['user_id'] = $this->column_fields['assigned_user_id'];
-			$mail_data['subject'] = $this->column_fields['subject'];
-			$mail_data['status'] = (($this->column_fields['activitytype']=='Task')?($this->column_fields['taskstatus']):($this->column_fields['eventstatus']));
-			$mail_data['taskpriority'] = $this->column_fields['taskpriority'];
-			$relatedContacts = getActivityRelatedContacts($this->id);
-			$mail_data['contact_name'] = implode(',',$relatedContacts);
-			$mail_data['description'] = $this->column_fields['description'];
-			$mail_data['st_date_time'] = $this->column_fields['date_start'].' '.$this->column_fields['time_start'];
-			$mail_data['end_date_time'] = $this->column_fields['due_date'].' '.$this->column_fields['time_end'];
-			$mail_data['relatedto'] =  getParentName($this->column_fields['parent_id']);
-			$mail_data['location'] = $this->column_fields['location'];
-			getEventNotification($this->column_fields['activitytype'],$this->column_fields['subject'],$mail_data);
-
-		}
 		$recur_type='';	
 		if(($recur_type == "--None--" || $recur_type == '') && $this->mode == "edit")
 		{
@@ -869,6 +852,9 @@ function insertIntoRecurringTable(& $recurObj)
 		
 		$sql = 'DELETE FROM vtiger_recurringevents WHERE activityid=?';
 		$this->db->pquery($sql, array($id));
+
+		$sql = 'DELETE FROM vtiger_cntactivityrel WHERE activityid = ?';
+		$this->db->pquery($sql, array($id));
 		
 		parent::unlinkDependencies($module, $id);
 	}
@@ -936,7 +922,7 @@ function insertIntoRecurringTable(& $recurObj)
 	 */
 	function generateReportsSecQuery($module,$secmodule){
 		$query = $this->getRelationQuery($module,$secmodule,"vtiger_activity","activityid");
-		$query .=" left join vtiger_crmentity as vtiger_crmentityCalendar on vtiger_crmentityCalendar.crmid=vtiger_activity.activityid and vtiger_crmentityCalendar.deleted=0 
+		$query .=" left join vtiger_crmentity as vtiger_crmentityCalendar on vtiger_crmentityCalendar.crmid=vtiger_activity.activityid and vtiger_crmentityCalendar.deleted=0
 				left join vtiger_cntactivityrel on vtiger_cntactivityrel.activityid= vtiger_activity.activityid 
 				left join vtiger_contactdetails as vtiger_contactdetailsCalendar on vtiger_contactdetailsCalendar.contactid= vtiger_cntactivityrel.contactid
 				left join vtiger_activitycf on vtiger_activitycf.activityid = vtiger_activity.activityid
@@ -954,7 +940,8 @@ function insertIntoRecurringTable(& $recurObj)
 				left join vtiger_troubletickets as vtiger_troubleticketsRelCalendar on vtiger_troubleticketsRelCalendar.ticketid = vtiger_crmentityRelCalendar.crmid
 				left join vtiger_campaign as vtiger_campaignRelCalendar on vtiger_campaignRelCalendar.campaignid = vtiger_crmentityRelCalendar.crmid
 				left join vtiger_groups as vtiger_groupsCalendar on vtiger_groupsCalendar.groupid = vtiger_crmentityCalendar.smownerid
-				left join vtiger_users as vtiger_usersCalendar on vtiger_usersCalendar.id = vtiger_crmentityCalendar.smownerid"; 
+				left join vtiger_users as vtiger_usersCalendar on vtiger_usersCalendar.id = vtiger_crmentityCalendar.smownerid
+                left join vtiger_users as vtiger_lastModifiedByCalendar on vtiger_lastModifiedByCalendar.id = vtiger_crmentityCalendar.modifiedby ";
 		return $query;
 	}
 	

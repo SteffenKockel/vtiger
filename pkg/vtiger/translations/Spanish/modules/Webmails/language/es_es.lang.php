@@ -13,9 +13,11 @@
  ********************************************************************************
 *  Module       : Webmails
 *  Language     : Español
-*  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
+*  Version      : 5.4.0
+*  Created Date : 2007-03-30
 *  Author       : Rafael Soler
+*  Last change  : 2012-02-28
+*  Author       : Joe Bordes  JPL TSolucio, S.L.
  ********************************************************************************/
 
 $mod_strings = array (
@@ -179,5 +181,7 @@ $mod_strings = array (
 'LBL_ATTACHMENTS'=>'Adjuntos',
 'LBL_LIST_COUNT'=>'Mostrando',
 
+'LBL_INSTEAD_OF_WEBMAILS_USE' => 'En vez de Webmail, utiliza',
+'LBL_PLEASE_CLICK_HERE_TO_GO_TO' => 'Haz click aquí para ir a ',
 );
 ?>

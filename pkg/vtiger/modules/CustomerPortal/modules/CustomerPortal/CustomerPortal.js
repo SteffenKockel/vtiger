@@ -8,33 +8,56 @@
   *
  ********************************************************************************/
 
-function move_module(tabid,move){
+function moveUp(moduleObj,sequence) {
+	var oldSequence = moduleObj[sequence]['sequence'];
+	var changeSequence  = oldSequence - 1;
 	
-	//$('vtbusy_info').style.display = "block";
-		new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=CustomerPortal&action=CustomerPortalAjax&file=ListView&sub_mode=movemodules&parenttab=Settings&tabid='+tabid+'&move='+move+'&ajax=true',
-			onComplete: function(response) {
-			$("portallist").innerHTML=response.responseText;
-			//$('vtbusy_info').style.display = "none";
-			}
-		}
-	);	
+	moduleObj[sequence]['sequence'] = moduleObj[changeSequence]['sequence'];
+	moduleObj[changeSequence]['sequence']=oldSequence;
+
+	temp = new Object();
+	temp=moduleObj[sequence];
+	moduleObj[sequence]=moduleObj[changeSequence];
+	moduleObj[changeSequence]=temp;
+
+	renderModuleSettings(moduleObj);
 }
 
-function toggleModule(tabid, action) {
-var data = 'module=CustomerPortal&action=CustomerPortalAjax&file=ListView&tabid='+tabid+'&sub_mode=enable_disable&status='+action; 
-new Ajax.Request(
-		'index.php',
-        {queue: {position: 'end', scope: 'command'},
-        	method: 'post',
-            postBody: data,
-            onComplete: function(response) {
-				// Reload the page to apply the effect of module setting
-				window.location.href = "index.php?module=CustomerPortal&action=index&parenttab=Settings";
-			}
+function moveDown(moduleObj,sequence) {
+	var oldSequence = moduleObj[sequence]['sequence'];
+	var changeSequence  = parseInt(oldSequence) + 1;
+
+	moduleObj[sequence]['sequence'] = moduleObj[changeSequence]['sequence'];
+	moduleObj[changeSequence]['sequence']=oldSequence;
+
+	temp = new Object();
+	temp=moduleObj[sequence];
+	moduleObj[sequence]=moduleObj[changeSequence];
+	moduleObj[changeSequence]=temp;
+	renderModuleSettings(moduleObj);
+}
+
+Object.prototype.size = function () {
+	var len = this.length ? --this.length : -1;
+	for (var k in this)
+	len++;
+	return len;
+}
+
+function visibleValueChange(sequence,tabid,moduleObj) {
+	if(moduleObj[sequence]['sequence'] == sequence && moduleObj[sequence]['tabid'] == tabid){
+		if(moduleObj[sequence]['visible'] == 1)
+			moduleObj[sequence]['visible'] = '0';
+		else
+			moduleObj[sequence]['visible'] = '1';
 		}
-	);
+}
+
+function prefValueChange(sequence,tabid,moduleObj) {
+	if(moduleObj[sequence]['sequence'] == sequence && moduleObj[sequence]['tabid'] == tabid){
+		if(moduleObj[sequence]['value'] == 1)
+			moduleObj[sequence]['value'] = '0';
+		else
+			moduleObj[sequence]['value'] = '1';
+		}
 }

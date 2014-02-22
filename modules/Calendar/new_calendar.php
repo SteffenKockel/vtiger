@@ -18,7 +18,7 @@ $subtab = vtlib_purify($_REQUEST['subtab']);
 $viewBox = vtlib_purify($_REQUEST['viewOption']);
 $viewOptions = array('listview','hourview');
 if(empty($viewBox) || !in_array($viewBox, $viewOptions)) {
-	$viewBox = 'listview';
+	$viewBox = 'hourview';
 }
 if($subtab != 'todo') {
 	$subtab = 'event';

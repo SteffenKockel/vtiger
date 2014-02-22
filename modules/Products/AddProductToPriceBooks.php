@@ -19,7 +19,7 @@ $productid = $_REQUEST['return_id'];
 $parenttab = getParentTab();
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
-require_once($theme_path.'layout_utils.php');
+require_once('modules/Vtiger/layout_utils.php');
 $productNameArr = getEntityName($currentModule, array($productid));
 $productname = $productNameArr[$productid];
 

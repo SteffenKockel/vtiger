@@ -53,7 +53,7 @@ if($ajaxaction == "DETAILVIEW")
 		$userObj->id = $userid;
 		$userObj->mode = "edit";
 		$userObj->homeorder_array[] = 'Tag Cloud';
-		$homeStuffOrder = $userObj->getHomeStuffOrder($crmid);
+		$homeStuffOrder = $userObj->getHomeStuffOrder($userid);
 		foreach ($homeStuffOrder as $widget=>$visible) {
 			$_REQUEST[$widget] = $visible;
 		}

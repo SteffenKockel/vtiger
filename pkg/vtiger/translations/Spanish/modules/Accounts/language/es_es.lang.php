@@ -15,10 +15,10 @@
  ********************************************************************************
 *  Module       : Accounts
 *  Language     : Español
-*  Version      : 51
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-28
 *  Author       : Joe Bordes JPL TSolucio, S. L.
 * *******************************************************************************/
 
@@ -238,7 +238,7 @@ $mod_strings = array(
 
 // Account Hierarchy
 'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Mostrar Jerarquía de Cuentas',
-
+'Accounts ID' => 'Id Cuenta',
 );
 
 ?>

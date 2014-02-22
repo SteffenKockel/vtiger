@@ -21,7 +21,7 @@ class Mobile_WS_Query extends Mobile_WS_FetchRecordWithGrouping {
 	function process(Mobile_API_Request $request) {
 		$current_user = $this->getActiveUser();
 		
-		$query = $request->get('query');
+		$query = $request->get('query', '', false);
 		$nextPage = 0;
 		$queryResult = false;
 		

@@ -12,13 +12,9 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * Description:  Defines the German (Swiss & Germany) language pack for the base application.
- * Contributor(s): 4net AG, Schoretshuebstr. 26 , CH-9015 St.Gallen
- ********************************************************************************/
 
 $mod_strings = Array(
-'LBL_SYSTEM_CONFIG'=>'Systemkonfiguration',
+    'LBL_SYSTEM_CONFIG'=>'Systemkonfiguration',
 );
 
 ?>

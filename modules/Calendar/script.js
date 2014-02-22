@@ -62,10 +62,10 @@ function DisableSharing()
 function showhide(argg)
 {
 	var x=document.getElementById(argg).style;
-	if (x.display=="none") 
+	if (x.display=="none")
 	{
 		x.display="block"
-	
+
 	}
 	else {
 			x.display="none"
@@ -77,7 +77,7 @@ function showhideRepeat(argg1,argg2)
 {
 	var x=document.getElementById(argg2).style;
 	var y=document.getElementById(argg1).checked;
-	
+
 	if (y)
 	{
 		x.display="block";
@@ -85,7 +85,7 @@ function showhideRepeat(argg1,argg2)
 	else {
 		x.display="none";
 	}
-	
+
 }
 
 
@@ -95,7 +95,7 @@ function gshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,endm
 	smin = parseInt(startmin,10);
         smin = smin - (smin%5);
 	var y=document.getElementById(argg1).style;
-	
+
 		if(type != 'todo' && type!='')
 		{
 			for(var i=0;;i++){
@@ -105,7 +105,7 @@ function gshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,endm
 					break;
 				}
 			}
-				
+
 			smin = _2digit(smin);
 			document.EditView.date_start.value = startdate;
 			document.EditView.starthr.value = starthr;
@@ -174,10 +174,10 @@ function Taskshow(argg1,type,startdate,starthr,startmin,startfmt)
 function ghide(argg2)
 {
 	var z=document.getElementById(argg2).style;
-	if (z.display=="block" ) 
+	if (z.display=="block" )
 	{
 		z.display="none"
-	
+
 	}
 }
 
@@ -185,9 +185,9 @@ function ghide(argg2)
 	var posx = 0;
 	var posy = 0;
 	var e=document.getElementById(arg1);
-	
+
 	if (!e) var e = window.event;
-	
+
 	if (e.pageX || e.pageY)
 	{
 		posx = e.pageX;
@@ -211,17 +211,18 @@ function switchClass(myModule,toStatus) {
 			x.className="dvtUnSelectedCell";
 		}
 	}
-		
+
 }
 
 function enableCalstarttime()
 {
 	if(document.SharingForm.sttime_check.checked == true)
 		document.SharingForm.start_hour.disabled = false;
-	else	
+	else
 		document.SharingForm.start_hour.disabled = true;
 }
 function check_form() {
+	formSelectColumnString('inviteesid','selectedusers');
 	formSelectColumnString('inviteesid','selectedusers');
 	if(trim(document.EditView.subject.value) == "") {
 		alert(alert_arr.MISSING_EVENT_NAME);
@@ -314,13 +315,13 @@ function check_form() {
 			date3.setYear(yyyy3)
 			date3.setMonth(mm3-1)
 			date3.setDate(dd3)
- 
+
 			diff_ms = Math.abs(date2.getTime()-date1.getTime())/(1000*60);
 			hour = Math.floor(diff_ms/(60));
 			minute = Math.floor(diff_ms % 60)
 			document.EditView.duration_hours.value = hour;
 			document.EditView.duration_minutes.value = minute;
-			
+
 			event_starthour = _2digit(starthour);
 			event_startmin = _2digit(startmin);
 			event_endhour = _2digit(endhour);
@@ -328,7 +329,7 @@ function check_form() {
 			document.EditView.time_start.value = event_starthour+':'+event_startmin;
 			document.EditView.time_end.value = event_endhour+':'+event_endmin;
 			// Added for Aydin Kurt-Elli requirement START -by Minnie
-			if (document.EditView.followup.checked == true && 
+			if (document.EditView.followup.checked == true &&
 				document.getElementById('date_table_thirdtd').style.display == 'block') {
 				if(!dateValidate('followup_date','Followup Date','OTH')) {
 					return false;
@@ -346,7 +347,7 @@ function check_form() {
 							followuphour = followuphour;
 					}
 				}
-	
+
 				if ( compareDates(date3,'Followup Date',date2,'End Date','GE')) {
 					if (date3 <= date2) {
 						if((followuphour*60+followupmin) <= (endhour*60+endmin)) {
@@ -380,9 +381,9 @@ function check_form() {
 			// Added for Aydin Kurt-Elli requirement END -by Minnie -->
 
 			//added to avoid db error while giving characters in the repeat "every n no of day in month" text box
-			if((getObj("recurringcheck")) && (document.EditView.recurringcheck.checked == true) && 
+			if((getObj("recurringcheck")) && (document.EditView.recurringcheck.checked == true) &&
 				(document.EditView.recurringtype.value =="Monthly")) {
-				if((document.EditView.repeatMonth[0].checked == true) && 
+				if((document.EditView.repeatMonth[0].checked == true) &&
 					((parseInt(parseFloat(document.EditView.repeatMonth_date.value))!=
 						document.EditView.repeatMonth_date.value) ||
 					document.EditView.repeatMonth_date.value=='' ||
@@ -408,7 +409,7 @@ function check_form() {
 
 			}
 
-		}	
+		}
 		else
 			return false;
 		if(getObj("recurringcheck") && document.EditView.recurringcheck.checked == false) {
@@ -499,26 +500,26 @@ function incUser(avail_users,sel_users)
         var selectlength=selectedColumnsObj.length
         var availlength=availListObj.length
 
-	for (i=0;i<selectedColumnsObj.length;i++) 
+	for (i=0;i<selectedColumnsObj.length;i++)
 	{
 		selectedColumnsObj.options[i].selected=false
 	}
-	for (i=0;i<availListObj.length;i++) 
+	for (i=0;i<availListObj.length;i++)
 	{
-		if (availListObj.options[i].selected==true) 
+		if (availListObj.options[i].selected==true)
 		{
 			var rowFound = false;
 			var existingObj = null;
-			for (j=0;j<selectedColumnsObj.length;j++) 
+			for (j=0;j<selectedColumnsObj.length;j++)
 			{
-				if (selectedColumnsObj.options[j].value==availListObj.options[i].value) 
+				if (selectedColumnsObj.options[j].value==availListObj.options[i].value)
 				{
 					rowFound=true;
 					existingObj=selectedColumnsObj.options[j]
 					break
 				}
 			}
-			if (rowFound!=true) 
+			if (rowFound!=true)
 			{
 				var newColObj=document.createElement("OPTION")
 					newColObj.value=availListObj.options[i].value
@@ -529,7 +530,7 @@ function incUser(avail_users,sel_users)
 							newColObj.selected=true
 							rowFound=false
 			}
-			else 
+			else
 			{
 				if (existingObj != null) existingObj.selected=true
 			}
@@ -544,9 +545,9 @@ function rmvUser(sel_users)
 	for(i = 0; i <= selectlength; i++)
 	{
 		if(selectedColumnsObj.options.selectedIndex >= 0)
-		selectedColumnsObj.remove(selectedColumnsObj.options.selectedIndex)	
+		selectedColumnsObj.remove(selectedColumnsObj.options.selectedIndex)
 	}
-	
+
 }
 
 
@@ -569,20 +570,20 @@ function removeActContacts()
 		}
 	}
 	document.EditView.deletecntlist.value = del_ids.join(";");
-	
+
 	// this block is to get available id list
 	var avail_ids = new Array();
 	for(n=0; n<avail_contacts.options.length;n++)
 	{
-		avail_ids.push(avail_contacts.options[n].value);	
+		avail_ids.push(avail_contacts.options[n].value);
 	}
 	document.EditView.contactidlist.value = avail_ids.join(";");
-	
+
 }
 //end
 function formSelectColumnString(usr,col)
 {
-	
+
 	var selectedColumnsObj=getObj(col)
 	usr_id = document.getElementById(usr);
 	var selectedColStr = "";
@@ -622,7 +623,7 @@ function fnAddEvent(obj,CurrObj,start_date,end_date,start_hr,start_min,start_fmt
 	}
 	document.getElementById("addtodo").href="javascript:gshow('createTodo','todo','"+start_date+"','"+end_date+"','"+start_hr+"','"+start_min+"','"+start_fmt+"','"+end_hr+"','"+end_min+"','"+end_fmt+"','"+viewOption+"','"+subtab+"');fnRemoveEvent();";
 }
-	
+
 function fnRemoveEvent(){
 	var tagName = document.getElementById('addEventDropDown').style.display = 'none';
 }
@@ -667,7 +668,7 @@ function updateStatus(record,status,view,hour,day,month,year,type){
 	if(type == 'event')
 	{
 		var OptionData = $('view_Option').options[$('view_Option').selectedIndex].value;
-		
+
 		new Ajax.Request(
                 	'index.php',
                 	{queue: {position: 'end', scope: 'command'},
@@ -681,16 +682,16 @@ function updateStatus(record,status,view,hour,day,month,year,type){
                         //$("listView").innerHTML=result[0];
 	                    document.EventViewOption.action.value = "index";
 						window.document.EventViewOption.submit();
-					}		
+					}
                    	if(OptionData == 'hourview')
 					{
 						result = response.responseText.split('####');
                         $("total_activities").innerHTML = result[1];
                         //$("hrView").innerHTML=result[0];
 	                    document.EventViewOption.action.value = "index";
-						window.document.EventViewOption.submit();             
+						window.document.EventViewOption.submit();
 					}
-					
+
                }}
 		);
 	}
@@ -759,7 +760,7 @@ function cal_navigation(type,urlstring,start)
                                 }
                         }
                 );
-        }	
+        }
 }
 
 function getcalAction(obj,Lay,id,view,hour,dateVal,type){
@@ -793,7 +794,7 @@ function getcalAction(obj,Lay,id,view,hour,dateVal,type){
 	var actdelete =	document.getElementById("actdelete");
 	var changeowner = document.getElementById("changeowner");
 	var OptionData = document.getElementById('view_Option').options[document.getElementById('view_Option').selectedIndex].value;
-	
+
     }
     if(type == 'todo')
     {
@@ -868,12 +869,12 @@ function calendarChangeOwner()
 		var group_id = document.getElementById('lead_group_owner').options[document.getElementById('lead_group_owner').options.selectedIndex].value;
 		var url = 'module=Users&action=updateLeadDBStatus&return_module=Calendar&return_action=ActivityAjax&owner_id='+group_id+'&idlist='+idlist+'&view='+view+'&hour='+hour+'&day='+day+'&month='+month+'&year='+year+'&type=change_owner&owner_type=Group';
 	}
-		
+
 	if(subtab == 'event')
 	{
 		var OptionData = $('view_Option').options[$('view_Option').selectedIndex].value;
 		var eventurl = url+'&viewOption='+OptionData+'&subtab=event&ajax=true';
-		
+
 	 	new Ajax.Request(
                 	'index.php',
                 	{queue: {position: 'end', scope: 'command'},
@@ -902,7 +903,7 @@ function calendarChangeOwner()
 	}
 	if(subtab == 'todo')
         {
-		
+
 		var todourl = url+'&subtab=todo&ajax=true';
                 new Ajax.Request(
                         'index.php',
@@ -1019,11 +1020,11 @@ function fnAssignTo(){
 			document.getElementById('leadLay').style.visibility = 'hidden';
 		}
 	}
-	
+
 function fnShowPopup(){
 	document.getElementById('popupLay').style.display = 'block';
 }
-	
+
 function fnHidePopup(){
 	document.getElementById('popupLay').style.display = 'none';
 }
@@ -1053,7 +1054,7 @@ function setFieldvalues(opmode,subtab,viewOption)
 		document.EditView.viewOption.value = viewOption;
                 document.EditView.subtab.value = subtab;
 		for(x=0;x<key.length;x++)
-		{	
+		{
 			if(document.EditView[key[x]] != undefined)
 			{
 
@@ -1080,7 +1081,7 @@ function setFieldvalues(opmode,subtab,viewOption)
 					document.getElementById('repeatOptions').style.display = 'block';
 				}
 				if(key[x] == 'recurringtype')
-				{	
+				{
 					if(data[x] == 'Weekly')
 						document.getElementById('repeatWeekUI').style.display = 'block';
 					else
@@ -1098,7 +1099,7 @@ function setFieldvalues(opmode,subtab,viewOption)
 						document.getElementById('leadLay').style.display = 'hidden';
 				}
 				document.EditView[key[x]].value = data[x];
-			//}	
+			//}
 			}
 		}
 		document.getElementById('addEvent').style.display = 'block';
@@ -1168,7 +1169,7 @@ function changeEndtime_StartTime(type)
 	calDuedatetime(type);
 	return true;
 }
- 
+
 function calDuedatetime(type)
 {
         var dateval1=getObj('date_start').value.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -1359,7 +1360,7 @@ function cal_fnvshobj(obj,Lay){
    lvalue ==> is a contact id
    ltext ==> is a contact name
 **/
-function addOption(lvalue,ltext)	
+function addOption(lvalue,ltext)
 {
 	var optObj = document.createElement('OPTION')
 	if (browser_ie) optObj.innerText = ltext;

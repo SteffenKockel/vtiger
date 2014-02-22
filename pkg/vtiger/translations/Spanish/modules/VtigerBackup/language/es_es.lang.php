@@ -14,6 +14,8 @@
  */
 
 $mod_strings = array(
+	'VtigerBackup'=>'Copia Seguridad',
+	'SINGLE_VtigerBackup'=>'Copia Seguridad',
 	'LBL_CREATE_ZIP_FAILURE' => 'No se ha podido crear el fichero comprimido',
 	'LBL_ZIP_FILE_ADD_FAILURE' => 'error añadiendo fichero',
 	'LBL_FTP_CONNECT_FAILED' => 'Conexión FTP fallida',

@@ -25,7 +25,7 @@ require_once('data/Tracker.php');
 require_once('include/CustomFieldUtil.php');
 require_once('include/utils/utils.php');
 require_once('include/FormValidationUtil.php');
-require_once('modules/Calendar/calendarLayout.php'); 
+require_once('modules/Calendar/calendarLayout.php');
 require_once("modules/Emails/mail.php");
 include_once 'modules/Calendar/header.php';
 global $app_strings;
@@ -43,7 +43,7 @@ $activity_mode = vtlib_purify($_REQUEST['activity_mode']);
 if($activity_mode == 'Task')
 {
 	$tab_type = 'Calendar';
-	$taskcheck = true;	
+	$taskcheck = true;
 	$smarty->assign("SINGLE_MOD",$mod_strings['LBL_TODO']);
 }
 elseif($activity_mode == 'Events')
@@ -56,43 +56,33 @@ elseif($activity_mode == 'Events')
 if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
     $focus->id = vtlib_purify($_REQUEST['record']);
     $focus->mode = 'edit';
-    $focus->retrieve_entity_info($_REQUEST['record'],$tab_type);		
+    $focus->retrieve_entity_info($_REQUEST['record'],$tab_type);
     $focus->name=$focus->column_fields['subject'];
-    $sql = 'select vtiger_users.user_name,vtiger_invitees.* from vtiger_invitees left join vtiger_users on vtiger_invitees.inviteeid=vtiger_users.id where activityid=?';
+    $sql = 'select vtiger_users.*,vtiger_invitees.* from vtiger_invitees left join vtiger_users on vtiger_invitees.inviteeid=vtiger_users.id where activityid=?';
     $result = $adb->pquery($sql, array($focus->id));
     $num_rows=$adb->num_rows($result);
     $invited_users=Array();
     for($i=0;$i<$num_rows;$i++)
     {
 	    $userid=$adb->query_result($result,$i,'inviteeid');
-	    $username=$adb->query_result($result,$i,'user_name');
+	    $username = getFullNameFromQResult($result, $i, 'Users');
 	    $invited_users[$userid]=$username;
     }
     $smarty->assign("INVITEDUSERS",$invited_users);
     $smarty->assign("UPDATEINFO",updateInfo($focus->id));
     $related_array = getRelatedListsInformation("Calendar", $focus);
     $cntlist = $related_array['Contacts']['entries'];
-	$is_fname_permitted = getFieldVisibilityPermission("Contacts", $current_user->id, 'firstname');
-    $cnt_idlist = '';
-    $cnt_namelist = '';
-    if($cntlist != '')
-    {
-	    $i = 0;
-	    foreach($cntlist as $key=>$cntvalue)
-	    {
-		    if($i != 0)
-		    {
-			    $cnt_idlist .= ';';
-			    $cnt_namelist .= "\n";
-		    }
-		    $cnt_idlist .= $key;
-		    $contName = preg_replace("/(<a[^>]*>)(.*)(<\/a>)/i", "\\2", $cntvalue[0]);
-			if ($is_fname_permitted == '0') $contName .= ' '.preg_replace("/(<a[^>]*>)(.*)(<\/a>)/i", "\\2", $cntvalue[1]);
-		    $cnt_namelist .= '<option value="'.$key.'">'.$contName.'</option>';
-		    $i++;
-	    }
-    }
-    $smarty->assign("CONTACTSID",$cnt_idlist);
+
+	$entityIds = array_keys($cntlist);
+	$cnt_namelist = array();
+	$displayValueArray = getEntityName('Contacts', $entityIds);
+	if (!empty($displayValueArray)) {
+		foreach ($displayValueArray as $key => $field_value) {
+			$cnt_namelist[$key] =  $field_value;
+		}
+	}
+	$cnt_idlist = array_keys($cnt_namelist);
+    $smarty->assign("CONTACTSID",  implode(';', $cnt_idlist));
     $smarty->assign("CONTACTSNAME",$cnt_namelist);
     $query = 'SELECT vtiger_recurringevents.*, vtiger_activity.date_start, vtiger_activity.time_start, vtiger_activity.due_date, vtiger_activity.time_end
 				FROM vtiger_recurringevents
@@ -107,7 +97,7 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	    $value['repeat_frequency'] = $recurringObject->getRecurringFrequency();
 		$value['eventrecurringtype'] = $recurringObject->getRecurringType();
 		$recurringInfo = $recurringObject->getUserRecurringInfo();
-	    
+
 		if($recurringObject->getRecurringType() == 'Weekly') {
 			$noOfDays = count($recurringInfo['dayofweek_to_repeat']);
 			for ($i = 0; $i < $noOfDays; ++$i) {
@@ -131,16 +121,24 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 {
 	if(isset($_REQUEST['contact_id']) && $_REQUEST['contact_id']!=''){
 		$contactId = vtlib_purify($_REQUEST['contact_id']);
-		$smarty->assign("CONTACTSID",$contactId);
-		$contact_name = "<option value=".$contactId.">".getContactName($contactId)."</option>";
-		$smarty->assign("CONTACTSNAME",$contact_name);
+		$entityIds = array($contactId);
+		$displayValueArray = getEntityName('Contacts', $entityIds);
+		if (!empty($displayValueArray)) {
+			foreach ($displayValueArray as $key => $field_value) {
+				$cnt_namelist[$key] =  $field_value;
+			}
+		}
+		$cnt_idlist = array_keys($cnt_namelist);
+		$smarty->assign("CONTACTSID",  implode(';', $cnt_idlist));
+		$smarty->assign("CONTACTSNAME",$cnt_namelist);
+		
 		$account_id = vtlib_purify($_REQUEST['account_id']);
 		$account_name = getAccountName($account_id);
-	}	
+	}
 }
 if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 	$focus->id = "";
-    	$focus->mode = ''; 	
+    	$focus->mode = '';
 }
 if(empty($_REQUEST['record']) && $focus->mode != 'edit'){
 	setObjectValuesFromRequest($focus);
@@ -154,7 +152,7 @@ if($disp_view == 'edit_view')
 {
 	$act_data = getBlocks($tab_type,$disp_view,$mode,$focus->column_fields);
 }
-else	
+else
 {
 	$act_data = getBlocks($tab_type,$disp_view,$mode,$focus->column_fields,'BAS');
 }
@@ -230,6 +228,7 @@ if($focus->mode == 'edit')
 {
         $smarty->assign("MODE", $focus->mode);
 }
+$smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
 
 $category = getParentTab();
 $smarty->assign("CATEGORY",$category);
@@ -269,8 +268,8 @@ if(isset($_REQUEST['subtab']) && $_REQUEST['subtab']!='')
 	$smarty->assign("subtab",vtlib_purify($_REQUEST['subtab']));
 if(isset($_REQUEST['maintab']) && $_REQUEST['maintab']!='')
 	$smarty->assign("maintab",vtlib_purify($_REQUEST['maintab']));
-	
-	
+
+
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);

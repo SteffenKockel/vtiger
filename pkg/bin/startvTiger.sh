@@ -33,16 +33,16 @@ if [ $apache_bundled == 'true' ];then
 	echo ""
 	echo "Starting apache at port $apache_port"
 	echo ""
-	
+
 	./apachectl -k restart
 	if [ $? -ne 0 ]; then
 		echo ""
-		echo "*******************************************************************************"	
+		echo "*******************************************************************************"
 		echo "Unable to start the apache server. Check whether the port $apache_port is free"
 		echo "*******************************************************************************"
 		echo ""
 		exit
-	fi 
+	fi
 fi
 
 if [ $apache_bundled == 'false' ];then
@@ -56,10 +56,10 @@ if [ $apache_bundled == 'false' ];then
 		echo ""
 		exit
 	else
-		echo ""	
+		echo ""
 		echo "Apache Server is running"
-		echo ""	
-	fi	
+		echo ""
+	fi
 fi
 
 MYSQL_HOME=$mysql_dir
@@ -88,8 +88,8 @@ if [ $exit_status -ne 0 ]; then
 		echo "Mysql server in the directory $mysql_dir is not running at port $mysql_port. Start the mysql server and then start vtigerCRM application"
 		echo "**************************************************************************************"
 		echo ""
-	
-		exit		
+
+		exit
 	else
 		echo ""
 		echo "Mysql Server is not running. Going to start the  mysql server at port $mysql_port"
@@ -108,17 +108,17 @@ if [ $exit_status -ne 0 ]; then
 			exit
 		fi
 	fi
-		
+
 fi
 echo ""
-echo "Checking if the vtigercrm530 database already exists"
+echo "Checking if the vtigercrm540 database already exists"
 echo ""
-echo "select 1" | ./bin/mysql --user=$mysql_username --password=$mysql_password  --port=$mysql_port --socket=$mysql_socket -D vtigercrm530 >/dev/null
+echo "select 1" | ./bin/mysql --user=$mysql_username --password=$mysql_password  --port=$mysql_port --socket=$mysql_socket -D vtigercrm540 >/dev/null
 if [ $? -ne 0 ]; then
 	echo ""
-	echo "Database vtigercrm530 does not exist. Creating database vtigercrm530"
+	echo "Database vtigercrm540 does not exist. Creating database vtigercrm540"
 	echo ""
-	./bin/mysql --user=$mysql_username --password=$mysql_password  --port=$mysql_port --socket=$mysql_socket -e "create database if not exists vtigercrm530"
+	./bin/mysql --user=$mysql_username --password=$mysql_password  --port=$mysql_port --socket=$mysql_socket -e "create database if not exists vtigercrm540"
 fi
 
 host=`hostname`

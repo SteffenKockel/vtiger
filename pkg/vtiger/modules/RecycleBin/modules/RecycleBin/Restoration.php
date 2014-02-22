@@ -8,15 +8,13 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-if(isset($_REQUEST['idlist']) && $_REQUEST['idlist'] != '')
-{
-	$idlists = explode(',',$_REQUEST[idlist]);
-}elseif(isset($_REQUEST['entityid']) && $_REQUEST['entityid'] != '')
-{
-	$idlists = Array($_REQUEST['entityid']);
-}
+require_once('RecycleBinUtils.php');
 
+$idlist=vtlib_purify($_REQUEST['idlist']);
+$excludedRecords=vtlib_purify($_REQUEST['excludedRecords']);
 $selected_module = vtlib_purify($_REQUEST['selectmodule']);
+$idlists = getSelectedRecordIds($_REQUEST,$selected_module,$idlist,$excludedRecords);
+
 require_once('data/CRMEntity.php');
 $focus = CRMEntity::getInstance($selected_module);
 

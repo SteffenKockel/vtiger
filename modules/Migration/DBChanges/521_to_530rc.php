@@ -20,12 +20,12 @@ $migrationlog->debug("\n\nDB Changes from 5.2.1 to 5.3.0RC -------- Starts \n\n"
 create_tab_data_file();
 
 // Take away the ability to disable entity name fields
-$sql = "SELECT modulename, fieldname, tablename FROM vtiger_entityname;";
+$sql = "SELECT tabid, modulename, fieldname, tablename FROM vtiger_entityname;";
 $params = array();
 $result = $adb->pquery($sql, $params);
 $it = new SqlResultIterator($adb, $result);
 foreach ($it as $row) {
-	$tabId = getTabid($row->modulename);
+	$tabId = $row->tabid;
 	$column = "'$row->fieldname'";
 	$columnArray = explode(',', $column);
 	$tableName = $row->tablename;
@@ -43,7 +43,7 @@ function vt530_addEmailFieldTypeInWs(){
 	$checkQuery = "SELECT * FROM vtiger_ws_fieldtype WHERE fieldtype=?";
 	$params = array ("email");
 	$checkResult = $db->pquery($checkQuery,$params);
-	if($db->num_rows($checkResult) <= 0) {		
+	if($db->num_rows($checkResult) <= 0) {
 		$fieldTypeId = $db->getUniqueID('vtiger_ws_fieldtype');
 		$sql = "INSERT INTO vtiger_ws_fieldtype(uitype,fieldtype) VALUES ('13','email')";
 		ExecuteQuery($sql);
@@ -122,79 +122,21 @@ ExecuteQuery("CREATE TABLE IF NOT EXISTS vtiger_scheduled_reports(reportid INT, 
 
 
 // Change Display of User Name from user_name to lastname firstname.
-$updatedCVIds = array();
-$updatedReportIds = array();
 $usersQuery = "SELECT * FROM vtiger_users";
-$usersInfo = $adb->query($usersQuery);
-$usersCount = $adb->num_rows($usersInfo);
-for($i=0;$i<$usersCount;$i++){
-	$username = $adb->query_result($usersInfo,$i,'user_name');
-	$firstname = $adb->query_result($usersInfo,$i,'first_name');
-	$lastname = $adb->query_result($usersInfo,$i,'last_name');
-	$usernames[$i] = $username;
-	$fullname = getDisplayName(array('f'=>$firstname,'l'=>$lastname));
-	$fullnames[$i] = $fullname;
-}
+$usersResult = $adb->query($usersQuery);
+$usersCount = $adb->num_rows($usersResult);
+for($i=0;$i<$usersCount;++$i){
+	$userId = $adb->query_result($usersResult,$i,'id');
+	$userName = $adb->query_result($usersResult,$i,'user_name');
+	$fullName = getFullNameFromQResult($usersResult, $i, 'Users');
 
-for($i=0;$i<$usersCount;$i++){
-	$cvQuery = "SELECT * FROM vtiger_cvadvfilter WHERE columnname LIKE '%:assigned_user_id%' AND value LIKE '%$usernames[$i]%'";
-	$cvResult = $adb->query($cvQuery);
-	$cvCount = $adb->num_rows($cvResult);
-	for($k=0;$k<$cvCount;$k++){
-			$id = $adb->query_result($cvResult,$k,'cvid');
-			if(!in_array($id, $updatedCVIds)){
-				$value = $adb->query_result($cvResult,$k,'value');
-				$value = explode(',',$value);
-				$fullname='';
-				if(count($value)>1){
-					for($m=0;$m<count($value);$m++){
-						$index = array_keys($usernames,$value[$m]);
-						if($m == count($value)-1){
-							$fullname .= trim($fullnames[$index[0]]);
-						}
-						else {
-							$fullname .= trim($fullnames[$index[0]]).',';
-						}
-					}
-				}else{
-					$fullname = $fullnames[$i];
-				}
-				$updatedCVIds[$k] = $id;
-				ExecuteQuery("UPDATE vtiger_cvadvfilter SET value='$fullname' WHERE cvid=$id AND columnname LIKE '%:assigned_user_id%'");
-			}
-	}
-	$reportQuery = "SELECT * FROM vtiger_relcriteria WHERE columnname LIKE 'vtiger_users%:user_name%' AND value LIKE '%$usernames[$i]%'";
-	$reportResult = $adb->query($reportQuery);
-	$reportsCount = $adb->num_rows($reportResult);
+	ExecutePQuery("UPDATE vtiger_cvadvfilter SET value=? WHERE columnname LIKE '%:assigned_user_id:%' AND value=?", array($fullName, $userName));
+	ExecutePQuery("UPDATE vtiger_cvadvfilter SET value=? WHERE columnname LIKE '%:assigned_user_id1:%' AND value=?", array($fullName, $userName));
+	ExecutePQuery("UPDATE vtiger_relcriteria SET value=? WHERE columnname LIKE 'vtiger_users%:user_name%' AND value=?", array($fullName, $userName));
 
-	$fullname='';
-	for($j=0;$j<$reportsCount;$j++){
-
-		$id = $adb->query_result($reportResult,$j,'queryid');
-		if(!in_array($id,$updatedReportIds)){
-
-			$value = $adb->query_result($reportResult,$j,'value');
-			$value = explode(',',$value);
-			$fullname='';
-			if(count($value)>1){
-				for($m=0;$m<count($value);$m++){
-					$index = array_keys($usernames,$value[$m]);
-					if($m == count($value)-1){
-						$fullname .= trim($fullnames[$index[0]]);
-					}
-					else {
-						$fullname .= trim($fullnames[$index[0]]).',';
-					}
-				}
-			}else{
-				$fullname = $fullnames[$i];
-			}
-
-			$updatedReportIds[$j] =$id;
-			ExecuteQuery("UPDATE vtiger_relcriteria SET value='$fullname' WHERE queryid=$id AND columnname LIKE 'vtiger_users%:user_name%'");
-
-		}
-	}
+	ExecutePQuery("UPDATE vtiger_cvadvfilter SET comparator='c'
+						WHERE (columnname LIKE '%:assigned_user_id%:' OR columnname LIKE '%:assigned_user_id1%:' OR columnname LIKE '%:modifiedby%:')
+								AND (comparator='s' OR comparator='ew')", array());
 }
 
 // Rename Yahoo Id field to Secondary Email field

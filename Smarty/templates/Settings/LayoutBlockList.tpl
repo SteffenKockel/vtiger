@@ -219,7 +219,7 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 			defaultvalue = '';
 		}
 		
-		urlstring = urlstring + '&defaultvalue=' + defaultvalue;		
+		urlstring = urlstring + '&defaultvalue=' + encodeURIComponent(defaultvalue);
 	}
 	
 	$('vtbusy_info').style.display = "block";
@@ -271,7 +271,7 @@ function getCreateCustomFieldForm(modulename,blockid,mode)
    var label = document.getElementById("fldLabel_"+blockid).value;
    var fldLength = document.getElementById("fldLength_"+blockid).value;  
    var fldDecimal = document.getElementById("fldDecimal_"+blockid).value;
-   var fldPickList = document.getElementById("fldPickList_"+blockid).value;
+   var fldPickList = encodeURIComponent(document.getElementById("fldPickList_"+blockid).value);
    VtigerJS_DialogBox.block();
    new Ajax.Request(
 		'index.php',

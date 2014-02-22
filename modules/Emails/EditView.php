@@ -37,7 +37,7 @@ global $default_charset;
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
 $json = new Zend_Json();
-
+$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); // Convert to MB
 if($_REQUEST['upload_error'] == true)
 {
         echo '<br><b><font color="red"> The selected file has no data or a invalid file.</font></b><br>';

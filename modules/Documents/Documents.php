@@ -11,7 +11,6 @@
 include_once('config.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
-require_once('data/SugarBean.php');
 require_once('data/CRMEntity.php');
 require_once('include/upload_file.php');
 
@@ -126,8 +125,13 @@ class Documents extends CRMEntity {
 				$filetype = $this->column_fields['filetype'];
 				$filelocationtype = $this->column_fields[$filetype_fieldname];
 				$filedownloadcount = 0;
+			} else {
+				$filelocationtype = 'I';
+				$filetype = '';
+				$filesize = 0;
+				$filedownloadcount = null;
 			}
-		} else{
+		} else if($this->column_fields[$filetype_fieldname] == 'E' ){
 			$filelocationtype = 'E';
 			$filename = $this->column_fields[$filename_fieldname];
 			// If filename does not has the protocol prefix, default it to http://
@@ -262,8 +266,8 @@ class Documents extends CRMEntity {
 		$sql = getPermittedFieldsQuery("Documents", "detail_view");
 		$fields_list = getFieldsListFromQuery($sql);
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('f'=>'vtiger_users.first_name', 'l' => 
-			'vtiger_users.last_name'));
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
+							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name" .
 				" FROM vtiger_notes
 				inner join vtiger_crmentity
@@ -312,15 +316,6 @@ class Documents extends CRMEntity {
 	}
 
 	/*function save_related_module($module, $crmid, $with_module, $with_crmid){
-		global $log;
-		$log->debug("indocument".$module.$crmid.$with_module.$with_crmid);
-		if(isset($this->parentid) && $this->parentid != '')
-			$relid =  $this->parentid;
-		//inserting into vtiger_senotesrel
-		if(isset($relid) && $relid != '')
-		{
-			$this->insertintonotesrel($relid,$this->id);
-		}
 	}*/
 
 
@@ -338,7 +333,8 @@ class Documents extends CRMEntity {
 					left join vtiger_groups as vtiger_groups".$module." on vtiger_groups".$module.".groupid = vtiger_crmentity.smownerid
 		            left join vtiger_users as vtiger_users".$module." on vtiger_users".$module.".id = vtiger_crmentity.smownerid
 					left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
-		            left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
+		            left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
+                    left join vtiger_users as vtiger_lastModifiedBy".$module." on vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby ";
 		            return $query;
 
 	}
@@ -354,7 +350,8 @@ class Documents extends CRMEntity {
 		$query .=" left join vtiger_crmentity as vtiger_crmentityDocuments on vtiger_crmentityDocuments.crmid=vtiger_notes.notesid and vtiger_crmentityDocuments.deleted=0
 		        left join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=vtiger_notes.folderid
 				left join vtiger_groups as vtiger_groupsDocuments on vtiger_groupsDocuments.groupid = vtiger_crmentityDocuments.smownerid
-				left join vtiger_users as vtiger_usersDocuments on vtiger_usersDocuments.id = vtiger_crmentityDocuments.smownerid";
+				left join vtiger_users as vtiger_usersDocuments on vtiger_usersDocuments.id = vtiger_crmentityDocuments.smownerid
+                left join vtiger_users as vtiger_lastModifiedByDocuments on vtiger_lastModifiedByDocuments.id = vtiger_crmentityDocuments.modifiedby ";
 
 		return $query;
 	}

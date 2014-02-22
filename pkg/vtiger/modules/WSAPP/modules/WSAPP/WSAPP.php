@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once('include/events/include.inc');
+require_once 'modules/WSAPP/Utils.php';
 
 class WSAPP {
 
@@ -35,7 +36,7 @@ class WSAPP {
 			// TODO Handle actions before this module is updated.
 			return;			
 		} else if($event_type == 'module.postupdate') {
-			$this->initCustomWebserviceOperations();
+			$this->registerSynclibEventHandler();
 		}
 	}
 	
@@ -127,7 +128,7 @@ class WSAPP {
         $appName = "vtigerCRM";
         $type  ="user";
         $uid = uniqid();
-        $db->pquery("INSERT INTO vtiger_wsapp (name, appkey,type) VALUES(?,?,?)", array($name, $uid,$type));
+        $db->pquery("INSERT INTO vtiger_wsapp (name, appkey,type) VALUES(?,?,?)", array($appName, $uid,$type));
     }
 
 	function registerWsappWorkflowhandler(){
@@ -136,6 +137,13 @@ class WSAPP {
 		$dependentEventHandlers = array('VTEntityDelta');
 		$dependentEventHandlersJson = Zend_Json::encode($dependentEventHandlers);
 		$em->registerHandler('vtiger.entity.aftersave', 'modules/WSAPP/WorkFlowHandlers/WSAPPAssignToTracker.php', 'WSAPPAssignToTracker','',$dependentEventHandlersJson);
+	}
+
+	function registerSynclibEventHandler(){
+		$className='WSAPP_VtigerSyncEventHandler';
+		$path = 'modules/WSAPP/synclib/handlers/VtigerSyncEventHandler.php';
+		$type = 'vtigerSyncLib';
+		wsapp_RegisterHandler($type, $className, $path);
 	}
 }
  

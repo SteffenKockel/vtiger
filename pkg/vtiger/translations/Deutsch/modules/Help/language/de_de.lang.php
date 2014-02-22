@@ -14,12 +14,12 @@
  ********************************************************************************/
 
 $mod_strings = Array(
-'LBL_MODULE_NAME'=>'Organisationen',
-'LBL_MODULE_TITLE'=>'Organisationen: Home',
-'LBL_SEARCH_FORM_TITLE'=>'Organisationssuche',
-'LBL_LIST_FORM_TITLE'=>'Organisationsliste',
-'LBL_NEW_FORM_TITLE'=>'Neue Organisation',
-'ERR_DELETE_RECORD'=>"Wählen Sie einen Eintrag aus.",
+    'LBL_MODULE_NAME'=>'Organisationen',
+    'LBL_MODULE_TITLE'=>'Organisationen: Home',
+    'LBL_SEARCH_FORM_TITLE'=>'Organisationssuche',
+    'LBL_LIST_FORM_TITLE'=>'Organisationsliste',
+    'LBL_NEW_FORM_TITLE'=>'Neue Organisation',
+    'ERR_DELETE_RECORD'=>"Wählen Sie einen Eintrag aus.",
 );
 
 ?>

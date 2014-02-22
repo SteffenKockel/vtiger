@@ -12,16 +12,13 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  *********************************************************************************
-/*********************************************************************************
- * $Header:  E:\D_root\Dokumentumok\vtiger520\hungarian52\trunk\modules\System\language\hu_hu.lang.php - 22:37 2010.05.21. $
- * Description:  Defines the Hungarian language pack for the System module vtiger 5.2.0
+ * $Header:  \modules\System\language\hu_hu.lang.php - 12:13 2011.11.12. $
+ * Description:  Defines the Hungarian language pack for the System module vtiger 5.3.x
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
-
-$mod_strings = Array(
-'LBL_SYSTEM_CONFIG'=>'Rendszer Beállítások',
+$mod_strings = array(
+	'LBL_SYSTEM_CONFIG' => 'Rendszer Beállítás'
 );
-
 ?>

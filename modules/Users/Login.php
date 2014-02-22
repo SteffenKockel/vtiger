@@ -31,7 +31,7 @@ else
 		$login_user_name = trim(vtlib_purify($_REQUEST['default_user_name']), '"\'');
 	}
 	elseif (isset($_REQUEST['ck_login_id_vtiger'])) {
-		$login_user_name = get_assigned_user_name($_REQUEST['ck_login_id_vtiger']);
+		$login_user_name = getUserName($_REQUEST['ck_login_id_vtiger']);
 	}
 	else
 	{

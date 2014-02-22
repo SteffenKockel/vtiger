@@ -1,10 +1,10 @@
 /***********************************************************
 *  Module       : JavaScript
 *  Language     : ES Spanish
-*  Version      : vt5.0.4
+*  Version      : vt5.4.0
 *  Created Date : 2008-01-18 17:46:07
 *  Author       : rasomu
-*  Last change  : 2008-01-18
+*  Last change  : 2012-04-04
 *  es_mx Author : Francisco Hernandez Odin Consultores www.odin.mx
 ***********************************************************/
 
@@ -275,26 +275,67 @@ var alert_arr = {
       MSG_LOCAL_BACKUP_DISABLED : 'Copia Local Deshabilitada',
       MSG_FTP_BACKUP_ENABLED : 'Copia FTP Habilitada',
       MSG_LOCAL_BACKUP_ENABLED : 'Copia Local Habilitada',
-      MSG_CONFIRM_PATH : 'confirma detalles Directorio',
-      MSG_CONFIRM_FTP_DETAILS : 'confirma detalles FTP',
+      MSG_CONFIRM_PATH : 'confirma detalles de la ruta',
+      MSG_CONFIRM_FTP_DETAILS : 'confirma detalles de acceso FTP',
 
       START_PERIOD_END_PERIOD_CANNOT_BE_EMPTY : 'Periodo inicial o final no pueden quedar vacíos',
 
       /* added to fix i18n issues with home page*/
       LBL_ADD: 'Agregar ',
       Module: 'Módulo',
-      DashBoard: 'Cuadro Mando',
+      DashBoard: 'Cuadro de Mando',
       RSS: 'RSS',
       Default: 'Defecto',
-      Notebook: 'Bloc Notas',
+      Notebook: 'Bloc de Notas',
       SPECIAL_CHARS:'\\ / < > + \' " ',
 
       BETWEEN: 'entre',
       BEFORE: 'antes',
       AFTER: 'después',
-      'ERROR_DELETING_TRY_AGAIN': 'Error eliminando. Por favor inténtalo otra vez.',
-      'LBL_ENTER_WINDOW_TITLE': 'Introduce el título de la ventana.',
-      'LBL_SELECT_ONLY_FIELDS': 'Selecciona solo dos campos.',
-      'LBL_ENTER_RSS_URL':'Introduce la URL del RSS',
-      'LBL_ADD_HOME_WIDGET': 'No se ha podido agregar elementos a la portada! Por favor inténtalo otra vez.'
+				'ERROR_DELETING_TRY_AGAIN': 'Error eliminando. Por favor inténtalo otra vez.',
+				'LBL_ENTER_WINDOW_TITLE': 'Introduce el título de la ventana.',
+				'LBL_SELECT_ONLY_FIELDS': 'Selecciona solo dos campos.',
+				'LBL_ENTER_RSS_URL':'Introduce la URL del RSS',
+				'LBL_ADD_HOME_WIDGET': 'No se ha podido agregar elementos a la portada! Por favor inténtalo otra vez.',
+				
+				'LBL_DEFAULT_VALUE_FOR_THIS_FIELD' : 'Valor por defecto para este campo',
+
+				'RECIPIENTS_CANNOT_BE_EMPTY' : 'Los Destinatarios no puede estar vacío',
+				'VALID_SCANNER_NAME' : 'Ingrese un nombre válido para Mail Scanner (Solo letras y números)',
+				'ERR_SAME_SOURCE_AND_TARGET' : 'Campo origen y Destino no pueden ser el mismo',
+				'ERR_ATLEAST_ONE_VALUE_FOR' : 'Necesita seleccionar al menos un valor',
+				'ERR_SELECT_MODULE_FOR_DEPENDENCY' : 'Selecciona un módulo para agregar la dependencia',
+                'LBL_SIZE_SHOULDNOTBE_GREATER':'El tamaño del Archivo no debe ser superior a ', //added for upload error message
+	'LBL_MAX_SIZE':'Tamaño máximo de archivo aceptado es', //added for display file size limit
+	'LBL_FILESIZEIN_MB':'MB', // added to show filesize limit in MB
+	'LBL_FILESIZEIN_KB':'KB', // added to show filesize limit in KB
+	'LBL_FILESIZEIN_B':'B', // added to show filesize limit in B
+	//Contexual help page
+	'LBL_HELP_TITLE' : 'Ayuda',
+	'LBL_WIKI_TITLE' : 'Manuales',
+	'LBL_FAQ_TITLE'   : 'FAQ',
+	'LBL_VIDEO_TITLE' : 'Video',
+	'LBL_CLOSE_TITLE' : 'Cerrar',
+	'LBL_SELECT':'Selecciona los widgets por defecto a mostrar',
+	
+	'ERR_SELECT_ATLEAST_ONE_MERGE_CRITERIA_FIELD' : 'Selecciona al menos un campo para la combinación',
+	'ERR_PLEASE_MAP_MANDATORY_FIELDS' : 'Por favor, vincula los siguientes campos obligatorios',
+	'ERR_MAP_NAME_ALREADY_EXISTS' : 'Nombre de vinculación ya existe. Introduce un nombre distinto',
+	'ERR_MAP_NAME_CANNOT_BE_EMPTY' : 'Nombre de vinculación no puede quedar vacío',
+	'ERR_FIELDS_MAPPED_MORE_THAN_ONCE' : 'El siguiente campo se ha vinculado más de una vez. Verifica la vinculación.',
+	
+	//arror messages for lead conversion
+	'ERR_SELECT_EITHER':'Selecciona Cuenta o Contacto para convertir el Prospecto',
+	'ERR_SELECT_ACCOUNT':'Selecciona Cuenta para seguir',
+	'ERR_SELECT_CONTACT':'Selecciona Contacto para seguir',
+	'ERR_MANDATORY_FIELD_VALUE':'Faltan valores de campos obligatorios',
+	'ERR_POTENTIAL_AMOUNT':'Cantidad de la oportunidad debe ser numérico',
+	'ERR_EMAILID':'Introduce un email válido',
+	'ERR_TRANSFER_TO_ACC':'Debes seleccionar una cuenta a la que se transferirán los elementos relacionados',
+	'ERR_TRANSFER_TO_CON':'Debes seleccionar un contacto al que se transferirán los elementos relacionados',
+	'SURE_TO_DELETE_CUSTOM_MAP':'¿Seguro que quieres eliminar la vinculación de campos?',
+	'LBL_CLOSE_DATE':'Fecha Cierre',
+	'LBL_EMAIL':'Email',
+	'MORE_THAN_500' : 'Has seleccionado más de 500 registros. Esto puede tardar bastante tiempo. ¿Seguro que quieres continuar?',
+	'LBL_MAPPEDALERT':'Esta campo ya está vinculado'
 };

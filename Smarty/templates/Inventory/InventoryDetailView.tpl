@@ -275,6 +275,8 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 					{elseif $label neq 'Tax Class'}<!-- Avoid to display the label Tax Class -->
 						{if $keyid eq '71' || $keyid eq '72'}  <!--CurrencySymbol-->
 							<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} ({$keycursymb})</td>
+						{elseif $keyid eq '9'}
+							<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} {$APP.COVERED_PERCENTAGE}</td>
 						{else}
 							<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label}</td>
 						{/if}
@@ -404,17 +406,20 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 <script>
 function getTagCloud()
 {ldelim}
-new Ajax.Request(
-        'index.php',
-        {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-        method: 'post',
-        postBody: 'module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
-        onComplete: function(response) {ldelim}
-                                $("tagfields").innerHTML=response.responseText;
-                                $("txtbox_tagfields").value ='';
+	var obj = $("tagfields");
+	if(obj != null && typeof(obj) != undefined) {ldelim}
+		new Ajax.Request(
+        	'index.php',
+        	{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
+      		method: 'post',
+			postBody: 'module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
+			onComplete: function(response) {ldelim}
+							$("tagfields").innerHTML=response.responseText;
+                            $("txtbox_tagfields").value ='';
                         {rdelim}
-        {rdelim}
-);
+        	{rdelim}
+		);
+	{rdelim}
 {rdelim}
 getTagCloud();
 </script>

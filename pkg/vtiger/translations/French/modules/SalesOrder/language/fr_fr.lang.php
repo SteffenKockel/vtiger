@@ -1,14 +1,12 @@
 <?php
 /***********************************************************
 *  Module       : SalesOrder
-*  Language     : Francais
-*  Version      : 5.1.0 GA*  Created Date : 2009-06-23 21:36:13 
-*  Last change  : 2009-07-21 00:49:17
-*  Author       : french-vtiger.fr 
+*  Language     : French
+*  Version      : 5.3.0 
 *  License      : GPL
+*  Author       : ABOnline solutions http://www.vtiger-crm.fr
 
 ***********************************************************/
-
 
 $mod_strings = array (
 		'LBL_MODULE_NAME' => 'Bon de commande',
@@ -156,18 +154,23 @@ $mod_strings = array (
 		'Credit Invoice' => 'Facture au Crédit',
 		'Adjustment' => 'Avoir/Relicat',
 		'Sub Total' => 'Sous-total',
-		'Tax Type' => 'Tye de Taxe',
+		'Tax Type' => 'Type de Taxe',
 		'Discount Percent' => 'Remise en %',
 		'Discount Amount' => 'Remise fixe',
 		'S&H Amount' => 'Frais de transport',
-		'SalesOrder No' => 'Bon de commande N&deg;',
+		'SalesOrder No' => 'Bon de commande N°',
 		'Recurring Invoice Information' => 'Information de facturation récurrente',
 		'Enable Recurring' => 'Activer la récurrence',
 		'Frequency' => 'Fréquence',
 		'Start Period' => 'Début',
 		'End Period' => 'Fin',
 		'Payment Duration' => 'Echéance',
-		'Invoice Status' => 'Status de la facture',
+		'Invoice Status' => 'Statut de la facture',
+		'Issued Date' => 'Date d\'émission',
+		'Valid Date' => 'Date de validité',			
+		'Net 30 days' => 'Net 30 jours',
+		'Net 45 days' => 'Net 45 jours',
+		'Net 60 days' => 'Net 60 jours',
 );
 $mod_list_strings = array (
 );

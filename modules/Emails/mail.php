@@ -10,16 +10,17 @@
  ********************************************************************************/
 
 
-require("modules/Emails/class.phpmailer.php");
+require_once("modules/Emails/class.phpmailer.php");
+require_once 'include/utils/CommonUtils.php';
 
-/**   Function used to send email 
-  *   $module 		-- current module 
-  *   $to_email 	-- to email address 
+/**   Function used to send email
+  *   $module 		-- current module
+  *   $to_email 	-- to email address
   *   $from_name	-- currently loggedin user name
   *   $from_email	-- currently loggedin vtiger_users's email id. you can give as '' if you are not in HelpDesk module
   *   $subject		-- subject of the email you want to send
   *   $contents		-- body of the email you want to send
-  *   $cc		-- add email ids with comma seperated. - optional 
+  *   $cc		-- add email ids with comma seperated. - optional
   *   $bcc		-- add email ids with comma seperated. - optional.
   *   $attachment	-- whether we want to attach the currently selected file or all vtiger_files.[values = current,all] - optional
   *   $emailid		-- id of the email object which will be used to get the vtiger_attachments
@@ -38,7 +39,7 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	//Get the email id of assigned_to user -- pass the value and name, name must be "user_name" or "id"(field names of vtiger_users vtiger_table)
 	//$to_email = getUserEmailId('id',$assigned_user_id);
 
-	//if module is HelpDesk then from_email will come based on support email id 
+	//if module is HelpDesk then from_email will come based on support email id
 	if($from_email == '') {
 			//if from email is not defined, then use the useremailid as the from address
 			$from_email = getUserEmailId('user_name',$from_name);
@@ -71,7 +72,7 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	if(!empty($replyToEmail)) {
 		$mail->AddReplyTo($replyToEmail);
 	}
-	
+
 	// vtmailscanner customization: If Support Reply to is defined use it.
 	global $HELPDESK_SUPPORT_EMAIL_REPLY_ID;
 	if($HELPDESK_SUPPORT_EMAIL_REPLY_ID && $HELPDESK_SUPPORT_EMAIL_ID != $HELPDESK_SUPPORT_EMAIL_REPLY_ID) {
@@ -84,7 +85,7 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 		return 0;
     }
     // END
-    
+
 	$mail_status = MailSend($mail);
 
 	if($mail_status != 1)
@@ -100,8 +101,8 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 }
 
 /**	Function to get the user Email id based on column name and column value
-  *	$name -- column name of the vtiger_users vtiger_table 
-  *	$val  -- column value 
+  *	$name -- column name of the vtiger_users vtiger_table
+  *	$val  -- column value
   */
 function getUserEmailId($name,$val)
 {
@@ -180,15 +181,18 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 	$mail->IsSMTP();		//set mailer to use SMTP
 	//$mail->Host = "smtp1.example.com;smtp2.example.com";  // specify main and backup server
 
-	setMailServerProperties($mail);	
+	setMailServerProperties($mail);
 
 	//Handle the from name and email for HelpDesk
 	$mail->From = $from_email;
 	$rs = $adb->pquery("select first_name,last_name from vtiger_users where user_name=?", array($from_name));
-	if($adb->num_rows($rs) > 0)
-		$from_name = $adb->query_result($rs,0,"first_name")." ".$adb->query_result($rs,0,"last_name");
-
+	$num_rows = $adb->num_rows($rs);
+	if($num_rows > 0)
+		$from_name = getFullNameFromQResult($rs, 0, 'Users');
+	
 	$mail->FromName = decode_html($from_name);
+
+	$mail->Sender= getReturnPath($mail->Host);
 
 	if($to_email != '')
 	{
@@ -251,11 +255,11 @@ function setMailServerProperties($mail)
 		$password = $_REQUEST['server_password'];
 	else
         	$password = $adb->query_result($res,0,'server_password');
-	// Prasad: First time read smtp_auth from the request	
+	// Prasad: First time read smtp_auth from the request
 	if(isset($_REQUEST['smtp_auth']))
 	{
 		$smtp_auth = $_REQUEST['smtp_auth'];
-		if($smtp_auth == 'on')	
+		if($smtp_auth == 'on')
 			$smtp_auth = 'true';
 	}
 	else if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'Settings' && (!isset($_REQUEST['smtp_auth'])))
@@ -280,7 +284,7 @@ function setMailServerProperties($mail)
 /**	Function to add the file as attachment with the mail object
   *	$mail -- reference of the mail object
   *	$filename -- filename which is going to added with the mail
-  *	$record -- id of the record - optional 
+  *	$record -- id of the record - optional
   */
 function addAttachment($mail,$filename,$record)
 {
@@ -369,7 +373,7 @@ function MailSend($mail)
 		$log->debug("Error in Mail Sending : Error log = '".$mail->ErrorInfo."'");
 		return $mail->ErrorInfo;
         }
-	else 
+	else
 	{
 		 $log->info("Mail has been sent from the vtigerCRM system : Status : '".$mail->ErrorInfo."'");
 		return 1;
@@ -423,7 +427,7 @@ function getMailError($mail,$mail_status,$to)
 {
 	//Error types in class.phpmailer.php
 	/*
-	provide_address, mailer_not_supported, execute, instantiate, file_access, file_open, encoding, data_not_accepted, authenticate, 
+	provide_address, mailer_not_supported, execute, instantiate, file_access, file_open, encoding, data_not_accepted, authenticate,
 	connect_host, recipients_failed, from_failed
 	*/
 
@@ -531,7 +535,7 @@ function parseEmailErrorString($mail_error_str)
 			else
 			{
 				$adb->println("else part - mail send process failed due to the following reason.");
-				$errorstr .= "<br><b><font color=red> ".$mod_strings['MESSAGE_MAIL_COULD_NOT_BE_SEND_TO_THIS_EMAILID']." '".$status_str[0]."'. ".$mod_strings['PLEASE_CHECK_THIS_EMAILID']."</font></b>";	
+				$errorstr .= "<br><b><font color=red> ".$mod_strings['MESSAGE_MAIL_COULD_NOT_BE_SEND_TO_THIS_EMAILID']." '".$status_str[0]."'. ".$mod_strings['PLEASE_CHECK_THIS_EMAILID']."</font></b>";
 			}
 		}
 	}
@@ -540,8 +544,42 @@ function parseEmailErrorString($mail_error_str)
 }
 
 function isUserInitiated() {
-	return (($_REQUEST['module'] == 'Emails' || $_REQUEST['module'] == 'Webmails') && 
+	return (($_REQUEST['module'] == 'Emails' || $_REQUEST['module'] == 'Webmails') &&
 			($_REQUEST['action'] == 'mailsend' || $_REQUEST['action'] == 'webmailsend' || $_REQUEST['action'] == 'Save'));
+}
+
+/**
+ * Function to get the group users Email ids
+ */
+function getDefaultAssigneeEmailIds($groupId) {
+	global $adb;
+	$emails = Array();
+	if($groupId != '') {
+		require_once 'include/utils/GetGroupUsers.php';
+		$userGroups = new GetGroupUsers();
+		$userGroups->getAllUsersInGroup($groupId);
+		$result = $adb->pquery('SELECT email1,email2,secondaryemail FROM vtiger_users WHERE vtiger_users.id IN
+											('.  generateQuestionMarks($userGroups->group_users).')',
+								array($userGroups->group_users));
+		$rows = $adb->num_rows($result);
+		for($i = 0;$i < $rows; $i++) {
+			$email = $adb->query_result($result,$i,'email1');
+			if($email == '') {
+				$email = $adb->query_result($result,$i,'email2');
+				if($email == '') {
+					$email = $adb->query_result($result,$i,'secondaryemail');
+				} else {
+					$email = '';
+				}
+			}
+			array_push($emails,$email);
+		}
+		$adb->println("Email ids are selected  => '".$emails."'");
+		return $emails;
+	} else {
+		$adb->println("User id is empty. so return value is ''");
+		return '';
+	}
 }
 
 

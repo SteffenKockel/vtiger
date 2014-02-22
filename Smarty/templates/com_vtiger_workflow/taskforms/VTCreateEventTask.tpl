@@ -35,7 +35,7 @@ var eventType = '{$task->eventType}';
 			<span id="event_status_busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 			<select id="event_status" value="{$task->status}" name="status" class="small" style="display: none;"></select>
 		</td>
-	</tr> 
+	</tr>
 	<tr valign="top">
 		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>Type</b></td>
 		<td class='dvtCellInfo'>
@@ -61,10 +61,10 @@ var eventType = '{$task->eventType}';
 	<tr>
 		<td align="right"><b>Start Date</b></td>
 		<td>
-			<input type="text" name="startDays" value="{$task->startDays}" id="start_days" style="width:30px" class="small"> days 
-			<select name="startDirection" value="{$task->startDirection}" class="small">
-				<option>After</option>
-				<option>Before</option>
+			<input type="text" name="startDays" value="{$task->startDays}" id="start_days" style="width:30px" class="small"> days
+			<select name="startDirection" class="small">
+				<option {if $task->startDirection eq 'After'}selected{/if} value="After">After</option>
+				<option {if $task->startDirection eq 'Before'}selected{/if} value="Before">Before</option>
 			</select>
 			<select name="startDatefield" value="{$task->startDatefield}" class="small">
 				{foreach key=name item=label from=$dateFields}
@@ -86,10 +86,10 @@ var eventType = '{$task->eventType}';
 	</tr>
 	<tr>
 		<td align="right"><b>End Date</b></td>
-		<td><input type="text" name="endDays" value="{$task->endDays}" id="end_days" style="width:30px" class="small"> days 
-			<select name="endDirection" value="{$task->endDirection}" class="small">
-				<option>After</option>
-				<option>Before</option>
+		<td><input type="text" name="endDays" value="{$task->endDays}" id="end_days" style="width:30px" class="small"> days
+			<select name="endDirection" class="small">
+				<option {if $task->endDirection eq 'After'}selected{/if} value="After">After</option>
+				<option {if $task->endDirection eq 'Before'}selected{/if} value="Before">Before</option>
 			</select>
 			<select name="endDatefield" value="{$task->endDatefield}" class="small">
 				{foreach key=name item=label from=$dateFields}

@@ -26,8 +26,12 @@ function getCustomFieldTypeName($uitype)
 	global $log;
         $log->info("uitype is ".$uitype);
 	$fldname = '';
-	
-	if($uitype == 1)
+
+	/*
+	 * salutation type is an exception where the uitype 55 is considered to be as text.
+	 */
+
+	if($uitype == 1 || $uitype == 55 || $uitype == 255)
 	{
 		$fldname = $mod_strings['Text'];
 	}
@@ -39,7 +43,7 @@ function getCustomFieldTypeName($uitype)
 	{
 		$fldname = $mod_strings['Percent'];
 	}
-	elseif($uitype == 5)
+	elseif($uitype == 5 || $uitype == 23)
 	{
 		$fldname = $mod_strings['Date'];
 	}
@@ -51,7 +55,7 @@ function getCustomFieldTypeName($uitype)
 	{
 		$fldname = $mod_strings['Phone'];
 	}
-	elseif($uitype == 15)
+	elseif($uitype == 15 )
 	{
 		$fldname = $mod_strings['PickList'];
 	}
@@ -67,7 +71,7 @@ function getCustomFieldTypeName($uitype)
 	{
 		$fldname = $mod_strings['Currency'];
 	}
-	elseif($uitype == 21)
+	elseif($uitype == 21 || $uitype == 19)
 	{
 		$fldname = $mod_strings['LBL_TEXT_AREA'];
 	}

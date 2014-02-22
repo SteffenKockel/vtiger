@@ -6,7 +6,14 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*  Author       : Francisco Hernandez Odin Consultores www.odin.mx
+ * 
+ * ***********************************************************
+*  Module       : Project
+*  Language     : ES Spanish
+*  Version      : vt5.4.0
+*  Created Date : 2012-02-27
+*  Author       : Odin Consultores S de RL de CV
+*  License      : MPL 1.1
  ************************************************************************************/
 $mod_strings = Array(
 
@@ -70,6 +77,7 @@ $mod_strings = Array(
 	'Project Milestones' => 'Hitos Proyecto',
 	'Project Tasks' => 'Actividades Proyecto',
 	'Project Team' => 'Equipo Proyecto',
+	'Project ID' => 'Id Proyecto',
 );
 
 ?>

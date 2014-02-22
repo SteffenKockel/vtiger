@@ -15,12 +15,13 @@ $idlist = vtlib_purify($_REQUEST['idlist']);
 $viewid = vtlib_purify($_REQUEST['viewname']);
 $returnmodule = vtlib_purify($_REQUEST['return_module']);
 $return_action = vtlib_purify($_REQUEST['return_action']);
+$excludedRecords=vtlib_purify($_REQUEST['excludedRecords']);
 $rstart='';
 //Added to fix 4600
 $url = getBasic_Advance_SearchURL();
 
 //split the string and store in an array
-$storearray = explode(";",$idlist);
+$storearray = getSelectedRecords($_REQUEST,$returnmodule,$idlist,$excludedRecords);
 $storearray = array_filter($storearray);
 $ids_list = array();
 $errormsg = '';

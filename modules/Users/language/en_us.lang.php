@@ -14,7 +14,7 @@
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/language/en_us.lang.php,v 1.18 2005/04/19 14:45:38 ray Exp $
- * Description:  Defines the English language pack for the Account module.
+ * Description:  Defines the English language pack for the Users module.
  ********************************************************************************/
  
 $mod_strings = Array(
@@ -140,7 +140,7 @@ $mod_strings = Array(
 'LBL_CREATE_EDIT'=>'Create/Edit',
 'LBL_DELETE'=>'Delete',
 'LBL_LEADS'=>'Leads',
-'LBL_ACCOUNTS'=>'Accounts',
+'LBL_ACCOUNTS'=>'Organizations',
 'LBL_CONTACTS'=>'Contacts',
 'LBL_OPPURTUNITIES'=>'Opportunities',
 'LBL_TASKS'=>'Tasks',
@@ -151,7 +151,7 @@ $mod_strings = Array(
 'LBL_CALLS'=>'Calls',
 'LBL_IMPORT_PERMISSIONS'=>'Import Permissions',
 'LBL_IMPORT_LEADS'=>'Import Leads',
-'LBL_IMPORT_ACCOUNTS'=>'Import Accounts',
+'LBL_IMPORT_ACCOUNTS'=>'Import Organizations',
 'LBL_IMPORT_CONTACTS'=>'Import Contacts',
 'LBL_IMPORT_OPPURTUNITIES'=>'Import Opportunities',
 
@@ -186,7 +186,7 @@ $mod_strings = Array(
 'LBL_SELECT_FIELD_TYPE'=>'Select Field Type',
 'LBL_SELECT_FIELD'=>'Select Field :',
 'LBL_MERGE_FIELD_VALUE'=>'Copy Merge Field Value :',
-'LBL_ACCOUNT_FIELDS'=>'Account Fields',
+'LBL_ACCOUNT_FIELDS'=>'Organization Fields',
 'LBL_CONTACT_FIELDS'=>'Contact Fields',
 'LBL_LEAD_FIELDS'=>'Lead Fields',
 'LBL_COPY_AND_PASTE_MERGE_FIELD'=>'Copy and paste the merge field value into your template below.',
@@ -435,11 +435,11 @@ $mod_strings = Array(
 //Added after pathc2
 'LBL_LEAD_FIELD_ACCESS'=>'Lead Field Access',
 
-'LBL_ACCOUNT_FIELD_ACCESS'=>'Account Field Access',
+'LBL_ACCOUNT_FIELD_ACCESS'=>'Organization Field Access',
 
 'LBL_CONTACT_FIELD_ACCESS'=>'Contact Field Access',
 
-'LBL_OPPORTUNITY_FIELD_ACCESS'=>'Potential Field Access',
+'LBL_OPPORTUNITY_FIELD_ACCESS'=>'Opportunity Field Access',
 
 'LBL_HELPDESK_FIELD_ACCESS'=>'HelpDesk Field Access',
 
@@ -466,9 +466,9 @@ $mod_strings = Array(
 //Added to change Home page order
 'LBL_HOMEPAGE_ORDER_UPDATE'=>'Update Home Page Block Order',
 'LBL_HOMEPAGE_ID'=>'Block Order',
-'ERR_INVALID_USER'=>'Invalid access--Please call from My Accounts',
-'ALVT'=>'Top Accounts',
-'PLVT'=>'Top Potentials',
+'ERR_INVALID_USER'=>'Invalid access--Please call from My Organizations',
+'ALVT'=>'Top Organizations',
+'PLVT'=>'Top Opportunities',
 'QLTQ'=>'Top Quotes',
 'CVLVT'=>'Key Metrics',
 'HLT'=>'Top Trouble Tickets',
@@ -553,7 +553,7 @@ $mod_strings = Array(
 'Date Format'=>'Date Format',
 'Tag Cloud'=>'Tag Cloud',
 'Signature'=>'Signature',
-'Documents'=>'Notes',
+'Documents'=>'Documents',
 'Street Address'=>'Street Address',
 'City'=>'City',
 'State'=>'State',
@@ -575,7 +575,7 @@ $mod_strings = Array(
 'LBL_TRANSFER_USER'=>'Transfer Ownership to User',
 'LBL_DELETE_PROFILE'=>'Delete Profile',
 'LBL_TRANSFER_ROLES_TO_PROFILE'=>'Transfer Roles to Profile',
-'LBL_PROFILE_TO_BE_DELETED'=>'Profile to be Deteted',
+'LBL_PROFILE_TO_BE_DELETED'=>'Profile to be Deleted',
 
 //Added for disabling window Recalculate
 
@@ -688,8 +688,6 @@ $mod_strings = Array(
 // Added for Create Custom Fields 
 'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Create Custom Fields for Users ',
 'LBL_USER_CUSTOMFIELDS' => 'Users Custom Fields',
-'LBL_USER_CUSTOMFIELDS' => 'Users Custom Fields',
-
 'LBL_CURRENCY_CONFIGURATION'=> 'Currency Configuration',
 
 //Time zones-Dont change any value
@@ -790,6 +788,11 @@ $mod_strings = Array(
 'Pacific/Auckland' => '(UTC+12:00) Auckland',
 'Asia/Magadan' => '(UTC+12:00) Magadan',
 'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
+    
+'Theme'=>'Theme',
+'Language'=>'Language',
+'Secondary Email'=>'Secondary Email',
+'Time Zone'=>'Time Zone',
 	
 );
 

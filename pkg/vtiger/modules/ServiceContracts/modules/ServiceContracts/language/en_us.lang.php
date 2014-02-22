@@ -27,7 +27,7 @@ $mod_strings = Array (
 'Total Units' => 'Total Units',
 'Used Units' => 'Used Units',
 'Subject' => 'Subject',
-'Progress'=> 'Progress (in %)',
+'Progress'=> 'Progress',
 'Type' => 'Type',
 'Planned Duration' => 'Planned Duration (in Days)',
 'Actual Duration' => 'Actual Duration (in Days)',
@@ -57,6 +57,7 @@ $mod_strings = Array (
  * 5.2.0 changes 
  */
 'LBL_MODULE_NAME'=>'Service Contracts',
+'ServiceContracts ID'=>'ServiceContracts ID',
 );
 
 ?>

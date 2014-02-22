@@ -5,7 +5,7 @@
 <label>Mobile</label>
 <parent></parent>
 <type>extension</type>
-<version>1.5</version>
+<version>1.6</version>
 <dependencies>
 <vtiger_version>5.1.0</vtiger_version>
 </dependencies>

@@ -32,10 +32,6 @@ if(!empty($_REQUEST['return_id']) && !empty($_REQUEST['return_module'])) {
 	}
 }
 
-if($focus->mode == 'edit') {
 	$smarty->display('salesEditView.tpl');
-} else {
-	$smarty->display('CreateView.tpl');
-}
 
 ?>

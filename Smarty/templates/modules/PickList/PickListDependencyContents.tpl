@@ -105,7 +105,7 @@
 				{foreach key=SOURCE_INDEX item=SOURCE_VALUE from=$SOURCE_VALUES}
 					<td class="tableHeading big fixedHeight18px {$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX} picklistValueMapping"
 						style="display:none;">
-						<input type="hidden" id="{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX}" value="{$SOURCE_VALUE}" />
+						<input type="hidden" id="{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX}" value="{$SOURCE_INDEX}" />
 						{$SOURCE_VALUE|@getTranslatedString:$MODULE}
 					</td>
 				{/foreach}
@@ -116,9 +116,9 @@
 					<td class="tableHeading big warning" rowspan="{$TARGET_VALUES|@count}" valign="top">
 						{$ALL_LISTS[$DEPENDENCY_MAP.targetfield]|getTranslatedString:$MODULE}</td>
 				{/if}
-				{foreach key=SOURCE_INDEX item=SOURCE_VALUE from=$SOURCE_VALUES}
-					<td	onmouseover="handleCellMouseOver(event, this, '{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX}');"
-						onmousedown="handleCellMouseDown(event, this, '{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX}');"
+				{foreach  key=SOURCE_INDEX item=SOURCE_VALUE from=$SOURCE_VALUES}
+					<td	id='mapping{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX}' onmouseover="handleCellMouseOver(event, this, '{$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX|@htmlentities|@addslashes}');"
+						onmousedown="handleCellMouseDown(event, this);"
 						onmouseup="handleCellMouseUp(event, this);" 
 						class="selectedCell {$DEPENDENCY_MAP.sourcefield}{$SOURCE_INDEX} picklistValueMapping"
 						style="display:none;">
@@ -138,16 +138,16 @@
 			{assign var="sourceValue" value=$MAPPING_DATA.sourcevalue}
 			{assign var="targetValues" value=$MAPPING_DATA.targetvalues}
 			{assign var="sourceIndex" value=$sourceValue|@array_search:$SOURCE_VALUES}
-			selectSourceValue({$sourceIndex});
+			selectSourceValue("{$sourceIndex|@decode_html|@addslashes}");
 			{foreach item=TARGET_VALUE from=$TARGET_VALUES}
 				{if $TARGET_VALUE|@in_array:$targetValues neq '1'}
-					unselectTargetValue({$sourceIndex}, '{$TARGET_VALUE}');
+					unselectTargetValue('{$sourceIndex|@decode_html|@addslashes}', '{$TARGET_VALUE}');
 				{/if}
 			{/foreach}
 		{/foreach}
 	{else}
 		{foreach key=SOURCE_INDEX item=SOURCE_VALUE from=$SOURCE_VALUES}
-			selectSourceValue({$SOURCE_INDEX});
+			selectSourceValue("{$SOURCE_VALUE|@addslashes}");
 		{/foreach}
 	{/if}
 	loadMappingForSelectedValues();

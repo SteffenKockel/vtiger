@@ -13,46 +13,37 @@
  * Contributor(s): ______________________________________.
  *********************************************************************************
 /*********************************************************************************
- * $Header:  E:\D_root\Dokumentumok\vtiger520\hungarian52\trunk\modules\Rss\language\hu_hu.lang.php - 21:53 2010.05.21. $
- * Description:  Defines the Hungarian language pack for the Rss module vtiger 5.2.0
+ * $Header:  \modules\Rss\language\hu_hu.lang.php - 19:27 2011.11.12. $
+ * Description:  Defines the Hungarian language pack for the Rss module vtiger 5.3.x
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 
-$mod_strings = Array(
-'LBL_MODULE_NAME'=>'RSS',
-'LBL_MODULE_TITLE'=>'RSS: Kezdőlap',
-
-'LBL_NEW_RSS_ENTRY'=>'Új RSS Hírek adatfolyam URL:',
-'LBL_SEARCH_RSS'=>'Keresés Cím:',
-'LBL_NEW_RSS_BUTTON'=>'Hozzáad',
-
-'LBL_STARRED_RSS'=>'Csillagos Adatfolyam',
-'LBL_POP_CRM_RSS'=>'Népszerű CRM-hez kapcsolódó adatfolyam',
-'LBL_ALL_RSS_FEEDS'=>'Minden RSS adatfolyam',
-'LBL_VTIGER_RSS_READER'=>'VTiger RSS Olvasó',
-
-'LBL_MORE'=>'Tovább...',
-'LBL_SUBJECT'=>'Tárgy',
-'LBL_SENDER'=>'Küldő',
-'LBL_CATEGORY'=>'Kategória :',
-'LBL_FEED'=>'Adatfolyam :',
-'LBL_FEED_SOURCES'=> 'Adatfolyam Forrás',
-'LBL_ADD_RSS_FEED'=>'RSS Adatfolyam Hozzáadás',
-'LBL_DELETE_BUTTON'=>'Törlés',
-'LBL_SET_DEFAULT_BUTTON'=>'Alapértelmezettnek Beállít',
-'LBL_FEEDS_LIST'=>'Adatfolyam lista innen :',
-'LBL_ERROR_MSG'=>'Nincs RSS Adatfolyam kiválasztva vagy a Proxy beállításaid nem megfelelőek',
-'LBL_REGRET_MSG'=>'Sajnos, nem tudjuk elérni az RSS URL-t',
-
-'UNABLE_TO_SAVE'=>'Nem lehet menteni az RSS Adatfolyam URL-t',
-
-// Added/Updated for vtiger CRM 5.0.4
-'NOT_A_VALID'=>'Ez nem egy érvényes RSS Adatfolyam vagy a Proxy beállításaid nem megfelelőek',
-
-// Added after 5.0.4 GA
-'INVALID_RSS_URL' => 'Ez nem egy érvényes RSS Adatfolyam URL',
-
+$mod_strings = array(
+	'LBL_MODULE_NAME' => 'RSS Hírfolyam',
+	'LBL_MODULE_TITLE' => 'RSS: Kezdőlap',
+	'LBL_NEW_RSS_ENTRY' => 'Új RSS Hírfolyam URL:',
+	'LBL_SEARCH_RSS' => 'Keresés Cím:',
+	'LBL_NEW_RSS_BUTTON' => 'Hozzáad',
+	'LBL_STARRED_RSS' => 'Csillagos Hírfolyam',
+	'LBL_POP_CRM_RSS' => 'Népszerű CRM-hez kapcsolódó Hírfolyam',
+	'LBL_ALL_RSS_FEEDS' => 'Minden RSS Hírfolyam',
+	'LBL_VTIGER_RSS_READER' => 'VTiger RSS Olvasó',
+	'LBL_MORE' => 'Tovább...',
+	'LBL_SUBJECT' => 'Tárgy',
+	'LBL_SENDER' => 'Küldő',
+	'LBL_CATEGORY' => 'Kategória :',
+	'LBL_FEED' => 'Hírfolyam :',
+	'LBL_FEED_SOURCES' => 'Hírfolyam Forrás',
+	'LBL_ADD_RSS_FEED' => 'RSS Hírfolyam Hozzáadás',
+	'LBL_DELETE_BUTTON' => 'Törlés',
+	'LBL_SET_DEFAULT_BUTTON' => 'Alapértelmezettnek Beállít',
+	'LBL_FEEDS_LIST' => 'Hírfolyam lista innen :',
+	'LBL_ERROR_MSG' => 'Nincs RSS Hírfolyam kiválasztva vagy a Proxy beállításaid nem megfelelőek',
+	'LBL_REGRET_MSG' => 'Sajnos, nem tudjuk elérni az RSS URL-t',
+	'UNABLE_TO_SAVE' => 'Nem lehet menteni az RSS Hírfolyam URL-t',
+	'NOT_A_VALID' => 'Ez nem egy érvényes RSS Hírfolyam vagy a Proxy beállításaid nem megfelelőek',
+	'INVALID_RSS_URL' => 'Ez nem egy érvényes RSS Hírfolyam URL'
 );
 ?>

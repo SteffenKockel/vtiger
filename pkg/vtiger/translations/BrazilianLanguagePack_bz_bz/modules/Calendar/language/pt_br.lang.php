@@ -10,11 +10,11 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 /*********************************************************************************
  * $Header$
- * Description:  Defines the English apmt_locationuage pack
+ * Description:  Defines the English pack for Calendar Module
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
  * Contributor(s): ______________________________________..
@@ -133,22 +133,22 @@ $mod_strings = Array(
 ),
 
 'cal_weekdays_short'=>array(
-"Dom",
 "Seg",
 "Ter",
 "Qua",
 "Qui",
 "Sex",
 "Sab",
+"Dom",
 ),
 'cal_weekdays_long'=>array(
-"Domingo",
 "Segunda",
 "Terça",
 "Quarta",
 "Quinta",
 "Sexta",
 "Sábado",
+"Domingo",
 ),
 'cal_month_short'=>array(
 "",
@@ -293,7 +293,7 @@ $mod_strings = Array(
 'LBL_LIST_STATUS'=>'Status',
 'LBL_LIST_CONTACT'=>'Contato',
 //Added for 4.2 release for Account column support as shown by Fredy
-'LBL_LIST_ACCOUNT'=>'Conta',
+'LBL_LIST_ACCOUNT'=>'Organização',
 'LBL_LIST_RELATED_TO'=>'Relacionar com',
 'LBL_LIST_DUE_DATE'=>'Data Vencimento',
 'LBL_LIST_DATE'=>'Data',
@@ -378,9 +378,9 @@ $mod_strings = Array(
 'modifiedtime'=>'Hora Modificação',
 'first'=>'Primeiro',
 'last'=>'Último',
-'High'=>'Alta',  //Prioridade
-'Medium'=>'Média', //Prioridade
-'Low'=>'Baixa',  //Prioridade
+'High'=>'Alta',
+'Medium'=>'Média',
+'Low'=>'Baixa', 
 'LBL_SELECT'=>'Selecionar',
 'LBL_ALL_EVENTS_TODOS'=>'Todos Eventos & Compromissos',
 'First'=>'Primeiro',
@@ -449,6 +449,7 @@ $mod_strings = Array(
 'LBL_FAILURE'=>'Falhou!',
 
 'LBL_ARE_YOU_SURE'=>'Tem certeza?',
+'Calendar ID' => 'ID Agenda',
 );
 
 ?>

@@ -36,13 +36,13 @@
 				<td  width=30% nowrap class="componentName" align=right>{$MOD.LBL_CUSTOM_REPORTS}</td>
 			</tr>
 		</table>
-	
-	
-		<table width="100%" border="0" cellspacing="0" cellpadding="5" class="homePageMatrixHdr"> 
+
+
+		<table width="100%" border="0" cellspacing="0" cellpadding="5" class="homePageMatrixHdr">
 		<tr>
 		<td>
-		
-					<table width="100%" border="0" cellspacing="0" cellpadding="0" > 
+
+					<table width="100%" border="0" cellspacing="0" cellpadding="0" >
 						<tr>
 							<td width="25%" valign="top" >
 								<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
@@ -89,10 +89,10 @@
 											<td align="right" style="padding-right:5px;" valign="top"><b>{$MOD.LBL_DESCRIPTION}: </b></td>
 											<td align="left" style="padding-left:5px;"><textarea name="reportdes" class="txtBox" rows="5">{$REPORTDESC}</textarea></td>
 										</tr>
-										<tr> 
-							 	                        <td colspan="2" height="310">&nbsp;</td> 
+										<tr>
+							 	                        <td colspan="2" height="310">&nbsp;</td>
 										</tr>
-										
+
 									</table>
 								</div>
 								<!-- STEP 2 -->
@@ -116,19 +116,11 @@
 													{foreach item=relmod from=$RELATEDMODULES}
 														{if $SEC_MODULE.$relmod eq 1}
 															<tr valign='top'><td><input type='checkbox' name="secondarymodule_{$relmod}" checked value="{$relmod}" />
-																{if $APP.$relmod neq ''}
-																	{$APP.$relmod}
-																{else}
-																	{$relmod}
-																{/if}
+																{$relmod|@getTranslatedString:$relmod}
 															</td></tr>
 														{else}
 															<tr valign='top'><td><input type='checkbox' name="secondarymodule_{$relmod}" value="{$relmod}" />
-																{if $APP.$relmod neq ''}
-																	{$APP.$relmod}
-																{else}
-																	{$relmod}
-																{/if}
+																{$relmod|@getTranslatedString:$relmod}
 															</td></tr>
 														{/if}
 													{/foreach}
@@ -139,7 +131,7 @@
 												<td style="padding-right: 5px;" align="left" nowrap width="25%"><b>{$MOD.NO_REL_MODULES}</b></td>
 											{/if}
 										</tr>
-										<tr><td colspan="2" height="350">&nbsp;</td></tr> 
+										<tr><td colspan="2" height="350">&nbsp;</td></tr>
 									</table>
 							</div>
 						</td>
@@ -150,7 +142,7 @@
 			</td>
 		</tr>
 		</table>
-		
+
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="reportCreateBottom">
 		<tr>
 			<td align="right" style="padding:10px;">
@@ -160,13 +152,13 @@
 			</td>
 		</tr>
 	</table>
-		</form>	
+		</form>
 
 </td>
 </tr>
 </table>
-	
-	
+
+
 </body>
 </html>
 {if $BACK_WALK eq 'true'}
@@ -175,7 +167,7 @@
 	hide('step1');
 	show('step2');
 	document.getElementById('back_rep').disabled = false;
-	getObj('step1label').className = 'settingsTabList'; 
+	getObj('step1label').className = 'settingsTabList';
 	getObj('step2label').className = 'settingsTabSelected';
 </script>
 {/literal}
@@ -186,7 +178,7 @@
 	hide('step1');
 	show('step2');
 	document.getElementById('back_rep').disabled = true;
-	getObj('step1label').className = 'settingsTabList'; 
+	getObj('step1label').className = 'settingsTabList';
 	getObj('step2label').className = 'settingsTabSelected';
 </script>
 {/literal}

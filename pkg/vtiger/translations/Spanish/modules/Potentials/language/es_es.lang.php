@@ -13,10 +13,10 @@
  ********************************************************************************
 *  Module       : Potentials
 *  Language     : Español
-*  Version      : 504
+*  Version      : 5.4.0
 *  Created Date : 2007-03-30
 *  Author       : Rafael Soler
-*  Last change  : 2008-09-20
+*  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
@@ -44,7 +44,7 @@ $mod_strings = Array(
 'LBL_NEXT_STEP'=>'Siguiente paso:',
 'LBL_LEAD_SOURCE'=>'Origen del Pre-Contacto:',
 'LBL_SALES_STAGE'=>'Etapa de Venta:',
-'LBL_PROBABILITY'=>'Probabilidad (%):',
+'LBL_PROBABILITY'=>'Probabilidad:',
 'LBL_DESCRIPTION'=>'Descripción:',
 'LBL_OPPORTUNITY_INFORMATION'=>'Información de Oportunidad:',
 'LBL_DESCRIPTION_INFORMATION'=>'Información Adicional:',
@@ -124,7 +124,7 @@ $mod_strings = Array(
 'Perception Analysis'=>'Análisis',
 'Proposal/Price Quote'=>'Presupuesto Propuesto',
 'Negotiation/Review'=>'Negociando/Revisando',
-'Closed Won'=>'Cerrada-Éxito',
+'Closed Won'=>'Cerrada-Exito',
 'Closed Lost'=>'Cerrada-Perdida',
 
 'Cold Call'=>'Llamada',
@@ -149,6 +149,7 @@ $mod_strings = Array(
 
 // Module Sequence Numbering
 'Potential No' => 'Núm. Oportunidad',
+'Potentials ID' => 'Id Oportunidad',
 // END
 
 );

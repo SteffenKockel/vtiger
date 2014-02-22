@@ -29,7 +29,7 @@ $mod_strings = Array (
 'LBL_LAST5'=> 'letzten 5',
 
 'Comments Information'=> 'Kommentare',
-
+'ModComments ID' => 'Kommentar-ID ',
 );
 
 ?>
