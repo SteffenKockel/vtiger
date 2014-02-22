@@ -8,14 +8,16 @@
  * All Rights Reserved.
  *
  ********************************************************************************/
+include_once 'modules/PurchaseOrder/PurchaseOrderPDFController.php';
 
-include('include/InventoryPDF.php');
-$pdf=get_po_pdf();
+$controller = new Vtiger_PurchaseOrderPDFController($currentModule);
+$controller->loadRecord(vtlib_purify($_REQUEST['record']));
 
 $filenameid = $_REQUEST['record'];
 if(empty($filenameid)) $filenameid = time();
-$outputfilename = "storage/PurchaseOrder_$filenameid.pdf";
-$pdf->Output($outputfilename,'F'); //added file name to make it work in IE, also forces the download giving the user the option to save
+$filepath="storage/PurchaseOrder_$filenameid.pdf";
+//added file name to make it work in IE, also forces the download giving the user the option to save
+$controller->Output($filepath,'F');
 
 // Added to fix annoying bug that includes HTML in your PDF
 echo "<script>window.history.back();</script>";

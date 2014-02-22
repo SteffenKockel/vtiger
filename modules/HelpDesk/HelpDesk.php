@@ -425,7 +425,7 @@ class HelpDesk extends CRMEntity {
 		for($i=0; $i < $numRows;$i++)
 		{
 			$custom_fields[$i] = $this->db->query_result($result,$i,"fieldlabel");
-			$custom_fields[$i] = ereg_replace(" ","",$custom_fields[$i]);
+			$custom_fields[$i] = preg_replace("/\s+/","",$custom_fields[$i]);
 			$custom_fields[$i] = strtoupper($custom_fields[$i]);
 		}
 		$mergeflds = $custom_fields;
@@ -521,47 +521,40 @@ class HelpDesk extends CRMEntity {
                 //To get the Permitted fields query and the permitted fields list
                 $sql = getPermittedFieldsQuery("HelpDesk", "detail_view");
                 $fields_list = getFieldsListFromQuery($sql);
+				//Ticket changes--5198
+				$fields_list = 	str_replace(",vtiger_ticketcomments.comments as 'Add Comment'",' ',$fields_list);
+				
 
                 $query = "SELECT $fields_list,case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
                        FROM ".$this->entity_table. "
-				INNER JOIN vtiger_troubletickets 
-					ON vtiger_troubletickets.ticketid =vtiger_crmentity.crmid 
-				LEFT JOIN vtiger_crmentity vtiger_crmentityRelatedTo 
+				INNER JOIN vtiger_troubletickets
+					ON vtiger_troubletickets.ticketid =vtiger_crmentity.crmid
+				LEFT JOIN vtiger_crmentity vtiger_crmentityRelatedTo
 					ON vtiger_crmentityRelatedTo.crmid = vtiger_troubletickets.parent_id
-				LEFT JOIN vtiger_account 
-					ON vtiger_account.accountid = vtiger_troubletickets.parent_id 
-				LEFT JOIN vtiger_contactdetails 
+				LEFT JOIN vtiger_account
+					ON vtiger_account.accountid = vtiger_troubletickets.parent_id
+				LEFT JOIN vtiger_contactdetails
 					ON vtiger_contactdetails.contactid = vtiger_troubletickets.parent_id
-				LEFT JOIN vtiger_ticketcomments 
-					ON vtiger_ticketcomments.ticketid = vtiger_troubletickets.ticketid 
-				LEFT JOIN vtiger_ticketcf 
-					ON vtiger_ticketcf.ticketid=vtiger_troubletickets.ticketid 
-				LEFT JOIN vtiger_groups 
-					ON vtiger_groups.groupid = vtiger_crmentity.smownerid 
-				LEFT JOIN vtiger_users 
-					ON vtiger_users.id=vtiger_crmentity.smownerid and vtiger_users.status='Active' 
-				LEFT JOIN vtiger_seattachmentsrel 
+				LEFT JOIN vtiger_ticketcf
+					ON vtiger_ticketcf.ticketid=vtiger_troubletickets.ticketid
+				LEFT JOIN vtiger_groups
+					ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_users
+					ON vtiger_users.id=vtiger_crmentity.smownerid and vtiger_users.status='Active'
+				LEFT JOIN vtiger_seattachmentsrel
 					ON vtiger_seattachmentsrel.crmid =vtiger_troubletickets.ticketid
-				LEFT JOIN vtiger_attachments 
-					ON vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid 
-				LEFT JOIN vtiger_products 
+				LEFT JOIN vtiger_attachments
+					ON vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+				LEFT JOIN vtiger_products
 					ON vtiger_products.productid=vtiger_troubletickets.product_id";
+				//end
+			$query .= getNonAdminAccessControlQuery('HelpDesk',$current_user);
+			$where_auto=" vtiger_crmentity.deleted = 0 ";
 
-			$where_auto="   vtiger_crmentity.deleted = 0 ";
-				
-				if($where != "")
-					$query .= "  WHERE ($where) AND ".$where_auto;
-				else
-					$query .= "  WHERE ".$where_auto;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-                require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-                //we should add security check when the user has Private Access
-                if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[13] == 3)
-                {
-                        //Added security check to get the permitted records only
-                        $query = $query." ".getListViewSecurityParameter("HelpDesk");
-                }
-
+			if($where != "")
+				$query .= "  WHERE ($where) AND ".$where_auto;
+			else
+				$query .= "  WHERE ".$where_auto;
 
                 $log->debug("Exiting create_export_query method ...");
                 return $query;
@@ -584,7 +577,7 @@ case when (vtiger_users.user_name not like '') then vtiger_users.user_name else 
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
                                 left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
-				where (vtiger_activity.activitytype = 'Meeting' or vtiger_activity.activitytype='Call' or vtiger_activity.activitytype='Task')
+				where (vtiger_activity.activitytype != 'Emails')
 				and (vtiger_activity.status = 'Completed' or vtiger_activity.status = 'Deferred' or (vtiger_activity.eventstatus = 'Held' and vtiger_activity.eventstatus != ''))
 				and vtiger_seactivityrel.crmid=".$id."
                                 and vtiger_crmentity.deleted = 0";

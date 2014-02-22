@@ -67,8 +67,8 @@ class VTWorkflowUtils{
 	function toWSModuleName($entityData){
 		$moduleName = $entityData->getModuleName();
 		if($moduleName == 'Activity'){
-			$arr = array('Task' => 'Calendar', 'Email' => 'Emails');
-			$moduleName = $arr[$entityData->get('activitytype')];
+			$arr = array('Task' => 'Calendar', 'Emails' => 'Emails');
+			$moduleName = $arr[getActivityType($entityData->getId())];
 			if($moduleName == null){
 				$moduleName = 'Events';
 			}
@@ -112,6 +112,21 @@ class VTWorkflowUtils{
  		return false;
  	}
  }
+ 
+ function vtGetModules($adb){
+	$modules_not_supported = array('Documents','Calendar','Emails','Faq','Events','PBXManager','Users'); 
+	$sql="select distinct vtiger_field.tabid, name
+			from vtiger_field 
+			inner join vtiger_tab 
+				on vtiger_field.tabid=vtiger_tab.tabid 
+			where vtiger_tab.name not in(".generateQuestionMarks($modules_not_supported).") and vtiger_tab.isentitytype=1 and vtiger_tab.presence = 0 ";
+	$it = new SqlResultIterator($adb, $adb->pquery($sql,array($modules_not_supported)));
+	$modules = array();
+	foreach($it as $row){
+		$modules[] = $row->name;
+	}
+	return $modules;
+ }
+ 
 }
-
 ?>

@@ -18,6 +18,7 @@ DEFINE("FF_COMIC",'Comic');
 DEFINE("FF_ARIAL",'Arial');
 DEFINE("FF_GEORGIA",'Georgia');
 DEFINE("FF_TREBUCHE",'Trebuc');
+DEFINE("FF_DEJAVUSAN",'DejaVuSans');
 
 // Chinese font
 DEFINE("FF_SIMSUN",'Simsun');
@@ -45,7 +46,7 @@ function calculate_font_name($locale)
 			if(!function_exists('iconv')){
 				echo " Unable to display traditional Chinese on the graphs.<BR>The function iconv does not exists please read more about <a href='http://us4.php.net/iconv'>iconv here</a><BR>";
 				$log->debug("Exiting calculate_font_name method ...");
-				return FF_FONT1;
+				return FF_DEJAVUSAN;
 
 			}
 			else
@@ -55,11 +56,11 @@ function calculate_font_name($locale)
 			}
 		default:
 			$log->debug("Exiting calculate_font_name method ...");
-			return FF_FONT1;
+			return FF_DEJAVUSAN;
 	}
 
 	$log->debug("Exiting calculate_font_name method ...");
-	return FF_FONT1;
+	return FF_DEJAVUSAN;
 }
 
 /**This function is used to generate the n colors.

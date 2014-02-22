@@ -83,11 +83,6 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 		</div>";
 		echo "</td></tr></table>";die;
 	}
-	$mail_data = getActivityMailInfo($return_id,$status,$activity_type);
-	if($mail_data['sendnotification'] == 1)
-	{
-		getEventNotification($activity_type,$mail_data['subject'],$mail_data);
-	}
 	$invitee_qry = "select * from vtiger_invitees where activityid=?";
 	$invitee_res = $adb->pquery($invitee_qry, array($return_id));
 	$count = $adb->num_rows($invitee_res);
@@ -196,7 +191,7 @@ function getRequestData($return_id)
 	$mail_data['relatedto'] = $_REQUEST['parent_name'];
 	$mail_data['contact_name'] = $cont_name;
 	$mail_data['description'] = $_REQUEST['description'];
-	$mail_data['assingn_type'] = $_REQUEST['assigntype'];
+	$mail_data['assign_type'] = $_REQUEST['assigntype'];
 	$mail_data['group_name'] = getGroupName($_REQUEST['assigned_group_id']);
 	$mail_data['mode'] = $_REQUEST['mode'];
 	$value = getaddEventPopupTime($_REQUEST['time_start'],$_REQUEST['time_end'],'24');
@@ -215,11 +210,12 @@ if(isset($_REQUEST['contactidlist']) && $_REQUEST['contactidlist'] != '')
 	$storearray = explode (";",$_REQUEST['contactidlist']);
 	$del_sql = "delete from vtiger_cntactivityrel where activityid=?";
 	$adb->pquery($del_sql, array($record));
+	$record = $focus->id;
 	foreach($storearray as $id)
 	{
 		if($id != '')
 		{
-			$record = $focus->id;
+			
 			$sql = "insert into vtiger_cntactivityrel values (?,?)";
 			$adb->pquery($sql, array($id, $record));
 			if(!empty($heldevent_id)) {
@@ -229,7 +225,6 @@ if(isset($_REQUEST['contactidlist']) && $_REQUEST['contactidlist'] != '')
 		}
 	}
 }
-
 //Added code to send mail to the assigned to user about the details of the vtiger_activity if sendnotification = on and assigned to user
 if($_REQUEST['sendnotification'] == 'on')
 {
@@ -297,10 +292,14 @@ if($_REQUEST['return_viewname'] != '')
 
 $parenttab=getParentTab();
 
-if($_REQUEST['start'] !='')
+if(!empty($_REQUEST['start'])) {
 	$page='&start='.vtlib_purify($_REQUEST['start']);
+}
+if(!empty($_REQUEST['pagenumber'])){
+	$page = "&start=".vtlib_purify($_REQUEST['pagenumber']);
+}
 if($_REQUEST['maintab'] == 'Calendar')
 	header("Location: index.php?action=".$return_action."&module=".$return_module."&view=".$view."&hour=".$hour."&day=".$day."&month=".$month."&year=".$year."&record=".$return_id."&viewOption=".$viewOption."&subtab=".$subtab."&parenttab=$parenttab");
 else
-	header("Location: index.php?action=$return_action&module=$return_module$view$hour$day$month$year&record=$return_id$activemode&viewname=$return_viewname$page&parenttab=$parenttab&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
+	header("Location: index.php?action=$return_action&module=$return_module$view$hour$day$month$year&record=$return_id$activemode&viewname=$return_viewname$page&parenttab=$parenttab$search");
 ?>

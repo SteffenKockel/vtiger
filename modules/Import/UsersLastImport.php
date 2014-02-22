@@ -271,6 +271,7 @@ class UsersLastImport extends SugarBean
 		$count += $this->undo_leads($user_id);
 		$count += $this->undo_products($user_id);
 		$count += $this->undo_HelpDesk($user_id);
+		$count += $this->undo_activities($user_id);
                 $count += $this->undo_Vendors($user_id);
 		return $count;
 	}
@@ -447,6 +448,27 @@ class UsersLastImport extends SugarBean
 		return $count;
 	}
 
+	/**	function used to delete (update deleted=1 in crmentity table) the last imported products of the current user
+	 *	@param int $user_id - user id, whose last imported products want to be deleted
+	 *	@return int $count - return the number of deleted products
+	 */
+	function undo_activities($user_id)
+	{
+		$count = 0;
+		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='Calendar' AND deleted=0";
+		$this->log->info($query1); 
+		$result1 = $this->db->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error()); 
+
+		while ( $row1 = $this->db->fetchByAssoc($result1))
+		{
+			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
+			$this->log->info($query2); 
+			$result2 = $this->db->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error()); 
+
+			$count++;
+		}
+		return $count;
+	}
 }
 
 

@@ -12,7 +12,7 @@
 require_once('modules/CustomView/CustomView.php');
 require_once('user_privileges/default_module_view.php');
 
-global $singlepane_view;
+global $singlepane_view, $adb;
 $cvObj = new CustomView(vtlib_purify($_REQUEST["list_type"]));
 
 $listquery = getListQuery(vtlib_purify($_REQUEST["list_type"]));
@@ -26,13 +26,19 @@ elseif($_REQUEST["list_type"] == "Contacts"){
 		$reltable = "vtiger_campaigncontrel";
 		$relid = "contactid";
 }
-
-while($row=$adb->fetch_array($rs)) {
-	$sql = "delete from $reltable where $relid = ? and campaignid = ?";
-	$adb->pquery($sql, array($row["crmid"], $_REQUEST['return_id']));
-	$adb->pquery("INSERT INTO ".$reltable." VALUES(?,?)", array($_REQUEST["return_id"], $row["crmid"]));
+elseif($_REQUEST["list_type"] == "Accounts"){
+		$reltable = "vtiger_campaignaccountrel";
+		$relid = "accountid";
 }
 
-header("Location: index.php?module=Campaigns&action=CampaignsAjax&file=CallRelatedList&ajax=true&record=".vtlib_purify($_REQUEST['return_id']));
+while($row=$adb->fetch_array($rs)) {
+	$sql = "SELECT $relid FROM $reltable WHERE $relid = ? AND campaignid = ?";
+	$result = $adb->pquery($sql, array($row['crmid'], $_REQUEST['return_id']));
+	if ($adb->num_rows($result) > 0) continue;
+	$adb->pquery("INSERT INTO $reltable(campaignid, $relid,campaignrelstatusid) VALUES(?,?,1)", array($_REQUEST["return_id"], $row["crmid"]));
+}
+
+header("Location: index.php?module=Campaigns&action=CampaignsAjax&file=CallRelatedList&ajax=true&".
+		"record=".vtlib_purify($_REQUEST['return_id']));
 
 ?>

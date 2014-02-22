@@ -102,7 +102,7 @@ $image_path=$theme_path."images/";
 										MYSQL Password
 									</td>
 									<td align="left" class="dvtCellInfo">
-										<?php echo ereg_replace('.', '*', $this->new_mysql_password); ?>
+										<?php echo preg_replace('/./', '*', $this->new_mysql_password); ?>
 									</td>
 								   </tr>
 								   <tr>
@@ -154,7 +154,7 @@ $image_path=$theme_path."images/";
 										MYSQL Password
 									</td>
 									<td align="left" class="dvtCellInfo">
-										<?php echo ereg_replace('.', '*', $this->old_mysql_password); ?>
+										<?php echo preg_replace('/./', '*', $this->old_mysql_password); ?>
 									</td>
 								   </tr>
 								   <tr>

@@ -5,39 +5,25 @@
 <label>CustomerPortal</label>
 <parent></parent>
 <type>extension</type>
-<version>1.1</version>
+<version>1.2</version>
 <dependencies>
 <vtiger_version>5.1.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
 </dependencies>
+<migrations>
+	<migration version='1.0'>		
+	</migration>
+	<migration version='1.1'>		
+	</migration>	
+</migrations>
 <tables>
-<table>
-<name>vtiger_customerportal_tabs</name>
-<sql><![CDATA[CREATE TABLE `vtiger_customerportal_tabs` (
-  `tabid` int(19) NOT NULL,
-  `visible` int(1) default '1',
-  `sequence` int(1) default NULL,
-  PRIMARY KEY  (`tabid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
-</table>
-<table>
-<name>vtiger_customerportal_fields</name>
-<sql><![CDATA[CREATE TABLE `vtiger_customerportal_fields` (
-  `tabid` int(19) NOT NULL,
-  `fieldid` int(19) default NULL,
-  `visible` int(1) default NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
-</table>
-<table>
-<name>vtiger_customerportal_prefs</name>
-<sql><![CDATA[CREATE TABLE `vtiger_customerportal_prefs` (
-  `tabid` int(11) NOT NULL,
-  `prefkey` varchar(100) default NULL,
-  `prefvalue` int(20) default NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
-</table>
-<table>
-<name>vtiger_customerportal_prefs</name>
-<sql><![CDATA[ALTER TABLE vtiger_customerportal_prefs ADD INDEX tabid_idx(tabid)]]></sql>
-</table>
+	<table>
+	<name>vtiger_customerportal_fields</name>
+	<sql><![CDATA[CREATE TABLE `vtiger_customerportal_fields` (
+	  `tabid` int(19) NOT NULL,
+	  `fieldid` int(19) default NULL,
+	  `visible` int(1) default NULL
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+	</table>
 </tables>
 </module>

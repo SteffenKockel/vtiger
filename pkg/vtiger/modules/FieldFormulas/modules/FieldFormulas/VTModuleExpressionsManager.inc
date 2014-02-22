@@ -100,7 +100,7 @@ class VTModuleExpressionsManager{
 	}
 
 	function expressionFunctions(){
-		return array('concat' => 'concat(a,b)');
+		return array('concat' => 'concat(a,b)', 'time_diffdays' => 'time_diffdays(a,b)', 'time_diff' => 'time_diff(a,b)');
 	}
 
 	private function fieldNames($query, $moduleName){

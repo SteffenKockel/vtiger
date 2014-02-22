@@ -211,7 +211,7 @@ $conf->default_theme = 'standard';
 // Error reporting
 // Display all errors (including IMAP connection errors, such as
 // 'host not found' or 'invalid login')
-$conf->debug_level = E_ALL & ~E_NOTICE;
+//$conf->debug_level = E_ALL & ~E_NOTICE; // Leave the debug level to PHP configuration
 
 // Base URL where NOCC is hosted (only needed for Xitami servers, see #463390)
 // (NOTE: should end in a slash). Leave blank to detect it automagically.

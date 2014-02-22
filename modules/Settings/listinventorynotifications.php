@@ -27,11 +27,20 @@ for($i=0; $i<$num_rows; $i++)
 	$not_id = $adb->query_result($result,$i,'notificationid');
 	$not_mod = $adb->query_result($result,$i,'notificationname');	
 	$not_des = $adb->query_result($result,$i,'label');
+	$not_st = $adb->query_result($result,$i,'status');
 	$out ['notificationname'] = $mod_strings[$not_mod];
 	$out ['label'] = $mod_strings[$not_des];
 	$out ['id'] = $not_id;
+	$out ['status'] = $not_st;
+	
+	if($out['status'] != 1)
+		$out['status'] = $mod_strings['LBL_INACTIVE'];
+	else
+		$out['status'] = $mod_strings['LBL_ACTIVE']; 	
+	
 	$output [] = $out;
 }
+
 $smarty->assign("NOTIFICATION",$output);
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("THEME", $theme);

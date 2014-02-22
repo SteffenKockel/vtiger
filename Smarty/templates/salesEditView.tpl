@@ -75,11 +75,11 @@ function AddressSync(Addform,id)
 			{if $OP_MODE eq 'edit_view'} 
 				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
 		  		{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}			
-				<span class="lvtHeaderText"><font color="purple">[ {$USE_ID_VALUE} ] </font>{$NAME} - {$APP.LBL_EDITING} {$SINGLE_MOD_LABEL} {$APP.LBL_INFORMATION}</span> <br>
+				<span class="lvtHeaderText"><font color="purple">[ {$USE_ID_VALUE} ] </font>{$NAME} - {$APP.LBL_EDITING} {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span> <br>
 				{$UPDATEINFO}	 
 			{/if}
 			{if $OP_MODE eq 'create_view'}
-				<span class="lvtHeaderText">{$APP.LBL_CREATING} {$SINGLE_MOD_LABEL}</span> <br>
+				<span class="lvtHeaderText">{$APP.LBL_CREATING} {$SINGLE_MOD|@getTranslatedString:$MODULE}</span> <br>
 			{/if}
 
 			<hr noshade size=1>
@@ -94,7 +94,7 @@ function AddressSync(Addform,id)
 					<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
 					   <tr>
 						<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
-						<td class="dvtSelectedCell" align=center nowrap>{$APP[$SINGLE_MOD]} {$APP.LBL_INFORMATION}</td>
+						<td class="dvtSelectedCell" align=center nowrap> {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>
 						<td class="dvtTabCache" style="width:10px">&nbsp;</td>
 						<td class="dvtTabCache" style="width:100%">&nbsp;</td>
 					   </tr>
@@ -229,16 +229,35 @@ function AddressSync(Addform,id)
 </form>
 
 
-{if ($MODULE eq 'Emails' || 'Documents') and ($FCKEDITOR_DISPLAY eq 'true')}
-	<script type="text/javascript" src="include/fckeditor/fckeditor.js"></script>
-	<script type="text/javascript" defer="1">
-		var oFCKeditor = null;
-		{if $MODULE eq 'Documents'}
-			oFCKeditor = new FCKeditor( "notecontent" ) ;
-		{/if}
-		oFCKeditor.BasePath   = "include/fckeditor/" ;
-		oFCKeditor.ReplaceTextarea() ;
-	</script>
+{if ($MODULE eq 'Emails' || 'Documents') and ($USE_RTE eq 'true')}
+	<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" defer="1">
+	var textAreaName = null;
+	{if $MODULE eq 'Documents'}
+		textAreaName = "notecontent";
+	{else}
+		textAreaName = 'description';
+	{/if}
+
+	<!-- Solution for ticket #6756-->
+	CKEDITOR.replace( textAreaName,
+	{ldelim}
+		extraPlugins : 'uicolor',
+		uiColor: '#dfdff1',
+			on : {ldelim}
+				instanceReady : function( ev ) {ldelim}
+					 this.dataProcessor.writer.setRules( 'p',  {ldelim}
+						indent : false,
+						breakBeforeOpen : false,
+						breakAfterOpen : false,
+						breakBeforeClose : false,
+						breakAfterClose : false
+				{rdelim});
+			{rdelim}
+		{rdelim}
+	{rdelim});
+	var oCKeditor = CKEDITOR.instances[textAreaName];
+</script>
 {/if}
 
 {if $MODULE eq 'Accounts'}

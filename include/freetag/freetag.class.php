@@ -886,11 +886,14 @@ class freetag {
 		$theme_path="themes/".$theme."/";
 		$image_path=$theme_path."images/";	
 		$tag_list = $this->get_tag_cloud_tags($num_tags, $tagger_id,$module,$obj_id);
-		if(!$tag_list[0]) return;
-		// Get the maximum qty of tagged objects in the set
-		$max_qty = max(array_values($tag_list[0]));
-		// Get the min qty of tagged objects in the set
-		$min_qty = min(array_values($tag_list[0]));
+		if (count($tag_list[0])) {
+			// Get the maximum qty of tagged objects in the set
+			$max_qty = max(array_values($tag_list[0]));
+			// Get the min qty of tagged objects in the set
+			$min_qty = min(array_values($tag_list[0]));
+		} else {
+			return '';
+		}
 
 		// For ever additional tagged object from min to max, we add
 		// $step to the font size.
@@ -907,25 +910,20 @@ class freetag {
 		$cloud_html = '';
 		$cloud_spans = array();
 		if($module =='')
-			$module = 'All';	
-		if($module != 'All')	
-		{	
-			foreach($tag_list[0] as $tag => $qty) {
-				$size = $min_font_size + ($qty - $min_qty) * 3;
+			$module = 'All';
+		if($module != 'All') {
+			foreach ($tag_list[0] as $tag => $qty) {
+				$size = $min_font_size + ($qty - $min_qty) * $step;
 				$cloud_span[] = '<span id="tag_'.$tag_list[1][$tag].'" class="' . $span_class . '" onMouseOver=$("tagspan_'.$tag_list[1][$tag].'").style.display="inline"; onMouseOut=$("tagspan_'.$tag_list[1][$tag].'").style.display="none";><a class="tagit" href="index.php?module=Home&action=UnifiedSearch&search_module='.$module.'&query_string='. urlencode($tag) . '" style="font-size: '. $size . $font_units . '">' . htmlspecialchars(stripslashes($tag)) . '</a><span class="'. $span_class .'" id="tagspan_'.$tag_list[1][$tag].'" style="display:none;cursor:pointer;" onClick="DeleteTag('.$tag_list[1][$tag].','.$obj_id.');"><img src="' . vtiger_imageurl('del_tag.gif', $theme) . '"></span></span>';
 
-		}
-		}else
-		{
-			foreach($tag_list[0] as $tag => $qty) {
-				$size = $min_font_size + ($qty - $min_qty) * 3;
-				$cloud_span[] = '<span class="' . $span_class . '"><a class="tagit" href="index.php?module=Home&action=UnifiedSearch&search_module='.$module.'&query_string='. urlencode($tag) . '" style="font-size: '. $size . $font_units . '">' . htmlspecialchars(stripslashes($tag)) . '</a></span>';
-
 			}
-
-		}	
+		} else {
+			foreach($tag_list[0] as $tag => $qty) {
+				$size = $min_font_size + ($qty - $min_qty) * $step;
+				$cloud_span[] = '<span class="' . $span_class . '"><a class="tagit" href="index.php?module=Home&action=UnifiedSearch&search_module='.$module.'&query_string='. urlencode($tag) . '" style="font-size: '. $size . $font_units . '">' . htmlspecialchars(stripslashes($tag)) . '</a></span>';
+			}
+		}
 		$cloud_html = join("\n ", $cloud_span);
-
 		return $cloud_html;
 
 	}
@@ -977,7 +975,7 @@ class freetag {
 			ON (${prefix}freetags.id = tag_id)
 			WHERE 1=1
 			$tagger_sql
-			GROUP BY tag,tag_id
+			GROUP BY tag
 			ORDER BY quantity DESC LIMIT 0, $max";
         //echo $sql;
 		$rs = $adb->pquery($sql, $params) or die("Syntax Error: $sql");

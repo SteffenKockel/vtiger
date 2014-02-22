@@ -7,7 +7,7 @@
 			<autoincrement />
 		</field>
 		<field name="user_name" type="C" size="255" />
-		<field name="user_password" type="C" size="30" />
+		<field name="user_password" type="C" size="128" />
 		<field name="user_hash" type="C" size="32" />
 		<field name="cal_color" type="C" size="25">
 			<default value="#E6FAD8" />
@@ -143,18 +143,16 @@
 		<index name="crmentity_smcreatorid_idx">
 			<col>smcreatorid</col>
 		</index>
-		<index name="crmentity_smownerid_idx">
-			<col>smownerid</col>
-		</index>
 		<index name="crmentity_modifiedby_idx">
 			<col>modifiedby</col>
 		</index>
 		<index name="crmentity_deleted_idx">
 			<col>deleted</col>
 		</index>
-		<index name="crmentity_smownerid_deleted_idx">
+		<index name="crm_ownerid_del_setype_idx">
 			<col>smownerid</col>
 			<col>deleted</col>
+			<col>setype</col>
 		</index>
 		<opt platform="mysql">Type=InnoDB</opt>
 	</table>
@@ -850,13 +848,14 @@
 			<default value="0" />
 		</field>
 
-		<index name="potential_accountid_idx">
-			<col>accountid</col>
-		</index>
-		<index name="potential_potentialid_idx">
-			<col>potentialid</col>
+		<index name="potential_relatedto_idx">
+			<col>related_to</col>
 		</index>
 		<index name="potentail_sales_stage_idx">
+			<col>sales_stage</col>
+		</index>
+		<index name="potentail_sales_stage_amount_idx">
+			<col>amount</col>
 			<col>sales_stage</col>
 		</index>
 		<opt platform="mysql">Type=InnoDB</opt>
@@ -1048,6 +1047,8 @@
 		<field name="module_name" type="C" size="25" />
 		<field name="item_id" type="C" size="36" />
 		<field name="item_summary" type="C" size="255" />
+
+		<opt platform="mysql">Type=InnoDB</opt>
 	</table>
 
 	<table name="vtiger_competitor">
@@ -1510,6 +1511,11 @@
 			<notnull />
 			<default value="0"/>
 		</field>
+		<field name="campaignrelstatusid" type="I" size="19">
+			<key />
+			<notnull />
+			<default value="0"/>
+		</field>
 
 		<index name="campaigncontrel_contractid_idx">
 			<col>contactid</col>
@@ -1535,7 +1541,10 @@
 			<notnull />
 			<default value="0" />
 		</field>
-
+		<field name="campaignrelstatusid" type="I" size="19">
+			<key />
+			<default value="0" />
+		</field>
 		<index name="campaignleadrel_leadid_campaignid_idx">
 			<col>leadid</col>
 			<col>campaignid</col>
@@ -2054,6 +2063,7 @@
 		<field name="server_type" type="C" size="20" />
 		<field name="smtp_auth" type="C" size="5" />
 		<field name="server_path" type="C" size="256" />
+		<field name="from_email_field" type="C" size="50" />
 		<opt platform="mysql">Type=InnoDB</opt>
 	</table>
 
@@ -4246,6 +4256,12 @@
 		<field name="value" type="C" size="200">
 			<default value="" />
 		</field>
+		<field name="groupid" type="I" size="11">
+			<default value="1" />
+		</field>
+		<field name="column_condition" type="C" size="256">
+			<default value="and" />
+		</field>
 
 		<index name="relcriteria_queryid_idx">
 			<col>queryid</col>
@@ -4503,7 +4519,7 @@
 	</table>
 
 	<table name="vtiger_invoicestatus">
-		<field name="inovicestatusid" type="I" size="19">
+		<field name="invoicestatusid" type="I" size="19">
 			<key />
 			<autoincrement />
 		</field>
@@ -4693,6 +4709,7 @@
 		<field name="notificationsubject" type="C" size="200" />
 		<field name="notificationbody" type="X" />
 		<field name="label" type="C" size="50" />
+		<field name="status" type="C" size="30" />
 
 		<opt platform="mysql">Type=InnoDB</opt>
 	</table>
@@ -6028,7 +6045,7 @@
 		<field name="quantity" type="N" size="25.3" />
 		<field name="listprice" type="N" size="25.3" />
 		<field name="discount_percent" type="N" size="7.3" />
-		<field name="discount_amount" type="N" size="7.3" />
+		<field name="discount_amount" type="N" size="25.3" />
 		<field name="comment" type="C" size="250" />
 		<field name="description" type="X" />
 		<field name="incrementondel" type="I" size="11">
@@ -6753,7 +6770,8 @@
 		<field name="execution_condition" type="I">
 			<notnull />
 		</field>
-		
+		<field name="defaultworkflow" type="I" size="1">
+		</field>
 		<index name="com_vtiger_workflows_idx">
 			<unique />
 			<col>workflow_id</col>
@@ -6879,17 +6897,33 @@
 		</field>
 		<field name="timer" type="I" size="19">
 		</field>
+		<field name="refuid" type="C" size="255">
+		</field>	
 		<opt platform="mysql">Type=InnoDB</opt>
 	</table>
 
-	<table name="vtiger_asteriskoutgoingcalls">
-		<field name="userid" type="I" size="11">
+	<table name="vtiger_asteriskincomingevents">
+		<field name="uid" type="C" size="255">
+			<key />
+		</field>	
+		<field name="channel" type="C" size="100">
 		</field>
-		<field name="from_number" type="C" size="50">
+		<field name="from_number" type="I8" size="20">
 		</field>
-		<field name="to_number" type="C" size="30">
+		<field name="from_name" type="C" size="100">
 		</field>
-		<opt platform="mysql">Type=InnoDB</opt>
+		<field name="to_number" type="I8" size="20">
+		</field>
+		<field name="callertype" type="C" size="100">
+		</field>
+		<field name="timer" type="I" size="20">
+		</field>
+		<field name="flag" type="C" size="3">
+		</field>
+		<field name="pbxrecordid" type="I" size="19">
+		</field>
+        <field name="relcrmid" type="I" size="19">
+		</field>
 	</table>
 	<!--  asterisk integration ends -->
 
@@ -7178,6 +7212,79 @@
 		<field name="currency_code" type="C" size="50" />
 		<field name="currency_symbol" type="C" size="11" />
 
+		<opt platform="mysql">Type=InnoDB</opt>
+	</table>
+	
+	<table name="vtiger_tab_info">
+		<field name="tabid" type="I" size="19" />
+		<field name="prefname" type="C" size="256" />
+		<field name="prefvalue" type="C" size="256" />
+
+		<opt platform="mysql">Type=InnoDB</opt>
+	</table>
+
+	<table name="vtiger_tab_info" alter="true">
+		<constraint>ADD CONSTRAINT fk_1_vtiger_tab_info FOREIGN KEY (tabid) REFERENCES vtiger_tab(tabid) ON DELETE CASCADE ON UPDATE CASCADE</constraint>
+		<opt>Type=InnoDB</opt>
+	</table>
+	
+	<table name="vtiger_campaignrelstatus">
+		<field name="campaignrelstatusid" type="I" size="19" />
+		<field name="campaignrelstatus" type="C" size="256" />
+		<field name="sortorderid" type="I" size="19" />
+		<field name="presence" type="I" size="19" />
+
+		<opt platform="mysql">Type=InnoDB</opt>
+	</table>
+	
+	<table name="vtiger_campaignaccountrel">
+		<field name="campaignid" type="I" size="19" />
+		<field name="accountid" type="I" size="19" />
+		<field name="campaignrelstatusid" type="I" size="19" />
+
+		<opt platform="mysql">Type=InnoDB</opt>
+	</table>
+
+	<table name="vtiger_customerportal_tabs">
+		<field name="tabid" type="I" size="19">
+			<notnull />
+			<key />
+		</field>
+		<field name="visible" type="I" size="1">
+			<default value="1" />
+		</field>
+		<field name="sequence" type="I" size="1">
+			<default value="NULL" />
+		</field>
+		<opt platform="mysql">Type=InnoDB</opt>
+	</table>
+
+	<table name="vtiger_customerportal_prefs">
+                <field name="tabid" type="I" size="19">
+                        <notnull />
+                        <key />
+                </field>
+                <field name="prefkey" type="C" size="100">
+                        <default value="NULL" />
+                </field>
+                <field name="prefvalue" type="I" size="20">
+                        <default value="NULL" />
+                </field>
+                <opt platform="mysql">Type=InnoDB</opt>
+        </table>	
+	
+	<table name="vtiger_relcriteria_grouping">
+		<field name="groupid" type="I" size="11">
+			<key />
+			<notnull />
+		</field>
+		<field name="queryid" type="I" size="19">
+			<key />
+		</field>
+		<field name="group_condition" type="C" size="256">
+		</field>
+		<field name="condition_expression" type="X">
+		</field>
 		<opt platform="mysql">Type=InnoDB</opt>
 	</table>
 	

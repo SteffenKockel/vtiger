@@ -107,6 +107,24 @@ if($focus->mode == 'edit' && $_REQUEST['address_change'] == 'yes')
 //Changing account address - Ends
 
 $focus->save("Accounts");
+if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == "Campaigns")
+{
+	if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "")
+	{
+		$campAccStatusResult = $adb->pquery("select campaignrelstatusid from vtiger_campaignaccountrel where campaignid=? AND accountid=?",array($_REQUEST['return_id'], $focus->id));
+		$accountStatus = $adb->query_result($campAccStatusResult,0,'campaignrelstatusid');
+		$sql = "delete from vtiger_campaignaccountrel where accountid = ?";
+		$adb->pquery($sql, array($focus->id));
+		if(isset($accountStatus) && $accountStatus!=''){
+			$sql = "insert into vtiger_campaignaccountrel values (?,?,?)";
+			$adb->pquery($sql, array($_REQUEST['return_id'], $focus->id,$accountStatus));
+		}
+		else{
+			$sql = "insert into vtiger_campaignaccountrel values (?,?,1)";
+			$adb->pquery($sql, array($_REQUEST['return_id'], $focus->id));		
+		}
+	}
+}
 $return_id = $focus->id;
 
 $parenttab = getParentTab();
@@ -121,10 +139,6 @@ $local_log->debug("Saved record with id of ".$return_id);
 //code added for returning back to the current view after edit from list view
 if($_REQUEST['return_viewname'] == '') $return_viewname='0';
 if($_REQUEST['return_viewname'] != '')$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
-
-//Send notification mail to the assigned to owner about the vtiger_account creation
-if($focus->column_fields['notify_owner'] == 1 || $focus->column_fields['notify_owner'] == 'on')
-	$status = sendNotificationToOwner('Accounts',$focus);
 
 header("Location: index.php?action=$return_action&module=$return_module&parenttab=$parenttab&record=$return_id&viewname=$return_viewname&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
 /** Function to save Accounts custom field info into database

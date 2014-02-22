@@ -38,6 +38,16 @@ if($singlepane_view == 'true' && $_REQUEST['action'] == 'CallRelatedList' ) {
 	if (isset($focus->name)) $smarty->assign("NAME", $focus->name);
 	$related_array=getRelatedLists($currentModule,$focus);
 	$smarty->assign("RELATEDLISTS", $related_array);
+		
+	require_once('include/ListView/RelatedListViewSession.php');
+	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
+		$relationId = vtlib_purify($_REQUEST['relation_id']);
+		RelatedListViewSession::addRelatedModuleToSession($relationId,
+				vtlib_purify($_REQUEST['selected_header']));
+	}
+	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
+	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+	
 	$smarty->assign("CATEGORY",$category);
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') {
 		$smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));

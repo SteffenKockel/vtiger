@@ -28,7 +28,9 @@ function getMyTickets($maxval,$calCnt)
 		FROM vtiger_troubletickets 
 		INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid = vtiger_troubletickets.ticketid 
 		INNER JOIN vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-		where vtiger_crmentity.smownerid = ? and vtiger_crmentity.deleted = 0 and vtiger_troubletickets.status <> 'Closed' ORDER BY createdtime DESC";
+		where vtiger_crmentity.smownerid = ? and vtiger_crmentity.deleted = 0 and ".
+		"vtiger_troubletickets.ticketid > 0 and vtiger_troubletickets.status <> 'Closed' ".
+		"AND vtiger_crmentity.setype='HelpDesk' ORDER BY createdtime DESC";
 
 	$search_query .= " LIMIT 0," . $adb->sql_escape_string($maxval);
 	
@@ -74,7 +76,7 @@ function getMyTickets($maxval,$calCnt)
 			$entries[$ticketid]=$value;
 		}
 		
-		$search_qry = "&query=true&Fields0=vtiger_troubletickets.status&Condition0=isn&Srch_value0=closed&Fields1=vtiger_crmentity.smownerid&Condition1=is&Srch_value1=".$current_user->column_fields['user_name']."&searchtype=advance&search_cnt=2&matchtype=all";
+		$search_qry = "&query=true&Fields0=ticketstatus&Condition0=n&Srch_value0=closed&Fields1=assigned_user_id&Condition1=e&Srch_value1=".$current_user->column_fields['user_name']."&searchtype=advance&search_cnt=2&matchtype=all";
 		
 		$values=Array('ModuleName'=>'HelpDesk','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 		if ( ($display_empty_home_blocks && $noofrows == 0 ) || ($noofrows>0) )	

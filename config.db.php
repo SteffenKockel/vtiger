@@ -15,4 +15,11 @@
   $dbconfig['db_name'] = '_DBC_NAME_';
   $dbconfig['db_type'] = '_DBC_TYPE_';
   $dbconfig['db_bundled'] = '_DBC_BUNDLED_';
+  $vtconfig['adminPwd'] = '_ADMIN_PASS_';
+  $vtconfig['standarduserPwd'] ='_STANDARDUSER_PASS_';
+  $vtconfig['adminEmail'] = '_ADMIN_EMAIL_';
+  $vtconfig['standarduserEmail'] = '_STANDARDUSER_EMAIL_';
+  $vtconfig['demoData'] = '_DEMO_DATA_';
+  $vtconfig['currencyName'] = '_CURRENCY_NAME_';
+  $vtconfig['quickbuild'] = '_QUICKBUILD_';
 ?>

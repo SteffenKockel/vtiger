@@ -96,8 +96,13 @@
 										<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.ASTERISK_VERSION}</strong></td>
                 						<td width="80%" class="small cellText">
                 							<select name="asterisk_version" id="asterisk_version" title="{$MOD.ASTERISK_VERSION_TITLE}">
-                								<option value="1.4">1.4</option>
-                								<option value="1.6">1.6</option>
+                								{if $ASTERISK_VERSION eq '1.4'}
+													<option value="1.4" selected>1.4</option>
+                                                    <option value="1.6">1.6</option>
+                                               	{elseif $ASTERISK_VERSION eq '1.6'}
+                                                	<option value="1.6" selected>1.6</option>
+                                                    <option value="1.4">1.4</option>
+												{/if}
                 							</select>
 										</td>
 									</tr>

@@ -30,6 +30,10 @@ elseif($update_mod == 'Contacts')
 {
 	$rel_table = 'vtiger_campaigncontrel';
 }
+elseif($update_mod == 'Accounts')
+{
+	$rel_table = 'vtiger_campaignaccountrel';
+}
 
 $storearray = array();
 if(!empty($_REQUEST['idlist'])) {
@@ -43,9 +47,9 @@ foreach($storearray as $id)
 {
 	if($id != '')
 	{
-		if ($update_mod == 'Leads' || $update_mod == 'Contacts') {
-			$sql = "insert into  $rel_table values(?,?)";
-	        $adb->pquery($sql, array($forCRMRecord, $id));
+		if ($update_mod == 'Leads' || $update_mod == 'Contacts' || $update_mod == 'Accounts') {
+			$sql = "insert into $rel_table values(?,?,1)";
+			$adb->pquery($sql, array($forCRMRecord, $id));
 		} else {
 			$focus->save_related_module($currentModule, $forCRMRecord, $update_mod, $id);
 		}

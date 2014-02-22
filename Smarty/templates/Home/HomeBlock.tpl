@@ -14,8 +14,8 @@
 			</select>&nbsp;{$MOD.LBL_HOME_ITEMS}
 		</td>
 		<td align="right" class="homePageMatrixHdr" nowrap style="height:28px;" width=60%>
-			<input type="button" name="save" value="Save" class="crmbutton small save" onclick="saveEntries('maxentries_{$HOME_STUFFID}')">
-			<input type="button" name="cancel" value="Cancel" class="crmbutton small cancel" onclick="cancelEntries('editRowmodrss_{$HOME_STUFFID}')">
+			<input type="button" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " name="save" class="crmbutton small save" onclick="saveEntries('maxentries_{$HOME_STUFFID}')">
+			<input type="button" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " name="cancel" class="crmbutton small cancel" onclick="cancelEntries('editRowmodrss_{$HOME_STUFFID}')">
 		</td>		
 {elseif $HOME_STUFFTYPE eq "DashBoard"}
 		<td  valign="top" align='center' class="homePageMatrixHdr" style="height:28px;" width=60%>
@@ -26,8 +26,8 @@
 		</tr>
 		<tr>
 			<td  valign="top" align="center" class="homePageMatrixHdr" nowrap style="height:28px;" width="40%">
-			<input type="button" name="save" value="Save" class="crmbutton small save" onclick="saveEditDash({$HOME_STUFFID})">
-			<input type="button" name="cancel" value="Cancel" class="crmbutton small cancel" onclick="cancelEntries('editRowmodrss_{$HOME_STUFFID}')">
+			<input type="button" name="save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " class="crmbutton small save" onclick="saveEditDash({$HOME_STUFFID})">
+			<input type="button" name="cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " class="crmbutton small cancel" onclick="cancelEntries('editRowmodrss_{$HOME_STUFFID}')">
 			</td>
 		</tr>		
 {/if}
@@ -51,11 +51,12 @@
 		</td>
 		{/foreach}
 	</tr>
+	{if $HOME_STUFF.Entries|@count > 0}
 		{foreach item=row key=crmid from=$HOME_STUFF.Entries}
  	<tr>
 		<td>
 			<a href="index.php?module={$HOME_STUFF.ModuleName}&action=DetailView&record={$crmid}">
-				<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="Details" title="Details"/>
+				<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
 			</a>
 		</td>
 			{foreach item=element from=$row}
@@ -65,6 +66,9 @@
 			{/foreach}
 	</tr>
 		{/foreach}
+	{else}
+		<div class="componentName">{$APP.LBL_NO_DATA}</div>
+	{/if}
 	</table>
 
 {elseif $HOME_STUFFTYPE eq "Default"}
@@ -75,25 +79,29 @@
 	{foreach item=header from=$HOME_STUFF.Details.Header}
 		<td align="left"><b>{$header}</b></td>
 	{/foreach}
-	</tr>	
-	{foreach item=row key=crmid from=$HOME_STUFF.Details.Entries}
+	</tr>
+	{if $HOME_STUFF.Details.Entries|@count > 0}
+		{foreach item=row key=crmid from=$HOME_STUFF.Details.Entries}
 	<tr>
 		<td>
-		{if $HOME_STUFF.Details.Title.1 eq "My Sites"}
-			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="Details" title="Details"/>
-		{elseif $HOME_STUFF.Details.Title.1 neq "Key Metrics" && $HOME_STUFF.Details.Title.1 neq "My Group Allocation"}
-			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="Details" title="Details"/>
-		{elseif $HOME_STUFF.Details.Title.1 eq "Key Metrics"}
-			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="Details" title="Details"/>
-		{elseif $HOME_STUFF.Details.Title.1 eq "My Group Allocation"}
-			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="Details" title="Details"/>
-		{/if}
+			{if $HOME_STUFF.Details.Title.1 eq "My Sites"}
+			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
+			{elseif $HOME_STUFF.Details.Title.1 neq "Key Metrics" && $HOME_STUFF.Details.Title.1 neq "My Group Allocation"}
+			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
+			{elseif $HOME_STUFF.Details.Title.1 eq "Key Metrics"}
+			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION} "/>
+			{elseif $HOME_STUFF.Details.Title.1 eq "My Group Allocation"}
+			<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
+			{/if}
 		</td>
-		{foreach item=element from=$row}
+			{foreach item=element from=$row}
 		<td align="left"/> {$element}</td>
-		{/foreach}
+			{/foreach}
 	</tr>
-	{/foreach}	
+		{/foreach}
+	{else}
+		<div class="componentName">{$APP.LBL_NO_DATA}</div>
+	{/if}
 	</table>
 	
 {elseif $HOME_STUFFTYPE eq "RSS"}

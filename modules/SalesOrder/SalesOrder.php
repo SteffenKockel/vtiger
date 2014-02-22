@@ -130,7 +130,7 @@ class SalesOrder extends CRMEntity {
 		if($_REQUEST['action'] != 'SalesOrderAjax' && $_REQUEST['ajxaction'] != 'DETAILVIEW' && $_REQUEST['action'] != 'MassEditSave')
 		{
 			//Based on the total Number of rows we will save the product relationship with this entity
-			saveInventoryProductDetails(&$this, 'SalesOrder');	
+			saveInventoryProductDetails($this, 'SalesOrder');	
 		}
 		
 		// Update the currency id and the conversion rate for the sales order
@@ -352,6 +352,9 @@ class SalesOrder extends CRMEntity {
 			left join vtiger_salesordercf on vtiger_salesorder.salesorderid = vtiger_salesordercf.salesorderid 
 			left join vtiger_sobillads on vtiger_salesorder.salesorderid=vtiger_sobillads.sobilladdressid
 			left join vtiger_soshipads on vtiger_salesorder.salesorderid=vtiger_soshipads.soshipaddressid
+			left join vtiger_inventoryproductrel as vtiger_inventoryproductrelSalesOrder on vtiger_salesorder.salesorderid = vtiger_inventoryproductrelSalesOrder.id  
+			left join vtiger_products as vtiger_productsSalesOrder on vtiger_productsSalesOrder.productid = vtiger_inventoryproductrelSalesOrder.productid  
+			left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid = vtiger_inventoryproductrelSalesOrder.productid  
 			left join vtiger_groups as vtiger_groupsSalesOrder on vtiger_groupsSalesOrder.groupid = vtiger_crmentitySalesOrder.smownerid
 			left join vtiger_users as vtiger_usersSalesOrder on vtiger_usersSalesOrder.id = vtiger_crmentitySalesOrder.smownerid
 			left join vtiger_potential as vtiger_potentialRelSalesOrder on vtiger_potentialRelSalesOrder.potentialid = vtiger_salesorder.potentialid
@@ -403,6 +406,12 @@ class SalesOrder extends CRMEntity {
 		}
 	}
 	
+	public function getJoinClause($tableName) {
+		if ($tableName == 'vtiger_invoice_recurring_info') {
+			return 'LEFT JOIN';
+		}
+		return parent::getJoinClause($tableName);
+	}
 }
 
 ?>

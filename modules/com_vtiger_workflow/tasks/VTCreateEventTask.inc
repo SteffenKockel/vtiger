@@ -28,7 +28,10 @@ class VTCreateEventTask extends VTTask{
 		return array('eventType', 'eventName', 'description', 'sendNotification', 
 								 'startTime', 'startDays', 'startDirection', 'startDatefield', 
 								 'endTime','endDays', 'endDirection', 'endDatefield',
-								 'status', 'priority');
+								 'status', 'priority','recurringcheck','repeat_frequency',
+								 'recurringtype','calendar_repeat_limit_date',
+								 'mon_flag','tue_flag','wed_flag','thu_flag','fri_flag','sat_flag','sun_flag',
+								 'repeatMonth','repeatMonth_date','repeatMonth_daytype','repeatMonth_day');
 	}
 	
 	function getAdmin(){
@@ -44,7 +47,7 @@ class VTCreateEventTask extends VTTask{
 		global $adb, $current_user;
 		$userId = $entityData->get('assigned_user_id');
 		if($userId===null){
-			$userId = vtws_getWebserviceEntityId('Users', 1);;
+			$userId = vtws_getWebserviceEntityId('Users', 1);
 		}
 
 		$startDate = $this->calculateDate($entityData, $this->startDays, 
@@ -65,8 +68,26 @@ class VTCreateEventTask extends VTTask{
 			'due_date'=>$endDate,
 			'visibility'=>'all',
 			'taskstatus'=>'',
-			'duration_hours'=>''
+			'duration_hours'=>'0'
 		);
+
+		$_REQUEST['date_start'] = getDisplayDate($startDate);
+		$_REQUEST['due_date'] = getDisplayDate($endDate);
+		$_REQUEST['recurringcheck']=$this->recurringcheck;
+		$_REQUEST['repeat_frequency']=$this->repeat_frequency;
+		$_REQUEST['recurringtype']=$this->recurringtype;
+		$_REQUEST['calendar_repeat_limit_date']=getDisplayDate($this->calendar_repeat_limit_date);
+		$_REQUEST['mon_flag']=$this->mon_flag;
+		$_REQUEST['tue_flag']=$this->tue_flag;
+		$_REQUEST['wed_flag']=$this->wed_flag;
+		$_REQUEST['thu_flag']=$this->thu_flag;
+		$_REQUEST['fri_flag']=$this->fri_flag;
+		$_REQUEST['sat_flag']=$this->sat_flag;
+		$_REQUEST['sun_flag']=$this->sun_flag;
+		$_REQUEST['repeatMonth']=$this->repeatMonth;
+		$_REQUEST['repeatMonth_date']=$this->repeatMonth_date;
+		$_REQUEST['repeatMonth_daytype']=$this->repeatMonth_daytype;
+		$_REQUEST['repeatMonth_day']=$this->repeatMonth_day;
 
 		$moduleName = $entityData->getModuleName();
 		$adminUser = $this->getAdmin();
@@ -88,7 +109,16 @@ class VTCreateEventTask extends VTTask{
 			}
 		}
 		
-		vtws_create('Events', $fields, $adminUser);
+		$event = vtws_create('Events', $fields, $adminUser);
+		list($typeId, $id) = vtws_getIdComponents($event['id']);
+		$event = CRMEntity::getInstance('Events');
+		$event->id = $id;
+		$startDate = $entityData->get($this->startDatefield);
+		if($this->recurringcheck && !empty($startDate) &&
+				($this->calendar_repeat_limit_date)) {
+			include_once 'modules/Calendar/RepeatEvents.php';
+			Calendar_RepeatEvents::repeat($event);
+		}
 		global $current_user;
 		$current_user = $this->originalUser;
 	}

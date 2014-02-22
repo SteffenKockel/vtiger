@@ -54,7 +54,7 @@ require_once('include/utils/UserInfoUtil.php');
 		global $log;
                 $log->debug("Entering time_to_number(".$time_start.") method ...");
 		$start_time_array = explode(":",$time_start);
-		if(ereg("^[0]",$start_time_array[0]))
+		if(preg_match("/^[0]/",$start_time_array[0]))
 		{
 			$time_start_hrs=str_replace('0',"",$start_time_array[0]);
 		}

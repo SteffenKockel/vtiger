@@ -30,7 +30,34 @@ class Vtiger_Version {
 	 */
 	static function check($with_version, $condition='=') {
 		$current_version = self::current();
+		//xml node is passed to this method sometimes
+		if(!is_string($with_version)) {
+			$with_version = (string) $with_version;
+		}
+		$with_version = self::getUpperLimitVersion($with_version);
 		return version_compare($current_version, $with_version, $condition);
+	}
+	
+	static function endsWith($string, $endString) {
+		$strLen = strlen($string);
+    	$endStrLen = strlen($endString);
+    	if ($endStrLen > $strLen) return false;
+    	return substr_compare($string, $endString, -$endStrLen) === 0;		
+	}
+	
+	static function getUpperLimitVersion($version) {
+		if(!self::endsWith($version, '.*')) return $version;
+		
+		$version = rtrim($version, '.*');
+		$lastVersionPartIndex = strrpos($version, '.');
+		if ($lastVersionPartIndex === false) {
+			$version = ((int) $version) + 1;	
+		} else {
+			$lastVersionPart = substr($version, $lastVersionPartIndex+1, strlen($version));
+			$upgradedVersionPart = ((int) $lastVersionPart) + 1;
+			$version = substr($version, 0, $lastVersionPartIndex+1) . $upgradedVersionPart;
+		}
+		return $version;
 	}
 }
 ?>

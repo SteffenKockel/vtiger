@@ -46,7 +46,7 @@ foreach($pieces as $val)
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>vtiger CRM 5 - Configuration Wizard - Welcome</title>
+	<title><?php echo $installationStrings['LBL_VTIGER_CRM_5']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_WELCOME']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -55,8 +55,8 @@ foreach($pieces as $val)
 	<!-- Table for cfgwiz starts -->
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
-			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="Configuration Wizard" hspace="20" title="Configuration Wizard"></td>
-			<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="vtiger CRM 5" title="vtiger CRM 5"></td>
+			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
+			<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>" title="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>"></td>
 			<td class="cwHeadBg1" width=2%></td>
 		</tr>
 	</table>
@@ -76,21 +76,15 @@ foreach($pieces as $val)
 						<!-- Right side tabs -->
 							<table border=0 cellspacing=0 cellpadding=10 width=70% align=center>
 								<tr>
-									<td class=small align=left colspan=2><img src="include/install/images/welcome.gif" alt="Welcome to Configuration Wizard" title="Welcome to Configuration Wizard">
+									<td class=small align=left colspan=2><img src="include/install/images/welcome.gif" alt="<?php echo $installationStrings['LBL_WELCOME_CONFIG_WIZARD']; ?>" title="<?php echo $installationStrings['LBL_WELCOME_CONFIG_WIZARD']; ?>">
 										<br><hr noshade size=1>
 									</td>
 								</tr>
 		
 								<tr class='level3'>
-									<td valign=top align=left class="small contentDisplay" style="padding-left:20px;height:250px;" colspan=2>
-										<p style='text-align:center;font-weight:bold;'>This configuration wizard helps you install vtigerCRM 5.1.0.</p>
-										<p><br>
-										vtiger CRM is a community-driven, fully open source, CRM software project. <br><br>
-										The aim of the project is to provide the best and most open CRM solution with the lowest total cost of ownership to small and medium enterprises.<br><br> 
-										The product is widely used throughout the world, with over a thousand downloads a day. <br><br>
-										vtiger CRM has an active community of developers and users, with contributors from many different countries.<br> <br>
-										It is available in many languages, with a strong partner network in dozens of countries.
-										</p>
+									<td valign=top align=left class="small contentDisplay fixedSmallHeight" style="padding-left:20px;" colspan=2>
+										<p style='text-align:center;font-weight:bold;'><?php echo $installationStrings['LBL_ABOUT_CONFIG_WIZARD'] . $vtiger_current_version; ?>.</p>
+										<p><br><?php echo $installationStrings['LBL_ABOUT_VTIGER']; ?></p>
 							  		</td>
 								</tr>
 								<tr>
@@ -104,7 +98,7 @@ foreach($pieces as $val)
 										<form action="install.php" method="post" name="installform" id="form">
 								        <input type="hidden" name="file" value="LicenceAgreement.php" />	
 								        <input type="hidden" name="install" value="true" />	
-										<input type="image" src="include/install/images/cwBtnInstall.gif" value='install' alt="install" border="0" title="install" style="cursor:pointer;" onClick="window.document.installform.submit();">
+										<input type="button" class="button" value='<?php echo $installationStrings['LBL_INSTALL']; ?>' alt="<?php echo $installationStrings['LBL_INSTALL']; ?>" title="<?php echo $installationStrings['LBL_INSTALL']; ?>" onClick="window.document.installform.submit();">
 										</form>
 									</td>
 									<td align=left>
@@ -120,7 +114,7 @@ foreach($pieces as $val)
 										<input type="hidden" name="filename" value="SetMigrationConfig.php" />
 										<input type="hidden" name="file" value="CheckSystem.php" />	
 								        <input type="hidden" name="migrate" value="true" />	
-										<input type="image" src="include/install/images/cwBtnMigrate.gif" value='migrate' alt="migrate" border="0" title="migrate" style="cursor:pointer;" onClick="window.document.Migrateform.submit();">
+										<input type="button" class="button" value='<?php echo $installationStrings['LBL_MIGRATE']; ?>' alt="<?php echo $installationStrings['LBL_MIGRATE']; ?>" title="<?php echo $installationStrings['LBL_MIGRATE']; ?>" onClick="window.document.Migrateform.submit();">
 										</form>
 									</td>
 								</tr>					

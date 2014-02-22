@@ -35,7 +35,7 @@
 					{*<!-- load contents for the widget-->*}
 					{if $tablestuff.Stufftype eq 'Default' && $tablestuff.Stufftitle eq 'Home Page Dashboard'|@getTranslatedString:'Home'}
 						fetch_homeDB({$tablestuff.Stuffid});
-					{else}
+					{elseif $tablestuff.Stufftype eq 'DashBoard'}
 						loadStuff({$tablestuff.Stuffid},'{$tablestuff.Stufftype}');
 					{/if}
 				</script>
@@ -47,6 +47,22 @@
 	
 {*<!-- Main Contents Ends Here -->*}
 <script>
+var Vt_homePageWidgetInfoList = [
+{if $HOMEFRAME|@count > 0}
+	{assign var=HOMEFRAME value=$HOMEFRAME|@array_reverse}
+	{foreach item=tablestuff key=index from=$HOMEFRAME name="homeframe"}
+		{if ($tablestuff.Stufftype neq 'Default' || $tablestuff.Stufftitle neq
+				'Home Page Dashboard'|@getTranslatedString:'Home') && $tablestuff.Stufftype neq 'DashBoard'}
+			{ldelim}
+				'widgetId':{$tablestuff.Stuffid},
+				'widgetType':'{$tablestuff.Stufftype}'
+			{rdelim}
+			{if $index+1 < $HOMEFRAME|@count},{/if}
+		{/if}
+	{/foreach}
+{/if}
+	];
+loadAllWidgets(Vt_homePageWidgetInfoList, {$widgetBlockSize});
 {literal}
 initHomePage();
 

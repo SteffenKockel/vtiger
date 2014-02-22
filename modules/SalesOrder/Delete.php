@@ -35,5 +35,7 @@ if(!isset($_REQUEST['record']))
 DeleteEntity($_REQUEST['module'],$_REQUEST['return_module'],$focus,$_REQUEST['record'],$_REQUEST['return_id']);
 
 $parenttab = getParentTab();
-header("Location: index.php?module=".vtlib_purify($_REQUEST['return_module'])."&action=".vtlib_purify($_REQUEST['return_action'])."&smodule=SO&parenttab=$parenttab&record=".vtlib_purify($_REQUEST['return_id'])."&relmodule=".vtlib_purify($_REQUEST['module']).$url);
+header("Location: index.php?module=".vtlib_purify($_REQUEST['return_module'])."&action=".
+		vtlib_purify($_REQUEST['return_action'])."&&parenttab=$parenttab&record=".
+		vtlib_purify($_REQUEST['return_id']).$url);
 ?>

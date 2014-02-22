@@ -151,7 +151,7 @@ if($_REQUEST['reply'] == "true")
 		$smarty->assign('CC_MAIL',$cc_add);
 		$bcc_add = implode(',',$json->decode($adb->query_result($result,0,'bcc_email')));
 		$smarty->assign('BCC_MAIL',$bcc_add);
-		$smarty->assign('IDLISTS',ereg_replace('###',',',$adb->query_result($result,0,'idlists')));	
+		$smarty->assign('IDLISTS',preg_replace('/###/',',',$adb->query_result($result,0,'idlists')));
 }
 
 // Webmails
@@ -312,8 +312,9 @@ $smarty->assign("ID", $focus->id);
 $smarty->assign("ENTITY_ID", vtlib_purify($_REQUEST["record"]));
 $smarty->assign("ENTITY_TYPE",vtlib_purify($_REQUEST["email_directing_module"]));
 $smarty->assign("OLD_ID", $old_id );
-//Display the FCKEditor or not? -- configure $FCKEDITOR_DISPLAY in config.php 
-$smarty->assign("FCKEDITOR_DISPLAY",$FCKEDITOR_DISPLAY);
+//Display the RTE or not? -- configure $USE_RTE in config.php
+$USE_RTE = vt_hasRTE();
+$smarty->assign("USE_RTE",$USE_RTE);
 
 if(empty($focus->filename))
 {

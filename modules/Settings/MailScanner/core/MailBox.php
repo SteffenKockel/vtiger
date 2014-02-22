@@ -155,7 +155,7 @@ class Vtiger_MailBox {
 				if($searchfor == 'ALL') {
 					$searchQuery = "SINCE $lastscanOn";
 				} else {
-					$searchQuery = "$useSearchFor SINCE $lastscanOn";
+					$searchQuery = "$searchfor SINCE $lastscanOn";
 				}
 			} else {
 				$searchQuery = $lastscanOn? "SINCE $lastscanOn" : "BEFORE ". date('d-M-Y');

@@ -81,7 +81,9 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 		}
 	);
 }
+
 {/literal}
+
 function DeleteTag(id,recordid)
 {ldelim}
         $("vtbusy_info").style.display="inline";
@@ -156,8 +158,8 @@ function DeleteTag(id,recordid)
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>
 		<td valign=top align=left >
-                           <table border=0 cellspacing=0 cellpadding=3 width=100%>
-				<tr>
+			<table border=0 cellspacing=0 cellpadding=3 width=100%>
+				<tr valign=top>
 					<td align=left>					
 					<form action="index.php" method="post" name="DetailView" id="form" onsubmit="VtigerJS_DialogBox.block();">
 					{include file='DetailViewHidden.tpl'}
@@ -291,7 +293,26 @@ function DeleteTag(id,recordid)
 							        {/if}
 						            </tr>
 	                             </table>   
-                             {/if}    
+                             {/if}
+                             
+                             {* vtlib Customization: Embed DetailViewWidget block:// type if any *}
+							{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
+							<table border=0 cellspacing=0 cellpadding=5 width=100% >
+							{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
+								{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)}
+								<tr>
+									<td style="padding:5px;" >
+									{php}
+										echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars);
+									{/php}
+									</td>
+								</tr>
+								{/if}
+							{/foreach}
+							</table>
+							{/if}
+							{* END *}
+							    
 						     <br>
 					             <table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
                 					 <tr>
@@ -315,7 +336,7 @@ function DeleteTag(id,recordid)
 									</table>
 								</td>
 							 </tr>
-							
+							 
 							 <tr>
 								<td width=100% valign=top align=left class="dvtContentSpace" style="padding:10px;height:120px">
 									<!-- Invite UI -->
@@ -561,61 +582,116 @@ function DeleteTag(id,recordid)
 	</td>
 	<td width=22% valign=top style="border-left:2px dashed #cccccc;padding:13px">
 						<!-- right side relevant info -->
-		{* vtlib customization: Custom links on the Detail view *}
-		{if $CUSTOM_LINKS}
-			<table width="100%" border="0" cellpadding="5" cellspacing="0">
-				<tr><td align="left" class="dvtUnSelectedCell dvtCellLabel">
-					<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_customLinksLay');" onclick="fnvshobj(this,'vtlib_customLinksLay');"><b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} &#187;</b></a>
-				</td></tr>
-			</table>
-			<br>
-			<div style="display: none; left: 193px; top: 106px;width:155px; position:absolute;" id="vtlib_customLinksLay" 
-				onmouseout="fninvsh('vtlib_customLinksLay')" onmouseover="fnvshNrm('vtlib_customLinksLay')">
-				<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
-				<tr><td style="border-bottom: 1px solid rgb(204, 204, 204); padding: 5px;"><b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} &#187;</b></td></tr>
+		{* vtlib customization: Custom links on the Detail view basic links *}
+			{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
+				<table width="100%" border="0" cellpadding="5" cellspacing="0">
+				{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBASIC}
 				<tr>
-					<td>
-						{foreach item=CUSTOMLINK from=$CUSTOM_LINKS}
-							{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
-							{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
-							{assign var="customlink_module" value=$CUSTOMLINK->module()}
-							{if $customlink_label eq ''}
-								{assign var="customlink_label" value=$customlink_href}
-							{else}
-								{* Pickup the translated label provided by the module *}
-								{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$customlink_module}
-							{/if}
-							<a href="{$customlink_href}" class="drop_down">{$customlink_label}</a>
-						{/foreach}
+					<td align="left" style="padding-left:10px;">
+						{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
+						{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
+						{if $customlink_label eq ''}
+							{assign var="customlink_label" value=$customlink_href}
+						{else}
+							{* Pickup the translated label provided by the module *}
+							{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
+						{/if}
+						{if $CUSTOMLINK->linkicon}
+						<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}"></a>
+						{/if}
+						<a class="webMnu" href="{$customlink_href}">{$customlink_label}</a>
 					</td>
 				</tr>
-			</table>
-			</div>
-		{/if}
+				{/foreach}
+				</table>
+			{/if}
+			
+			{* vtlib customization: Custom links on the Detail view *}
+			{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEW}
+				<br>
+				{if !empty($CUSTOM_LINKS.DETAILVIEW)}					
+					<table width="100%" border="0" cellpadding="5" cellspacing="0">
+						<tr><td align="left" class="dvtUnSelectedCell dvtCellLabel">
+							<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_customLinksLay');" onclick="fnvshobj(this,'vtlib_customLinksLay');"><b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} &#187;</b></a>
+						</td></tr>
+					</table>
+					<br>
+					<div style="display: none; left: 193px; top: 106px;width:155px; position:absolute;" id="vtlib_customLinksLay" 
+						onmouseout="fninvsh('vtlib_customLinksLay')" onmouseover="fnvshNrm('vtlib_customLinksLay')">
+						<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
+						<tr><td style="border-bottom: 1px solid rgb(204, 204, 204); padding: 5px;"><b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} &#187;</b></td></tr>
+						<tr>
+							<td>
+								{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEW}
+									{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
+									{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
+									{if $customlink_label eq ''}
+										{assign var="customlink_label" value=$customlink_href}
+									{else}
+										{* Pickup the translated label provided by the module *}
+										{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
+									{/if}
+									<a href="{$customlink_href}" class="drop_down">{$customlink_label}</a>
+								{/foreach}
+							</td>
+						</tr>
+						</table>
+					</div>
+				{/if}
+			{/if}
 		{* END *}
 
 		{if $TAG_CLOUD_DISPLAY eq 'true'}
 		<!-- Tag cloud display -->
 		<table border=0 cellspacing=0 cellpadding=0 width=100% class="tagCloud">
-		<tr>
-			<td class="tagCloudTopBg"><img src="{$IMAGE_PATH}tagCloudName.gif" border=0></td>
-		</tr>
-		<tr>
-                      	<td><div id="tagdiv" style="display:visible;"><form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();"><input class="textbox"  type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;<input name="button_tagfileds" type="submit" class="crmbutton small save" value="{$APP.LBL_TAG_IT}" /></form></div></td>
-                </tr>
-		<tr>
-			<td class="tagCloudDisplay" valign=top> <span id="tagfields">{$ALL_TAG}</span></td>
-		</tr>
+			<tr>
+				<td class="tagCloudTopBg"><img src="{$IMAGE_PATH}tagCloudName.gif" border=0></td>
+			</tr>
+			<tr>
+				<td><div id="tagdiv" style="display:visible;"><form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();"><input class="textbox"  type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;<input name="button_tagfileds" type="submit" class="crmbutton small save" value="{$APP.LBL_TAG_IT}" /></form></div></td>
+			</tr>
+			<tr>
+				<td class="tagCloudDisplay" valign=top> <span id="tagfields">{$ALL_TAG}</span></td>
+			</tr>
 		</table>
 		<!-- End Tag cloud display -->
 		{/if}
-				<br>
-			</td>
-		</tr>
-		</table>
 		
-			
-			
+		{if !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
+		{foreach key=CUSTOMLINK_NO item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
+			{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
+			{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
+			{* Ignore block:// type custom links which are handled earlier *}
+			{if !preg_match("/^block:\/\/.*/", $customlink_href)}
+				{if $customlink_label eq ''}
+					{assign var="customlink_label" value=$customlink_href}
+				{else}
+					{* Pickup the translated label provided by the module *}
+					{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
+				{/if}
+				<br/>
+				<table border=0 cellspacing=0 cellpadding=0 width=100% class="rightMailMerge">
+	  				<tr>
+						<td class="rightMailMergeHeader">
+							<b>{$customlink_label}</b>
+							<img id="detailview_block_{$CUSTOMLINK_NO}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
+						</td>
+	  				</tr>
+	  				<tr style="height:25px">
+						<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK_NO}"></div></td>
+	  				</tr>
+	  				<script type="text/javascript">
+	  					vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
+	  				</script>
+				</table>
+			{/if}
+		{/foreach}
+		{/if}
+		
+		<br>
+	</td>
+</tr>
+</table>
 		
 		</div>
 		<!-- PUBLIC CONTENTS STOPS-->

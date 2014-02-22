@@ -248,7 +248,7 @@ if(count($querycolumns) > 0)
 		  $actual_values[$x] = $value;
 		  $actual_values[$x] = str_replace('"'," ",$actual_values[$x]);
 		  //if value contains any line feed or carriage return replace the value with ".value."
-		  if (preg_match ("/(\r\n)/", $actual_values[$x])) 
+		  if (preg_match ("/(\r?\n)/", $actual_values[$x]))
 		  {
 		  	$actual_values[$x] = '"'.$actual_values[$x].'"';
 		  }

@@ -22,6 +22,7 @@
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
+require_once('include/Zend/Json.php');
 /**
  * this function checks if the asterisk server details are set in the database or not
  * returns string "true" on success :: "false" on failure
@@ -30,7 +31,6 @@ function checkAsteriskDetails(){
 	global $adb,$current_user;
 	$sql = "select * from vtiger_asterisk";
 	$result = $adb->query($sql);
-	
 	$count = $adb->num_rows($result);
 	
 	if($count > 0){
@@ -46,7 +46,9 @@ function checkAsteriskDetails(){
 function getAsteriskExtensions(){
 	global $adb, $current_user;
 	
-	$sql = "select * from vtiger_asteriskextensions where userid != ".$current_user->id;
+	$sql = "SELECT * FROM vtiger_asteriskextensions
+            INNER JOIN vtiger_users ON vtiger_users.id = vtiger_asteriskextensions.userid
+            AND vtiger_users.deleted=0 AND status = 'Active'";
 	$result = $adb->pquery($sql, array());
 	$count = $adb->num_rows($result);
 	$data = array();
@@ -69,7 +71,7 @@ function getAsteriskExtensions(){
  */
 function get_validate_record_js () {
 global $mod_strings;
-global $app_strings;
+global $app_strings, $current_user;
 
 $lbl_last_name = $mod_strings['LBL_LIST_LAST_NAME'];
 $lbl_user_name = $mod_strings['LBL_LIST_USER_NAME'];
@@ -89,11 +91,16 @@ $lbl_asterisk_details_not_set = $app_strings['LBL_ASTERISK_SET_ERROR'];
 
 //check asteriskdetails start
 $checkAsteriskDetails = checkAsteriskDetails();
-$extensions_list = implode(",",getAsteriskExtensions());
+// Fix : 6362
+$record = ($_REQUEST['record'])?$_REQUEST['record']:'false';// used to check the asterisk extension in edit mode
+ $mode = ($_REQUEST['isDuplicate'] == 'true')?'true':'false';
+ $extensions = getAsteriskExtensions();
+$extensions_list = Zend_Json::encode($extensions);
 //check asteriskdetails end
 
 $the_script  = <<<EOQ
 
+<script language="JavaScript" type="text/javascript" src="include/js/json.js"></script>
 <script type="text/javascript" language="Javascript">
 <!--  to hide script contents from old browsers
 function set_fieldfocus(errorMessage,oMiss_field){
@@ -102,8 +109,7 @@ function set_fieldfocus(errorMessage,oMiss_field){
 }
 
 function verify_data(form) {
-	var existing_extensions = new Array($extensions_list);
-	var isError = false;
+        var isError = false;
 	var errorMessage = "";
 	
 	//check if asterisk server details are set or not
@@ -112,13 +118,18 @@ function verify_data(form) {
 		alert(errorMessage);
 		return false;
 	}
-
-	for(var i=0; i<existing_extensions.length; i++){
-		if(form.asterisk_extension.value == existing_extensions[i]){
-			alert("This extension has already been configured for another user. Please use another extension.");
-			return false;
-		}
-	}
+	var extensions = $extensions_list;
+        if(form.asterisk_extension.value != "") {
+            for(var userid in extensions){
+                if(trim(form.asterisk_extension.value) == extensions[userid]) {
+                    if(userid == $record && $mode == false) {
+                    } else {
+                        alert("This extension has already been configured for another user. Please use another extension.");
+                        return false;
+                    }
+                }
+            }
+        }
 	//asterisk check ends
 	
 	if (trim(form.email1.value) == "") {

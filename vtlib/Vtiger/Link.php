@@ -155,7 +155,7 @@ class Vtiger_Link {
 	 * @param Map Key-Value pair to use for formating the link url
 	 */
 	static function getAllByType($tabid, $type=false, $parameters=false) {
-		global $adb;
+		global $adb, $current_user;
 		self::__initSchema();
 
 		$multitype = false;
@@ -165,9 +165,16 @@ class Vtiger_Link {
 			if(is_array($type)) { 
 				$multitype = true;
 				if($tabid === self::IGNORE_MODULE) {
-					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE linktype IN ('. 
-						Vtiger_Utils::implodestr('?', count($type), ',') .')', 
-						Array($adb->flatten_array($type)));
+					$sql = 'SELECT * FROM vtiger_links WHERE linktype IN ('.
+						Vtiger_Utils::implodestr('?', count($type), ',') .') ';
+					$params = $type;
+					$permittedTabIdList = getPermittedModuleIdList();
+					if(count($permittedTabIdList) > 0 && $current_user->is_admin !== 'on') {
+						$sql .= ' and tabid IN ('.
+							Vtiger_Utils::implodestr('?', count($permittedTabIdList), ',').')';
+						$params[] = $permittedTabIdList;
+					}
+					$result = $adb->pquery($sql, Array($adb->flatten_array($params)));
 				} else {
 					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype IN ('.
 						Vtiger_Utils::implodestr('?', count($type), ',') .')',

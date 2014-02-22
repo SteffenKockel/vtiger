@@ -43,6 +43,7 @@ require_once('include/FormValidationUtil.php');
 require_once('include/DatabaseUtil.php');
 require_once('include/events/SqlResultIterator.inc');
 require_once('data/CRMEntity.php');
+require_once 'vtlib/Vtiger/Language.php';
  
 // Constants to be defined here
 
@@ -486,8 +487,18 @@ function return_module_language($language, $module)
 	if(!isset($mod_strings))
 	{
 		$log->warn("Unable to find the module language file for language: ".$language." and module: ".$module);
-		require("modules/$module/language/$default_language.lang.php");
-		$language_used = $default_language;
+		if($default_language == 'en_us') {
+			require("modules/$module/language/$default_language.lang.php");
+			$language_used = $default_language;
+		} else {
+			@include("modules/$module/language/$default_language.lang.php");
+			if(!isset($mod_strings)) {
+				require("modules/$module/language/en_us.lang.php");
+				$language_used = 'en_us';
+			} else {
+				$language_used = $default_language;
+			}
+		}
 	}
 
 	if(!isset($mod_strings))
@@ -1026,9 +1037,8 @@ function to_html($string, $encode=true)
 
 /** Function to get the tablabel for a given id
   * @param $tabid -- tab id:: Type integer
-    * @returns $string -- string:: Type string 
-      *
-       */
+  * @returns $string -- string:: Type string 
+*/
 
 function getTabname($tabid)
 {
@@ -1486,7 +1496,7 @@ function getQuickCreate($tabid,$actionid)
         $QuickCreateForm= 'true';
 
 	$perr=isPermitted($module,$actionname);
-	if($perr = 'no')
+	if($perr == 'no')
 	{
                 $QuickCreateForm= 'false';
 	}	
@@ -1539,15 +1549,15 @@ function getDBInsertDateValue($value)
 	$insert_date='';
 	if($dat_fmt == 'dd-mm-yyyy')
 	{
-		list($d,$m,$y) = split('-',$value);
+		list($d,$m,$y) = explode('-',$value);
 	}
 	elseif($dat_fmt == 'mm-dd-yyyy')
 	{
-		list($m,$d,$y) = split('-',$value);
+		list($m,$d,$y) = explode('-',$value);
 	}
 	elseif($dat_fmt == 'yyyy-mm-dd')
 	{
-		list($y,$m,$d) = split('-',$value);
+		list($y,$m,$d) = explode('-',$value);
 	}
 
 	if(!$y && !$m && !$d) {
@@ -3030,7 +3040,7 @@ function getCurrentModule($perform_set=false) {
 		$dir = @scandir($root_directory."modules");
 		$temp_arr = Array("CVS","Attic");
 		$res_arr = @array_intersect($dir,$temp_arr);
-		if(count($res_arr) == 0  && !ereg("[/.]",$module)) {
+		if(count($res_arr) == 0  && !preg_match("/[\/.]/",$module)) {
 			if(@in_array($module,$dir))
 				$is_module = true;
 		}
@@ -3284,7 +3294,9 @@ function getRecordValues($id_array,$module) {
 					else $value_pair['disp_value']='';
 				} elseif($ui_type == 10) {
 					$value_pair['disp_value'] = getRecordInfoFromID($field_values[$j][$fld_name]);
-				} else {
+				}elseif($ui_type == 5 || $ui_type == 6 || $ui_type == 23){
+					$value_pair['disp_value'] = getDisplayDate($field_values[$j][$fld_name]);
+				}else {
 					$value_pair['disp_value']=$field_values[$j][$fld_name];
 				}
 				$value_pair['org_value'] = $field_values[$j][$fld_name];
@@ -3799,7 +3811,19 @@ function getDuplicateRecordsArr($module)
 				}
 						
 				$result[$col_arr[$k]]=$contactname;
-			}	
+			}
+			if($ui_type[$fld_arr[$k]] == 15 || $ui_type[$fld_arr[$k]] == 16)
+			{
+				$result[$col_arr[$k]]=getTranslatedString($result[$col_arr[$k]],$module);
+			}
+			if($ui_type[$fld_arr[$k]] == 33){
+				$fieldvalue = explode(' |##| ',$result[$col_arr[$k]]);
+				$result[$col_arr[$k]] = array();
+				foreach ($fieldvalue as $picklistValue) {
+					$result[$col_arr[$k]][] = getTranslatedString($picklistValue,$module);
+				}
+				$result[$col_arr[$k]] = implode(', ',$result[$col_arr[$k]]);
+			}
 			if($ui_type[$fld_arr[$k]] ==68)
 			{
 				$parent_id= $result[$col_arr[$k]];
@@ -3849,6 +3873,9 @@ function getDuplicateRecordsArr($module)
 			if($ui_type[$fld_arr[$k]] == 10){
 				$result[$col_arr[$k]] = getRecordInfoFromID($result[$col_arr[$k]]);
 			}
+			if($ui_type[$fld_arr[$k]] == 5 || $ui_type[$fld_arr[$k]] == 6 || $ui_type[$fld_arr[$k]] == 23){
+				$result[$col_arr[$k]]  = getDisplayDate($result[$col_arr[$k]]);
+			} 
 			
 			$fld_values[$grp][$ii][$fld_labl_arr[$k]] = $result[$col_arr[$k]];
 			
@@ -4175,15 +4202,15 @@ function getCallerName($from) {
 		$callerName = decode_html($callerInfo['name']);
 		$module = $callerInfo['module'];
 		$callerModule = " (<a href='index.php?module=$module&action=index'>$module</a>)";
-		$callerID = $callerInfo[id];
-		
-		$caller = "<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule";
+		$callerID = $callerInfo['id'];
+	
+		$caller =$caller."<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule";
+			
 	}else{
 		$caller = $caller."<br>
 						<a target='_blank' href='index.php?module=Leads&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_LEAD')."</a><br>
-						<a target='_blank' href='index.php?module=Contacts&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_CONTACT')."</a><br>
-						<a target='_blank' href='index.php?module=Accounts&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_ACCOUNT')."</a><br>
-						<a target='_blank' href='index.php?module=HelpDesk&action=EditView'>".getTranslatedString('LBL_CREATE_TICKET')."</a>";
+						<a target='_blank' href='index.php?module=Contacts&phone=$from'>".getTranslatedString('LBL_CREATE_CONTACT')."</a><br>
+						<a target='_blank' href='index.php?module=Accounts&action=EditView&phone=$from'>".getTranslatedString('LBL_CREATE_ACCOUNT')."</a>";
 	}
 	return $caller;
 }
@@ -4201,11 +4228,15 @@ function getCallerInfo($number){
 		return false;
 	}
 	$caller = "Unknown Number (Unknown)"; //declare caller as unknown in beginning
-	$name['Contacts'] = "select contactid as id,concat(firstname,' ',lastname) as name from vtiger_contactdetails inner join vtiger_crmentity on crmid=contactid where deleted=0 and (phone = ? or mobile = ? or fax = ?)";//array('name'=>"concat(firstname,' ',lastname)", 'table'=>'vtiger_contactdetails', 'field'=>"phone,mobile,fax", 'id'=>'contactid');
-	$name['Accounts'] = "select accountid as id, accountname as name from vtiger_account inner join vtiger_crmentity on crmid=accountid where deleted =0 and (phone = ? or otherphone = ? or fax = ?)";//array('name'=>"accountname", 'table'=>"vtiger_account", 'field'=>"phone, otherphone, fax", 'id'=>'accountid');
-	$name['Leads'] = "select leadid as id,concat(firstname,' ',lastname) as name from vtiger_leaddetails inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid inner join vtiger_leadaddress on vtiger_leaddetails.leadid = vtiger_leadaddress.leadaddressid where vtiger_crmentity.deleted =0 and (vtiger_leadaddress.phone = ? or vtiger_leadaddress.mobile = ? or vtiger_leadaddress.fax = ?)";//array('name'=>"concat(firstname,' ',lastname)", 'table'=>"vtiger_leaddetails inner join vtiger_leadaddress on vtiger_leaddetails.leadid = vtiger_leadaddress.leadaddressid", 'field'=>"phone,mobile,fax", 'id'=>'leadid');
-	foreach ($name as $module => $query) {
-		$result = $adb->pquery($query,array($number,$number,$number));
+
+	$params = array();
+	$name = array('Contacts', 'Accounts', 'Leads');
+	foreach ($name as $module) {
+		$focus = CRMEntity::getInstance($module);
+		$query = $focus->buildSearchQueryForFieldTypes(11, $number);
+		if(empty($query)) return;
+		
+		$result = $adb->pquery($query, array());
 		if($adb->num_rows($result) > 0 ){
 			$callerName = $adb->query_result($result, 0, "name");
 			$callerID = $adb->query_result($result,0,'id');
@@ -4214,41 +4245,6 @@ function getCallerInfo($number){
 		}
 	}
 	return false;
-}
-
-/**
- * this function searches the given record in the result for the given fields
- * @param integer $record - the value to search
- * @param array $fields - the fields to search
- * @param object $result - the adodb result set in which to search
- * @param integer $flag - if on, it removes the non-integers from the fields before comparison - 1 to set
- */
-function searchPhoneNumber($record, $fields, $result, $flag=0){
-	global $adb;
-	$count = $adb->num_rows($result);
-
-	for($i=0;$i<$count;$i++){
-		foreach($fields as $field){
-			$number = $adb->query_result($result, $i, $field);
-			if($flag == 1){
-				$number = getStrippedNumber($number);
-			}
-			if($number === $record){
-				return $i;
-			}
-		}
-	}
-	return false;
-}
-
-/**
- * this function removes any pre-codes like SIP:, PSTN:, etc added to a number
- * it also removes any braces or spaces present in a number
- * @param string $number - the number to be processed
- */
-function getStrippedNumber($number){
-	$number = preg_replace("/[^\d]/i","",$number);
-	return $number;
 }
 
 /**
@@ -4305,11 +4301,14 @@ function get_use_asterisk($id){
  * @param string $status - the status of the call (outgoing/incoming/missed)
  * @param object $adb - the peardatabase object
  */
-function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb){
-	$sql = "select * from vtiger_asteriskextensions where asterisk_extension=".$userExtension;
-	$result = $adb->pquery($sql,array());
+function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $useCallerInfo){
+	$sql = "select * from vtiger_asteriskextensions where asterisk_extension=?";
+	$result = $adb->pquery($sql,array($userExtension));
 	$userID = $adb->query_result($result, 0, "userid");
-	
+	if(empty($userID)) {
+		// we have observed call to extension not configured in Vtiger will returns NULL
+		return;
+	}
 	$crmID = $adb->getUniqueID('vtiger_crmentity');
 	$timeOfCall = date('Y-m-d H:i:s');
 	
@@ -4333,14 +4332,11 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb){
 			$callerName = getUserFullName($userid);
 		}
 		
-		$receiver = getCallerInfo($callto);
-		if($receiver == false){
-			$receiver = getCallerInfo(getStrippedNumber($callto));
-		}
+		$receiver = $useCallerInfo;
 		if(empty($receiver)){
 			$receiver = "Unknown";
 		}else{
-			$receiver = "<a href='index.php?module=".$receiver[module]."&action=DetailView&record=".$receiver[id]."'>".$receiver[name]."</a>";
+			$receiver = "<a href='index.php?module=".$receiver['module']."&action=DetailView&record=".$receiver['id']."'>".$receiver['name']."</a>";
 		}
 	}else{
 		//call is from record to user
@@ -4350,20 +4346,18 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb){
 			$userid = $adb->query_result($result, 0, "userid");
 			$receiver = getUserFullName($userid);
 		}
-		$callerName = getCallerInfo($callfrom);
-		if($callerName == false){
-			$callerName = getCallerInfo(getStrippedNumber($callfrom));
-		}
+		$callerName = $useCallerInfo;
 		if(empty($callerName)){
-			$callerName = "Unknown";
+			$callerName = "Unknown $callfrom";
 		}else{
-			$callerName = "<a href='index.php?module=".$callerName[module]."&action=DetailView&record=".$callerName[id]."'>".decode_html($callerName[name])."</a>";
+			$callerName = "<a href='index.php?module=".$callerName['module']."&action=DetailView&record=".$callerName['id']."'>".decode_html($callerName['name'])."</a>";
 		}
 	}
 	
 	$sql = "insert into vtiger_pbxmanager (pbxmanagerid,callfrom,callto,timeofcall,status)values (?,?,?,?,?)";
 	$params = array($crmID, $callerName, $receiver, $timeOfCall, $status);
 	$adb->pquery($sql, $params);
+	return $crmID;
 }
 //functions for asterisk integration end
 
@@ -4599,6 +4593,11 @@ function installVtlibModule($packagename, $packagepath, $customized=false) {
 	$Vtiger_Utils_Log = true;
 	$package = new Vtiger_Package();
 	
+	if($package->isLanguageType($packagepath)) {
+		$package = new Vtiger_Language();
+		$package->import($packagepath, true);
+		return;
+	}
 	$module = $package->getModuleNameFromZip($packagepath);
 	$module_exists = false;
 	$module_dir_exists = false;
@@ -4607,7 +4606,7 @@ function installVtlibModule($packagename, $packagepath, $customized=false) {
 	} else if(Vtiger_Module::getInstance($module)) {
 		$log->fatal("$module already exists!");
 		$module_exists = true;
-	} 
+	}
 	if($module_exists == false) {
 		$log->debug("$module - Installation starts here");
 		$package->import($packagepath, true);
@@ -4615,7 +4614,7 @@ function installVtlibModule($packagename, $packagepath, $customized=false) {
 		if (empty($moduleInstance)) {
 			$log->fatal("$module module installation failed!");
 		}
-	}	
+	}
 }
 
 /* Function to update Vtlib Compliant modules
@@ -4663,42 +4662,6 @@ function initUpdateVtlibModule($module, $packagepath) {
 		} else {
 			$log->fatal("$module doesn't exists!");
 		}
-	}
-}
-
-// Function to install Vtlib Compliant - Optional Modules
-function installOptionalModules($selected_modules){
-	global $log;
-	require_once('vtlib/Vtiger/Package.php');
-	require_once('vtlib/Vtiger/Module.php');
-	
-	$selected_modules = split(":",$selected_modules);
-	
-	if ($handle = opendir('packages/5.1.0/optional')) {	    
-	    
-	    while (false !== ($file = readdir($handle))) {
-	        $filename_arr = explode(".", $file);
-	        $packagename = $filename_arr[0];
-	        if (!empty($packagename)) {
-	        	$packagepath = "packages/5.1.0/optional/$file";
-				$package = new Vtiger_Package();
-        		$module = $package->getModuleNameFromZip($packagepath);
-        		if($module != null) {
-        			$moduleInstance = Vtiger_Module::getInstance($module);
-		        	if(in_array($packagename,$selected_modules)) {
-		        		if($moduleInstance) {
-		        			initUpdateVtlibModule($module, $packagepath);
-		        		} else {
-		        			installVtlibModule($packagename, $packagepath);
-		        		}
-		        	} elseif ($moduleInstance) {
-		        		initUpdateVtlibModule($module, $packagepath);
-		        		vtlib_toggleModuleAccess((string)$module, false);
-		        	}
-	        	}
-	        }
-	    }
-	    closedir($handle);
 	}
 }
 
@@ -4817,8 +4780,17 @@ function isRecordExists($recordId) {
 function getValidDBInsertDateValue($value) {
 	global $log;
 	$log->debug("Entering getDBInsertDateValue(".$value.") method ...");
+        $delim = array('/','.');
+        foreach ($delim as $delimiter){
+            $x = strpos($value, $delimiter);
+	        if($x === false) continue;
+            else{
+                $value=str_replace($delimiter, '-', $value);
+                break;
+            }
+        }
 	global $current_user;
-	list($y,$m,$d) = split('-',$value);
+	list($y,$m,$d) = explode('-',$value);
 
 	if(strlen($y)<4){
 		$insert_date = getDBInsertDateValue($value);
@@ -4849,6 +4821,7 @@ function _phpset_memorylimit_MB($newvalue) {
 function sanitizeUploadFileName($fileName, $badFileExtensions) {
 	
 	$fileName = preg_replace('/\s+/', '_', $fileName);//replace space with _ in filename
+	$fileName = rtrim($fileName, '\\/<>?*:"<>|');
 	
 	$fileNameParts = explode(".", $fileName);
 	$countOfFileNameParts = count($fileNameParts);
@@ -4868,5 +4841,37 @@ function sanitizeUploadFileName($fileName, $badFileExtensions) {
 		$newFileName .= ".txt";
 	}
 	return $newFileName;
+}
+
+/** Function to get the tab meta information for a given id
+  * @param $tabId -- tab id :: Type integer
+  * @returns $tabInfo -- array of preference name to preference value :: Type array 
+  */
+function getTabInfo($tabId) {
+	global $adb;
+	
+	$tabInfoResult = $adb->pquery('SELECT prefname, prefvalue FROM vtiger_tab_info WHERE tabid=?', array($tabId));
+	$tabInfo = array();
+	for($i=0; $i<$adb->num_rows($tabInfoResult); ++$i) {
+		$prefName = $adb->query_result($tabInfoResult, $i, 'prefname');
+		$prefValue = $adb->query_result($tabInfoResult, $i, 'prefvalue');
+		$tabInfo[$prefName] = $prefValue;
+	}
+}
+
+/** Function to return block name
+ * @param Integer -- $blockid 
+ * @return String - Block Name
+ */
+function getBlockName($blockid) {
+	global $adb;
+	if(!empty($blockid)){
+		$block_res = $adb->pquery('SELECT blocklabel FROM vtiger_blocks WHERE blockid = ?',array($blockid));
+		if($adb->num_rows($block_res)){
+			$blockname = $adb->query_result($block_res,0,'blocklabel');
+			return $blockname;
+		}
+	}
+	return '';
 }
 ?>

@@ -77,23 +77,24 @@ class PriceBooks extends CRMEntity {
 		global $log, $adb;
 		$log->debug("Entering function updateListPrices...");
 		$pricebook_currency = $this->column_fields['currency_id'];
-		$prod_res = $adb->pquery("select productid from vtiger_pricebookproductrel where pricebookid=? and usedcurrency != ?", 
-							array($this->id,$pricebook_currency));
+		$prod_res = $adb->pquery("select * from vtiger_pricebookproductrel where pricebookid=? AND usedcurrency != ?", 
+							array($this->id, $pricebook_currency));
 		$numRows = $adb->num_rows($prod_res);
-		$prod_ids = array();
-		for($i=0;$i<$numRows;$i++) {
-			$prod_ids[] = $adb->query_result($prod_res,$i,'productid');
-		}
-		if(count($prod_ids) > 0) {
-			$prod_price_list = getPricesForProducts($pricebook_currency,$prod_ids);
 		
-			for($i=0;$i<count($prod_ids);$i++) {
-				$product_id = $prod_ids[$i];
-				$unit_price = $prod_price_list[$product_id];
-				$query = "update vtiger_pricebookproductrel set listprice=?, usedcurrency=? where pricebookid=? and productid=?";
-				$params = array($unit_price, $pricebook_currency, $this->id, $product_id);
-				$adb->pquery($query, $params);
-			}	
+		for($i=0;$i<$numRows;$i++) {
+			$product_id = $adb->query_result($prod_res,$i,'productid');
+			$list_price = $adb->query_result($prod_res,$i,'listprice');
+			$used_currency = $adb->query_result($prod_res,$i,'usedcurrency');
+			$product_currency_info = getCurrencySymbolandCRate($used_currency); 
+			$product_conv_rate = $product_currency_info['rate'];
+			$pricebook_currency_info = getCurrencySymbolandCRate($pricebook_currency);
+			$pb_conv_rate = $pricebook_currency_info['rate'];
+			$conversion_rate = $pb_conv_rate / $product_conv_rate;
+			$computed_list_price = $list_price * $conversion_rate;
+			
+			$query = "update vtiger_pricebookproductrel set listprice=?, usedcurrency=? where pricebookid=? and productid=?";
+			$params = array($computed_list_price, $pricebook_currency, $this->id, $product_id);
+			$adb->pquery($query, $params);
 		}
 		$log->debug("Exiting function updateListPrices...");
 	}
@@ -167,6 +168,7 @@ class PriceBooks extends CRMEntity {
 		
 		$query = 'select vtiger_products.productid, vtiger_products.productname, vtiger_products.productcode, vtiger_products.commissionrate, vtiger_products.qty_per_unit, vtiger_products.unit_price, vtiger_crmentity.crmid, vtiger_crmentity.smownerid,vtiger_pricebookproductrel.listprice from vtiger_products inner join vtiger_pricebookproductrel on vtiger_products.productid = vtiger_pricebookproductrel.productid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_products.productid inner join vtiger_pricebook on vtiger_pricebook.pricebookid = vtiger_pricebookproductrel.pricebookid  where vtiger_pricebook.pricebookid = '.$id.' and vtiger_crmentity.deleted = 0'; 
 		
+		$this->retrieve_entity_info($id,$this_module);
 		$return_value = getPriceBookRelatedProducts($query,$this,$returnset);
 
 		if($return_value == null) $return_value = Array();
@@ -215,6 +217,7 @@ class PriceBooks extends CRMEntity {
 			inner join vtiger_pricebook on vtiger_pricebook.pricebookid = vtiger_pricebookproductrel.pricebookid
 			where vtiger_pricebook.pricebookid = '.$id.' and vtiger_crmentity.deleted = 0';
 		
+		$this->retrieve_entity_info($id,$this_module);
 		$return_value = $other->getPriceBookRelatedServices($query,$this,$returnset);
 
 		if($return_value == null) $return_value = Array();

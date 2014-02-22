@@ -71,7 +71,7 @@ function sensex_info()
 		{if $APP.$SINGLE_MOD} {assign var="SINGLE_MOD_LABEL" value=$APP.SINGLE_MOD} {/if}
 				
 		 {if $OP_MODE eq 'edit_view'}   
-			 <span class="lvtHeaderText"><font color="purple">[ {$ID} ] </font>{$NAME} -  {$APP.LBL_EDITING} {$SINGLE_MOD_LABEL} {$APP.LBL_INFORMATION}</span> <br>
+			 <span class="lvtHeaderText"><font color="purple">[ {$ID} ] </font>{$NAME} -  {$APP.LBL_EDITING} {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span> <br>
 			{$UPDATEINFO}	 
 		 {/if}
 
@@ -83,7 +83,7 @@ function sensex_info()
 				{if $create_newlabel neq ''}
 					<span class="lvtHeaderText">{$create_newlabel}</span> <br>
 				{else}
-					<span class="lvtHeaderText">{$APP.LBL_CREATING} {$APP.LBL_NEW} {$SINGLE_MOD}</span> <br>
+					<span class="lvtHeaderText">{$APP.LBL_CREATING} {$APP.LBL_NEW} {$SINGLE_MOD|@getTranslatedString:$MODULE}</span> <br>
 				{/if}
 		        
 			{else}
@@ -280,20 +280,36 @@ function sensex_info()
 </table>
 </form>
 
-{if ($MODULE eq 'Emails' || 'Documents') and ($FCKEDITOR_DISPLAY eq 'true')}
-       <script type="text/javascript" src="include/fckeditor/fckeditor.js"></script>
-       <script type="text/javascript" defer="1">
+{if ($MODULE eq 'Emails' || 'Documents') and ($USE_RTE eq 'true')}
+<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" defer="1">
+	var textAreaName = null;
+	{if $MODULE eq 'Documents'}
+		textAreaName = "notecontent";
+	{else}
+		textAreaName = 'description';
+	{/if}
 
-       var oFCKeditor = null;
+<!-- Solution for ticket #6756-->
+	CKEDITOR.replace( textAreaName,
+	{ldelim}
+		extraPlugins : 'uicolor',
+		uiColor: '#dfdff1',
+			on : {ldelim}
+				instanceReady : function( ev ) {ldelim}
+					 this.dataProcessor.writer.setRules( 'p',  {ldelim}
+						indent : false,
+						breakBeforeOpen : false,
+						breakAfterOpen : false,
+						breakBeforeClose : false,
+						breakAfterClose : false
+				{rdelim});
+			{rdelim}
+		{rdelim}
+	{rdelim});
 
-       {if $MODULE eq 'Documents'}
-               oFCKeditor = new FCKeditor( "notecontent" ) ;
-       {/if}
-
-       oFCKeditor.BasePath   = "include/fckeditor/" ;
-       oFCKeditor.ReplaceTextarea() ;
-
-       </script>
+	var oCKeditor = CKEDITOR.instances[textAreaName];
+</script>
 {/if}
 {if $MODULE eq 'Accounts'}
 <script>

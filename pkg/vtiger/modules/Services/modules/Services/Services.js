@@ -157,7 +157,7 @@ function InventorySelectAllServices(mod,z,image_pth)
 					var taxstring = prod_array['taxstring'];
 					var desc = prod_array['desc'];
 					if(y>0) {
-						var row_id = window.opener.fnAddProductRow(mod,image_pth);
+						var row_id = window.opener.fnAddServiceRow(mod,image_pth);
 					} else {
 						var row_id = prod_array['rowid'];
 					}	

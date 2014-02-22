@@ -26,6 +26,21 @@
 		</td>
 	</tr>
 	<tr>
+		<td align="right"  class="cellLabel small" width="40%"><b>{$MOD.LBL_STATUS} :</b></td>
+	<td align="left"  class="cellText small" width="60%">
+		<select class="small" id="notify_status" name="notify_status">
+	{if $NOTIFY_DETAILS.status eq 1}
+		<option value="1" "selected">{$MOD.LBL_ACTIVE}</option>
+		<option value="0">{$MOD.LBL_INACTIVE}</option>
+	{else}
+		<option value="1">{$MOD.LBL_ACTIVE}</option>
+		<option value="0" "selected">{$MOD.LBL_INACTIVE}</option>
+	{/if}
+	</select>
+	</td>
+	</tr>
+	
+	<tr>
 		<td align="right" class="cellLabel small"><b>{$MOD.LBL_SUBJECT} : </b></td>
 		<td align="left" class="cellText small"><input class="txtBox" id="notifysubject" name="notifysubject" value="{$NOTIFY_DETAILS.subject}" size="40" type="text"></td>
 	</tr>

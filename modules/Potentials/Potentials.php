@@ -153,7 +153,7 @@ class Potentials extends CRMEntity {
         	$tab_id = getTabid("Potentials");
 		$log->debug("Entering create_list_query(".$order_by.",". $where.") method ...");
 		// Determine if the vtiger_account name is present in the where clause.
-		$account_required = ereg("accounts\.name", $where);
+		$account_required = preg_match("/accounts\.name/", $where);
 
 		if($account_required)
 		{
@@ -166,23 +166,13 @@ class Potentials extends CRMEntity {
 			$where_auto = ' AND vtiger_crmentity.deleted=0';
 		}
 
+		$query .= $this->getNonAdminAccessControlQuery('Potentials',$current_user);
 		if($where != "")
 			$query .= " where $where ".$where_auto;
 		else
 			$query .= " where ".$where_auto;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-                {
-                                $sec_parameter=getListViewSecurityParameter("Potentials");
-                                $query .= $sec_parameter;
-
-                }
-
 		if($order_by != "")
 			$query .= " ORDER BY $order_by";
-		else
-			$query .= " ORDER BY vtiger_potential.potentialname ";
-
-
 
 		$log->debug("Exiting create_list_query method ...");
 		return $query;
@@ -210,27 +200,20 @@ class Potentials extends CRMEntity {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_potential.potentialid 
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
 				LEFT JOIN vtiger_account on vtiger_potential.related_to=vtiger_account.accountid
+				LEFT JOIN vtiger_contactdetails on vtiger_potential.related_to=vtiger_contactdetails.contactid
 				LEFT JOIN vtiger_potentialscf on vtiger_potentialscf.potentialid=vtiger_potential.potentialid 
                 LEFT JOIN vtiger_groups
         	        ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_campaign
 					ON vtiger_campaign.campaignid = vtiger_potential.campaignid";
 
+		$query .= $this->getNonAdminAccessControlQuery('Potentials',$current_user);
 		$where_auto = "  vtiger_crmentity.deleted = 0 ";
 
                 if($where != "")
                    $query .= "  WHERE ($where) AND ".$where_auto;
                 else
                    $query .= "  WHERE ".$where_auto;
-
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-		//we should add security check when the user has Private Access
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[2] == 3)
-		{
-			//Added security check to get the permitted records only
-			$query = $query." ".getListViewSecurityParameter("Potentials");
-		}
 
 		$log->debug("Exiting create_export_query method ...");
 		return $query;
@@ -496,7 +479,7 @@ class Potentials extends CRMEntity {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
 				left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
-				where (vtiger_activity.activitytype = 'Meeting' or vtiger_activity.activitytype='Call' or vtiger_activity.activitytype='Task')
+				where (vtiger_activity.activitytype != 'Emails')
 				and (vtiger_activity.status = 'Completed' or vtiger_activity.status = 'Deferred' or (vtiger_activity.eventstatus = 'Held' and vtiger_activity.eventstatus != ''))
 				and vtiger_seactivityrel.crmid=".$id."
                                 and vtiger_crmentity.deleted = 0";
@@ -745,6 +728,10 @@ class Potentials extends CRMEntity {
 			$this->db->pquery($sql, $params);
 		}
 	}
+	function whomToSendMail($module,$insertion_mode,$assigntype)
+	{
+ 	//do not send any mail	
+	}
+	
 }
-
 ?>

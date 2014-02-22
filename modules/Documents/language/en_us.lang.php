@@ -133,6 +133,10 @@ $mod_strings = Array(
 
 'LBL_MAXIMUM_20'=>'Maximum 20',
 'LBL_MAXIMUM_50'=>'Maximum 50',
+
+// Added after 5.1.0 GA
+'Folder Name'=>'Folder Name',
+'Document No'=>'Document No',
 );
 
 ?>

@@ -135,6 +135,11 @@ function getListViewEntries_js(module,url)
 	$("status").show();
 	var selected_module = $("select_module").value;
 	var urlstring = "&selected_module=" + selected_module;
+	<!-- Ticket 6330 -->
+	if($('search_url').value!='')
+        	urlstring = $('search_url').value+"&selected_module="+selected_module;
+	
+	
 	new Ajax.Request(
 		'index.php',
 		{ queue: { position: 'end', scope: 'command' },
@@ -183,15 +188,18 @@ function callEmptyRecyclebin() {
 function emptyRecyclebin(id) {
 	if($(id)) $(id).hide();
 	VtigerJS_DialogBox.progress();
+	var pickmodule = $('select_module');
+	var module=pickmodule.options[pickmodule.options.selectedIndex].value;
 	new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
-            postBody:"module=RecycleBin&action=RecycleBinAjax&file=EmptyRecyclebin&mode=ajax&ajax=true",
+            postBody:"module=RecycleBin&action=RecycleBinAjax&file=EmptyRecyclebin&mode=ajax&ajax=true&selected_module="+module,
 			onComplete: function(response) {
                 $("status").style.display="none";
                	$("modules_datas").innerHTML= response.responseText;
-				$("search_ajax").innerHTML = '';				
+				$("searchAcc").innerHTML = $("search_ajax").innerHTML; 
+				$("search_ajax").innerHTML = '';
 				VtigerJS_DialogBox.hideprogress();
 			}
 		}

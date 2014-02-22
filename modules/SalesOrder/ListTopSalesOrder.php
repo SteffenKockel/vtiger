@@ -52,10 +52,34 @@ function getTopSalesOrder($maxval,$calCnt)
 	//Retreive the list from Database
 	//<<<<<<<<<customview>>>>>>>>>
 	$date_var = date('Y-m-d');
+	$currentModule = 'SalesOrder';
+	$viewId = getCvIdOfAll($currentModule);
+	$queryGenerator = new QueryGenerator($currentModule, $current_user);
+	$queryGenerator->initForCustomViewById($viewId);
+	$meta = $queryGenerator->getMeta($currentModule);
+	$accessibleFieldNameList = array_keys($meta->getModuleFields());
+	$customViewFields = $queryGenerator->getCustomViewFields();
+	$fields = $queryGenerator->getFields();
+	$newFields = array_diff($fields, $customViewFields);
+	$widgetFieldsList = array('subject','account_id','quote_id','contact_id','total');
+	$widgetFieldsList = array_intersect($accessibleFieldNameList, $widgetFieldsList);
+	$widgetSelectedFields = array_chunk(array_intersect($customViewFields, $widgetFieldsList), 2);
+	//select the first chunk of two fields
+	$widgetSelectedFields = $widgetSelectedFields[0];
+	if(count($widgetSelectedFields) < 2) {
+		$widgetSelectedFields = array_chunk(array_merge($widgetSelectedFields, $accessibleFieldNameList), 2);
+		//select the first chunk of two fields
+		$widgetSelectedFields = $widgetSelectedFields[0];
+	}
+	$newFields = array_merge($newFields, $widgetSelectedFields);
+	$queryGenerator->setFields($newFields);
+	$_REQUEST = getTopSalesOrderSearch($_REQUEST, array(
+		'assigned_user_id'=>$current_user->column_fields['user_name'],
+		'duedate'=>$date_var));
+	$queryGenerator->addUserSearchConditions($_REQUEST);
+	$search_qry = '&query=true'.getSearchURL($_REQUEST);
+	$query = $queryGenerator->getQuery();
 
-	$where = ' and vtiger_crmentity.smownerid='.$current_user->id.' and  vtiger_salesorder.duedate >= \''.$date_var.'\'';
-	$query = getListQuery("SalesOrder",$where);
-	$query .=" ORDER BY total DESC";
 	//<<<<<<<<customview>>>>>>>>>
 	
 	$query .= " LIMIT " . $adb->sql_escape_string($maxval);
@@ -114,19 +138,31 @@ function getTopSalesOrder($maxval,$calCnt)
 
 	//Retreive the List View Table Header
 	$title=array('myTopSalesOrders.gif',$current_module_strings['LBL_MY_TOP_SO'],'home_mytopso');
-	$listview_header = getListViewHeader($focus,"SalesOrder",$url_string,$sorder,$order_by,"HomePage",$oCustomView);
-	$header = Array($listview_header[1],$listview_header[2]);
+	$controller = new ListViewController($adb, $current_user, $queryGenerator);
+	$controller->setHeaderSorting(false);
+	$header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,
+			$order_by, true);
 
-	$listview_entries = getListViewEntries($focus,"SalesOrder",$list_result,$navigation_array,"HomePage","","EditView","Delete",$oCustomView);
-	foreach($listview_entries as $crmid=>$valuearray)
-	{
-		$entries[$crmid] = Array($valuearray[1],$valuearray[2]);	
-	}
-	
-	$search_qry = "&query=true&Fields0=vtiger_salesorder.duedate&Condition0=grteq&Srch_value0=".$date_var."&Fields1=vtiger_crmentity.smownerid&Condition1=is&Srch_value1=".$current_user->column_fields['user_name']."&searchtype=advance&search_cnt=2&matchtype=all";
+	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,
+	$navigation_array, true);
 	
 	$values=Array('ModuleName'=>'SalesOrder','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 	if ( ($display_empty_home_blocks && $noofrows == 0 ) || ($noofrows>0) )	
 		return $values;
 }
+
+function getTopSalesOrderSearch($output, $input) {
+	$output['query'] = 'true';
+	$output['Fields0'] = 'duedate';
+	$output['Condition0'] = 'h';
+	$output['Srch_value0'] = $input['duedate'];
+	$output['Fields1'] = 'assigned_user_id';
+	$output['Condition1'] = 'e';
+	$output['Srch_value1'] = $input['assigned_user_id'];
+	$output['searchtype'] = 'advance';
+	$output['search_cnt'] = '2';
+	$output['matchtype'] = 'all';
+	return $output;
+}
+
 ?>

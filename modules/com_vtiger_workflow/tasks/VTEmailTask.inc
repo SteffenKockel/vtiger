@@ -9,14 +9,14 @@
  ************************************************************************************/
 require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
-require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
+require_once('modules/com_vtiger_workflow/VTEmailRecipientsTemplate.inc');
 require_once('modules/Emails/mail.php');
 class VTEmailTask extends VTTask{
 	// Sending email takes more time, this should be handled via queue all the time.
 	public $executeImmediately = false; 
 
 	public function getFieldNames(){
-		return array("subject", "content", "recepient");
+		return array("subject", "content", "recepient", 'emailcc', 'emailbcc');
 	}
 	public function doTask($entity){
 		global $adb, $current_user;
@@ -31,14 +31,22 @@ class VTEmailTask extends VTTask{
 
 		$entityCache = new VTEntityCache($admin);
 
-		$et = new VTSimpleTemplate($this->recepient);
+		$et = new VTEmailRecipientsTemplate($this->recepient);
 		$to_email = $et->render($entityCache, $entity->getId());
-		
+		$ecct = new VTEmailRecipientsTemplate($this->emailcc);
+		$cc = $ecct->render($entityCache, $entity->getId());
+		$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
+		$bcc = $ebcct->render($entityCache, $entity->getId());
+		if(strlen(trim($to_email, " \t\n,")) == 0 && strlen(trim($cc, " \t\n,")) == 0 &&
+				strlen(trim($bcc, " \t\n,")) == 0) {
+			return ;
+		}
+
 		$st = new VTSimpleTemplate($this->subject);
 		$subject = $st->render($entityCache, $entity->getId());
 		$ct = new VTSimpleTemplate($this->content);
 		$content = $ct->render($entityCache, $entity->getId());
-		send_mail($module,$to_email,$from_name,$from_email,$subject,$content);
+		send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc);
 
 		$util->revertUser();
 	}

@@ -205,8 +205,8 @@ function change(obj,divid)
 }
 function getviewId()
 {
-	if(typeof(document.getElementById("viewname")) != 'undefined')
-	{
+	if(document.getElementById("viewname") != null && 
+		typeof(document.getElementById("viewname")) != 'undefined') {
 		var oViewname = document.getElementById("viewname");
 		var viewid = oViewname.options[oViewname.selectedIndex].value;
 	}
@@ -315,7 +315,7 @@ function getListViewEntries_js(module,url)
         var all_selected=document.getElementById('allselectedboxes').value;
 
         $("status").style.display="inline";
-        if($('search_url').value!='')
+		if(typeof $('search_url') != 'undefined' && $('search_url').value!='')
                 urlstring = $('search_url').value;
         else
                 urlstring = '';
@@ -459,7 +459,8 @@ function getListViewCount(module,element,parentElement,url){
 			searchURL = '&query=true&searchtype=BasicSearch&search_field='+
 				encodeURIComponent(searchField.value)+'&search_text='+encodeURIComponent(element.value);
 		}
-	}else if(typeof document.getElementById('globalSearchText') != 'undefined'){
+	}else if(document.getElementById('globalSearchText') != null && 
+			typeof document.getElementById('globalSearchText') != 'undefined'){
 		var searchText = document.getElementById('globalSearchText').value;
 		searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText);
 	}
@@ -503,4 +504,56 @@ function VT_disableFormSubmit(evt) {
 		return false;
 	}
 	return true;
+}
+var statusPopupTimer = null;
+function closeStatusPopup(elementid)
+{
+	statusPopupTimer = setTimeout("document.getElementById('" + elementid + "').style.display = 'none';", 50);
+}
+
+function updateCampaignRelationStatus(relatedmodule, campaignid, crmid, campaignrelstatusid, campaignrelstatus)
+{
+	$("vtbusy_info").style.display="inline";
+	document.getElementById('campaignstatus_popup_' + crmid).style.display = 'none';
+	var data = "action=updateRelationsAjax&module=Campaigns&relatedmodule=" + relatedmodule + "&campaignid=" + campaignid + "&crmid=" + crmid + "&campaignrelstatusid=" + campaignrelstatusid;
+	new Ajax.Request(
+		'index.php',
+			{queue: {position: 'end', scope: 'command'},
+			method: 'post',
+			postBody: data,
+			onComplete: function(response) {
+				if(response.responseText.indexOf(":#:FAILURE")>-1)
+				{
+					alert(alert_arr.ERROR_WHILE_EDITING);
+				}
+				else if(response.responseText.indexOf(":#:SUCCESS")>-1)
+				{
+					document.getElementById('campaignstatus_' + crmid).innerHTML = campaignrelstatus;
+					$("vtbusy_info").style.display="none";
+				}
+			}
+		}
+	);
+}
+
+function loadCvList(type,id) {
+	var element = type+"_cv_list";
+	var value = document.getElementById(element).value;        
+
+	var filter = $(element)[$(element).selectedIndex].value	;
+	if(filter=='None')return false;
+	if(value != '') {
+		$("status").style.display="inline";
+		new Ajax.Request(
+			'index.php',
+			{queue: {position: 'end', scope: 'command'},
+				method: 'post',
+				postBody: 'module=Campaigns&action=CampaignsAjax&file=LoadList&ajax=true&return_action=DetailView&return_id='+id+'&list_type='+type+'&cvid='+value,
+				onComplete: function(response) {
+					$("status").style.display="none";
+					$("RLContents").update(response.responseText);
+				}
+			}
+		);
+	}
 }

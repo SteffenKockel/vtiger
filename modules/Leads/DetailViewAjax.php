@@ -14,7 +14,7 @@ global $adb;
 
 $local_log =& LoggerManager::getLogger('LeadsAjax');
 global $currentModule;
-$leadObj = CRMEntity::getInstance($currentModule);
+$modObj = CRMEntity::getInstance($currentModule);
 
 $ajaxaction = $_REQUEST["ajxaction"];
 if($ajaxaction == "DETAILVIEW")
@@ -25,12 +25,12 @@ if($ajaxaction == "DETAILVIEW")
 	$fieldvalue = utf8RawUrlDecode($_REQUEST["fieldValue"]); 
 	if($crmid != "")
 	{
-		$leadObj->retrieve_entity_info($crmid,"Leads");
-		$leadObj->column_fields[$fieldname] = $fieldvalue;
-		$leadObj->id = $crmid;
-		$leadObj->mode = "edit";
-		$leadObj->save("Leads");
-		if($leadObj->id != "")
+		$modObj->retrieve_entity_info($crmid,"Leads");
+		$modObj->column_fields[$fieldname] = $fieldvalue;
+		$modObj->id = $crmid;
+		$modObj->mode = "edit";
+		$modObj->save("Leads");
+		if($modObj->id != "")
 		{
 			echo ":#:SUCCESS";
 		}else
@@ -41,5 +41,7 @@ if($ajaxaction == "DETAILVIEW")
 	{
 		echo ":#:FAILURE";
 	}
+} elseif($ajaxaction == "LOADRELATEDLIST" || $ajaxaction == "DISABLEMODULE"){
+	require_once 'include/ListView/RelatedListViewContents.php';
 }
 ?>

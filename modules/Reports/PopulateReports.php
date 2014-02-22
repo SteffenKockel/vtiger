@@ -574,11 +574,15 @@ function insertAdvFilter($queryid,$filters)
 	global $adb;
 	if($queryid != "")
 	{
+		$columnIndexArray = array();
 		foreach($filters as $i=>$filter)
 		{
-		      $irelcriteriasql = "insert into vtiger_relcriteria(QUERYID,COLUMNINDEX,COLUMNNAME,COMPARATOR,VALUE) values (?,?,?,?,?)";
-		      $irelcriteriaresult = $adb->pquery($irelcriteriasql, array($queryid,$i,$filter['columnname'],$filter['comparator'],$filter['value']));
+			$irelcriteriasql = "insert into vtiger_relcriteria(QUERYID,COLUMNINDEX,COLUMNNAME,COMPARATOR,VALUE) values (?,?,?,?,?)";
+			$irelcriteriaresult = $adb->pquery($irelcriteriasql, array($queryid,$i,$filter['columnname'],$filter['comparator'],$filter['value']));
+			$columnIndexArray[] = $i;
 		}
+		$conditionExpression = implode(' and ', $columnIndexArray);
+		$adb->pquery('INSERT INTO vtiger_relcriteria_grouping VALUES(?,?,?,?)', array(1, $queryid, '', $conditionExpression));
 	}
 }
 ?>

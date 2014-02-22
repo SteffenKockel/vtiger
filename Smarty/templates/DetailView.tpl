@@ -109,7 +109,6 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 		}
 	);
 }
-<!-- End of code added by SAKTI on 16th Jun, 2008 -->
 {/literal}
 function tagvalidate()
 {ldelim}
@@ -214,8 +213,18 @@ function sendfile_email()
 					
 					<td class="dvtSelectedCell" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>	
 					<td class="dvtTabCache" style="width:10px">&nbsp;</td>
-					{if $SinglePane_View eq 'false'}
-					<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></td>
+					{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
+					<td class="dvtUnSelectedCell" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');" align="center" nowrap>
+						<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
+						<div onmouseover="fnShowDrop('More_Information_Modules_List')" onmouseout="fnHideDrop('More_Information_Modules_List')"
+									 id="More_Information_Modules_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
+							<table border="0" cellpadding="0" cellspacing="0" width="100%">
+							{foreach key=_RELATION_ID item=_RELATED_MODULE from=$IS_REL_LIST}
+								<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}">{$_RELATED_MODULE|@getTranslatedString:$MODULE}</a></td></tr>
+							{/foreach}
+							</table>
+						</div>
+					</td>
 					{/if}
 					<td class="dvtTabCache" align="right" style="width:100%">
 						{if $EDIT_DUPLICATE eq 'permitted'}
@@ -249,14 +258,14 @@ function sendfile_email()
 		<tr>
 			<td valign=top align=left >                
 				 <table border=0 cellspacing=0 cellpadding=3 width=100% class="dvtContentSpace" style="border-bottom:0;">
-				<tr>
+				<tr valign=top>
 
 					<td align=left>
 					<!-- content cache -->
 										
 					
 				<table border=0 cellspacing=0 cellpadding=0 width=100%>
-                <tr>
+                <tr valign=top>
 					<td style="padding:5px">
 					<!-- Command Buttons -->
 				  	<table border=0 cellspacing=0 cellpadding=0 width=100%>
@@ -374,9 +383,26 @@ function sendfile_email()
 {/if}
                      	                      </td>
 					   </tr>
-		<tr>                                                                                                               <td style="padding:10px">
+		<tr><td style="padding:5px">
 			{/foreach}
-                    {*-- End of Blocks--*}			   
+                    {*-- End of Blocks--*}
+                    
+			{* vtlib Customization: Embed DetailViewWidget block:// type if any *}
+			{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
+			{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
+				{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)}
+				<tr>
+					<td style="padding:5px;" >
+					{php}
+						echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars);
+					{/php}
+					</td>
+				</tr>
+				{/if}
+			{/foreach}
+			{/if}
+			{* END *}                    
+                  			   
 			</td>
                 </tr>
 		<!-- Inventory - Product Details informations -->
@@ -387,7 +413,7 @@ function sendfile_email()
 			</form>	
 			<!-- End the form related to detail view -->			
 
-			{if $SinglePane_View eq 'true' && $IS_REL_LIST eq 'true'}
+			{if $SinglePane_View eq 'true' && $IS_REL_LIST|@count > 0}
 				{include file= 'RelatedListNew.tpl'}
 			{/if}
 		</table>
@@ -549,12 +575,9 @@ function sendfile_email()
 			{/if}
 			
 			{* vtlib customization: Custom links on the Detail view *}
-			{if $CUSTOM_LINKS}
+			{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEW}
 				<br>
-				{if isset($CUSTOM_LINKS.DETAILVIEW)}
-					{assign var="CUSTOM_LINKS" value=$CUSTOM_LINKS.DETAILVIEW}
-				{/if}
-				{if !empty($CUSTOM_LINKS)}					
+				{if !empty($CUSTOM_LINKS.DETAILVIEW)}					
 					<table width="100%" border="0" cellpadding="5" cellspacing="0">
 						<tr><td align="left" class="dvtUnSelectedCell dvtCellLabel">
 							<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_customLinksLay');" onclick="fnvshobj(this,'vtlib_customLinksLay');"><b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} &#187;</b></a>
@@ -567,7 +590,7 @@ function sendfile_email()
 						<tr><td style="border-bottom: 1px solid rgb(204, 204, 204); padding: 5px;"><b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} &#187;</b></td></tr>
 						<tr>
 							<td>
-								{foreach item=CUSTOMLINK from=$CUSTOM_LINKS}
+								{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEW}
 									{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 									{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
 									{if $customlink_label eq ''}
@@ -594,8 +617,8 @@ function sendfile_email()
 			<td class="tagCloudTopBg"><img src="{$IMAGE_PATH}tagCloudName.gif" border=0></td>
 		</tr>
 		<tr>
-              		<td><div id="tagdiv" style="display:visible;"><form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();"><input class="textbox"  type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;<input name="button_tagfileds" type="submit" class="crmbutton small save" value="{$APP.LBL_TAG_IT}" /></form></div></td>
-                </tr>
+			<td><div id="tagdiv" style="display:visible;"><form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();"><input class="textbox"  type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;<input name="button_tagfileds" type="submit" class="crmbutton small save" value="{$APP.LBL_TAG_IT}" /></form></div></td>
+        </tr>
 		<tr>
 			<td class="tagCloudDisplay" valign=top> <span id="tagfields">{$ALL_TAG}</span></td>
 		</tr>
@@ -627,12 +650,40 @@ function sendfile_email()
   				</table>
 				</form>
 				{/if}
+				
+				{if !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
+				{foreach key=CUSTOMLINK_NO item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
+					{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
+					{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
+					{* Ignore block:// type custom links which are handled earlier *}
+					{if !preg_match("/^block:\/\/.*/", $customlink_href)}
+						{if $customlink_label eq ''}
+							{assign var="customlink_label" value=$customlink_href}
+						{else}
+							{* Pickup the translated label provided by the module *}
+							{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
+						{/if}
+						<br/>
+						<table border=0 cellspacing=0 cellpadding=0 width=100% class="rightMailMerge">
+			  				<tr>
+								<td class="rightMailMergeHeader">
+									<b>{$customlink_label}</b>
+									<img id="detailview_block_{$CUSTOMLINK_NO}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
+								</td>
+			  				</tr>
+			  				<tr style="height:25px">
+								<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK_NO}"></div></td>
+			  				</tr>
+			  				<script type="text/javascript">
+			  					vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
+			  				</script>
+						</table>
+					{/if}
+				{/foreach}
+				{/if}
 			</td>
 		</tr>
 		</table>
-		
-			
-			
 		
 		</div>
 		<!-- PUBLIC CONTENTS STOPS-->
@@ -646,7 +697,7 @@ function sendfile_email()
 					
 					<td class="dvtSelectedCellBottom" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>	
 					<td class="dvtTabCacheBottom" style="width:10px">&nbsp;</td>
-					{if $SinglePane_View eq 'false'}
+					{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 					<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></td>
 					{/if}
 					<td class="dvtTabCacheBottom" align="right" style="width:100%">

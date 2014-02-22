@@ -95,12 +95,17 @@ require_once("VTWorkflowUtils.php");
 			$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction, 
 			  'field'=>$trigger['field']));
 		}
-		
-		
+		$curr_date="(general : (__VtigerMeta__) date)";
+		$curr_time='(general : (__VtigerMeta__) time)';
+				
+		$smarty->assign("DATE",$curr_date);
+		$smarty->assign("TIME",$curr_time);
 		$smarty->assign("MOD", array_merge(
-			 return_module_language($current_language,'Settings'), 
-			 return_module_language($current_language, $module->name)));
+			return_module_language($current_language,'Settings'),
+			return_module_language($current_language, 'Calendar'),
+			return_module_language($current_language, $module->name)));
 		$smarty->assign("APP", $app_strings);
+		$smarty->assign("dateFormat", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 		$smarty->assign("IMAGE_PATH",$image_path);
 		$smarty->assign("THEME", $theme);
 		$smarty->assign("MODULE_NAME", $module->label);
@@ -108,7 +113,6 @@ require_once("VTWorkflowUtils.php");
 		$smarty->assign("PAGE_TITLE", $mod['LBL_EDIT_TASK_TITLE']);
 		
 		$smarty->assign("module", $module);
-		
 		$smarty->display("{$module->name}/EditTask.tpl");
 	}
 	vtTaskEdit($adb, $_REQUEST, $current_language, $app_strings);

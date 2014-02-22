@@ -241,7 +241,7 @@ class Vtiger_MailScanner {
 			return $this->_cachedContactIds[$email];
 		}
 		$contactid = false;
-		$contactres = $adb->pquery("SELECT contactid FROM vtiger_contactdetails WHERE email=?", Array($email));
+		$contactres = $adb->pquery("SELECT contactid FROM vtiger_contactdetails inner join vtiger_crmentity on crmid=contactid WHERE deleted=0 and email=?", Array($email));
 		if($adb->num_rows($contactres)) {
 			$contactid = $adb->query_result($contactres, 0, 'contactid');
 			$crmres = $adb->pquery("SELECT deleted FROM vtiger_crmentity WHERE crmid=?", Array($contactid));
@@ -266,7 +266,7 @@ class Vtiger_MailScanner {
 		}
 
 		$accountid = false;
-		$accountres = $adb->pquery("SELECT accountid FROM vtiger_account WHERE email1=? OR email2=?", Array($email, $email));
+		$accountres = $adb->pquery("SELECT accountid FROM vtiger_account inner join vtiger_crmentity on crmid=accountid WHERE deleted=0 and (email1=? OR email2=?)", Array($email, $email));
 		if($adb->num_rows($accountres)) {
 			$accountid = $adb->query_result($accountres, 0, 'accountid');
 			$crmres = $adb->pquery("SELECT deleted FROM vtiger_crmentity WHERE crmid=?", Array($accountid));

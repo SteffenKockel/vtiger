@@ -143,3 +143,40 @@ var vtlib_listview = {
 	}
 }
 /** END **/
+
+/** 
+ * DetailView widget loader API
+ */
+function vtlib_loadDetailViewWidget(urldata, target, indicator) {
+
+	if(typeof(target) == 'undefined') {
+		target = false;
+	} else {
+		target = $(target);
+	}
+	if(typeof(indicator) == 'undefined') {
+		indicator = false;
+	} else {
+		indicator = $(indicator);
+	}
+	
+	if(indicator) {
+		indicator.show();
+	}
+	
+	new Ajax.Request('index.php',
+	{	
+		queue: {position: 'end', scope: 'command'},
+        method: 'post',
+        postBody:urldata,
+        onComplete: function(response) {
+        	if(target) {
+        		target.innerHTML = response.responseText;
+        		if(indicator) {
+					indicator.hide();
+				}
+        	}
+        }
+	});	
+	return false; // To stop event propogation
+}

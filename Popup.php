@@ -351,7 +351,7 @@ if(isset($order_by) && $order_by != '')
 // vtlib customization: To override module specific popup query for a given field
 $override_query = false;
 if(method_exists($focus, 'getQueryByModuleField')) {
-	$override_query = $focus->getQueryByModuleField(vtlib_purify($_REQUEST['srcmodule']), vtlib_purify($_REQUEST['forfield']), vtlib_purify($_REQUEST['forrecord']));
+	$override_query = $focus->getQueryByModuleField(vtlib_purify($_REQUEST['srcmodule']), vtlib_purify($_REQUEST['forfield']), vtlib_purify($_REQUEST['forrecord']), $query);
 	if($override_query) {
 		$query = $override_query;
 	}

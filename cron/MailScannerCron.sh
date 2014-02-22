@@ -13,4 +13,7 @@ export USE_PHP=php
 
 cd $VTIGERCRM_ROOTDIR
 
-$USE_PHP -f vtigercron.php service="MailScanner" scannername="DEFAULT"
+# Specify scannername to scan specific mailbox configured
+# $USE_PHP -f vtigercron.php service="MailScanner" scannername="DEFAULT"
+# Scan all the configured mailboxes
+  $USE_PHP -f vtigercron.php service="MailScanner"

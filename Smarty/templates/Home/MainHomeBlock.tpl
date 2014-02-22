@@ -16,38 +16,38 @@
 {*<!-- the edit button for widgets :: don't show for key metrics and dasboard widget -->*}
 {if ($tablestuff.Stufftype neq "Default" || $tablestuff.Stufftitle neq $keymetrics_title) && ($tablestuff.Stufftype neq "Default" || $tablestuff.Stufftitle neq $homepagedashboard_title) && ($tablestuff.Stufftype neq "Tag Cloud") && ($tablestuff.Stufftype neq "Notebook")}
 				<a id="editlink" style='cursor:pointer;' onclick="showEditrow({$tablestuff.Stuffid})">
-					<img src="{'windowSettings.gif'|@vtiger_imageurl:$THEME}" border="0" alt="Edit" title="Edit" hspace="2" align="absmiddle"/>
+					<img src="{'windowSettings.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_EDIT_BUTTON}" title="{$APP.LBL_EDIT_BUTTON_TITLE}" hspace="2" align="absmiddle"/>
 				</a>	
 {else}
-				<img src="{'windowSettings-off.gif'|@vtiger_imageurl:$THEME}" border="0" alt="Edit" title="Edit" hspace="2" align="absmiddle"/>
+				<img src="{'windowSettings-off.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_EDIT_BUTTON}" title="{$APP.LBL_EDIT_BUTTON_TITLE}" hspace="2" align="absmiddle"/>
 {/if}
 {*<!-- code for edit button ends here -->*}
 
 {*<!-- code for refresh button -->*}
 {if $tablestuff.Stufftitle eq $homepagedashboard_title}
 				<a style='cursor:pointer;' onclick="fetch_homeDB({$tablestuff.Stuffid});">
-					<img src="{'windowRefresh.gif'|@vtiger_imageurl:$THEME}" border="0" alt="Refresh" title="Refresh" hspace="2" align="absmiddle"/>
+					<img src="{'windowRefresh.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_REFRESH}" title="{$APP.LBL_REFRESH}" hspace="2" align="absmiddle"/>
 				</a>
 {else}
 				<a style='cursor:pointer;' onclick="loadStuff({$tablestuff.Stuffid},'{$tablestuff.Stufftype}');">
-					<img src="{'windowRefresh.gif'|@vtiger_imageurl:$THEME}" border="0" alt="Refresh" title="Refresh" hspace="2" align="absmiddle"/>
+					<img src="{'windowRefresh.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_REFRESH}" title="{$APP.LBL_REFRESH}" hspace="2" align="absmiddle"/>
 				</a>
 {/if}
 {*<!-- code for refresh button ends here -->*}
 
 {*<!-- hide button :: show only for default widgets  -->*}
 {if $tablestuff.Stufftype eq "Default" || $tablestuff.Stufftype eq "Tag Cloud"}
-				<a style='cursor:pointer;' onclick="HideDefault({$tablestuff.Stuffid})"><img src="{'windowMinMax.gif'|@vtiger_imageurl:$THEME}" border="0" alt="Hide" title="Hide" hspace="5" align="absmiddle"/></a>
+				<a style='cursor:pointer;' onclick="HideDefault({$tablestuff.Stuffid})"><img src="{'windowMinMax.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_HIDE}" title="{$APP.LBL_HIDE}" hspace="5" align="absmiddle"/></a>
 {else}
-				<img src="{'windowMinMax-off.gif'|@vtiger_imageurl:$THEME}" border="0" alt="Hide" title="Hide" hspace="5" align="absmiddle"/>
+				<img src="{'windowMinMax-off.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_HIDE}" title="{$APP.LBL_HIDE}" hspace="5" align="absmiddle"/>
 {/if}
 {*<!-- code for hide button ends here -->*}
 
 {*<!-- code for delete button :: dont show for default widgets -->*}
 {if $tablestuff.Stufftype neq "Default" && $tablestuff.Stufftype neq "Tag Cloud"}
-				<a id="deletelink" style='cursor:pointer;' onclick="DelStuff({$tablestuff.Stuffid})"><img src="{'windowClose.gif'|@vtiger_imageurl:$THEME}" border="0" alt="Close" title="Close" hspace="5" align="absmiddle"/></a>
+				<a id="deletelink" style='cursor:pointer;' onclick="DelStuff({$tablestuff.Stuffid})"><img src="{'windowClose.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_CLOSE}" title="{$APP.LBL_CLOSE}" hspace="5" align="absmiddle"/></a>
 {else}
-				<img src="{'windowClose-off.gif'|@vtiger_imageurl:$THEME}" border="0" alt="Close" title="Close" hspace="5" align="absmiddle"/>
+				<img src="{'windowClose-off.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_CLOSE}" title="{$APP.LBL_CLOSE}" hspace="5" align="absmiddle"/>
 {/if}
 {*<!-- code for delete button ends here -->*}
 			</td>

@@ -1105,7 +1105,7 @@ function getdayEventLayer(& $cal,$slice,$rows)
 			$color = $act[$i]->color;
 			$image = vtiger_imageurl($act[$i]->image_name, $theme);
 			if($act[$i]->recurring)
-				$recurring = '<img src="'.$image.''.$act[$i]->recurring.'" align="middle" border="0"></img>';
+				$recurring = '<img src="'.vtiger_imageurl($act[$i]->recurring, $theme).'" align="middle" border="0"></img>';
 			else
 				$recurring = '&nbsp;';
 			$height = $rowspan * 75;
@@ -1207,7 +1207,7 @@ function getweekEventLayer(& $cal,$slice)
 			$image =  vtiger_imageurl($act[$i]->image_name, $theme);
 			$idShared = "normal"; if($act[$i]->shared) $idShared = "shared";
 			if($act[$i]->recurring)
-				$recurring = '<img src="'.$image.''.$act[$i]->recurring.'" align="middle" border="0"></img>';
+				$recurring = '<img src="'.vtiger_imageurl($act[$i]->recurring, $theme).'" align="middle" border="0"></img>';
 			else
 				$recurring = '&nbsp;';
                         $color = $act[$i]->color;
@@ -1360,24 +1360,10 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 	$cal_log->debug("Entering getEventList() method...");
 
 	//modified query to fix the ticket #5014 & #5180
-	$and = "AND ((((vtiger_activity.date_start between ? AND ?)
-		OR (vtiger_activity.date_start < ? AND vtiger_activity.due_date > ?)
-		OR (vtiger_activity.due_date between ? AND ?))
+	$and = "AND (((vtiger_activity.date_start >= ? AND vtiger_activity.due_date <= ?)
 		AND (vtiger_recurringevents.activityid is NULL))
 		OR (vtiger_recurringevents.recurringdate BETWEEN ? AND ?))";
 
-	$count_qry = "SELECT count(*) as count FROM vtiger_activity
-		INNER JOIN vtiger_crmentity
-		ON vtiger_crmentity.crmid = vtiger_activity.activityid
-		LEFT JOIN vtiger_groups
-		ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-		LEFT JOIN vtiger_users
-		ON vtiger_users.id = vtiger_crmentity.smownerid
-		LEFT OUTER JOIN vtiger_recurringevents
-		ON vtiger_recurringevents.activityid = vtiger_activity.activityid
-		WHERE vtiger_crmentity.deleted = 0
-		AND (vtiger_activity.activitytype not in ('Emails','Task')) $and ";
-		
 	$query = "SELECT vtiger_groups.groupname, vtiger_users.user_name,vtiger_crmentity.smownerid, vtiger_crmentity.crmid,
        		vtiger_activity.* FROM vtiger_activity
 		INNER JOIN vtiger_crmentity
@@ -1390,7 +1376,8 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 			ON vtiger_recurringevents.activityid = vtiger_activity.activityid
 		WHERE vtiger_crmentity.deleted = 0
 			AND (vtiger_activity.activitytype not in ('Emails','Task')) $and ";
-	$list_query = $query." AND vtiger_crmentity.smownerid = "  . $current_user->id;
+
+        $list_query = $query." AND vtiger_crmentity.smownerid = "  . $current_user->id;
 
 	// User Select Customization: Changes should made also in (Appointment::readAppointment)
 	$query_filter_prefix = calendarview_getSelectedUserFilterQuerySuffix();
@@ -1398,7 +1385,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 	$count_query .= $query_filter_prefix;
 	// END
 
-	$params = $info_params = array($start_date, $end_date, $start_date, $end_date, $start_date, $end_date, $start_date, $end_date);
+	$params = $info_params = array($start_date, $end_date, $start_date, $end_date);
 	if($info != '')
 	{
 		$groupids = explode(",", fetchUserGroupids($current_user->id)); // Explode can be removed, once implode is removed from fetchUserGroupids
@@ -1432,40 +1419,50 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 	{
 		$sec_parameter=getCalendarViewSecurityParameter();
 		$query .= $sec_parameter;
-		$list_query .= $sec_parameter;
-		$count_qry .= $sec_parameter;
 	}
 	if(isset($_REQUEST['type']) && $_REQUEST['type'] == 'search')
 	{
 		$search_where = calendar_search_where($_REQUEST['field_name'],$_REQUEST['search_option'],$_REQUEST['search_text']);
-		$group_cond .= $search_where; 
-		$count_qry .= $search_where;
-	}		
+		$group_cond .= $search_where;
+	}
 	$group_cond .= " GROUP BY vtiger_activity.activityid ORDER BY vtiger_activity.date_start,vtiger_activity.time_start ASC";
-	$count_qry .= ' GROUP BY vtiger_activity.activityid ';
-	$count_res = $adb->pquery($count_qry, $params);
-	$total_rec_count = $adb->num_rows($count_res);
-	if(isset($_REQUEST['start']) && $_REQUEST['start'] != '')
-		$start = vtlib_purify($_REQUEST['start']);
-	else
-		$start = 1;
-	$navigation_array = getNavigationValues($start, $total_rec_count, $list_max_entries_per_page);
-	$start_rec = $navigation_array['start'];
+
+	//Ticket 6476
+	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+		$count_result = $adb->pquery( mkCountQuery( $query),$params);
+		$noofrows = $adb->query_result($count_result,0,"count");
+	}else{
+		$noofrows = null;
+	}
+	global $currentModule;
+	$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
+	//$viewid is used as a key for cache query and other info so pass the dates as viewid
+	$viewid = $start_date.$end_date;
+	$start = ListViewSession::getRequestCurrentPage($currentModule, $adb->convert2sql($query,
+			$params), $viewid, $queryMode);
+
+	$navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_page,$noofrows);
+
+	//end
+
+	$start_rec = ($start-1) * $list_max_entries_per_page;
 	$end_rec = $navigation_array['end_val'];
-	if($start_rec <= 1)
+        //print_r($navigation_array);die();
+        //echo $end_rec.'val';
+	
+        $list_query = $adb->convert2Sql($query, $params);
+	$_SESSION['Calendar_listquery'] = $list_query;
+        
+        if($start_rec < 0)
 		$start_rec = 0;
-	else
-		$start_rec = $start_rec-1;
 	$query .= $group_cond." limit $start_rec,$list_max_entries_per_page";
-	$list_query .= $group_cond;
 
  	if( $adb->dbType == "pgsql"){
- 	    $query = fixPostgresQuery( $query, $log, 0);
- 	    $list_query = fixPostgresQuery( $list_query, $log, 0);
+ 	    $query = fixPostgresQuery($query, $log, 0);
  	}
-	$list_query = $adb->convert2Sql($list_query, $params);
-	$_SESSION['Calendar_listquery'] = $list_query;
-		
+
+	
+        
 	$result = $adb->pquery($query, $params);
 	$rows = $adb->num_rows($result);
 	$c = 0;
@@ -1597,20 +1594,8 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 	$cal_log->debug("Entering getTodoList() method...");
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	$count_qry = "SELECT count(*) as count FROM vtiger_activity
-		INNER JOIN vtiger_crmentity
-		ON vtiger_crmentity.crmid = vtiger_activity.activityid
-		LEFT JOIN vtiger_cntactivityrel
-		ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
-		LEFT JOIN vtiger_groups
-		ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-		LEFT JOIN vtiger_users
-		ON vtiger_users.id = vtiger_crmentity.smownerid
-		WHERE vtiger_crmentity.deleted = 0
-		AND vtiger_activity.activitytype = 'Task'
-		AND (vtiger_activity.date_start BETWEEN ? AND ?) AND vtiger_crmentity.smownerid = "  . $current_user->id;
-   
-   $query = "SELECT vtiger_groups.groupname, vtiger_users.user_name, vtiger_crmentity.crmid, vtiger_cntactivityrel.contactid, 
+
+   $query = "SELECT vtiger_groups.groupname, vtiger_users.user_name, vtiger_crmentity.crmid, vtiger_cntactivityrel.contactid,
 				vtiger_activity.* FROM vtiger_activity
                 INNER JOIN vtiger_crmentity
 					ON vtiger_crmentity.crmid = vtiger_activity.activityid
@@ -1619,13 +1604,12 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 				LEFT JOIN vtiger_groups
 					ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users
-					ON vtiger_users.id = vtiger_crmentity.smownerid
-                WHERE vtiger_crmentity.deleted = 0
-					AND vtiger_activity.activitytype = 'Task'
-					AND (vtiger_activity.date_start BETWEEN ? AND ?) AND vtiger_crmentity.smownerid = "  . $current_user->id;
+					ON vtiger_users.id = vtiger_crmentity.smownerid";
+	$query .= getNonAdminAccessControlQuery('Calendar',$current_user);
+	$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_activity.activitytype = 'Task'".
+					" AND (vtiger_activity.date_start BETWEEN ? AND ?)";
 
-	$list_query = $query;
-
+      $list_query = $query." AND vtiger_crmentity.smownerid = "  . $current_user->id;
 	// User Select Customization
 	/*$only_for_user = calendarview_getSelectedUserId();
 	if($only_for_user != 'ALL') {
@@ -1669,39 +1653,38 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 			return Array('totaltodo'=>$total,'pendingtodo'=>$pending_rows);
         }
 	
-	if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[9] == 3)
-	{
-		$sec_parameter=getListViewSecurityParameter('Calendar');
-		$query .= $sec_parameter;
-		$list_query .= $sec_parameter;
-		$count_qry .= $sec_parameter;
-	}
 	$group_cond = '';
-	$count_res = $adb->pquery($count_qry, $params);
-        $total_rec_count = $adb->query_result($count_res,0,'count');
-	$group_cond .= " ORDER BY vtiger_activity.date_start,vtiger_activity.time_start ASC";
-	if(isset($_REQUEST['start']) && $_REQUEST['start'] != '')     
+   	$group_cond .= " ORDER BY vtiger_activity.date_start,vtiger_activity.time_start ASC";
+	if(isset($_REQUEST['start']) && $_REQUEST['start'] != '')
 		$start = vtlib_purify($_REQUEST['start']);
 	else 
 		$start = 1;
-	$navigation_array = getNavigationValues($start, $total_rec_count, $list_max_entries_per_page);
-	
-	$start_rec = $navigation_array['start']; 
+
+//T6477 changes
+	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+	    $count_res = $adb->pquery(mkCountQuery($query), $params);
+		  $total_rec_count = $adb->query_result($count_res,0,'count');
+	}else{
+		$total_rec_count = null;
+	}
+
+	$navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_page,$total_rec_count);
+
+	$start_rec = ($start-1) * $list_max_entries_per_page;
 	$end_rec = $navigation_array['end_val'];
-	if($start_rec <= 1)
+        
+        $list_query = $adb->convert2Sql($query, $params);
+	$_SESSION['Calendar_listquery'] = $list_query;
+
+	if($start_rec < 0)
 		$start_rec = 0;
-	else
-		$start_rec = $start_rec-1;
+
+	//ends
 	$query .= $group_cond." limit $start_rec,$list_max_entries_per_page";
-	$list_query .= $group_cond;
-		
+
 	if( $adb->dbType == "pgsql"){
  	    $query = fixPostgresQuery( $query, $log, 0);
- 	    $list_query = fixPostgresQuery( $list_query, $log, 0);
 	}
-	
-	$list_query = $adb->convert2Sql($list_query, $params);
-	$_SESSION['Calendar_listquery'] = $list_query;
 
     $result = $adb->pquery($query, $params);
     $rows = $adb->num_rows($result);
@@ -1892,7 +1875,9 @@ function constructEventListView(& $cal,$entry_list,$navigation_array='')
         $list_view .="<table style='background-color: rgb(204, 204, 204);' class='small' align='center' border='0' cellpadding='5' cellspacing='1' width='98%'>
                         <tr>";
 	$header_rows = count($header);
-	$navigationOutput = getTableHeaderNavigation($navigation_array, $url_string,"Calendar","index");
+
+	$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string,"Calendar","index");
+
 	if($navigationOutput != '')
 	{
 		$list_view .= "<tr width=100% bgcolor=white><td align=center colspan=$header_rows>";
@@ -1946,7 +1931,7 @@ function constructEventListView(& $cal,$entry_list,$navigation_array='')
 			//checking permission for Create/Edit Operation
 			if(isPermitted("Calendar","EditView") == "yes")
                         {
-                                $list_view .="<td class='small' align='left' nowrap='nowrap'>".$app_strings['LBL_YOU_CAN_CREATE']."&nbsp;".$app_strings['LBL_AN']."&nbsp;".$app_strings['Event']."&nbsp;".$app_strings['LBL_NOW'].".<br>
+                                $list_view .="<td class='small' align='left' nowrap='nowrap'>".$app_strings['LBL_YOU_CAN_CREATE']."&nbsp;".$app_strings['LBL_AN']."&nbsp;".$app_strings['Event']."&nbsp;".$app_strings['LBL_NOW'].".&nbsp;".$app_strings['LBL_CLICK_THE_LINK'].":<br>
 					&nbsp;&nbsp;-<a href='javascript:void(0);' onClick='gshow(\"addEvent\",\"Call\",\"".$temp_date."\",\"".$endtemp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"listview\",\"event\");'>".$app_strings['LBL_CREATE']."&nbsp;".$app_strings['LBL_AN']."&nbsp;".$app_strings['Event']."</a><br>
 					</td>";
 			}
@@ -2102,7 +2087,7 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 			{
 				$list_view .="<tr><td>&nbsp;</td>";
 			}
-			$list_view .="<td align='center' width='60%'><span id='total_activities'>".getTodoInfo($cal,'listcnt')."</span>&nbsp;</td>
+			$list_view .="<td align='center' width='60%'><span  id='total_activities'>".getTodoInfo($cal,'listcnt')."</span>&nbsp;</td>
 				<td align='right' width='28%'>&nbsp;</td>
 			</tr>
 		</table>
@@ -2110,7 +2095,8 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 			<br><table style='background-color: rgb(204, 204, 204);' class='small' align='center' border='0' cellpadding='5' cellspacing='1' width='98%'>
                         ";
 	$header_rows = count($header);
-	$navigationOutput = getTableHeaderNavigation($navigation_array, $url_string,"Calendar","index");
+	$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string,"Calendar","index");
+
 	if($navigationOutput != '')
 	{
 		$list_view .= "<tr width=100% bgcolor=white><td align=center colspan=$header_rows>";

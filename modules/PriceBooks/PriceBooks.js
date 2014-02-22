@@ -159,7 +159,7 @@ function deletePriceBookProductRel(id,pbid)
 			postBody: 'module=Products&action=ProductsAjax&file=DeletePriceBookProductRel&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&return_id='+pbid,
 			onComplete: function(response) {
 					$("status").style.display="none";
-                                        $("RLContents").innerHTML= response.responseText;
+					$("RLContents").update(response.responseText);
 			}
                 }
 	);

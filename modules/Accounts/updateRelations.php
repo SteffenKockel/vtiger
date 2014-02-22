@@ -39,7 +39,9 @@ foreach($storearray as $id)
 			$adb->pquery("insert into vtiger_senotesrel values (?,?)", array($forCRMRecord,$id));
 		elseif($dest_mod == 'Products')
 			$adb->pquery("insert into vtiger_seproductsrel values(?,?,?)", array($forCRMRecord, $id, $currentModule));
-		else {
+		elseif($dest_mod == 'Campaigns')
+			$adb->pquery("insert into vtiger_campaignaccountrel values(?,?,1)", array($id, $forCRMRecord));
+		else {				
 			$focus->save_related_module($currentModule, $forCRMRecord, $dest_mod, $id);
 		}
 	}

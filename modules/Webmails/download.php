@@ -31,7 +31,7 @@ $filename = $_REQUEST['filename'];
 $transfer = $_REQUEST['transfer'];
 $part = $_REQUEST['part'];
 $filename = base64_decode($filename);
-$filename = ereg_replace('[\\/:\*\?"<>\|;]', '_', str_replace('&#32;', ' ', $filename));
+$filename = preg_replace('/[\\/:\*\?"<>\|;]/', '_', str_replace('&#32;', ' ', $filename));
 $isIE = $isIE6 = 0;
 // Set correct http headers.
 // Thanks to Squirrelmail folks :-)

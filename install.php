@@ -33,39 +33,19 @@ if(version_compare(phpversion(), '5.0') < 0) {
 
 }
 
-//Run command line if no web var detected
-if (!isset($_SERVER['REQUEST_METHOD'])) {
-	require('install/CreateTables.inc.php');
-	exit;
-}
-			
-if (!empty($_REQUEST['file'])) $the_file = $_REQUEST['file'];
+require_once('include/install/language/en_us.lang.php');
+require_once('include/install/resources/utils.php');
+require_once('vtigerversion.php');	
+global $installationStrings, $vtiger_current_version;
+	
+@include_once('config.db.php');
+global $dbconfig, $vtconfig;
+if(empty($_REQUEST['file']) && is_array($vtconfig) && $vtconfig['quickbuild'] == 'true') {
+	$the_file = 'BuildInstallation.php';
+} elseif (!empty($_REQUEST['file'])) $the_file = $_REQUEST['file'];
 else $the_file = "welcome.php";
 
-installCheckFileAccess("install/".$the_file);
+Common_Install_Wizard_Utils::checkFileAccess("install/".$the_file);
 include("install/".$the_file);
 
-/** Function to check the file access is made within web root directory. */
-function installCheckFileAccess($filepath) {
-	global $root_directory;
-	// Set the base directory to compare with
-	$use_root_directory = $root_directory;
-	if(empty($use_root_directory)) {
-		$use_root_directory = realpath(dirname(__FILE__).'/.');
-	}
-
-	$realfilepath = realpath($filepath);
-
-	/** Replace all \\ with \ first */
-	$realfilepath = str_replace('\\\\', '\\', $realfilepath);
-	$rootdirpath  = str_replace('\\\\', '\\', $use_root_directory);
-
-	/** Replace all \ with / now */
-	$realfilepath = str_replace('\\', '/', $realfilepath);
-	$rootdirpath  = str_replace('\\', '/', $rootdirpath);
-	
-	if(stripos($realfilepath, $rootdirpath) !== 0) {
-		die("Sorry! Attempt to access restricted file.");
-	}
-}
 ?>

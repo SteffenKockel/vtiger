@@ -25,7 +25,7 @@ function edittaskscript($){
 		});
 
 		$('.box_cel').click(function(){
-			element.attr('value', parseInt($(this).text()));
+			element.attr('value', parseInt($(this).text(), 10));
 		});
 	}
 

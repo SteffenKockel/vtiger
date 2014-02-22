@@ -84,6 +84,11 @@ $mod_strings = Array(
 			      
 //Module Sequence Numbering
 'Campaign No'=>'Campaign No',
+// status fields 
+'--None--'=>'--None--',
+'Contacted - Successful' => 'Contacted - Successful',
+'Contacted - Unsuccessful' => 'Contacted - Unsuccessful',
+'Contacted - Never Contact Again' => 'Contacted - Never Contact Again'
 // END
 
 );

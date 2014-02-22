@@ -1,13 +1,4 @@
 <?php
-/*+***********************************************************************************
- * The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- *************************************************************************************/
-
 /* Driver template for the PHP_VTQL_ParserrGenerator parser generator. (PHP port of LEMON)
 */
 
@@ -105,12 +96,12 @@ class VTQL_ParseryyStackEntry
 // code external to the class is included here
 
 // declare_class is output here
-#line 460 "e:\workspace\parsergenerator\VTQL_parser.y"
-class VTQL_Parser#line 102 "e:\workspace\parsergenerator\VTQL_parser.php"
+#line 451 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
+class VTQL_Parser#line 102 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
 {
 /* First off, code is included which follows the "include_class" declaration
 ** in the input file. */
-#line 195 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 199 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
 
 /*
 add this rule to add parenthesis support.
@@ -157,7 +148,6 @@ Array (
 )*/
 	private $out;
 	public $lex;
-	private $module_inst;
 	private $success ;
 	private $query ;
 	private $error_msg;
@@ -184,7 +174,7 @@ function buildSelectStmt($sqlDump){
 	$fieldcol = $meta->getFieldColumnMapping();
 	$columnTable = $meta->getColumnTableMapping();
 	$this->query = 'SELECT ';
-	if(strcmp($sqlDump['column_list'],'*')===0){
+	if(in_array('*', $sqlDump['column_list'])){
 		$i=0;
 		foreach($fieldcol as $field=>$col){
 			if($i===0){
@@ -194,7 +184,7 @@ function buildSelectStmt($sqlDump){
 				$this->query = $this->query.','.$columnTable[$col].'.'.$col;
 			}
 		}
-	}else if(strcmp($sqlDump['column_list'],'count(*)')===0){
+	}else if(in_array('count(*)', $sqlDump['column_list'])){
 		$this->query = $this->query." COUNT(*)";
 	}else{
 		$i=0;
@@ -211,6 +201,9 @@ function buildSelectStmt($sqlDump){
 		}
 	}
 	$this->query = $this->query.' FROM '.$sqlDump['tableName'].$sqlDump['defaultJoinConditions'];
+	$deletedQuery = $meta->getEntityDeletedQuery();
+	$accessControlQuery = $meta->getEntityAccessControlQuery();
+	$this->query = $this->query.' '.$accessControlQuery;
 	if($sqlDump['where_condition']){
 		if((sizeof($sqlDump['where_condition']['column_names']) == 
 		sizeof($sqlDump['where_condition']['column_values'])) && 
@@ -255,6 +248,8 @@ function buildSelectStmt($sqlDump){
 				}
 				if(is_array($whereValue)){
 					$whereValue = "(".implode(',',$whereValue).")";
+				}elseif(strcasecmp($whereOperator, 'in') === 0){
+					$whereValue = "($whereValue)";
 				}
 				$this->query = $this->query.$columnTable[$fieldcol[$whereField]].'.'.
 									$fieldcol[$whereField]." ".$whereOperator." ".$whereValue;
@@ -267,43 +262,24 @@ function buildSelectStmt($sqlDump){
 			throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, "columns data inappropriate");
 		}
 		$this->query = $this->query.")";
-		if($this->out['moduleName'] != "Users"){
-			$this->query = $this->query." AND ";
-		}
+		$nextToken = ' AND ';
 	}else{
-		$this->query = $this->query." WHERE ";
+		if(!empty($deletedQuery)){
+			$nextToken = " WHERE ";
+		}
 	}
 	if(strcasecmp('calendar',$this->out['moduleName'])===0){
-		$this->query = $this->query."activitytype='Task' AND ";
+		$this->query = $this->query." $nextToken activitytype='Task' AND ";
 	}elseif(strcasecmp('events',$this->out['moduleName'])===0){
-		$this->query = $this->query."activitytype!='Emails' AND activitytype!='Task' AND ";
+		$this->query = $this->query."$nextToken activitytype!='Emails' AND activitytype!='Task' AND ";
 	}else if(strcasecmp('emails',$this->out['moduleName'])===0){
-		$this->query = $this->query."activitytype='Emails' AND ";
+		$this->query = $this->query."$nextToken activitytype='Emails' AND ";
+	}elseif(!empty($deletedQuery)){
+		$this->query = $this->query.$nextToken;
 	}
-	if($this->out['moduleName'] != "Users"){
-		$this->query = $this->query."vtiger_crmentity.deleted=0";
-	}
-	if(strcasecmp("off",$this->user->is_admin)===0){
-		require('user_privileges/user_privileges_'.$this->user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$this->user->id.'.php');
-		if($profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && 
-				$defaultOrgSharingPermission[$meta->getTabId()] == 3){
-			$this->query = $this->query." and (vtiger_crmentity.smownerid in({$this->user->id}) or ".
-					"vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role".
-					" inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid ".
-					"inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid ".
-					"where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or ".
-					"vtiger_crmentity.smownerid in(".
-						"select shareduserid from vtiger_tmp_read_user_sharing_per ".
-						"where userid=".$this->user->id." and tabid=".$meta->getTabId().") or vtiger_crmentity.smownerid in ";
-			if(sizeof($current_user_groups) > 0) {
-				$this->query .= " (". implode(",", $current_user_groups) .") or vtiger_crmentity.smownerid in ";
-			}
-			$this->query .= "(select groupid from vtiger_groups where groupid in (".
-				"select vtiger_tmp_read_group_sharing_per.sharedgroupid from ".
-				"vtiger_tmp_read_group_sharing_per where userid={$this->user->id} and tabid=".$meta->getTabId().")))";
-		}
-	}
+	
+	$this->query = $this->query.' '.$deletedQuery;
+	
 	if($sqlDump['orderby']){
 		$i=0;
 		$this->query = $this->query.' ORDER BY ';
@@ -314,6 +290,9 @@ function buildSelectStmt($sqlDump){
 			}else{
 				$this->query = $this->query.','.$columnTable[$fieldcol[$field]].".".$fieldcol[$field];
 			}
+		}
+		if($sqlDump['sortOrder']) {
+			$this->query .= ' '.$sqlDump['sortOrder'];
 		}
 	}
 	if($sqlDump['limit']){
@@ -374,7 +353,7 @@ function getQuery(){
 function getObjectMetaData(){
 	return $this->out['meta'];
 }
-#line 371 "e:\workspace\parsergenerator\VTQL_parser.php"
+#line 359 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
 
 /* Next is all token values, as class constants
 */
@@ -1055,10 +1034,10 @@ static public $yy_action = array(
             }
             /* Here code is inserted which will execute if the parser
             ** stack ever overflows */
-#line 471 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 462 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
 
 	throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, "Parser stack overflow");
-#line 1058 "e:\workspace\parsergenerator\VTQL_parser.php"
+#line 1046 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
             return;
         }
         $yytos = new VTQL_ParseryyStackEntry;
@@ -1161,6 +1140,8 @@ static public $yy_action = array(
         26 => 26,
         27 => 27,
         31 => 31,
+        34 => 34,
+        35 => 35,
         39 => 39,
         40 => 40,
         41 => 41,
@@ -1171,7 +1152,7 @@ static public $yy_action = array(
     **   function yy_r0($yymsp){ ... }           // User supplied code
     **  #line <lineno> <thisfile>
     */
-#line 5 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 5 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r1(){ 
 if($this->yystack[$this->yyidx + -7]->minor){
 $this->out['select'] = $this->yystack[$this->yyidx + -7]->minor;
@@ -1186,47 +1167,47 @@ if($this->out['select']){
 $this->buildSelectStmt($this->out);
 }
     }
-#line 1186 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 19 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1176 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 19 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r2(){ 
 $this->out['column_list'][] = $this->yystack[$this->yyidx + 0]->minor;
     }
-#line 1191 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 22 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1181 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 22 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r3(){
-$this->out['column_list'] = $this->yystack[$this->yyidx + 0]->minor;
+$this->out['column_list'][] = $this->yystack[$this->yyidx + 0]->minor;
     }
-#line 1196 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 25 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1186 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 25 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r4(){
-$this->out['column_list'] = 'count(*)';
+$this->out['column_list'][] = 'count(*)';
     }
-#line 1201 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 30 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1191 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 30 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r7(){
-if($this->out["column_list"] !=="*" && strcmp($this->out["column_list"],"count(*)") !==0){
+if(!in_array("*", $this->out["column_list"]) && !in_array("count(*)", array_map(strtolower, $this->out["column_list"]))){
 if(!in_array("id",$this->out["column_list"])){
 	$this->out["column_list"][] = "id";
-} 
+}
 }
 $moduleName = $this->yystack[$this->yyidx + 0]->minor;
 if(!$moduleName){
 	$this->syntax_error = true;
 	throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, "There is an syntax error in query");
 }
-$inst = new VtigerCRMObject($moduleName,false);
-$inst = $inst->getInstance();
-$this->module_instance = $inst;
+global $adb;
+$handler = vtws_getModuleHandlerFromName($moduleName,$this->user);
+$objectMeta = $handler->getMeta();
 $this->out['moduleName'] = $moduleName;
-$this->out['tableName'] = implode(',',$inst->tab_name);
+$this->out['tableName'] = implode(',',$objectMeta->getEntityTableList());
     }
-#line 1220 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 50 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1210 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 50 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r11(){
 $this->out['where_condition']['operators'][] = $this->yystack[$this->yyidx + 0]->minor;
     }
-#line 1225 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 57 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1215 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 57 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r14(){
 $this->out['columnDone']=true;
 $this->out['where_condition']['column_names'][] = $this->yystack[$this->yyidx + -2]->minor;
@@ -1250,17 +1231,20 @@ $this->out['where_condition']['column_values'][sizeof($this->out['where_conditio
 }
 }
     }
-#line 1250 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 82 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1240 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 82 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r17(){
 $length = sizeof($this->out['where_condition']['column_values']);
 $pos = $length - 1;
 if($pos < 0){
 $pos = 0;
 }
-if(strcasecmp($this->out['where_condition']['column_operators'][$pos],"in")===0){
+if(strcasecmp($this->out['where_condition']['column_operators'][$pos],"in")===0 && 
+	!empty($this->out['where_condition']['column_values'][$pos]) && !$this->out['columnDone']){
 if(!is_array($this->out['where_condition']['column_values'][$pos])){
-$this->out['where_condition']['column_values'][$pos] = array(); 
+$prev = $this->out['where_condition']['column_values'][$pos];
+$this->out['where_condition']['column_values'][$pos] = array();
+$this->out['where_condition']['column_values'][$pos][] = $prev;
 }
 $this->out['where_condition']['column_values'][$pos][] = $this->yystack[$this->yyidx + 0]->minor;
 }else{
@@ -1268,76 +1252,87 @@ $this->out['columnDone'] = false;
 $this->out['where_condition']['column_values'][] = $this->yystack[$this->yyidx + 0]->minor;
 }
     }
-#line 1268 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 100 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1261 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 103 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r20(){
 $this->out['where_condition']['column_operators'][] = '=';
     }
-#line 1273 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 103 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1266 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 106 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r21(){
 $this->out['where_condition']['column_operators'][] = '<';
     }
-#line 1278 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 106 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1271 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 109 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r22(){
 $this->out['where_condition']['column_operators'][] = '>';
     }
-#line 1283 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 109 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1276 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 112 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r23(){
 $this->out['where_condition']['column_operators'][] = '<=';
     }
-#line 1288 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 112 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1281 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 115 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r24(){
 $this->out['where_condition']['column_operators'][] = '>=';
     }
-#line 1293 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 115 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1286 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 118 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r25(){
 $this->out['where_condition']['column_operators'][] = '!=';
     }
-#line 1298 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 118 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1291 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 121 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r26(){
 $this->out['where_condition']['column_operators'][] = 'IN';
     }
-#line 1303 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 121 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1296 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 124 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r27(){
 $this->out['where_condition']['column_operators'][] = 'LIKE';
     }
-#line 1308 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 127 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1301 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 130 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r31(){
 $this->out['orderby'][] = $this->yystack[$this->yyidx + 0]->minor;
     }
-#line 1313 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 137 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1306 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 135 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
+    function yy_r34(){
+$this->out['sortOrder'] = 'ASC';
+    }
+#line 1311 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 138 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
+    function yy_r35(){
+$this->out['sortOrder'] = 'DESC';
+    }
+#line 1316 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 144 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r39(){
 $this->out['limit'][] = $this->yystack[$this->yyidx + 0]->minor;
     }
-#line 1318 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 140 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1321 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 147 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r40(){
 $this->out['limit'][] = $this->yystack[$this->yyidx + -2]->minor;
 $this->out['limit'][] = $this->yystack[$this->yyidx + 0]->minor;
     }
-#line 1324 "e:\workspace\parsergenerator\VTQL_parser.php"
-#line 144 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 1327 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
+#line 151 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
     function yy_r41(){
 global $adb;
 if(!$this->out['meta']){
 $module = $this->out['moduleName'];
-$objectMeta = new VtigerCRMObjectMeta(VtigerWebserviceObject::fromName($adb,$module),$this->user);
+$handler = vtws_getModuleHandlerFromName($module,$this->user);
+$objectMeta = $handler->getMeta();
 $this->out['meta'] = $objectMeta;
 $meta = $this->out['meta'];
 $fieldcol = $meta->getFieldColumnMapping();
 $columns = array();
-if(strcmp($this->out['column_list'],'*')===0){
+if(in_array('*', $this->out['column_list'])){
 $columns = array_values($fieldcol);
-}else if( strcmp($this->out['column_list'],'count(*)')!==0){
+}elseif( !in_array('count(*)', array_map(strtolower, $this->out['column_list']))){
 foreach($this->out['column_list'] as $ind=>$field){
 $columns[] = $fieldcol[$field];
 }
@@ -1347,37 +1342,33 @@ foreach($this->out['where_condition']['column_names'] as $ind=>$field){
 $columns[] = $fieldcol[$field];
 }
 }
-$module = $this->module_instance;
 $tables = $this->getTables($this->out, $columns);
-if(sizeof($tables)===0){
-$tables[] = $module->table_name;
+if(!in_array($objectMeta->getEntityBaseTable(), $tables)){
+$tables[] = $objectMeta->getEntityBaseTable();
 }
-if(!in_array("vtiger_crmentity",$tables) && $this->out['moduleName'] != "Users"){
-array_push($tables,"vtiger_crmentity");
+$defaultTableList = $objectMeta->getEntityDefaultTableList();
+foreach($defaultTableList as $tableName){
+if(!in_array($tableName,$tables)){
+array_push($tables,$tableName);
 }
-$firstTable = $module->table_name;
-$firstIndex = $module->tab_name_index[$firstTable];
+}
+$firstTable = $objectMeta->getEntityBaseTable();
+$tabNameIndex = $objectMeta->getEntityTableIndexList();
+$firstIndex = $tabNameIndex[$firstTable];
 foreach($tables as $ind=>$table){
-if($module->table_name!=$table){
-	if(!isset($module->tab_name_index[$table]) && $table == "vtiger_crmentity"){
+if($firstTable!=$table){
+	if(!isset($tabNameIndex[$table]) && $table == "vtiger_crmentity"){
 		$this->out['defaultJoinConditions'] = $this->out['defaultJoinConditions']." LEFT JOIN $table ON $firstTable.$firstIndex=$table.crmid";
 	}else{
-		$this->out['defaultJoinConditions'] = $this->out['defaultJoinConditions']." LEFT JOIN $table ON $firstTable.$firstIndex=$table.{$module->tab_name_index[$table]}";
+		$this->out['defaultJoinConditions'] = $this->out['defaultJoinConditions']." LEFT JOIN $table ON $firstTable.$firstIndex=$table.{$tabNameIndex[$table]}";
 	}
 }else{
 	$this->out['tableName'] = $table;
 }
 }
 }
-/*
-$module = $this->module_instance;
-foreach($module->tab_name_index as $key=>$val){
-ECNAME = $key.$val;
-break;
-}
-*/
     }
-#line 1377 "e:\workspace\parsergenerator\VTQL_parser.php"
+#line 1377 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
 
     /**
      * placeholder for the left hand side in a reduce operation.
@@ -1478,12 +1469,12 @@ break;
         }
         /* Here code is inserted which will be executed whenever the
         ** parser fails */
-#line 465 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 456 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
 
 	if(!$this->syntax_error){
 		throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, "Parsing failed");
 	}
-#line 1484 "e:\workspace\parsergenerator\VTQL_parser.php"
+#line 1484 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
     }
 
     /**
@@ -1495,7 +1486,7 @@ break;
      */
     function yy_syntax_error($yymajor, $TOKEN)
     {
-#line 475 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 466 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
 
 	$synMsg = "Syntax Error on line " . $this->lex->linenum . ": token '" .$this->lex->value."' ";
 	$expect = array();
@@ -1506,7 +1497,7 @@ break;
 		. '), expected one of: ' . implode(',', $expect));
 	
 	throw new WebServiceException(WebServiceErrorCode::$QUERYSYNTAX, $synMsg);
-#line 1508 "e:\workspace\parsergenerator\VTQL_parser.php"
+#line 1508 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
     }
 
     /**
@@ -1524,10 +1515,10 @@ break;
         }
         /* Here code is inserted which will be executed whenever the
         ** parser accepts */
-#line 461 "e:\workspace\parsergenerator\VTQL_parser.y"
+#line 452 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.y"
 
 		$this->success = true;
-	#line 1530 "e:\workspace\parsergenerator\VTQL_parser.php"
+	#line 1530 "e:\workspace\nonadmin\pkg\vtiger\extensions\Webservices\VTQL_parser.php"
     }
 
     /**

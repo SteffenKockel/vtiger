@@ -81,12 +81,21 @@ $smarty->assign("VALIDATION_DATA_FIELDLABEL",$data['fieldlabel']);
 
 $smarty->assign("MODULE", $currentModule);
 $smarty->assign("SINGLE_MOD", 'PriceBook');
+$smarty->assign("CURRENCY_ID",$focus->column_fields['currency_id']);	
 $smarty->assign("EDIT_PERMISSION",isPermitted($currentModule,'EditView',$_REQUEST['record']));
 
 if($singlepane_view == 'true')
 {
 	$related_array = getRelatedLists($currentModule,$focus);
 	$smarty->assign("RELATEDLISTS", $related_array);
+		
+	require_once('include/ListView/RelatedListViewSession.php');
+	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
+		RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($_REQUEST['relation_id']),
+				vtlib_purify($_REQUEST['selected_header']));
+	}
+	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
+	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 }
 $smarty->assign("IS_REL_LIST",isPresentRelatedLists($currentModule));
 
@@ -99,6 +108,12 @@ if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($
 
 // Record Change Notification
 $focus->markAsViewed($current_user->id);
+// END
+
+// Gather the custom link information to display
+include_once('vtlib/Vtiger/Link.php');
+$customlink_params = Array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
+$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), Array('DETAILVIEWBASIC','DETAILVIEW','DETAILVIEWWIDGET'), $customlink_params));
 // END
 
 $smarty->assign('DETAILVIEW_AJAX_EDIT', PerformancePrefs::getBoolean('DETAILVIEW_AJAX_EDIT', true));

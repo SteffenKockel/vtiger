@@ -20,7 +20,7 @@ $mod_strings = Array (
 'Created Time' => 'Created Time',
 'Modified Time' => 'Modified Time',
 'Start Date' => 'Start Date',
-'Due Date' => 'Due Date',
+'Due date' => 'Due Date',
 'End Date' => 'End Date',
 'Related to' => 'Related to',
 'Tracking Unit' => 'Tracking Unit',
@@ -53,7 +53,10 @@ $mod_strings = Array (
 'Hours'=>'Hours',
 'Days'=>'Days',
 'Incidents'=>'Incidents',
-
+/*
+ * 5.2.0 changes 
+ */
+'LBL_MODULE_NAME'=>'Service Contracts',
 );
 
 ?>

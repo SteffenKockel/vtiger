@@ -8,15 +8,16 @@
  * All Rights Reserved.
  *
  ********************************************************************************/
+include_once 'modules/SalesOrder/SalesOrderPDFController.php';
 
-
-include('include/InventoryPDF.php');
-$pdf=get_so_pdf();
+$controller = new Vtiger_SalesOrderPDFController($currentModule);
+$controller->loadRecord(vtlib_purify($_REQUEST['record']));
 
 $filenameid = $_REQUEST['record'];
 if(empty($filenameid)) $filenameid = time();
-$outputfilename = "storage/SalesOrder_$filenameid.pdf";
-$pdf->Output($outputfilename,'F'); //added file name to make it work in IE, also forces the download giving the user the option to save
+$filepath="storage/SalesOrder_$filenameid.pdf";
+//added file name to make it work in IE, also forces the download giving the user the option to save
+$controller->Output($filepath,'F');
 
 // Added to fix annoying bug that includes HTML in your PDF
 echo "<script>window.history.back();</script>";

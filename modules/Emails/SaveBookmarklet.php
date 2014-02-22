@@ -60,12 +60,22 @@ if(!in_array($elementType,$types['types'])){
 $wsFieldDetails = $handler->getField('parent_id');
 
 $moduleEntityNameDetails = array();
+$moduleEmailFieldDetails = array();
 foreach ($wsFieldDetails['type']['refersTo'] as $type) {
-	$moduleEntityNameDetails[$type] = vtws_getEntityNameFields($type);
+	$referenceModuleHandler = vtws_getModuleHandlerFromName($type, $current_user);
+	$referenceModuleMeta = $referenceModuleHandler->getMeta();
+	$nameFields = explode(',',$referenceModuleMeta->getNameFields());
+	$moduleFields = $referenceModuleMeta->getModuleFields();
+	$accessibleFields = array_keys($moduleFields);
+	$accessibleNameFields = array_intersect($nameFields, $accessibleFields);
+	$moduleEntityNameDetails[$type] = $accessibleNameFields;
+	$moduleEmailFieldDetails[$type] = $referenceModuleMeta->getEmailFields();
 }
 
 $smarty->assign("types",$wsFieldDetails['type']['refersTo']);
 $smarty->assign("entityNameFields",$json->encode($moduleEntityNameDetails));
+$smarty->assign("emailFields",$json->encode($moduleEmailFieldDetails));
+$smarty->assign("userEmail",$current_user->column_fields['email1']);
 
 $smarty->display("modules/Bookmarklet/Bookmarklet.tpl");
 ?>

@@ -1,24 +1,29 @@
 <?php
 /*+********************************************************************************
- * The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
- * The Initial Developer of the Original Code is FOSS Labs.
- * Portions created by FOSS Labs are Copyright (C) FOSS Labs.
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- ********************************************************************************/
-
-if($_REQUEST["mailbox"] && $_REQUEST["mailbox"] != "") {
+* The contents of this file are subject to the vtiger CRM Public License Version 1.0
+* ("License"); You may not use this file except in compliance with the License
+* The Original Code is:  vtiger CRM Open Source
+* The Initial Developer of the Original Code is vtiger.
+* Portions created by vtiger are Copyright (C) vtiger.
+* Portions created by FOSS Labs are Copyright (C) FOSS Labs.
+* All Rights Reserved.
+************************************************************************************/
+// figure out which page we are on and what mailbox we want to view
+if(vtlib_purify($_REQUEST["mailbox"]) && vtlib_purify($_REQUEST["mailbox"] != ""))
+{
 	$mailbox=vtlib_purify($_REQUEST["mailbox"]);
-} else {
+}
+else
+{
 	$mailbox="INBOX";
 }
 
-if($_REQUEST["start"] && $_REQUEST["start"] != "") {
+if(vtlib_purify($_REQUEST["start"]) && vtlib_purify($_REQUEST["start"] != "")) {
 	$start=vtlib_purify($_REQUEST["start"]);
 } else {
 	$start="1";
 }
+if ($start <= 0)$start=1;
 $show_hidden=vtlib_purify($_REQUEST["show_hidden"]);
 
 global $current_user;
@@ -36,7 +41,11 @@ require_once("modules/Webmails/MailBox.php");
 require_once("modules/Webmails/Webmails.php");
 require_once("modules/Webmails/MailParse.php");
 
-$MailBox = new MailBox($mailbox);
+if(trim($_REQUEST["search_input"]) != ''){
+	$searchstring = vtlib_purify($_REQUEST["search_type"]).' "'.vtlib_purify($_REQUEST["search_input"]).'"';
+	$MailBox = new MailBox($mailbox,$start-1,$searchstring);
+	}
+else $MailBox = new MailBox($mailbox,$start-1);
 
 // Check for a valid mailbox and also make sure the needed php_imap module is installed
 $mods = parsePHPModules();
@@ -222,48 +231,27 @@ $user_dir=$save_path."/".$_SESSION["authenticated_user_id"];
 // Get the list of mails for this mailbox
 $elist = $MailBox->mailList;
 $numEmails = $elist["count"];
-$headers = $elist["headers"];
 $mails_per_page = $MailBox->mails_per_page;
 
 // Calculate paging information ahead before retrieving overviews
 if($start == 1 || $start == "") {
 	$start_message=$numEmails;
-	if($numEmails > $mails_per_page) $end_message = $start_message - $mails_per_page;
-	else $end_message = $start_message - $numEmails;
 } else {
 	$start_message=($numEmails-(($start-1)*$mails_per_page));
-	$end_message = ($numEmails-(($start*2-1)*$mails_per_page));
 }
 
-// If in search mode, load overview of all the available emails
-if(isset($_REQUEST["search"])) {
-	// TODO: Navigating when search is used needs to be added
-	$MailBox->loadOverviewList(1, $numEmails);
-} else {
-	// For normal listview, fetch only required mail overview
-	$MailBox->loadOverviewList($start_message, $end_message);
-}
-
-// Fetch meta-info again after overview is loaded, for further process
-$elist = $MailBox->mailList;
-$headers = $elist["headers"];
-// END
-
-$c=$numEmails;
-
-if(!isset($_REQUEST["search"])) {
-	$numPages = ceil($numEmails/$MailBox->mails_per_page);
-	if($numPages > 1) {
-		if($start != 1){
-			 $navigationOutput = "<a href='javascript:;' onClick=\"cal_navigation('".$mailbox."',1);\" ><img src='modules/Webmails/images/start.gif' border='0'></a>&nbsp;&nbsp;";
-                        $navigationOutput .= "<a href='javascript:;' onClick=\"cal_navigation('".$mailbox."',".($start-1).");\" ><img src='modules/Webmails/images/previous.gif' border='0'></a> &nbsp;";
-		}
-		if($start <= ($numPages-1)){
-			$navigationOutput .= "<a href='javascript:;' onClick=\"cal_navigation('".$mailbox."',".($start+1).");\" ><img src='modules/Webmails/images/next.gif' border='0'></a>&nbsp;&nbsp;";
-                        $navigationOutput .= "<a href='javascript:;' onClick=\"cal_navigation('".$mailbox."',".$numPages.");\"><img src='modules/Webmails/images/end.gif' border='0'></a> &nbsp;";	
-		}
+$numPages = ceil($numEmails/$MailBox->mails_per_page);
+if($numPages > 1) {
+	if($start != 1){
+		 $navigationOutput = "<a href='javascript:;' onClick=\"cal_navigation('".$mailbox."',1);\" ><img src='modules/Webmails/images/start.gif' border='0'></a>&nbsp;&nbsp;";
+					$navigationOutput .= "<a href='javascript:;' onClick=\"cal_navigation('".$mailbox."',".($start-1).");\" ><img src='modules/Webmails/images/previous.gif' border='0'></a> &nbsp;";
+	}
+	if($start <= ($numPages-1)){
+		$navigationOutput .= "<a href='javascript:;' onClick=\"cal_navigation('".$mailbox."',".($start+1).");\" ><img src='modules/Webmails/images/next.gif' border='0'></a>&nbsp;&nbsp;";
+					$navigationOutput .= "<a href='javascript:;' onClick=\"cal_navigation('".$mailbox."',".$numPages.");\"><img src='modules/Webmails/images/end.gif' border='0'></a> &nbsp;";	
 	}
 }
+
 if(isPermitted('Contacts','EditView','') == 'yes')
         $show_qualify = "yes";
 else
@@ -286,7 +274,7 @@ if (is_array($overview))
 	foreach ($overview as $val)
 	{
 		$mails[$val->msgno] = $val;
-		//$hdr = @imap_headerinfo($MailBox->mbox, $val->msgno);	
+		$hdr = @imap_headerinfo($MailBox->mbox, $val->msgno);	
 		//Added to get the UTF-8 string - 30-11-06 - Mickie
 		//we have to do this utf8 decode for the fields which may contains special characters -- Mickie - 02-02-07
 		$val->from = utf8_decode(utf8_encode(imap_utf8(addslashes($val->from))));
@@ -296,9 +284,8 @@ if (is_array($overview))
                 $to_list = str_replace(">","",$to);
                 $from = str_replace("<",":",$val->from);
                 $from_list = str_replace(">","",$from);
-                //$cc = str_replace("<",":",$hdr->ccaddress);
-                //$cc_list = str_replace(">","",$cc);
-                $cc_list = '';
+                $cc = str_replace("<",":",$hdr->ccaddress);
+                $cc_list = str_replace(">","",$cc);
 
 	?>
 
@@ -320,48 +307,27 @@ $listview_header = array("<th class='tableHeadBg' width='10%'>".$mod_strings['LB
 $listview_entries = array();
 
 $displayed_msgs=0;
-$info = imap_mailboxmsginfo($MailBox->mbox);
-$unread_msgs = $info->Unread;
+$info = imap_status($MailBox->mbox, "{".$MailBox->imapServerAddress."}".$key, SA_UNSEEN);
+$unread_msgs = $info->unseen;
 //$new_msgs=0;
 if(($numEmails) <= 0)
 	$listview_entries[0][] = '<td colspan="6" width="100%" align="center"><b>'.$mod_strings['LBL_NO_EMAILS'].'</b></td>';
 else {
 
 	if(isset($_REQUEST["search"]) && trim($_REQUEST["search_input"]) != '') {
-		$searchstring = vtlib_purify($_REQUEST["search_type"]).' "'.vtlib_purify($_REQUEST["search_input"]).'"';
-		//echo $searchstring."<br>";
-		$searchlist = Array();
-		$searchlist = imap_search($MailBox->mbox,$searchstring);
-
-		if(is_array($searchlist))
-		{
-			$num_searches = count($searchlist);
-			$c=$numEmails;
+		for($l=$MailBox->mails_per_page-1;$l>=0;$l--){ 
+			if($overview[$l]->msgno!="")
+				$listview_entries[] = show_msg($mails,$overview[$l]->msgno);
 		}
-		$search_count = $num_searches;
-		while ($i<=$c) {
-			if(is_array($searchlist)) {
-				for($l=0;$l<$num_searches;$l++) {
-					if($mails[$start_message]->msgno == $searchlist[$l])
-						$listview_entries[] = show_msg($mails,$start_message);
-				}
-			}
-			$i++;
-			$start_message--;
-		}
-	}else
-	{
+	}else{
 		$i=1;
-		while ($i<=$c) {
-			if($start_message > 0)
-			{
+		while ($i<=$MailBox->mails_per_page) {
+			if($start_message > 0){
 				$listview_entries[] = show_msg($mails,$start_message);
-				if($displayed_msgs == $MailBox->mails_per_page) {break;}
+				$start_message--;
 			}
 			$i++;
-			$start_message--;
 		}
-
 	}
 
 	flush();
@@ -411,7 +377,7 @@ if (is_array($list)) {
 			$_SESSION["mailboxes"][$tmpval] = $unread_msgs;
 			if($tmpval[0] != "."){
 				if($numEmails==0) {$num=$numEmails;} else {$num=($numEmails-1);}
-				$folders .= '<li style="padding-left:0px;"><img src="themes/images/'.$img.'"align="absmiddle" />&nbsp;&nbsp;<a href="javascript:changeMbox(\''.$tmpval.'\');" class="small">'.$tmpval.'</a>&nbsp;&nbsp;<span id="'.$tmpval.'_count" style="font-weight:bold">';
+				$folders .= '<li style="padding-left:0px;"><img src="themes/'.$theme.'/images/'.$img.'"align="absmiddle" />&nbsp;&nbsp;<a href="javascript:changeMbox(\''.$tmpval.'\');" class="small">'.$tmpval.'</a>&nbsp;&nbsp;<span id="'.$tmpval.'_count" style="font-weight:bold">';
 				if($unread_msgs > 0)
 					$folders .= '(<span id="'.$tmpval.'_unread">'.$unread_msgs.'</span>)</span>&nbsp;&nbsp;<span id="remove_'.$tmpval.'" style="position:relative;display:none">Remove</span></li>';
 				else
@@ -424,7 +390,7 @@ if (is_array($list)) {
 			if($tmpval[0] != ".") {
 				if($box->messages==0) {$num=$box->messages;} else {$num=($box->messages-1);}
 				$boxes .= '<option value="'.$tmpval.'">'.$tmpval;
-				$folders .= '<li ><img src="themes/images/'.$img.'" align="absmiddle" />&nbsp;&nbsp;<a href="javascript:changeMbox(\''.$tmpval.'\');" class="small">'.$tmpval.'</a>&nbsp;<span id="'.$tmpval.'_count" style="font-weight:bold">';
+				$folders .= '<li ><img src="themes/'.$theme.'/images/'.$img.'" align="absmiddle" />&nbsp;&nbsp;<a href="javascript:changeMbox(\''.$tmpval.'\');" class="small">'.$tmpval.'</a>&nbsp;<span id="'.$tmpval.'_count" style="font-weight:bold">';
 				if($box->unseen > 0)
 					$folders .= '(<span id="'.$tmpval.'_unread">'.$box->unseen.'</span>)</span></li>';
 				else
@@ -436,7 +402,6 @@ if (is_array($list)) {
 }
 
 imap_close($MailBox->mbox);
-
 $smarty = new vtigerCRM_Smarty;
 $smarty->assign("SEARCH_VALUE",vtlib_purify($_REQUEST['search_input']));
 $smarty->assign("USERID", $current_user->id);
@@ -452,10 +417,7 @@ $smarty->assign("BUTTONS",$other_text);
 $smarty->assign("CATEGORY","My Home Page");
 $smarty->assign("NAVIGATION", $navigationOutput);
 $smarty->assign("FOLDER_SELECT", $boxes);
-if(isset($_REQUEST['search']))
-	$smarty->assign("NUM_EMAILS", $search_count);
-else
-	$smarty->assign("NUM_EMAILS", $numEmails);
+$smarty->assign("NUM_EMAILS", $numEmails);
 $smarty->assign("MAILBOX", $MailBox->mailbox);
 $smarty->assign("ACCOUNT", $MailBox->display_name);
 $smarty->assign("BOXLIST",$folders);

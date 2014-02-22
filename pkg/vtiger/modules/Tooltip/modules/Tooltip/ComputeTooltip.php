@@ -24,8 +24,8 @@ if($result !== false){
 //get tooltip information
 	$viewid = 1;	//viewid is 1 by default
 	$descObject = vtws_describe($modname,$current_user);
-	$id = $tabid."x".$id;
-	$sql = "select * from $modname where id=$id;";
+	$id = vtws_getWebserviceEntityId($modname, $id);
+	$sql = "select * from $modname where id ='$id';";
 	$result = vtws_query($sql, $current_user);
 	if(empty($result)){
 		exit(0);

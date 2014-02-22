@@ -45,7 +45,11 @@ function VTCreateTodoTask($){
 		$.each(values, function(i, v){
 			select.append('<option value="'+v['value']+'">'+v['label']+'</option>');
 		});
-		select.attr('value', defaultValue);
+		if(defaultValue!=''){
+			select.attr('value', defaultValue);
+		} else{
+			select.attr('value',values[0]['value']);
+		}
 	}
 
 	var validateDateRange = {

@@ -69,18 +69,6 @@ if(isset($_REQUEST['selected_module']) && $_REQUEST['selected_module'] != '') {
 	}	
 }
 
-$url_string = '';
-if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true')
-{
-	list($where, $ustring) = split("#@@#",RBSearch($select_module));
-
-	// we have a query
-	$url_string .="&query=true".$ustring;
-	$log->info("Here is the where clause for the list view: $where");
-	$smarty->assign("SEARCH_URL",$url_string);
-				
-}
-
 $focus = CRMEntity::getInstance($select_module);
 
 if(count($module_name) > 0)
@@ -88,8 +76,19 @@ if(count($module_name) > 0)
 	$cur_mod_view = new CustomView($select_module);
 	$viewid = $cur_mod_view->getViewId($select_module);	
 	
-	$list_query = getListQuery($select_module, '');
-	$list_query = $cur_mod_view->getModifiedCvListQuery($viewid,$list_query,$select_module);
+	global $current_user;
+	$queryGenerator = new QueryGenerator($select_module, $current_user);
+	$queryGenerator->initForDefaultCustomView();
+	// Enabling Module Search
+	$url_string = '';
+	if($_REQUEST['query'] == 'true') {
+		$queryGenerator->addUserSearchConditions($_REQUEST);
+		$ustring = getSearchURL($_REQUEST);
+		$url_string .= "&query=true$ustring";
+		$smarty->assign('SEARCH_URL', $url_string);
+	}
+
+	$list_query = $queryGenerator->getQuery();
 	$list_query = preg_replace("/vtiger_crmentity.deleted\s*=\s*0/i", 'vtiger_crmentity.deleted = 1', $list_query);
 	//Search criteria added to the list Query
 	if(isset($where) && $where != '')
@@ -99,8 +98,10 @@ if(count($module_name) > 0)
 	$count_result = $adb->query( mkCountQuery($list_query));
 	$noofrows = $adb->query_result($count_result,0,"count");
 	
-	$rb_listview_header = getListViewHeader($focus, $select_module, '','','','global',$cur_mod_view,'',true);
-	$listview_header_search=getSearchListHeaderValues($focus,$select_module,$url_string,$sorder,$order_by,"",$cur_mod_view);
+	$controller = new ListViewController($adb, $current_user, $queryGenerator);
+	$rb_listview_header = $controller->getListViewHeader($focus,$select_module,$url_string,$sorder,
+			$order_by, true);
+	$listview_header_search = $controller->getBasicSearchFieldInfoList();
 	$smarty->assign("SEARCHLISTHEADER", $listview_header_search);
 
 	if(isset($_REQUEST['start']) && $_REQUEST['start'] != '')
@@ -131,7 +132,8 @@ if(count($module_name) > 0)
 
 	$navigationOutput = getTableHeaderNavigation($navigation_array, $url_string,"Recyclebin","index","");
 
-	$lvEntries = getListViewEntries($focus,$select_module,$list_result,$navigation_array,"","","","",$cur_mod_view,'','','',true);
+	$lvEntries = $controller->getListViewEntries($focus,$select_module,$list_result,
+		$navigation_array, true);
 }
 
 $smarty->assign("NAVIGATION", $navigationOutput);

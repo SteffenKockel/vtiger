@@ -43,7 +43,7 @@ if(!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1) 
 		$fileContent = fread(fopen($filepath.$saved_filename, "r"), $filesize);
 	
 		header("Content-type: $fileType");
-		header("Content-length: $filesize");
+		header("Pragma: public");
 		header("Cache-Control: private");
 		header("Content-Disposition: attachment; filename=$name");
 		header("Content-Description: PHP Generated Data");

@@ -17,54 +17,57 @@ require_once('include/DatabaseUtil.php');
 
 checkFileAccess("modules/$currentModule/$currentModule.php");
 require_once("modules/$currentModule/$currentModule.php");
+if(!is_string($_SESSION[$currentModule.'_listquery'])){
+	// Custom View
+	$customView = new CustomView($currentModule);
+	$viewid = $customView->getViewId($currentModule);
+	$customview_html = $customView->getCustomViewCombo($viewid);
+	$viewinfo = $customView->getCustomViewByCvid($viewid);
 
-// Custom View
-$customView = new CustomView($currentModule);
-$viewid = $customView->getViewId($currentModule);
-$customview_html = $customView->getCustomViewCombo($viewid);
-$viewinfo = $customView->getCustomViewByCvid($viewid);
-
-if($viewid != "0"&& $viewid != 0){
-	$listquery = getListQuery($currentModule);
-	$list_query= $customView->getModifiedCvListQuery($viewid, $listquery, $currentModule);
-}else{
-	$list_query = getListQuery($currentModule);
-}
-
-// Enabling Module Search
-$url_string = '';
-if($_REQUEST['query'] == 'true') {
-	if(!empty($_REQUEST['globalSearch'])){
-		$searchValue = vtlib_purify($_REQUEST['globalSearchText']);
-		$where = '(' . getUnifiedWhere($list_query,$currentModule,$searchValue) . ')';
-		$url_string .= '&query=true&globalSearch=true&globalSearchText='.$searchValue;
+	if($viewid != "0"&& $viewid != 0){
+		$listquery = getListQuery($currentModule);
+		$list_query= $customView->getModifiedCvListQuery($viewid, $listquery, $currentModule);
 	}else{
-		list($where, $ustring) = split('#@@#', getWhereCondition($currentModule));
-		$url_string .= "&query=true$ustring";
+		$list_query = getListQuery($currentModule);
 	}
-}
-//print_r($where);
-if($where != '') {
-	$list_query = "$list_query AND $where";
-	$_SESSION['export_where'] = $where;
+
+	// Enabling Module Search
+	$url_string = '';
+	if($_REQUEST['query'] == 'true') {
+		if(!empty($_REQUEST['globalSearch'])){
+			$searchValue = vtlib_purify($_REQUEST['globalSearchText']);
+			$where = '(' . getUnifiedWhere($list_query,$currentModule,$searchValue) . ')';
+			$url_string .= '&query=true&globalSearch=true&globalSearchText='.$searchValue;
+		}else{
+			list($where, $ustring) = split('#@@#', getWhereCondition($currentModule));
+			$url_string .= "&query=true$ustring";
+		}
+	}
+	//print_r($where);
+	if($where != '') {
+		$list_query = "$list_query AND $where";
+		$_SESSION['export_where'] = $where;
+	}else{
+		unset($_SESSION['export_where']);
+	}
+	// Sorting
+	if($order_by) {
+		if($order_by == 'smownerid'){
+			if( $adb->dbType == "pgsql"){
+				$list_query .= ' GROUP BY user_name';
+			}
+			$list_query .= ' ORDER BY user_name '.$sorder;
+		}else {
+			$tablename = getTableNameForField($currentModule, $order_by);
+			$tablename = ($tablename != '')? ($tablename . '.') : '';
+			if( $adb->dbType == "pgsql"){
+				$list_query .= ' GROUP BY '. $tablename . $order_by;
+			}
+			$list_query .= ' ORDER BY ' . $tablename . $order_by . ' ' . $sorder;
+		}
+	}
 }else{
-	unset($_SESSION['export_where']);
-}
-// Sorting
-if($order_by) {
-	if($order_by == 'smownerid'){
-		if( $adb->dbType == "pgsql"){
-			$list_query .= ' GROUP BY user_name';
-		}
-		$list_query .= ' ORDER BY user_name '.$sorder;
-	}else {
-		$tablename = getTableNameForField($currentModule, $order_by);
-		$tablename = ($tablename != '')? ($tablename . '.') : '';
-		if( $adb->dbType == "pgsql"){
-			$list_query .= ' GROUP BY '. $tablename . $order_by;
-		}
-		$list_query .= ' ORDER BY ' . $tablename . $order_by . ' ' . $sorder;
-	}
+	$list_query = $_SESSION[$currentModule.'_listquery'];
 }
 
 $count_result = $adb->query(mkCountQuery($list_query));

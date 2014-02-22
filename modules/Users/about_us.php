@@ -159,7 +159,7 @@ global $mod_strings;
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://www.dynamicdrive.com/dynamicindex14/carousel2.htm')">Carousel Slideshow</a></td></tr>
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://www.troywolf.com/articles/php/class_http/')">class_http</a></td></tr>
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://freshmeat.net/projects/phpexcelreader/')">ExcelReader</a></td></tr>
-										<tr><td><a href="javascript:;" onClick=" newpopup('http://www.fckeditor.net/download/default.html')">FCKeditor</a></td></tr>
+										<tr><td><a href="javascript:;" onClick=" newpopup('http://ckeditor.com/download')">CKEditor</a></td></tr>
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://www.fpdf.org')">FPDF</a></td></tr>
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://www.getluky.net')">freetag</a></td></tr>
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://www.boutell.com/gd/')">gdwin32</a></td></tr>

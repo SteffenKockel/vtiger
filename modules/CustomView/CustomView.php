@@ -14,6 +14,7 @@ global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 require_once('include/utils/utils.php');
+require_once 'include/Webservices/Utils.php';
 
 global $adv_filter_options;
 
@@ -54,6 +55,8 @@ class CustomView extends CRMEntity{
 	// Information as defined for this instance in the database table.
 	protected $_status = false;
 	protected $_userid = false;
+	protected $meta;
+	protected $moduleMetaInfo;
 	
 	/** This function sets the currentuser id to the class variable smownerid,  
 	  * modulename to the class variable customviewmodule
@@ -67,8 +70,26 @@ class CustomView extends CRMEntity{
 		$this->escapemodule[] =	$module."_";
 		$this->escapemodule[] = "_";
 		$this->smownerid = $current_user->id;
+		$this->moduleMetaInfo = array();
+		if($module != "" && $module != 'Calendar') {
+			$this->meta = $this->getMeta($module, $current_user);
+		}
 	}
 
+	/**
+	 *
+	 * @param String:ModuleName $module
+	 * @return EntityMeta
+	 */
+	public function getMeta($module, $user) {
+		$db = PearDatabase::getInstance();
+		if (empty($this->moduleMetaInfo[$module])) {
+			$handler = vtws_getModuleHandlerFromName($module, $user);
+			$meta = $handler->getMeta();
+			$this->moduleMetaInfo[$module] = $meta;
+		}
+		return $this->moduleMetaInfo[$module];
+	}
 
 	/** To get the customViewId of the specified module 
 	  * @param $module -- The module Name:: Type String
@@ -78,7 +99,7 @@ class CustomView extends CRMEntity{
 	{
 		global $adb,$current_user;
 		$now_action = vtlib_purify($_REQUEST['action']);
-		if(isset($_REQUEST['viewname']) == false) {
+		if(empty($_REQUEST['viewname'])) {
 			if (isset($_SESSION['lvs'][$module]["viewname"]) && $_SESSION['lvs'][$module]["viewname"]!='') {
 				$viewid = $_SESSION['lvs'][$module]["viewname"];
 			}
@@ -206,6 +227,7 @@ class CustomView extends CRMEntity{
 			$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'))";
 			array_push($sparams, $current_user->id);
 		}
+		$ssql .= " ORDER BY viewname";
 		$result = $adb->pquery($ssql, $sparams);
 		while($cvrow=$adb->fetch_array($result))
 		{
@@ -278,12 +300,14 @@ class CustomView extends CRMEntity{
 		global $adb,$mod_strings,$app_strings;
 		$block_ids = explode(",", $block);
 		$tabid = getTabid($module);
+		global $current_user;
+	    require('user_privileges/user_privileges_'.$current_user->id.'.php');
+		if (empty($this->meta) && $module != 'Calendar') {
+			$this->meta = $this->getMeta($module, $current_user);
+		}
 		if($tabid == 9)
 			$tabid ="9,16";
-		global $current_user;
-	        require('user_privileges/user_privileges_'.$current_user->id.'.php');
-
-			$display_type = " vtiger_field.displaytype in (1,2,3)";
+		$display_type = " vtiger_field.displaytype in (1,2,3)";
 
 		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
 		{
@@ -342,7 +366,9 @@ class CustomView extends CRMEntity{
 		
 		if($module == 'Quotes' && $block == 51)
                         $module_columnlist['vtiger_crmentity:crmid::Quotes_Quote_No:I'] = $app_strings['Quote No'];
-
+		if ($module != 'Calendar') {
+			$moduleFieldList = $this->meta->getModuleFields();
+		}
 		for($i=0; $i<$noofrows; $i++)
 		{
 			$fieldtablename = $adb->query_result($result,$i,"tablename");
@@ -352,8 +378,15 @@ class CustomView extends CRMEntity{
 			$fieldtype = explode("~",$fieldtype);
 			$fieldtypeofdata = $fieldtype[0];
 			$fieldlabel = $adb->query_result($result,$i,"fieldlabel");
-			//Here we Changing the displaytype of the field. So that its criteria will be displayed Correctly in Custom view Advance Filter.	
-			$fieldtypeofdata=ChangeTypeOfData_Filter($fieldtablename,$fieldcolname,$fieldtypeofdata);
+			$field = $moduleFieldList[$fieldname];
+			if(!empty($field) && $field->getFieldDataType() == 'reference') {
+				$fieldtypeofdata = 'V';
+			} else {
+				//Here we Changing the displaytype of the field. So that its criteria will be
+				//displayed Correctly in Custom view Advance Filter.
+				$fieldtypeofdata=ChangeTypeOfData_Filter($fieldtablename,$fieldcolname,
+						$fieldtypeofdata);
+			}
 			if($fieldlabel == "Related To")
 			{
 				$fieldlabel = "Related to";
@@ -366,14 +399,8 @@ class CustomView extends CRMEntity{
 
 			}
 			$fieldlabel1 = str_replace(" ","_",$fieldlabel);
-			if($fieldname == 'account_id' && $fieldtablename != 'vtiger_account')//Potential,Contacts,Invoice,SalesOrder & Quotes  records   sort by Account Name . But for account member of we have to avoid this
-				$optionvalue = "vtiger_account:accountname:accountname:".$module."_".$fieldlabel1.":".$fieldtypeofdata;
-			else if($fieldname == 'contact_id' && $module != "Contacts")//Calendar,Documents,PurchaseOrder,SalesOrder,Quotes,and Invoice records sort by Contact Name
-                                $optionvalue = "vtiger_contactdetails:lastname:lastname:".$module."_".$fieldlabel1.":".$fieldtypeofdata;
-			else if($fieldname == 'product_id' && ($module != 'Products' && $module != 'HelpDesk' && $module !="Faq"))//Campaign records sort by Product Name.
-				$optionvalue = "vtiger_products:productname:productname:".$module."_".$fieldlabel1.":".$fieldtypeofdata;
-			else
-				$optionvalue = $fieldtablename.":".$fieldcolname.":".$fieldname.":".$module."_".$fieldlabel1.":".$fieldtypeofdata;
+			$optionvalue = $fieldtablename.":".$fieldcolname.":".$fieldname.":".$module."_".
+				$fieldlabel1.":".$fieldtypeofdata;
 			//added to escape attachments fields in customview as we have multiple attachments
 			$fieldlabel = getTranslatedString($fieldlabel); //added to support i18n issue
 			if($module != 'HelpDesk' || $fieldname !='filename')
@@ -473,7 +500,7 @@ class CustomView extends CRMEntity{
 		{
 			$sql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid ";
 			$sql.= " where vtiger_field.tabid=? and vtiger_field.block in (". generateQuestionMarks($blockids) .")
-                        and (vtiger_field.uitype in (5,6,23) or vtiger_field.displaytype=2) ";
+                        and vtiger_field.uitype in (5,6,23,70)";
 			$sql.= " and vtiger_field.presence in (0,2) order by vtiger_field.sequence";
 			$params = array($tabid, $blockids);
 		}
@@ -481,7 +508,7 @@ class CustomView extends CRMEntity{
 		{
 			$profileList = getCurrentUserProfileList();
 			$sql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join  vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid ";
-			$sql.= " where vtiger_field.tabid=? and vtiger_field.block in (". generateQuestionMarks($blockids) .") and (vtiger_field.uitype in (5,6,23) or vtiger_field.displaytype=2)";
+			$sql.= " where vtiger_field.tabid=? and vtiger_field.block in (". generateQuestionMarks($blockids) .") and vtiger_field.uitype in (5,6,23,70)";
 			$sql.= " and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 			
 			$params = array($tabid, $blockids);
@@ -1066,6 +1093,17 @@ class CustomView extends CRMEntity{
 							}
 							elseif($this->customviewmodule == "Documents" && $columns[1]=='folderid'){
 								$advfiltersql[] = "vtiger_attachmentsfolder.foldername".$this->getAdvComparator($advfltrow["comparator"],trim($advfltrow["value"]),$datatype);
+							}
+							elseif($this->customviewmodule == "Assets"){
+								if($columns[1]=='account' ){
+									$advfiltersql[] = "vtiger_account.accountname".$this->getAdvComparator($advfltrow["comparator"],trim($advfltrow["value"]),$datatype);
+								}
+								if($columns[1]=='product'){
+									$advfiltersql[] = "vtiger_products.productname".$this->getAdvComparator($advfltrow["comparator"],trim($advfltrow["value"]),$datatype);
+								}
+								if($columns[1]=='invoiceid'){
+									$advfiltersql[] = "vtiger_invoice.subject".$this->getAdvComparator($advfltrow["comparator"],trim($advfltrow["value"]),$datatype);
+								}
 							}
 							else
 							{
@@ -1926,7 +1964,7 @@ class CustomView extends CRMEntity{
 					elseif($status == CV_STATUS_PUBLIC)
 					{
 						$log->debug("Entering when status=3");
-						if($action == 'ListView' || $action == $module."Ajax" || $action == 'index')
+						if($action == 'ListView' || $action == $module."Ajax" || $action == 'index' || $action == 'DetailView')
 						{
 							$permission = "yes";
 						}

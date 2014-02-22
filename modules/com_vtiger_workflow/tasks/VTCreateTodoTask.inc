@@ -39,10 +39,14 @@ class VTCreateTodoTask extends VTTask{
 		global $adb, $current_user;
 		$userId = $entityData->get('assigned_user_id');
 		if($userId===null){
-			$userId = vtws_getWebserviceEntityId('Users', 1);;
+			$userId = vtws_getWebserviceEntityId('Users', 1);
 		}
 
 		$baseDate = $entityData->get($this->datefield);
+		$time = explode(' ',$baseDate);
+		if(count($time) < 2) {
+			$time[] = date('H:i');
+		}
 		preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
 		$baseDate = strtotime($match[0]);
 		$date = strftime('%Y-%m-%d', $baseDate+$this->days*24*60*60*($this->directions=='Before'?-1:1));
@@ -53,8 +57,9 @@ class VTCreateTodoTask extends VTTask{
 			'taskpriority'=>$this->priority,
 			'taskstatus'=>$this->status,
 			'assigned_user_id'=>$userId,
-			'time_start'=>self::conv12to24hour($this->time),
-			'sendnotification'=>$this->sendNotification!=''?1:0,
+			'time_start'=>$time[1],
+			'sendnotification'=>($this->sendNotification!='' && $this->sendNotification!='N')?
+					true: false,
 			'date_start'=>$date,
 			'due_date'=>$date,
 			'visibility'=>'all',

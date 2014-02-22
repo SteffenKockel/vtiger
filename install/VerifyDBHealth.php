@@ -7,21 +7,24 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-
 session_start();
+
 if(empty($_SESSION['authentication_key'])) {
-	die("Not Authorized to perform this operation");
+	die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
 }
 if($_REQUEST['ajax'] == true) {
 	if($_SESSION['authentication_key'] != $_REQUEST['auth_key']) {
-		die("Not Authorized to perform this operation");
+		die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
 	}	
 }
 
-$migrationInfo = $_SESSION['migration_info'];
+$configFileInfo = $_SESSION['config_file_info'];
+
 require_once('adodb/adodb.inc.php');
-$db = &NewADOConnection($migrationInfo['db_type']);
-$db->NConnect($migrationInfo['db_hostname'], $migrationInfo['db_username'], $migrationInfo['db_password'], $migrationInfo['new_dbname']);
+
+$db = &NewADOConnection($configFileInfo['db_type']);
+$db->NConnect($configFileInfo['db_hostname'], $configFileInfo['db_username'], $configFileInfo['db_password'], $configFileInfo['db_name']);
+
 require_once('include/utils/DBHealthCheck.php');
 $dbHealthCheck = new DBHealthCheck($db);
 $dbHostName = $dbHealthCheck->dbHostName;
@@ -51,7 +54,7 @@ if(!empty($_REQUEST['forceDbCheck']) || $_SESSION[$dbName.'_'.$dbHostName.'_Heal
 
 if ($_REQUEST['viewDBReport'] == true) {
 	if($_SESSION['authentication_key'] != $_REQUEST['auth_key']) {
-		die("Not Authorized to perform this operation");
+		die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
 	}
 	$auth_key = $_REQUEST['auth_key'];
 ?>
@@ -60,7 +63,7 @@ if ($_REQUEST['viewDBReport'] == true) {
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>vtiger CRM 5 - Database Check</title>
+	<title><?php echo $installationStrings['LBL_VTIGER_CRM_5']. ' - ' . $installationStrings['LBL_DATABASE_CHECK']; ?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 	<script type='text/javascript'>
@@ -75,8 +78,8 @@ if ($_REQUEST['viewDBReport'] == true) {
 	<div style="height: 30em">
 		<table width="99%" cellspacing="0" cellpadding="0" border="0" align="center">
 			<tr>
-				<td align="left" class="cwHeadBg heading2">&nbsp;Database Check</td>
-				<td align="right" class="cwHeadBg1"><img title="vtiger CRM 5" alt="vtiger CRM 5" src="include/install/images/vtigercrm5.gif"/></td>
+				<td align="left" class="cwHeadBg heading2">&nbsp;<?php echo $installationStrings['LBL_DATABASE_CHECK']; ?></td>
+				<td align="right" class="cwHeadBg1"><img src="include/install/images/vtigercrm5.gif" alt="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>" title="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>"></td>
 				<td width="2%" class="cwHeadBg1"/>
 			</tr>
 		</table>
@@ -88,9 +91,9 @@ if ($_REQUEST['viewDBReport'] == true) {
 						<tr>
 							<td class="contentDisplay">
 								<div class="textCenter higherLineHeight">
-									Required tables were detected to be in proper Engine type (InnoDB) <br />
-									You can close this window and proceed further with migration. <br />								
-									<input type="button" class="small edit" value="Close" name="Close" onClick="window.close()" />
+									<?php echo $installationStrings['MSG_TABLES_IN_INNODB']; ?>.<br />	
+									<?php echo $installationStrings['MSG_CLOSE_WINDOW_TO_PROCEED']; ?>.<br />							
+									<input type="button" class="small edit" value="<?php echo $installationStrings['LBL_CLOSE']; ?>" name="Close" onClick="window.close()" />
 								</div>
 							</td>
 						</tr>
@@ -100,10 +103,10 @@ if ($_REQUEST['viewDBReport'] == true) {
 						<tr>
 							<td class="contentDisplay">
 								<div>
-									For proper functionality of vtiger CRM, we recommend the following:					
+									<?php echo $installationStrings['LBL_RECOMMENDATION_FOR_PROPERLY_WORKING_CRM']; ?>:					
 									<ul>
-								    	<li>Tables to have InnoDB engine type. ( <a href="http://dev.mysql.com/doc/refman/5.0/en/innodb.html" target="_about">What is InnoDB?</a>).<br/></li>
-								    	<li>To get complete UTF-8 support, tables should have default charset UTF8.<br/></li>
+								    	<li><?php echo $installationStrings['LBL_TABLES_SHOULD_BE_INNODB']; ?>. ( <a href="http://dev.mysql.com/doc/refman/5.0/en/innodb.html" target="_about"><?php echo $installationStrings['QUESTION_WHAT_IS_INNODB']; ?>?</a>).<br/></li>
+								    	<li><?php echo $installationStrings['LBL_TABLES_CHARSET_TO_BE_UTF8']; ?>.<br/></li>
 									</ul>
 								</div>
 							</td>
@@ -121,7 +124,7 @@ if ($_REQUEST['viewDBReport'] == true) {
 												<input type="hidden" name="auth_key" value="<?php echo $auth_key; ?>" />
 												<input type="hidden" name="updateTableEngine" value="true" />
 												<input type="hidden" name="updateEngineForAllTables" value="true" />
-												<input align="right" class="small edit" type="button" name="back" title="Fix Engine For All Tables" value="Fix Engine For All Tables" onclick="document.submitForm.submit();" />
+												<input align="right" class="small edit" type="button" name="fix" title="<?php echo $installationStrings['LBL_FIX_ENGINE_FOR_ALL_TABLES']; ?>" value="<?php echo $installationStrings['LBL_FIX_ENGINE_FOR_ALL_TABLES']; ?>" onclick="document.submitForm.submit();" />
 											</form>
 											<form action='install.php' name='updateForm'>
 												<input type='hidden' name='file' value='VerifyDBHealth.php' />
@@ -139,9 +142,9 @@ if ($_REQUEST['viewDBReport'] == true) {
 							<td>
 								<table id="unhealthyTablesList" width="95%" border="0px" cellpadding="3" cellspacing="0" align="center">
 									<tr>
-										<td class="fontBold small">Table</td>
-										<td class="fontBold small">Character Set</td>
-										<td class="fontBold small">Type</td>
+										<td class="fontBold small"><?php echo $installationStrings['LBL_TABLE']; ?></td>
+										<td class="fontBold small"><?php echo $installationStrings['LBL_CHARACTER_SET']; ?></td>
+										<td class="fontBold small"><?php echo $installationStrings['LBL_TYPE']; ?></td>
 									</tr>
 									<?php for($i=0; $i<$noOfTables; ++$i) {
 											$tableName = $unHealthyTablesList[$i]['name'];
@@ -151,7 +154,7 @@ if ($_REQUEST['viewDBReport'] == true) {
 									<tr>
 										<td><?php echo $tableName; ?></td>
 										<td><?php echo $characterSet; ?></td>
-										<td><font style='color:red;'><?php echo $engineType; ?></font>&nbsp;&nbsp;(<a href='javascript:correctTableEngineType("<?php echo $tableName; ?>");' title='Correct Engine Type'  style='cursor:pointer;'>Fix Now</a>)</td>
+										<td><font style='color:red;'><?php echo $engineType; ?></font>&nbsp;&nbsp;(<a href='javascript:correctTableEngineType("<?php echo $tableName; ?>");' title='<?php echo $installationStrings['LBL_CORRECT_ENGINE_TYPE']; ?>'  style='cursor:pointer;'><?php echo $installationStrings['LBL_FIX_NOW']; ?></a>)</td>
 									</tr>
 									<?php } ?>
 								</table>

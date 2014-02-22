@@ -356,20 +356,43 @@ class Vtiger_MailScannerInfo {
 	 */
 	function delete() {
 		global $adb;
+		
+		// Delete dependencies
+		if(!empty($this->rules)) {
+			foreach($this->rules as $rule) {
+				$rule->delete();
+			}
+		}
+		
 		if($this->scannerid) {
 			$tables = Array(
 				'vtiger_mailscanner',
 				'vtiger_mailscanner_ids', 
-				'vtiger_mailscanner_folders',
-				'vtiger_mailscanner_rules');
+				'vtiger_mailscanner_folders'
+			);
 			foreach($tables as $table) {
-				$adb->pquery("DELETE FROM $table WHERE scannerid=?",
-					Array($this->scannerid));
+				$adb->pquery("DELETE FROM $table WHERE scannerid=?", Array($this->scannerid));
 			}
 			$adb->pquery("DELETE FROM vtiger_mailscanner_ruleactions
 				WHERE actionid in (SELECT actionid FROM vtiger_mailscanner_actions WHERE scannerid=?)", Array($this->scannerid));
 			$adb->pquery("DELETE FROM vtiger_mailscanner_actions WHERE scannerid=?", Array($this->scannerid));
 		}
+	}
+	
+	/**
+	 * List all the mail-scanners configured.
+	 */
+	static function listAll() {
+		$scanners = array();
+		
+		global $adb;
+		$result = $adb->pquery("SELECT scannername FROM vtiger_mailscanner", array());
+		if($result && $adb->num_rows($result)) {
+			while($resultrow = $adb->fetch_array($result)) {
+				$scanners[] = new self( decode_html($resultrow['scannername'] ));
+			}
+		}
+		return $scanners;
 	}
 }
 ?>

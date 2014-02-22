@@ -30,7 +30,7 @@ $rescanfolder = ($_REQUEST['mailboxinfo_rescan_folders'] == 'true')? true : fals
 
 $isconnected = false;
 
-$scannerinfo = new Vtiger_MailScannerInfo('DEFAULT');
+$scannerinfo = new Vtiger_MailScannerInfo(trim($_REQUEST['hidden_scannername']));
 
 if(!$scannerinfo->compare($newscannerinfo)) {
 	$mailbox = new Vtiger_MailBox($newscannerinfo);

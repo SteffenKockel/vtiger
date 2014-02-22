@@ -222,7 +222,7 @@ function saveEditDash(dashRowId){
  * @param string sid - the stuffid of the widget
  */
 function DelStuff(sid){
-	if(confirm("Are you sure you want to delete?")){
+	if(confirm(alert_arr.SURE_TO_DELETE)){
 		new Ajax.Request(
 			'index.php',
 			{queue: {position: 'end', scope: 'command'},
@@ -240,7 +240,7 @@ function DelStuff(sid){
 						Effect.Appear('seqSettings');
 						setTimeout(hideSeqSettings,3000);
 					}else{
-						alert("Error while deleting.Please try again.")
+						alert(alert_arr.ERROR_DELETING_TRY_AGAIN)
 					}
 				}
 			}
@@ -316,18 +316,76 @@ function loadStuff(stuffid,stufftype){
 	);
 }
 
+function loadAllWidgets(widgetInfoList, batchSize){
+	var batchWidgetInfoList = [];
+	var widgetInfo = {};
+	for(var index =0 ; index < widgetInfoList.length;++index) {
+		var widgetId = widgetInfoList[index].widgetId;
+		var widgetType = widgetInfoList[index].widgetType;
+		widgetInfo[widgetId] = widgetType;
+		$('refresh_'+widgetId).innerHTML=$('vtbusy_homeinfo').innerHTML;
+		batchWidgetInfoList.push(widgetInfoList[index]);
+		if((index > 0 && (index+1) % batchSize == 0) || index+1 == widgetInfoList.length) {
+			new Ajax.Request(
+				'index.php',{
+					queue: {position: 'end', scope: 'command'},
+					method: 'post',
+					postBody:'module=Home&action=HomeAjax&file=HomeWidgetBlockList&widgetInfoList='
+						+ JSON.stringify(batchWidgetInfoList),
+					onComplete: function(response){
+						var responseVal=JSON.parse(response.responseText);
+						for(var widgetId in responseVal) {
+							if(responseVal.hasOwnProperty(widgetId)) {
+								$('stuffcont_'+widgetId).innerHTML = responseVal[widgetId];
+								$('refresh_'+widgetId).innerHTML='';
+								var widgetType = widgetInfo[widgetId];
+								if(widgetType=="Module" && $('more_'+widgetId).value != null &&
+										$('more_'+widgetId).value != '') {
+									$('a_'+widgetId).href = "index.php?module="+
+									$('more_'+widgetId).value+"&action=ListView&viewname="+
+									$('cvid_'+widgetId).value;
+								} else if(widgetType == "Default" && typeof($('a_'+widgetId)) !=
+										'undefined'){
+									if(typeof $('more_'+widgetId) != 'undefined' &&
+											$('more_'+widgetId).value != ''){
+										$('a_'+widgetId).style.display = 'block';
+										var url = "index.php?module="+$('more_'+widgetId).value+
+											"&action=index";
+										if($('search_qry_'+widgetId)!=''){
+											url += $('search_qry_'+widgetId).value;
+										}
+										$('a_'+widgetId).href = url;
+									}else{
+										$('a_'+widgetId).style.display = 'none';
+									}
+								} else if(widgetType=="RSS"){
+									$('a_'+widgetId).href = $('more_'+widgetId).value;
+								} else if(widgetType=="DashBoard"){
+									$('a_'+widgetId).href = "index.php?module=Dashboard&action="+
+										"index&type="+$('more_'+stuffid).value;
+								}
+							}
+						}
+					}
+				}
+			);
+			batchWidgetInfoList = [];
+		}
+	}
+}
+
 /**
  * this function validates the form for creating a new widget
  */
 function frmValidate(){
 	if(trim($('stufftitle_id').value)==""){
-		alert("Please enter Window Title");
+		alert(alert_arr.LBL_ENTER_WINDOW_TITLE);
 		$('stufftitle_id').focus();
 		return false;
 	}
 	if($('stufftype_id').value=="RSS"){			
 		if($('txtRss_id').value==""){
-			alert("Please enter RSS URL");
+			alert(alert_arr.LBL_ENTER_RSS_URL);
 			$('txtRss_id').focus();
 			return false;
 		}
@@ -351,7 +409,7 @@ function frmValidate(){
 			}
 		}
 		if(cnt>2){
-			alert("Please select only two fields");
+			alert(alert_arr.LBL_SELECT_ONLY_FIELDS);
 			selVal.focus();
 			return false;
 		}else{
@@ -400,7 +458,7 @@ function frmValidate(){
 			onComplete: function(response){
 				var responseVal=response.responseText;
 				if(!response.responseText){
-					alert("Unable to add homestuff! Please try again");
+					alert(alert_arr.LBL_ADD_HOME_WIDGET);
 					$('vtbusy_info').style.display="none";
 					$('stufftitle_id').value='';
 					$('txtRss_id').value='';

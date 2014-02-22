@@ -144,13 +144,17 @@
 				{if $workflow->executionConditionAsLabel() eq 'ON_FIRST_SAVE'}checked{/if}/></td> 
 				<td>{$MOD.LBL_ONLY_ON_FIRST_SAVE}.</td></tr>
 			<tr><td><input type="radio" name="execution_condition" value="ONCE" 
-							{if $workflow->executionConditionAsLabel() eq 'ONCE'}checked{/if} /></td>
-							<td>{$MOD.LBL_UNTIL_FIRST_TIME_CONDITION_TRUE}.</td></tr>
-						<tr><td><input type="radio" name="execution_condition" value="ON_EVERY_SAVE" 
+				{if $workflow->executionConditionAsLabel() eq 'ONCE'}checked{/if} /></td>
+				<td>{$MOD.LBL_UNTIL_FIRST_TIME_CONDITION_TRUE}.</td></tr>
+			<tr><td><input type="radio" name="execution_condition" value="ON_EVERY_SAVE" 
 				{if $workflow->executionConditionAsLabel() eq 'ON_EVERY_SAVE'}checked{/if}/></td>
 				<td>{$MOD.LBL_EVERYTIME_RECORD_SAVED}.</td></tr>
-		</table>
-		
+			<tr><td><input type="radio" name="execution_condition" value="ON_MODIFY" 
+				{if $workflow->executionConditionAsLabel() eq 'ON_MODIFY'}checked{/if}/></td>
+				<td>{$MOD.LBL_ON_MODIFY}.</td></tr>
+					
+
+<!-- Workflow Conditions -->		
 		<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
 			<tr>
 				<td class="big" nowrap="nowrap">

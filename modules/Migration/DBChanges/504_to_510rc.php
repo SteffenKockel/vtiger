@@ -145,15 +145,6 @@ function addFieldSecurity($tabid, $fieldid, $allow_merge=false) {
 		$profileid = $adb->query_result($profile_result,$j,'profileid');
 		ExecuteQuery("INSERT INTO vtiger_profile2field (profileid, tabid, fieldid, visible, readonly) VALUES($profileid, $tabid, $fieldid, 0, 1)");
 	}
-	
-	if ($allow_merge) {
-		$user_result = $adb->query("select distinct(id) as userid from vtiger_users");
-		$num_users = $adb->num_rows($user_result);
-		for($j=0; $j<$num_users; $j++) {
-			$userid = $adb->query_result($user_result,$j,'userid');
-			ExecuteQuery("INSERT INTO vtiger_user2mergefields VALUES($userid, $tabid, $fieldid, 0)");
-		}
-	}
 }
 
 /* Add Total column in default customview of Purchase Order */
@@ -214,43 +205,12 @@ ExecuteQuery("insert into vtiger_field (tabid, fieldid, columnname, tablename, g
 ExecuteQuery("INSERT INTO vtiger_actionmapping values(10,'DuplicatesHandling',0)");
 ExecuteQuery("CREATE TABLE IF NOT EXISTS vtiger_user2mergefields (userid int(11) REFERENCES vtiger_users( id ) , tabid int( 19 ) ,fieldid int( 19 ), visible int(2))  ENGINE=InnoDB DEFAULT CHARSET=utf8;");
 
-function insertUser2mergefields($userid, $tabid)
-{
-	global $log,$adb;
-	$log->debug("Entering insertUser2mergefields(".$userid.") method ...");
-        $log->info("in insertUser2mergefields ".$userid);
-
-	foreach($tabid AS $key=>$tab_id) { 
-        $fld_result = getFieldsResultForMerge($tab_id);
-        if ($fld_result != null) {
-    		$num_rows = $adb->num_rows($fld_result);
-			for($j=0; $j<$num_rows; $j++) {
-				$field_id = $adb->query_result($fld_result,$j,'fieldid'); 
-				$data_type = explode("~",$adb->query_result($fld_result,$j,'typeofdata')); 
-				if($data_type[1] == 'M') { 
-					$visible = 1; 
-				} else { 
-					$visible = 2; 
-				} 
-				ExecuteQuery("insert into vtiger_user2mergefields values ($userid, $tab_id, $field_id, $visible)");
-	        }
-        }
-	}
-	$log->debug("Exiting insertUser2mergefields method ...");
-}
-
 $tabid = Array(); 
 $tab_res = $adb->query("SELECT distinct tabid FROM vtiger_tab"); 
 $noOfTabs = $adb->num_rows($tab_res); 
 for($i=0;$i<$noOfTabs;$i++) { 
 	$tabid[] = $adb->query_result($tab_res,$i,'tabid'); 
-} 
-
-$usr_sql = $adb->query("select id from vtiger_users"); 
-$num_usr = $adb->num_rows($usr_sql); 
-for($i=0;$i<$num_usr;$i++) { 
-	insertUser2mergefields($adb->query_result($usr_sql,$i,'id'),$tabid); 
-} 
+}
 
 $profile_sql = $adb->query("select profileid from vtiger_profile"); 
 $num_profile = $adb->num_rows($profile_sql);
@@ -365,6 +325,7 @@ ExecuteQuery("UPDATE vtiger_crmentity SET setype='Documents' WHERE setype='Notes
 
 $attachmentidQuery = 'select vtiger_seattachmentsrel.attachmentsid as attachmentid, vtiger_seattachmentsrel.crmid as id from vtiger_seattachmentsrel INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_seattachmentsrel.crmid WHERE vtiger_crmentity.deleted = 0';
 $res = $adb->pquery($attachmentidQuery,array());
+global $default_charset;
 if($adb->num_rows($res)>0){
 	for($index=0;$index<$adb->num_rows($res);$index++){
 		$attachmentid = $adb->query_result($res,$index,'attachmentid');
@@ -374,6 +335,7 @@ if($adb->num_rows($res)>0){
 			 $attachres = $adb->pquery($attachmentInfoQuery,array($attachmentid));
 			 if($adb->num_rows($attachres)>0){
 				 $filename = $adb->query_result($attachres,0,'name');
+				 $filename = $adb->sql_escape_string(html_entity_decode($filename,ENT_QUOTES,$default_charset));
 				 $attch_sub = $adb->query_result($attachres,0,'subject');
 				 $description = $adb->query_result($attachres,0,'description');
 				 $filepath = $adb->query_result($attachres,0,'path');
@@ -1520,10 +1482,6 @@ ExecuteQuery("INSERT INTO vtiger_relatedlists VALUES(".$adb->getUniqueID('vtiger
 require_once 'include/Webservices/Utils.php';
 webserviceMigration();
 
-/* Install Vtlib Compliant Modules */
-installMandatoryModules();
-require_once('include/utils/installVtlibSelectedModules.php');
-
 /*adding B2C model support*/
 ExecuteQuery("alter table vtiger_potential change accountid related_to int(19)");
 $sql = "select fieldid from vtiger_field where tabid=? and columnname=?";
@@ -1533,23 +1491,6 @@ ExecuteQuery("update vtiger_field set uitype='10', typeofdata='V~M', columnname=
 ExecuteQuery("insert into vtiger_fieldmodulerel (fieldid, module, relmodule, status, sequence) values ($fieldid, 'Potentials', 'Accounts', NULL, 0), ($fieldid, 'Potentials', 'Contacts', NULL, 1)");
 
 ExecuteQuery("update vtiger_cvcolumnlist set columnname='vtiger_potential:related_to:related_to:Potentials_Related_To:V' where columnname='vtiger_account:accountname:accountname:Potentials_Account_Name:V'");
-
-// Function to call installation of mandatory modules
-function installMandatoryModules(){	
-
-	if ($handle = opendir('packages/5.1.0/mandatory')) {	    
-	    
-	    while (false !== ($file = readdir($handle))) {
-	        $filename_arr = explode(".", $file);
-	        $packagename = $filename_arr[0];
-	        if (!empty($packagename)) {
-	        	$packagepath = "packages/5.1.0/mandatory/$file";
-	        	installVtlibModule($packagename, $packagepath);
-	        }
-	    }
-	    closedir($handle);
-	}
-}
 	
 // Function to populate Links
 function populateLinks() {
@@ -1924,7 +1865,7 @@ for($i=0 ; $i<$rows ;$i++) {
 	$cc = $adb->query_result($result,$i,'cc_email');
 	$bcc = $adb->query_result($result,$i,'bcc_email');
 	
-	$to = ereg_replace("###",",",$to);
+	$to = preg_replace("/###/",",",$to);
 	$to = str_replace('&amp;lt;','<',$to);
 	$to = str_replace('&amp;gt;','>',$to);
 	$to = explode(',',$to);
@@ -1932,13 +1873,13 @@ for($i=0 ; $i<$rows ;$i++) {
 	
 	$cc = str_replace('&amp;lt;','<',$cc);
 	$cc = str_replace('&amp;gt;','>',$cc);
-	$cc = ereg_replace("###",",",$cc);
+	$cc = preg_replace("/###/",",",$cc);
 	$cc = explode(',',$cc);
 	$cc_json = $json->encode($cc);
 	
 	$bcc = str_replace('&amp;lt;','<',$bcc);
 	$bcc = str_replace('&amp;gt;','>',$bcc);
-	$bcc = ereg_replace("###",",",$bcc);
+	$bcc = preg_replace("/###/",",",$bcc);
 	$bcc = explode(',',$bcc);
 	$bcc_json = $json->encode($bcc);
 	

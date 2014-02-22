@@ -20,43 +20,24 @@ require_once('modules/Calendar/Activity.php');
 require_once('modules/Documents/Documents.php');
 require_once('modules/Emails/Emails.php');
 require_once('modules/Users/Users.php');
-require_once('modules/Import/ImportMap.php');
-require_once('modules/Import/UsersLastImport.php');
 require_once('modules/Users/LoginHistory.php');
 require_once('data/Tracker.php');
 require_once('include/utils/utils.php');
 require_once('modules/Users/DefaultDataPopulator.php');
 require_once('modules/Users/CreateUserPrivilegeFile.php');
 
-session_start();
 // load the config_override.php file to provide default user settings
 if (is_file("config_override.php")) {
 	require_once("config_override.php");
 }
 
-$db = PearDatabase::getInstance();
-
+$adb = PearDatabase::getInstance();
 $log =& LoggerManager::getLogger('INSTALL');
-
-function eecho($msg = FALSE) {
-	if ($useHtmlEntities) {
-		echo htmlentities(nl2br($msg));
-	}
-	else {
-		echo $msg;
-	}
-}
 
 function create_default_users_access() {
       	global $log, $adb;
         global $admin_email;
         global $admin_password;
-		global $standarduser_email;
-		global $standarduser_password;
-        global $create_default_user;
-        global $default_user_name;
-        global $default_password;
-        global $default_user_is_admin;
 
         $role1_id = $adb->getUniqueID("vtiger_role");
 		$role2_id = $adb->getUniqueID("vtiger_role");
@@ -75,112 +56,12 @@ function create_default_users_access() {
         $adb->query("insert into vtiger_role values('H".$role4_id."','Sales Manager','H".$role1_id."::H".$role2_id."::H".$role3_id."::H".$role4_id."',3)");
         $adb->query("insert into vtiger_role values('H".$role5_id."','Sales Man','H".$role1_id."::H".$role2_id."::H".$role3_id."::H".$role4_id."::H".$role5_id."',4)");
         
-        // Invalidate any cached information
-    	VTCacheUtils::clearRoleSubordinates($roleId);
-                
-        // create default admin user
-    	$user = new Users();
-        $user->column_fields["last_name"] = 'Administrator';
-        $user->column_fields["user_name"] = 'admin';
-        $user->column_fields["status"] = 'Active';
-        $user->column_fields["is_admin"] = 'on';
-        $user->column_fields["user_password"] = $admin_password;
-        $user->column_fields["tz"] = 'Europe/Berlin';
-        $user->column_fields["holidays"] = 'de,en_uk,fr,it,us,';
-        $user->column_fields["workdays"] = '0,1,2,3,4,5,6,';
-        $user->column_fields["weekstart"] = '1';
-        $user->column_fields["namedays"] = '';
-        $user->column_fields["currency_id"] = 1;
-        $user->column_fields["reminder_interval"] = '1 Minute';
-        $user->column_fields["reminder_next_time"] = date('Y-m-d H:i');
-		$user->column_fields["date_format"] = 'yyyy-mm-dd';
-		$user->column_fields["hour_format"] = 'am/pm';
-		$user->column_fields["start_hour"] = '08:00';
-		$user->column_fields["end_hour"] = '23:00';
-		$user->column_fields["imagename"] = '';
-		$user->column_fields["internal_mailer"] = '1';
-		$user->column_fields["activity_view"] = 'This Week';	
-		$user->column_fields["lead_view"] = 'Today';
-        //added by philip for default admin emailid
-		if($admin_email == '')
-			$admin_email ="admin@vtigeruser.com";
-        $user->column_fields["email1"] = $admin_email;
-		$role_query = "select roleid from vtiger_role where rolename='CEO'";
-		$adb->checkConnection();
-		$adb->database->SetFetchMode(ADODB_FETCH_ASSOC);
-		$role_result = $adb->query($role_query);
-		$role_id = $adb->query_result($role_result,0,"roleid");
-		$user->column_fields["roleid"] = $role_id;
-
-        $user->save("Users");
-        $admin_user_id = $user->id;
-
-		//Creating the Standard User
-    	$user = new Users();
-        $user->column_fields["last_name"] = 'StandardUser';
-        $user->column_fields["user_name"] = 'standarduser';
-        $user->column_fields["is_admin"] = 'off';
-        $user->column_fields["status"] = 'Active'; 
-        $user->column_fields["user_password"] = $standarduser_password; 
-        $user->column_fields["tz"] = 'Europe/Berlin';
-        $user->column_fields["holidays"] = 'de,en_uk,fr,it,us,';
-        $user->column_fields["workdays"] = '0,1,2,3,4,5,6,';
-        $user->column_fields["weekstart"] = '1';
-        $user->column_fields["namedays"] = '';
-        $user->column_fields["reminder_interval"] = '1 Minute';
-        $user->column_fields["reminder_next_time"] = date('Y-m-d H:i');
-        $user->column_fields["currency_id"] = 1;
-		$user->column_fields["date_format"] = 'yyyy-mm-dd';
-		$user->column_fields["hour_format"] = '24';
-		$user->column_fields["start_hour"] = '08:00';
-		$user->column_fields["end_hour"] = '23:00';
-		$user->column_fields["imagename"] = '';
-		$user->column_fields["internal_mailer"] = '1';
-        $user->column_fields["activity_view"] = 'This Week';	
-		$user->column_fields["lead_view"] = 'Today';
-		$std_email ="standarduser@vtigeruser.com";
-        $user->column_fields["email1"] = $standarduser_email;
-		//to get the role id for standard_user	
-		$role_query = "SELECT roleid FROM vtiger_role WHERE rolename='Vice President'";
-		$adb->database->SetFetchMode(ADODB_FETCH_ASSOC);
-		$role_result = $adb->query($role_query);
-		$role_id = $adb->query_result($role_result,0,"roleid");
-		$user->column_fields["roleid"] = $role_id;
-
-	    $user->save('Users');
-		$std_user_id = $user->id;
-
-	    //Inserting into vtiger_groups table
-		$group1_id = $adb->getUniqueID("vtiger_users");
-		$group2_id = $adb->getUniqueID("vtiger_users");
-		$group3_id = $adb->getUniqueID("vtiger_users");
-		
-		$adb->query("insert into vtiger_groups values ('".$group1_id."','Team Selling','Group Related to Sales')");	
-		$adb->query("insert into vtiger_group2role values ('".$group1_id."','H".$role4_id."')");	
-		$adb->query("insert into vtiger_group2rs values ('".$group1_id."','H".$role5_id."')");	
-
-		$adb->query("insert into vtiger_groups values ('".$group2_id."','Marketing Group','Group Related to Marketing Activities')");	
-		$adb->query("insert into vtiger_group2role values ('".$group2_id."','H".$role2_id."')");	
-		$adb->query("insert into vtiger_group2rs values ('".$group2_id."','H".$role3_id."')");	
-
-		$adb->query("insert into vtiger_groups values ('".$group3_id."','Support Group','Group Related to providing Support to Customers')");
-		$adb->query("insert into vtiger_group2role values ('".$group3_id."','H".$role3_id."')");
-		$adb->query("insert into vtiger_group2rs values ('".$group3_id."','H".$role3_id."')");
-	
 		//Insert into vtiger_role2profile
 		$adb->query("insert into vtiger_role2profile values ('H".$role2_id."',".$profile1_id.")");
 		$adb->query("insert into vtiger_role2profile values ('H".$role3_id."',".$profile2_id.")");
 	  	$adb->query("insert into vtiger_role2profile values ('H".$role4_id."',".$profile2_id.")");
 		$adb->query("insert into vtiger_role2profile values ('H".$role5_id."',".$profile2_id.")"); 
 	   
-		// Setting user group relation for admin user
-	 	$adb->pquery("insert into vtiger_users2group values (?,?)", array($group2_id, $admin_user_id));
-	
-		// Setting user group relation for standard user
-	 	$adb->pquery("insert into vtiger_users2group values (?,?)", array($group1_id, $std_user_id));
-	 	$adb->pquery("insert into vtiger_users2group values (?,?)", array($group2_id, $std_user_id));
-	 	$adb->pquery("insert into vtiger_users2group values (?,?)", array($group3_id, $std_user_id));	
-		
 		//New Security Start
 		//Inserting into vtiger_profile vtiger_table
 		$adb->query("insert into vtiger_profile values ('".$profile1_id."','Administrator','Admin Profile')");	
@@ -831,14 +712,70 @@ function create_default_users_access() {
 		$adb->query("insert into vtiger_profile2utility values (".$profile4_id.",14,10,0)");
 		$adb->query("insert into vtiger_profile2utility values (".$profile4_id.",18,10,0)");
 	
+		 // Invalidate any cached information
+    	VTCacheUtils::clearRoleSubordinates();
+
+        // create default admin user
+    	$user = new Users();
+        $user->column_fields["last_name"] = 'Administrator';
+        $user->column_fields["user_name"] = 'admin';
+        $user->column_fields["status"] = 'Active';
+        $user->column_fields["is_admin"] = 'on';
+        $user->column_fields["user_password"] = $admin_password;
+        $user->column_fields["tz"] = 'Europe/Berlin';
+        $user->column_fields["holidays"] = 'de,en_uk,fr,it,us,';
+        $user->column_fields["workdays"] = '0,1,2,3,4,5,6,';
+        $user->column_fields["weekstart"] = '1';
+        $user->column_fields["namedays"] = '';
+        $user->column_fields["currency_id"] = 1;
+        $user->column_fields["reminder_interval"] = '1 Minute';
+        $user->column_fields["reminder_next_time"] = date('Y-m-d H:i');
+		$user->column_fields["date_format"] = 'yyyy-mm-dd';
+		$user->column_fields["hour_format"] = 'am/pm';
+		$user->column_fields["start_hour"] = '08:00';
+		$user->column_fields["end_hour"] = '23:00';
+		$user->column_fields["imagename"] = '';
+		$user->column_fields["internal_mailer"] = '1';
+		$user->column_fields["activity_view"] = 'This Week';
+		$user->column_fields["lead_view"] = 'Today';
+        //added by philip for default admin emailid
+		if($admin_email == '')
+			$admin_email ="admin@vtigeruser.com";
+        $user->column_fields["email1"] = $admin_email;
+		$role_query = "select roleid from vtiger_role where rolename='CEO'";
+		$adb->checkConnection();
+		$adb->database->SetFetchMode(ADODB_FETCH_ASSOC);
+		$role_result = $adb->query($role_query);
+		$role_id = $adb->query_result($role_result,0,"roleid");
+		$user->column_fields["roleid"] = $role_id;
+
+        $user->save("Users");
+        $admin_user_id = $user->id;
+
+		//Inserting into vtiger_groups table
+		$group1_id = $adb->getUniqueID("vtiger_users");
+		$group2_id = $adb->getUniqueID("vtiger_users");
+		$group3_id = $adb->getUniqueID("vtiger_users");
+
+		$adb->query("insert into vtiger_groups values ('".$group1_id."','Team Selling','Group Related to Sales')");
+		$adb->query("insert into vtiger_group2role values ('".$group1_id."','H".$role4_id."')");
+		$adb->query("insert into vtiger_group2rs values ('".$group1_id."','H".$role5_id."')");
+
+		$adb->query("insert into vtiger_groups values ('".$group2_id."','Marketing Group','Group Related to Marketing Activities')");
+		$adb->query("insert into vtiger_group2role values ('".$group2_id."','H".$role2_id."')");
+		$adb->query("insert into vtiger_group2rs values ('".$group2_id."','H".$role3_id."')");
+
+		$adb->query("insert into vtiger_groups values ('".$group3_id."','Support Group','Group Related to providing Support to Customers')");
+		$adb->query("insert into vtiger_group2role values ('".$group3_id."','H".$role3_id."')");
+		$adb->query("insert into vtiger_group2rs values ('".$group3_id."','H".$role3_id."')");
+		
+		// Setting user group relation for admin user
+	 	$adb->pquery("insert into vtiger_users2group values (?,?)", array($group2_id, $admin_user_id));
+
 		//Creating the flat files for admin user
 		createUserPrivilegesfile($admin_user_id);
 		createUserSharingPrivilegesfile($admin_user_id);
 		
-		//Creating the flat vtiger_files for standard user
-		createUserPrivilegesfile($std_user_id);
-		createUserSharingPrivilegesfile($std_user_id);
-
 		//Insert into vtiger_profile2field
 		insertProfile2field($profile1_id);
         insertProfile2field($profile2_id);	
@@ -849,12 +786,8 @@ function create_default_users_access() {
 	
 }
 
-//$startTime = microtime();
 $modules = array("DefaultDataPopulator");
-$focus=0;				
-// tables creation
-//eecho("Creating Core tables: ");
-//$adb->setDebug(true);
+$focus=0;
 $success = $adb->createTables("schema/DatabaseSchema.xml");
 
 //Postgres8 fix - create sequences. 
@@ -933,10 +866,8 @@ if($success==0)
 	die("Error: Tables not created.  Table creation failed.\n");
 elseif ($success==1)
 	die("Error: Tables partially created.  Table creation failed.\n");
-	//eecho("Tables Successfully created.\n");
 
-foreach ($modules as $module ) 
-{
+foreach ($modules as $module ) {
 	$focus = new $module();
 	$focus->create_tables();
 }
@@ -1008,13 +939,13 @@ require_once('modules/CustomView/PopulateCustomView.php');
 
 // ensure required sequences are created (adodb creates them as needed, but if
 // creation occurs within a transaction we get problems
-$db->getUniqueID("vtiger_crmentity");
-$db->getUniqueID("vtiger_seactivityrel");
-$db->getUniqueID("vtiger_freetags");
+$adb->getUniqueID("vtiger_crmentity");
+$adb->getUniqueID("vtiger_seactivityrel");
+$adb->getUniqueID("vtiger_freetags");
 
 //Master currency population
 //Insert into vtiger_currency vtiger_table
-$db->pquery("insert into vtiger_currency_info values(?,?,?,?,?,?,?,?)", array($db->getUniqueID("vtiger_currency_info"),$currency_name,$currency_code,$currency_symbol,1,'Active','-11','0'));
+$adb->pquery("insert into vtiger_currency_info values(?,?,?,?,?,?,?,?)", array($adb->getUniqueID("vtiger_currency_info"),$currency_name,$currency_code,$currency_symbol,1,'Active','-11','0'));
 
 // Register All the Events
 registerEvents($adb);
@@ -1031,16 +962,6 @@ populateLinks();
 // Set Help Information for Fields
 setFieldHelpInfo();
 
-// Install Vtlib Compliant Modules
-installMandatoryModules();
-require_once('include/utils/installVtlibSelectedModules.php');
-	
-// populate the db with seed data
-if ($db_populate) {
-	//eecho ("Populate seed data into $db_name");
-	include("install/populateSeedData.php");
-}
-
 // Register all the events here
 function registerEvents($adb) {
 	require_once('include/events/include.inc');
@@ -1051,6 +972,9 @@ function registerEvents($adb) {
 	
 	// Workflow manager
 	$em->registerHandler('vtiger.entity.aftersave', 'modules/com_vtiger_workflow/VTEventHandler.inc', 'VTWorkflowEventHandler');
+	
+	//Registering events for On modify
+	$em->registerHandler('vtiger.entity.afterrestore', 'modules/com_vtiger_workflow/VTEventHandler.inc', 'VTWorkflowEventHandler');
 }
 
 // Register all the entity methods here
@@ -1082,6 +1006,112 @@ function populateDefaultWorkflows($adb) {
 	$task->active=true;
 	$task->methodName = "UpdateInventory";
 	$tm->saveTask($task);
+	
+	
+	// Creating Workflow for Accounts when Notifyowner is true
+	
+	$vtaWorkFlow = new VTWorkflowManager($adb);
+	$accWorkFlow = $vtaWorkFlow->newWorkFlow("Accounts");
+	$accWorkFlow->test = '[{"fieldname":"notify_owner","operation":"is","value":"true:boolean"}]';
+	$accWorkFlow->description = "Send Email to user when Notifyowner is True";
+	$accWorkFlow->executionCondition=2;	
+	$vtaWorkFlow->save($accWorkFlow);
+	$id1=$accWorkFlow->id;
+	
+	$tm = new VTTaskManager($adb);
+	$task = $tm->createTask('VTEmailTask',$accWorkFlow->id);
+	$task->active=true;
+	$task->methodName = "NotifyOwner";
+	$task->recepient = "\$(assigned_user_id : (Users) email1)";
+	$task->subject = "Regarding Account Creation";
+	$task->content = "An Account has been assigned to you on vtigerCRM<br>Details of account are :<br><br>".
+			"AccountId:".'<b>$account_no</b><br>'."AccountName:".'<b>$accountname</b><br>'."Rating:".'<b>$rating</b><br>'.
+			"Industry:".'<b>$industry</b><br>'."AccountType:".'<b>$accounttype</b><br>'.
+			"Description:".'<b>$description</b><br><br><br>'."Thank You<br>Admin";
+	$task->summary="An account has been created ";
+	$tm->saveTask($task);
+	$adb->pquery("update com_vtiger_workflows set defaultworkflow=? where workflow_id=?",array(1,$id1));
+	
+	// Creating Workflow for Contacts when Notifyowner is true
+	
+	$vtcWorkFlow = new VTWorkflowManager($adb);
+	$conWorkFlow = 	$vtcWorkFlow->newWorkFlow("Contacts");
+	$conWorkFlow->summary="A contact has been created ";
+	$conWorkFlow->executionCondition=2;
+	$conWorkFlow->test = '[{"fieldname":"notify_owner","operation":"is","value":"true:boolean"}]';
+	$conWorkFlow->description = "Send Email to user when Notifyowner is True";
+	
+	$vtcWorkFlow->save($conWorkFlow);
+	$id1=$conWorkFlow->id;
+	$tm = new VTTaskManager($adb);
+	$task = $tm->createTask('VTEmailTask',$conWorkFlow->id);
+	$task->active=true;
+	$task->methodName = "NotifyOwner";
+	$task->recepient = "\$(assigned_user_id : (Users) email1)";
+	$task->subject = "Regarding Contact Creation";
+	$task->content = "An Contact has been assigned to you on vtigerCRM<br>Details of Contact are :<br><br>".
+			"Contact Id:".'<b>$contact_no</b><br>'."LastName:".'<b>$lastname</b><br>'."FirstName:".'<b>$firstname</b><br>'.
+			"Lead Source:".'<b>$leadsource</b><br>'.
+			"Department:".'<b>$department</b><br>'.
+			"Description:".'<b>$description</b><br><br><br>'."Thank You<br>Admin";
+	$task->summary="An contact has been created ";
+	$tm->saveTask($task);
+	$adb->pquery("update com_vtiger_workflows set defaultworkflow=? where workflow_id=?",array(1,$id1));
+	
+	
+	// Creating Workflow for Contacts when PortalUser is true
+	
+	$vtcWorkFlow = new VTWorkflowManager($adb);
+	$conpuWorkFlow = $vtcWorkFlow->newWorkFlow("Contacts");
+	$conpuWorkFlow->test = '[{"fieldname":"portal","operation":"is","value":"true:boolean"}]';
+	$conpuWorkFlow->description = "Send Email to user when Portal User is True";
+	$conpuWorkFlow->executionCondition=2;
+	$vtcWorkFlow->save($conpuWorkFlow);
+	$id1=$conpuWorkFlow->id;
+	
+	$tm = new VTTaskManager($adb);
+	$task = $tm->createTask('VTEmailTask',$conpuWorkFlow->id);
+	
+	$task->active=true;
+	$task->methodName = "NotifyOwner";
+	$task->recepient = "\$(assigned_user_id : (Users) email1)";
+	$task->subject = "Regarding Contact Assignment";
+	$task->content = "An Contact has been assigned to you on vtigerCRM<br>Details of Contact are :<br><br>".
+			"Contact Id:".'<b>$contact_no</b><br>'."LastName:".'<b>$lastname</b><br>'."FirstName:".'<b>$firstname</b><br>'.
+			"Lead Source:".'<b>$leadsource</b><br>'.
+			"Department:".'<b>$department</b><br>'.
+			"Description:".'<b>$description</b><br><br><br>'."And <b>CustomerPortal Login Details</b> is sent to the " .
+			"EmailID :-".'$email<br>'."<br>Thank You<br>Admin";
+		
+	$task->summary="An contact has been created ";
+	$tm->saveTask($task);
+	$adb->pquery("update com_vtiger_workflows set defaultworkflow=? where workflow_id=?",array(1,$id1));
+
+	// Creating Workflow for Potentials
+
+	$vtcWorkFlow = new VTWorkflowManager($adb);
+	$potentialWorkFlow = $vtcWorkFlow->newWorkFlow("Potentials");
+	$potentialWorkFlow->description = "Send Email to users on Potential creation";
+	$potentialWorkFlow->executionCondition=1;
+	$vtcWorkFlow->save($potentialWorkFlow);
+	$id1=$potentialWorkFlow->id;
+
+	$tm = new VTTaskManager($adb);
+	$task = $tm->createTask('VTEmailTask',$potentialWorkFlow->id);
+
+	$task->active=true;
+	$task->recepient = "\$(assigned_user_id : (Users) email1)";
+	$task->subject = "Regarding Potential Assignment";
+	$task->content = "An Potential has been assigned to you on vtigerCRM<br>Details of Potential are :<br><br>".
+			"Potential No:".'<b>$potential_no</b><br>'."Potential Name:".'<b>$potentialname</b><br>'.
+			"Amount:".'<b>$amount</b><br>'.
+			"Expected Close Date:".'<b>$closingdate</b><br>'.
+			"Type:".'<b>$opportunity_type</b><br><br><br>'.
+			"Description :".'$description<br>'."<br>Thank You<br>Admin";
+
+	$task->summary="An Potential has been created ";
+	$tm->saveTask($task);
+	$adb->pquery("update com_vtiger_workflows set defaultworkflow=? where workflow_id=?",array(1,$id1));
 }
 
 // Function to populate Links
@@ -1111,23 +1141,6 @@ function populateLinks() {
 		'index.php?module=Documents&action=EditView&return_module=$MODULE$&return_action=DetailView&return_id=$RECORD$&parent_id=$RECORD$',
 		'themes/images/bookMark.gif'
 	);
-}
-
-// Function to call installation of mandatory modules
-function installMandatoryModules(){	
-
-	if ($handle = opendir('packages/5.1.0/mandatory')) {	    
-	    
-	    while (false !== ($file = readdir($handle))) {
-	        $filename_arr = explode(".", $file);
-	        $packagename = $filename_arr[0];
-	        if (!empty($packagename)) {
-	        	$packagepath = "packages/5.1.0/mandatory/$file";
-	        	installVtlibModule($packagename, $packagepath);
-	        }
-	    }
-	    closedir($handle);
-	}
 }
 	
 function setFieldHelpInfo() {

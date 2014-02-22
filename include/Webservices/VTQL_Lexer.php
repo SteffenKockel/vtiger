@@ -1,13 +1,4 @@
 <?php
-/*+***********************************************************************************
- * The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- *************************************************************************************/
-
 global $where_col,$orderby,$in_started,$count;
 $where_col = false;
 $orderby = false;
@@ -41,7 +32,7 @@ if(strcmp($val, "*")===0){
 if(!$count){
 incrementN($lexer, 1);
 }
-return VTQL_Parser::ASTERISK;	
+return VTQL_Parser::ASTERISK;
 }else if((strcmp($val, "(")===0)){
 return VTQL_Parser::PARENOPEN;
 }else if(strcmp($val, ")")===0){
@@ -72,11 +63,12 @@ $lexer->current_state =0;
 $lexer->mandatory = false;
 if(!(strcasecmp($val, $lexer->optional_states[$lexer->current_state])===0)){
 return VTQL_Parser::TABLENAME;
-}	
+}
 }
 }
 function handlewhere($lexer, $val){
 global $where_col,$in_started;
+$val = trim($val);
 if((strcmp($val, "=")===0)){
 return VTQL_Parser::EQ;
 }else if((strcasecmp($val, $lexer->optional_states[$lexer->current_state])===0)){
@@ -210,7 +202,7 @@ return $this->token."";
         if ($this->index >= strlen($this->data)) {
             return false; // end of input
         }
-        $yy_global_pattern = "/^((\\w+|'(?:[^']|'')+'|\\(|\\)|(\\+|-)?\\d+|,|\\*|=|<|>|;))|^([ \t\r\n]+)/";
+        $yy_global_pattern = "/^((\\w+|'(?:[^']|'')+'|\\(|\\)|(\\+|-)?\\d+|,|\\*|(?!<|>)=|<(?!=)|>(?!=)|<=|>=|!=|;))|^([ \t\r\n]+)/";
 
         do {
             if (preg_match($yy_global_pattern, substr($this->data, $this->index), $yymatches)) {

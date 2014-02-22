@@ -47,10 +47,10 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 
 	$smarty = new vtigerCRM_Smarty();
 	$wfs = new VTWorkflowManager($adb);
-	$smarty->assign("moduleNames", vtGetModules($adb));
+	$smarty->assign("moduleNames", $util->vtGetModules($adb));
 	$smarty->assign("returnUrl", $requestUrl);
 
-	$listModule = $request["list_module"];
+	$listModule =$request['list_module'];
 	$smarty->assign("listModule", $listModule);
 	if($listModule==null || strtolower($listModule)=="all"){
 		$smarty->assign("workflows", $wfs->getWorkflows());

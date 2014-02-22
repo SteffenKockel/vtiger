@@ -14,6 +14,10 @@ require_once('Smarty_setup.php');
 
 $mode = $_REQUEST['mode'];
 
+if($mode == 'Ajax' && !empty($_REQUEST['xmode'])) {
+	$mode = $_REQUEST['xmode'];
+}
+
 /** Based on the mode include the MailScanner file. */
 if($mode == 'scannow') {
 	include('vtigercron.php');
@@ -22,6 +26,9 @@ if($mode == 'scannow') {
 } else if($mode == 'save') {
 	include('modules/Settings/MailScanner/MailScannerSave.php');
 
+} else if($mode == 'remove') {
+	include('modules/Settings/MailScanner/MailScannerRemove.php');
+	
 } else if($mode == 'rule') {
 	include('modules/Settings/MailScanner/MailScannerRule.php');
 } else if($mode == 'ruleedit') {

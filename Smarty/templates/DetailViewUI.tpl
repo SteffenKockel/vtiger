@@ -25,7 +25,7 @@
 
 				{if $keyid eq 11}
 					{if $USE_ASTERISK eq 'true'}
-						&nbsp;&nbsp;<span id="dtlview_{$label}"><a href='javascript:;' onclick='startCall("{$keyval}")'>{$keyval}</a></span>
+						&nbsp;&nbsp;<span id="dtlview_{$label}"><a href='javascript:;' onclick='startCall("{$keyval}", "{$ID}")'>{$keyval}</a></span>
 					{else}
 						&nbsp;&nbsp;<span id="dtlview_{$label}">{$keyval}</span>
 					{/if}
@@ -309,13 +309,13 @@
                       <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$label}" onMouseOver="hndMouseOver({$keyid},'{$label}');" onmouseout="fnhide('crmspanid');">&nbsp;<span id="dtlview_{$label}">{$keyval}&nbsp;</span>
                     	<div id="editarea_{$label}" style="display:none;">
                     	{if $MODULE neq 'Documents'}
-                        	{if $keyval eq 'yes'}                                              		  
+                        	{if $keyval eq $APP.yes}
                             	<input id="txtbox_{$label}" name="{$keyfldname}" type="checkbox" style="border:1px solid #bababa;" checked value="1">
                         	{else}
                           		<input id="txtbox_{$label}" type="checkbox" name="{$keyfldname}" style="border:1px solid #bababa;" value="0">
                        		{/if}
                        	{else}
-                         	{if $keyval eq 'yes'}                                              		  
+                         	{if $keyval eq $APP.yes}
                             	<input id="txtbox_{$label}" name="{$keyfldname}" type="checkbox" style="border:1px solid #bababa;" checked value="0">
                         	{else}
                           		<input id="txtbox_{$label}" type="checkbox" name="{$keyfldname}" style="border:1px solid #bababa;" value="1">

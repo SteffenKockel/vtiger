@@ -39,7 +39,13 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$instance = vtws_getModuleInstance($this->webserviceObject);
 		$this->idColumn = $instance->tab_name_index[$instance->table_name];
 		$this->baseTable = $instance->table_name;
-		
+		$this->tableList = $instance->tab_name;
+		$this->tableIndexList = $instance->tab_name_index;
+		if(in_array('vtiger_crmentity',$instance->tab_name)){
+			$this->defaultTableList = array('vtiger_crmentity');
+		}else{
+			$this->defaultTableList = array();
+		}
 		$this->tabId = null;
 	}
 	
@@ -235,6 +241,13 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		return parent::getUserAccessibleColumns();
 	}
 	
+	public function getModuleFields() {
+		if(!$this->meta){
+			$this->retrieveMeta();
+		}
+		return parent::getModuleFields();
+	}
+
 	function getColumnTableMapping(){
 		if(!$this->meta){
 			$this->retrieveMeta();
@@ -292,7 +305,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		if(!$this->meta){
 			$this->retrieveMeta();
 		}
-		parent::getEmailFields();
+		return parent::getEmailFields();
 	}
 	
 	function getFieldIdFromFieldName($fieldName){
@@ -326,7 +339,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$this->retrieveMetaForBlock($blockArray);
 		
 		$this->meta = true;
-		
+		VTWS_PreserveGlobal::flush();
 	}
 	
 	private function retrieveUserHierarchy(){
@@ -344,8 +357,8 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$tabid = $this->getTabId();
 		require('user_privileges/user_privileges_'.$this->user->id.'.php');
 		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0){
-				 	$sql = "select * from vtiger_field where tabid =? and block in (".generateQuestionMarks($block).") and displaytype in (1,2,3,4) and vtiger_field.presence in (0,2) group by columnname"; 
-				$params = array($tabid, $block);	
+			$sql = "select * from vtiger_field where tabid =? and block in (".generateQuestionMarks($block).") and displaytype in (1,2,3,4)"; 
+			$params = array($tabid, $block);	
 		}else{
 			$profileList = getCurrentUserProfileList();
 			
@@ -463,6 +476,23 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		return $nameList[$id];
 	}
 	
-}
+	public function getEntityAccessControlQuery(){
+		$accessControlQuery = '';
+		$instance = vtws_getModuleInstance($this->webserviceObject);
+		if($this->getTabName() != 'Users') {
+			$accessControlQuery = $instance->getNonAdminAccessControlQuery($this->getTabName(),
+					$this->user);
+		}
+		return $accessControlQuery;
+	}
 
+	public function getJoinClause($tableName) {
+		$instance = vtws_getModuleInstance($this->webserviceObject);
+		return $instance->getJoinClause($tableName);
+	}
+	
+	public function isModuleEntity() {
+		return true;
+	}
+}
 ?>

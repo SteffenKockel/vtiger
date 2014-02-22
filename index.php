@@ -187,13 +187,13 @@ if(isset($_REQUEST['module']))
 	$dir = @scandir($root_directory."modules");
 	$temp_arr = Array("CVS","Attic");
 	$res_arr = @array_intersect($dir,$temp_arr);
-	if(count($res_arr) == 0  && !ereg("[/.]",$module)) {
+	if(count($res_arr) == 0  && !preg_match("/[\/.]/",$module)) {
 		if(@in_array($module,$dir))
 			$is_module = true;
 	}
 	$in_dir = @scandir($root_directory."modules/".$module);
 	$res_arr = @array_intersect($in_dir,$temp_arr);
-	if(count($res_arr) == 0 && !ereg("[/.]",$module)) {
+	if(count($res_arr) == 0 && !preg_match("/[\/.]/",$module)) {
 		if(@in_array($action.".php",$in_dir))
 			$is_action = true;
 	}	
@@ -270,116 +270,133 @@ if(isset($action) && isset($module))
 {
 	$log->info("About to take action ".$action);
 	$log->debug("in $action");
-	if(ereg("^Save", $action) ||
-		ereg("^Delete", $action) ||
-		ereg("^Choose", $action) ||
-		ereg("^Popup", $action) ||
-		ereg("^ChangePassword", $action) ||
-		ereg("^Authenticate", $action) ||
-		ereg("^Logout", $action) ||
-		//ereg("^Export",$action) ||
-		ereg("^add2db", $action) ||
-		ereg("^result", $action) ||
-		ereg("^LeadConvertToEntities", $action) ||
-		ereg("^downloadfile", $action) ||
-		ereg("^massdelete", $action) ||
-		ereg("^updateLeadDBStatus",$action) ||
-		ereg("^AddCustomFieldToDB", $action) ||
-		ereg("^updateRole",$action) ||
-		ereg("^UserInfoUtil",$action) ||
-		ereg("^deleteRole",$action) ||
-		ereg("^UpdateComboValues",$action) ||
-		ereg("^fieldtypes",$action) ||
-		ereg("^app_ins",$action) ||
-		ereg("^minical",$action) ||
-		ereg("^minitimer",$action) ||
-		ereg("^app_del",$action) ||
-		ereg("^send_mail",$action) ||
-		ereg("^populatetemplate",$action) ||
-		ereg("^TemplateMerge",$action) ||
-		ereg("^testemailtemplateusage",$action) ||
-		ereg("^saveemailtemplate",$action) ||
-		ereg("^ProcessDuplicates", $action ) ||
-		ereg("^lastImport", $action ) ||
-		ereg("^lookupemailtemplate",$action) ||
-		ereg("^deletewordtemplate",$action) ||
-		ereg("^deleteemailtemplate",$action) ||
-		ereg("^CurrencyDelete",$action) ||
-		ereg("^deleteattachments",$action) ||
-		ereg("^MassDeleteUsers",$action) ||
-		ereg("^UpdateFieldLevelAccess",$action) ||
-		ereg("^UpdateDefaultFieldLevelAccess",$action) ||
-		ereg("^UpdateProfile",$action)  ||
-		ereg("^updateRelations",$action) ||
-		ereg("^updateNotificationSchedulers",$action) ||
-		ereg("^Star",$action) ||
-		ereg("^addPbProductRelToDB",$action) ||
-		ereg("^UpdateListPrice",$action) ||
-		ereg("^PriceListPopup",$action) ||
-		ereg("^SalesOrderPopup",$action) ||
-		ereg("^CreatePDF",$action) ||
-		ereg("^CreateSOPDF",$action) ||
-		ereg("^redirect",$action) ||
-		ereg("^webmail",$action) ||
-		ereg("^left_main",$action) ||
-		ereg("^delete_message",$action) ||
-		ereg("^mime",$action) ||
-		ereg("^move_messages",$action) ||
-		ereg("^folders_create",$action) ||
-		ereg("^imap_general",$action) ||
-		ereg("^mime",$action) ||
-		ereg("^download",$action) ||
-		ereg("^about_us",$action) ||
-		ereg("^SendMailAction",$action) ||
-		ereg("^CreateXL",$action) ||
-		ereg("^savetermsandconditions",$action) ||
-		ereg("^home_rss",$action) ||
-		ereg("^ConvertAsFAQ",$action) ||
-		ereg("^Tickerdetail",$action) ||
-		ereg("^".$module."Ajax",$action) ||
-		ereg("^ActivityAjax",$action) ||
-		ereg("^chat",$action) ||
-		ereg("^vtchat",$action) ||
-		ereg("^updateCalendarSharing",$action) ||
-		ereg("^disable_sharing",$action) ||
-		ereg("^HeadLines",$action) ||
-		ereg("^TodoSave",$action) ||
-		ereg("^RecalculateSharingRules",$action) ||
-		(ereg("^body",$action) && ereg("^Webmails",$module)) ||
-		(ereg("^dlAttachments",$action) && ereg("^Webmails",$module)) ||
-		(ereg("^DetailView",$action) &&	ereg("^Webmails",$module) ) ||
-		ereg("^savewordtemplate",$action) ||
-		ereg("^mailmergedownloadfile",$action) || ereg("^Webmails",$module) && ereg("^get_img",$action) || ereg("^download",$action) || 
-		ereg("^getListOfRecords", $action) ||
-		ereg("^AddBlockFieldToDB", $action) ||
-		ereg("^AddBlockToDB", $action)  ||
-		ereg("^MassEditSave", $action)
+	if(preg_match("/^Save/", $action) ||
+		preg_match("/^Delete/", $action) ||
+		preg_match("/^Choose/", $action) ||
+		preg_match("/^Popup/", $action) ||
+		preg_match("/^ChangePassword/", $action) ||
+		preg_match("/^Authenticate/", $action) ||
+		preg_match("/^Logout/", $action) ||
+		preg_match("/^add2db/", $action) ||
+		preg_match("/^result/", $action) ||
+		preg_match("/^LeadConvertToEntities/", $action) ||
+		preg_match("/^downloadfile/", $action) ||
+		preg_match("/^massdelete/", $action) ||
+		preg_match("/^updateLeadDBStatus/",$action) ||
+		preg_match("/^AddCustomFieldToDB/", $action) ||
+		preg_match("/^updateRole/",$action) ||
+		preg_match("/^UserInfoUtil/",$action) ||
+		preg_match("/^deleteRole/",$action) ||
+		preg_match("/^UpdateComboValues/",$action) ||
+		preg_match("/^fieldtypes/",$action) ||
+		preg_match("/^app_ins/",$action) ||
+		preg_match("/^minical/",$action) ||
+		preg_match("/^minitimer/",$action) ||
+		preg_match("/^app_del/",$action) ||
+		preg_match("/^send_mail/",$action) ||
+		preg_match("/^populatetemplate/",$action) ||
+		preg_match("/^TemplateMerge/",$action) ||
+		preg_match("/^testemailtemplateusage/",$action) ||
+		preg_match("/^saveemailtemplate/",$action) ||
+		preg_match("/^ProcessDuplicates/", $action ) ||
+		preg_match("/^lastImport/", $action ) ||
+		preg_match("/^lookupemailtemplate/",$action) ||
+		preg_match("/^deletewordtemplate/",$action) ||
+		preg_match("/^deleteemailtemplate/",$action) ||
+		preg_match("/^CurrencyDelete/",$action) ||
+		preg_match("/^deleteattachments/",$action) ||
+		preg_match("/^MassDeleteUsers/",$action) ||
+		preg_match("/^UpdateFieldLevelAccess/",$action) ||
+		preg_match("/^UpdateDefaultFieldLevelAccess/",$action) ||
+		preg_match("/^UpdateProfile/",$action)  ||
+		preg_match("/^updateRelations/",$action) ||
+		preg_match("/^updateNotificationSchedulers/",$action) ||
+		preg_match("/^Star/",$action) ||
+		preg_match("/^addPbProductRelToDB/",$action) ||
+		preg_match("/^UpdateListPrice/",$action) ||
+		preg_match("/^PriceListPopup/",$action) ||
+		preg_match("/^SalesOrderPopup/",$action) ||
+		preg_match("/^CreatePDF/",$action) ||
+		preg_match("/^CreateSOPDF/",$action) ||
+		preg_match("/^redirect/",$action) ||
+		preg_match("/^webmail/",$action) ||
+		preg_match("/^left_main/",$action) ||
+		preg_match("/^delete_message/",$action) ||
+		preg_match("/^mime/",$action) ||
+		preg_match("/^move_messages/",$action) ||
+		preg_match("/^folders_create/",$action) ||
+		preg_match("/^imap_general/",$action) ||
+		preg_match("/^mime/",$action) ||
+		preg_match("/^download/",$action) ||
+		preg_match("/^about_us/",$action) ||
+		preg_match("/^SendMailAction/",$action) ||
+		preg_match("/^CreateXL/",$action) ||
+		preg_match("/^savetermsandconditions/",$action) ||
+		preg_match("/^home_rss/",$action) ||
+		preg_match("/^ConvertAsFAQ/",$action) ||
+		preg_match("/^Tickerdetail/",$action) ||
+		preg_match("/^".$module."Ajax/",$action) ||
+		preg_match("/^ActivityAjax/",$action) ||
+		preg_match("/^chat/",$action) ||
+		preg_match("/^vtchat/",$action) ||
+		preg_match("/^updateCalendarSharing/",$action) ||
+		preg_match("/^disable_sharing/",$action) ||
+		preg_match("/^HeadLines/",$action) ||
+		preg_match("/^TodoSave/",$action) ||
+		preg_match("/^RecalculateSharingRules/",$action) ||
+		(preg_match("/^body/",$action) && preg_match("/^Webmails/",$module)) ||
+		(preg_match("/^dlAttachments/",$action) && preg_match("/^Webmails/",$module)) ||
+		(preg_match("/^DetailView/",$action) && preg_match("/^Webmails/",$module)) ||
+		preg_match("/^savewordtemplate/",$action) ||
+		preg_match("/^mailmergedownloadfile/",$action) ||
+		(preg_match("/^Webmails/",$module) && preg_match("/^get_img/",$action)) ||
+		preg_match("/^download/",$action) ||
+		preg_match("/^getListOfRecords/", $action) ||
+		preg_match("/^AddBlockFieldToDB/", $action) ||
+		preg_match("/^AddBlockToDB/", $action)  ||
+		preg_match("/^MassEditSave/", $action) ||
+		preg_match("/^iCalExport/",$action)
 		)
 	{
 		$skipHeaders=true;
 		//skip headers for all these invocations as they are mostly popups
-		if(ereg("^Popup", $action) ||
-			ereg("^ChangePassword", $action) ||
-			//ereg("^Export", $action) ||
-			ereg("^downloadfile", $action) ||
-			ereg("^fieldtypes",$action) ||
-			ereg("^lookupemailtemplate",$action) ||
-			ereg("^about_us",$action) ||
-			ereg("^home_rss",$action) ||
-			ereg("^".$module."Ajax",$action) ||
-			ereg("^chat",$action) ||
-			ereg("^vtchat",$action) ||
-			ereg("^massdelete", $action) ||
-			ereg("^mailmergedownloadfile",$action) || 	ereg("^get_img",$action) ||
-			ereg("^download",$action) ||
-			ereg("^ProcessDuplicates", $action ) ||
-			ereg("^lastImport", $action ) ||
-			ereg("^massdelete", $action ) ||
-			ereg("^getListOfRecords", $action) ||
-			ereg("^MassEditSave", $action))
+		if(preg_match("/^Popup/", $action) ||
+			preg_match("/^ChangePassword/", $action) ||
+			//preg_match("/^Export/", $action) ||
+			preg_match("/^downloadfile/", $action) ||
+			preg_match("/^fieldtypes/",$action) ||
+			preg_match("/^lookupemailtemplate/",$action) ||
+			preg_match("/^about_us/",$action) ||
+			preg_match("/^home_rss/",$action) ||
+			preg_match("/^".$module."Ajax/",$action) ||
+			preg_match("/^chat/",$action) ||
+			preg_match("/^vtchat/",$action) ||
+			preg_match("/^massdelete/", $action) ||
+			preg_match("/^mailmergedownloadfile/",$action) || 	preg_match("/^get_img/",$action) ||
+			preg_match("/^download/",$action) ||
+			preg_match("/^ProcessDuplicates/", $action ) ||
+			preg_match("/^lastImport/", $action ) ||
+			preg_match("/^massdelete/", $action ) ||
+			preg_match("/^getListOfRecords/", $action) ||
+			preg_match("/^MassEditSave/", $action) ||
+			preg_match("/^iCalExport/",$action)
+			)
 			$skipFooters=true;
 		//skip footers for all these invocations as they are mostly popups
-		if(ereg("^downloadfile", $action) || ereg("^fieldtypes",$action) || ereg("^mailmergedownloadfile",$action)|| ereg("^get_img",$action) || ereg("^MergeFieldLeads", $action) || ereg("^MergeFieldContacts", $action ) || ereg("^MergeFieldAccounts", $action ) || ereg("^MergeFieldProducts", $action ) || ereg("^MergeFieldHelpDesk", $action ) || ereg("^MergeFieldPotentials", $action ) || ereg("^MergeFieldVendors", $action ) || ereg("^dlAttachments", $action ))
+		if(preg_match("/^downloadfile/", $action)
+		|| preg_match("/^fieldtypes/",$action)
+		|| preg_match("/^mailmergedownloadfile/",$action)
+		|| preg_match("/^get_img/",$action)
+		|| preg_match("/^MergeFieldLeads/", $action)
+		|| preg_match("/^MergeFieldContacts/", $action )
+		|| preg_match("/^MergeFieldAccounts/", $action )
+		|| preg_match("/^MergeFieldProducts/", $action )
+		|| preg_match("/^MergeFieldHelpDesk/", $action )
+		|| preg_match("/^MergeFieldPotentials/", $action )
+		|| preg_match("/^MergeFieldVendors/", $action )
+		|| preg_match("/^dlAttachments/", $action )
+		|| preg_match("/^iCalExport/", $action)
+		)
 		{
 			$viewAttachment = true;
 		}
@@ -622,14 +639,15 @@ if(!$skipSecurityCheck)
 
 
 	require_once('include/utils/UserInfoUtil.php');
-	if(ereg('Ajax',$action))
-        {
-                $now_action=vtlib_purify($_REQUEST['file']);
-        }
-        else
-        {
-                $now_action=$action;
-        }
+	if(preg_match('/Ajax/',$action)) {
+		if($_REQUEST['ajxaction'] == 'LOADRELATEDLIST'){
+			$now_action = 'DetailView';
+		} else {
+			$now_action=vtlib_purify($_REQUEST['file']);
+		}
+	} else {
+		$now_action=$action;
+	}
         
 
         if(isset($_REQUEST['record']) && $_REQUEST['record'] != '')
@@ -799,8 +817,22 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 	// ActivityReminder Customization for callback
 	if(!$skipFooters) {
 	
-		if($current_user->id!=NULL && isPermitted('Calendar','index') == 'yes' && vtlib_isModuleActive('Calendar'))
-			echo "<script type='text/javascript'>if(typeof(ActivityReminderCallback) != 'undefined') ActivityReminderCallback();</script>";
+		if($current_user->id!=NULL && isPermitted('Calendar','index') == 'yes' &&
+				vtlib_isModuleActive('Calendar')) {
+			echo "<script type='text/javascript'>if(typeof(ActivityReminderCallback) != ".
+				"'undefined') ";
+			$cur_time = time();
+			$reminder_interval_reset = (($_SESSION['last_reminder_check_time'] + 
+					$_SESSION['next_reminder_interval']) - $cur_time) * 1000;
+			if(isset($_SESSION['last_reminder_check_time']) && $reminder_interval_reset > 0){
+				echo "window.setTimeout(function(){
+						ActivityReminderCallback();
+					},$reminder_interval_reset);";
+			} else {
+				echo "ActivityReminderCallback();";
+			}
+			echo "</script>";
+		}
 	}
 	// End
 	

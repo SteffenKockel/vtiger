@@ -51,7 +51,14 @@ if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check'] != '')
 	        die;
 	}
 }
-																		
+if((empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN']
+		!== (int)$_REQUEST['form_token']) && $_REQUEST['deleteImage'] != 'true' &&
+		$_REQUEST['changepassword'] != 'true') {
+	header("Location: index.php?action=Error&module=Users&error_string=".
+			urlencode($app_strings['LBL_PERMISSION']));
+	die;
+}
+
 if (isset($_POST['record']) && !is_admin($current_user) && $_POST['record'] != $current_user->id) echo ("Unauthorized access to user administration.");
 elseif (!isset($_POST['record']) && !is_admin($current_user)) echo ("Unauthorized access to user administration.");
 
@@ -66,6 +73,13 @@ else
     $focus->mode='';
 }    
 
+
+if($_REQUEST['deleteImage'] == 'true') {
+	$focus->id = $_REQUEST['recordid'];
+	$focus->deleteImage();
+	echo "SUCCESS";
+	exit;
+}
 
 if($_REQUEST['changepassword'] == 'true')
 {
@@ -185,21 +199,20 @@ $log->debug("Saved record with id of ".$return_id);
 if($_REQUEST['mode'] == 'create') {
 	global $app_strings, $mod_strings, $default_charset;
 	require_once('modules/Emails/mail.php');
-    $user_emailid = $focus->column_fields['email1'];	
-	
+    $user_emailid = $focus->column_fields['email1'];
+	// send email on Create user only if NOTIFY_OWNER_EMAILS is set to true
+
 	$subject = $mod_strings['User Login Details'];
 	$email_body = $app_strings['MSG_DEAR']." ". $focus->column_fields['last_name'] .",<br><br>";
-	$email_body .= $app_strings['LBL_PLEASE_CLICK'] . " <a href='" . $site_URL . "' target='_blank'>" 
-								. $app_strings['LBL_HERE'] . "</a> " . $mod_strings['LBL_TO_LOGIN'] . "<br><br>";
+	$email_body .= $app_strings['LBL_PLEASE_CLICK'] . " <a href='" . $site_URL . "' target='_blank'>"
+									. $app_strings['LBL_HERE'] . "</a> " . $mod_strings['LBL_TO_LOGIN'] . "<br><br>";
 	$email_body .= $mod_strings['LBL_USER_NAME'] . " : " . $focus->column_fields['user_name'] . "<br>";
 	$email_body .= $mod_strings['LBL_PASSWORD'] . " : " . $focus->column_fields['user_password'] . "<br>";
-    $email_body .= $mod_strings['LBL_ROLE_NAME'] . " : " . getRoleName($_POST['user_role']) . "<br>";	
-	
+	$email_body .= $mod_strings['LBL_ROLE_NAME'] . " : " . getRoleName($_POST['user_role']) . "<br>";
 	$email_body .= "<br>" . $app_strings['MSG_THANKS'] . "<br>" . $current_user->user_name;
 	$email_body = htmlentities($email_body, ENT_QUOTES, $default_charset);
-	
+
 	$mail_status = send_mail('Users',$user_emailid,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
-	
 	if($mail_status != 1) {
 		$mail_status_str = $user_emailid."=".$mail_status."&&&";		
 		$error_str = getMailErrorString($mail_status_str);

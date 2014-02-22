@@ -24,17 +24,21 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 	
 	global $adb;
 	global $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	
+
 	$today = date("Y-m-d", time());
 	$upcoming_condition = " AND (date_start = '$today' OR vtiger_recurringevents.recurringdate = '$today')";
 
-	$list_query = " select vtiger_crmentity.crmid,vtiger_crmentity.smownerid,vtiger_crmentity.setype, vtiger_recurringevents.recurringdate, vtiger_activity.* from vtiger_activity inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid left outer join vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid WHERE vtiger_crmentity.deleted=0 and vtiger_activity.activitytype not in ('Emails') AND ( vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and  (  vtiger_activity.eventstatus is NULL OR  vtiger_activity.eventstatus not in ('Held','Not Held') )".$upcoming_condition;
-	if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[16] == 3){
-		$sec_parameter=getListViewSecurityParameter('Calendar'); 
-		$list_query .= $sec_parameter; 
-	}
+	$list_query = " select vtiger_crmentity.crmid,vtiger_crmentity.smownerid,".
+		"vtiger_crmentity.setype, vtiger_recurringevents.recurringdate, vtiger_activity.* ".
+		"from vtiger_activity inner join vtiger_crmentity on vtiger_crmentity.crmid=".
+		"vtiger_activity.activityid LEFT JOIN vtiger_groups ON vtiger_groups.groupid = ".
+		"vtiger_crmentity.smownerid left outer join vtiger_recurringevents on ".
+		"vtiger_recurringevents.activityid=vtiger_activity.activityid";
+	$list_query .= getNonAdminAccessControlQuery('Calendar',$current_user);
+	$list_query .= "WHERE vtiger_crmentity.deleted=0 and vtiger_activity.activitytype not in ".
+	"('Emails') AND ( vtiger_activity.status is NULL OR vtiger_activity.status not in ".
+	"('Completed','Deferred')) and  (  vtiger_activity.eventstatus is NULL OR ".
+	"vtiger_activity.eventstatus not in ('Held','Not Held') )".$upcoming_condition;
 	
 	$list_query.= " GROUP BY vtiger_activity.activityid";
 	$list_query.= " ORDER BY date_start,time_start ASC";
@@ -83,7 +87,7 @@ function getActivityEntries($open_activity_list){
 		
 		$entries = array();
 		foreach($open_activity_list as $event){
-			$recur_date=ereg_replace('--','',$event['recurringdate']);
+			$recur_date=preg_replace('/--/','',$event['recurringdate']);
 			if($recur_date!=""){
 				$event['date_start']=$event['recurringdate'];
 			}
@@ -114,7 +118,8 @@ function getActivityEntries($open_activity_list){
 		}
 		$values = array('noofactivities'=>count($open_activity_list),'Header'=>$header,'Entries'=>$entries);
 	}else{
-		$values = array('Entries'=>$app_strings['LBL_NO_DATA']);
+		$values = array('noofactivities'=>count($open_activity_list), 'Entries'=>
+			'<div class="componentName">'.$app_strings['LBL_NO_DATA'].'</div>');
 	}
 	return $values;
 }
@@ -133,17 +138,20 @@ function homepage_getPendingActivities($maxval,$calCnt){
 	
 	global $adb;
 	global $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	
 	$today = date("Y-m-d", time());
 	$pending_condition = " AND (due_date = '$today' OR vtiger_recurringevents.recurringdate = '$today')";
 
-	$list_query = "select vtiger_crmentity.crmid,vtiger_crmentity.smownerid,vtiger_crmentity.setype, vtiger_recurringevents.recurringdate, vtiger_activity.* from vtiger_activity inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid left outer join vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid WHERE vtiger_crmentity.deleted=0 and (vtiger_activity.activitytype not in ('Emails')) AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.eventstatus not in ('Held','Not Held')) ".$pending_condition;
-	if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[16] == 3){
-		$sec_parameter=getListViewSecurityParameter('Calendar'); 
-		$list_query .= $sec_parameter; 
-	}
+	$list_query = "select vtiger_crmentity.crmid,vtiger_crmentity.smownerid,vtiger_crmentity.".
+	"setype, vtiger_recurringevents.recurringdate, vtiger_activity.* from vtiger_activity ".
+	"inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid LEFT ".
+	"JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid left outer join ".
+	"vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid".
+	$list_query .= getNonAdminAccessControlQuery('Calendar',$current_user);
+	$list_query .= "WHERE vtiger_crmentity.deleted=0 and (vtiger_activity.activitytype not in ".
+	"('Emails')) AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ".
+	"('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.".
+	"eventstatus not in ('Held','Not Held')) ".$pending_condition;
 	
 	$list_query.= " GROUP BY vtiger_activity.activityid";
 	$list_query.= " ORDER BY date_start,time_start ASC";

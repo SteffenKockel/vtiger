@@ -70,7 +70,7 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
     }
     $smarty->assign("INVITEDUSERS",$invited_users);
     $smarty->assign("UPDATEINFO",updateInfo($focus->id));
-    $related_array = getRelatedLists("Calendar", $focus);
+    $related_array = getRelatedListsInformation("Calendar", $focus);
     $cntlist = $related_array['Contacts']['entries'];
 	$is_fname_permitted = getFieldVisibilityPermission("Contacts", $current_user->id, 'firstname');
     $cnt_idlist = '';
@@ -86,8 +86,8 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 			    $cnt_namelist .= "\n";
 		    }
 		    $cnt_idlist .= $key;
-		    $contName = eregi_replace("(<a[^>]*>)(.*)(</a>)", "\\2", $cntvalue[0]);
-			if ($is_fname_permitted == '0') $contName .= ' '.eregi_replace("(<a[^>]*>)(.*)(</a>)", "\\2", $cntvalue[1]);
+		    $contName = preg_replace("/(<a[^>]*>)(.*)(<\/a>)/i", "\\2", $cntvalue[0]);
+			if ($is_fname_permitted == '0') $contName .= ' '.preg_replace("/(<a[^>]*>)(.*)(<\/a>)/i", "\\2", $cntvalue[1]);
 		    $cnt_namelist .= '<option value="'.$key.'">'.$contName.'</option>';
 		    $i++;
 	    }

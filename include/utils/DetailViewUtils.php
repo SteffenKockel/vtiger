@@ -1698,6 +1698,56 @@ function getDetailAssociatedProducts($module,$focus)
 * Param $focus - module object
 * Return type is an array
 */
+
+function getRelatedListsInformation($module,$focus)
+{
+	global $log;
+	$log->debug("Entering getRelatedLists(".$module.",".get_class($focus).") method ...");
+	global $adb;
+	global $current_user;
+	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+
+	$cur_tab_id = getTabid($module);
+
+	//$sql1 = "select * from vtiger_relatedlists where tabid=? order by sequence";
+	// vtlib customization: Do not picklist module which are set as in-active
+	$sql1 = "select * from vtiger_relatedlists where tabid=? and related_tabid not in (SELECT tabid FROM vtiger_tab WHERE presence = 1) order by sequence";
+	// END
+	$result = $adb->pquery($sql1, array($cur_tab_id));
+	$num_row = $adb->num_rows($result);
+	for($i=0; $i<$num_row; $i++) {
+		$rel_tab_id = $adb->query_result($result,$i,"related_tabid");
+		$function_name = $adb->query_result($result,$i,"name");
+		$label = $adb->query_result($result,$i,"label");
+		$actions = $adb->query_result($result,$i,"actions");
+		$relationId = $adb->query_result($result,$i,"relation_id");
+		if($rel_tab_id != 0) {
+			if($profileTabsPermission[$rel_tab_id] == 0) {
+		        	if($profileActionPermission[$rel_tab_id][3] == 0) {
+						// vtlib customization: Send more information (from module, related module)
+						// to the callee
+						$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id,
+								$rel_tab_id, $actions);
+						// END
+        			}
+			}
+		} else {
+			// vtlib customization: Send more information (from module, related module)
+			// to the callee
+			$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id,
+					$actions);
+			// END
+		}
+	}
+	$log->debug("Exiting getRelatedLists method ...");
+	return $focus_list;
+}
+
+/** This function returns the related vtiger_tab details for a given entity or a module.
+* Param $module - module name
+* Param $focus - module object
+* Return type is an array
+*/
 		
 function getRelatedLists($module,$focus)
 {
@@ -1715,29 +1765,27 @@ function getRelatedLists($module,$focus)
 	// END
 	$result = $adb->pquery($sql1, array($cur_tab_id));
 	$num_row = $adb->num_rows($result);
-	for($i=0; $i<$num_row; $i++)
-	{
+	for($i=0; $i<$num_row; $i++) {
 		$rel_tab_id = $adb->query_result($result,$i,"related_tabid");
 		$function_name = $adb->query_result($result,$i,"name");
 		$label = $adb->query_result($result,$i,"label");
 		$actions = $adb->query_result($result,$i,"actions");
-		if($rel_tab_id != 0)
-		{
-
-			if($profileTabsPermission[$rel_tab_id] == 0)
-			{
-		        	if($profileActionPermission[$rel_tab_id][3] == 0)
-					{
-						// vtlib customization: Send more information (from module, related module) to the callee
-						$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
+		$relationId = $adb->query_result($result,$i,"relation_id");
+		if($rel_tab_id != 0) {
+			if($profileTabsPermission[$rel_tab_id] == 0) {
+		        	if($profileActionPermission[$rel_tab_id][3] == 0) {
+						// vtlib customization: Send more information (from module, related module)
+						// to the callee
+						$focus_list[$label] = array('related_tabid' => $rel_tab_id,'relationId' =>
+							$relationId, 'actions' => $actions);
 						// END
         			}
 			}
-		}
-		else
-		{
-			// vtlib customization: Send more information (from module, related module) to the callee
-			$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
+		} else {
+			// vtlib customization: Send more information (from module, related module)
+			// to the callee
+			$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'relationId' =>
+				$relationId, 'actions' => $actions);
 			// END
 		}
 	}
@@ -1752,22 +1800,39 @@ function getRelatedLists($module,$focus)
 */
 
 
-function isPresentRelatedLists($module,$activity_mode='')
-{
-	global $adb;
-	$retval='true';
+function isPresentRelatedLists($module,$activity_mode='') {
+	static $moduleRelatedListCache = array();
+	
+	global $adb,$current_user;
+	$retval=array();
+	if(file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
+		include('tabdata.php');
+	}
+	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$tab_id=getTabid($module);
 	// We need to check if there is atleast 1 relation, no need to use count(*)  
-	$query= "select relation_id from vtiger_relatedlists where tabid=? LIMIT 1";
+	$query= "select relation_id,related_tabid, label from vtiger_relatedlists where tabid=? ".
+	"order by sequence";
 	$result=$adb->pquery($query, array($tab_id));
 	$count=$adb->num_rows($result);
-	if($count < 1 || ($module =='Calendar' && $activity_mode=='task'))
-	{
+	if($count < 1 || ($module =='Calendar' && $activity_mode=='task')) {
 		$retval='false';	
-	}	
-	return $retval;	
-			
-	
+	}else if(empty($moduleRelatedListCache[$module])){
+		for($i=0; $i<$count; ++$i) {
+			$relatedId = $adb->query_result($result, $i, 'relation_id');
+			$relationLabel = $adb->query_result($result, $i, 'label');
+			$relatedTabId = $adb->query_result($result, $i, 'related_tabid');
+			//check for module disable.
+			$permitted = $tab_seq_array[$relatedTabId];
+			if($permitted === 0 || empty($relatedTabId)){
+				if($is_admin || $profileTabsPermission[$relatedTabId] === 0 || empty($relatedTabId)){
+					$retval[$relatedId] = $relationLabel;
+				}
+			}
+		}
+		$moduleRelatedListCache[$module] = $retval;
+	}
+	return $moduleRelatedListCache[$module];
 }	
 
 /** This function returns the detailed block information of a record in a module.
@@ -1900,5 +1965,25 @@ function VT_detailViewNavigation($smarty,$recordNavigationInfo,$currrentRecordId
 	}
 }
 
+function getRelatedListInfoById($relationId){
+	static $relatedInfoCache = array();
+	if(isset($relatedInfoCache[$relationId])){
+		return $relatedInfoCache[$relationId];
+	}
+	$adb = PearDatabase::getInstance();
+	$sql1 = "select * from vtiger_relatedlists where relation_id=?";
+	$result = $adb->pquery($sql1, array($relationId));
+	$rowCount = $adb->num_rows($result);
+	$relationInfo = array();
+	if($rowCount > 0) {
+		$relationInfo['relatedTabId'] = $adb->query_result($result,0,"related_tabid");
+		$relationInfo['functionName'] = $adb->query_result($result,0,"name");
+		$relationInfo['label'] = $adb->query_result($result,0,"label");
+		$relationInfo['actions'] = $adb->query_result($result,0,"actions");
+		$relationInfo['relationId'] = $adb->query_result($result,0,"relation_id");
+	}
+	$relatedInfoCache[$relationId] = $relationInfo;
+	return $relatedInfoCache[$relationId];
+}
 
 ?>

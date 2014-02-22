@@ -812,8 +812,9 @@ else{
 		$uitype = 7;
 		//this may sound ridiculous passing decimal but that is the way adodb wants
 		$dbfldlength = $fldlength + $decimal + 1;
- 		$type="N(".$dbfldlength.".".$decimal.")";	// adodb type
-		$uichekdata='N~O~'.$fldlength .','.$decimal;
+		$type="N(".$dbfldlength.".".$decimal.")";	// adodb type
+		// Fix for http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/6363
+		$uichekdata='NN~O~'.$fldlength .','.$decimal;
 	}elseif($fldType == 'Percent'){
 		$uitype = 9;
 		$type="N(5.2)"; //adodb type

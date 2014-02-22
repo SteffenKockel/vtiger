@@ -51,10 +51,31 @@ function getMyFaq($maxval,$calCnt)
 
 	//Retreive the list from Database
 	//<<<<<<<<<customview>>>>>>>>>
-	$date_var = date('Y-m-d');
-
-	$where = ' and vtiger_crmentity.smownerid='.$current_user->id.' and  vtiger_faq.status <> \'Obsolete\' ORDER BY vtiger_crmentity.createdtime DESC';
-	$query = getListQuery("Faq",$where);
+	$currentModule = 'Faq';
+	$viewId = getCvIdOfAll($currentModule);
+	$queryGenerator = new QueryGenerator($currentModule, $current_user);
+	$queryGenerator->initForCustomViewById($viewId);
+	$meta = $queryGenerator->getMeta($currentModule);
+	$accessibleFieldNameList = array_keys($meta->getModuleFields());
+	$customViewFields = $queryGenerator->getCustomViewFields();
+	$fields = $queryGenerator->getFields();
+	$newFields = array_diff($fields, $customViewFields);
+	$widgetFieldsList = array('question','product_id');
+	$widgetFieldsList = array_intersect($accessibleFieldNameList, $widgetFieldsList);
+	$widgetSelectedFields = array_chunk(array_intersect($customViewFields, $widgetFieldsList), 2);
+	//select the first chunk of two fields
+	$widgetSelectedFields = $widgetSelectedFields[0];
+	if(count($widgetSelectedFields) < 2) {
+		$widgetSelectedFields = array_chunk(array_merge($widgetSelectedFields, $accessibleFieldNameList), 2);
+		//select the first chunk of two fields
+		$widgetSelectedFields = $widgetSelectedFields[0];
+	}
+	$newFields = array_merge($newFields, $widgetSelectedFields);
+	$queryGenerator->setFields($newFields);
+	$_REQUEST = getMyFaqSearch($_REQUEST);
+	$queryGenerator->addUserSearchConditions($_REQUEST);
+	$search_qry = '&query=true'.getSearchURL($_REQUEST);
+	$query = $queryGenerator->getQuery();
 
 	//<<<<<<<<customview>>>>>>>>>
 	
@@ -117,19 +138,28 @@ function getMyFaq($maxval,$calCnt)
 
 	//Retreive the List View Table Header
 	$title=array('myFaqs.gif',$current_module_strings['LBL_MY_FAQ'],'home_myfaq');
-	$listview_header = getListViewHeader($focus,"Faq",$url_string,$sorder,$order_by,"HomePage",$oCustomView);
-	$header = Array($listview_header[1],$listview_header[3]);
+	$controller = new ListViewController($adb, $current_user, $queryGenerator);
+	$controller->setHeaderSorting(false);
+	$header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,
+			$order_by, true);
 
-	$listview_entries = getListViewEntries($focus,"Faq",$list_result,$navigation_array,"HomePage","","EditView","Delete",$oCustomView);
-	foreach($listview_entries as $crmid=>$valuearray)
-	{
-		$entries[$crmid] = Array($valuearray[1],$valuearray[3]);	
-	}
-	
-	$search_qry = "&query=true&Fields0=vtiger_faq.status&Condition0=isn&Srch_value0=Obsolete&searchtype=advance&search_cnt=1&matchtype=any";
+	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,
+	$navigation_array, true);
 	
 	$values=Array('ModuleName'=>'Faq','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 	if ( ($display_empty_home_blocks && $noofrows == 0 ) || ($noofrows>0) )	
 		return $values;
 }
+
+function getMyFaqSearch($output) {
+	$output['&query'] = 'true';
+	$output['&Fields0'] = 'faqstatus';
+	$output['&Condition0'] = 'n';
+	$output['&Srch_value0'] = 'Obsolete';
+	$output['&searchtype'] = 'advance';
+	$output['&search_cnt'] = '1';
+	$output['matchtype'] = 'any';
+	return $output;
+}
+
 ?>

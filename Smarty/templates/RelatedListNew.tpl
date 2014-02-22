@@ -50,43 +50,6 @@ function gotoUpdateListPrice(id,pbid,proid)
 }
 {/literal}
 
-function loadCvList(type,id)
-{ldelim}
-	if($("lead_cv_list").value != 'None' || $("cont_cv_list").value != 'None')
-	{ldelim}
-        	$("status").style.display="inline";
-
-		if(type === 'Leads')
-		{ldelim}
-			new Ajax.Request(
-                        'index.php',
-                        {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                                method: 'post',
-                                postBody: 'module=Campaigns&action=CampaignsAjax&file=LoadList&ajax=true&return_action=DetailView&return_id='+id+'&list_type='+type+'&cvid='+$("lead_cv_list").value,
-                                onComplete: function(response) {ldelim}
-                                        $("status").style.display="none";
-                                        $("RLContents").innerHTML= response.responseText;
-                                {rdelim}
-                        {rdelim}
-                	);
-		{rdelim}
-
-		if(type === 'Contacts')
-		{ldelim}
-			new Ajax.Request(
-                        'index.php',
-                        {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                                method: 'post',
-                                postBody: 'module=Campaigns&action=CampaignsAjax&file=LoadList&ajax=true&return_action=DetailView&return_id='+id+'&list_type='+type+'&cvid='+$("cont_cv_list").value,
-                                onComplete: function(response) {ldelim}
-                                        $("status").style.display="none";
-                                        $("RLContents").innerHTML= response.responseText;
-                                {rdelim}
-                        {rdelim}
-                	);
-		{rdelim}
-	{rdelim}
-{rdelim}
 </script>
 
 <!-- Contents -->

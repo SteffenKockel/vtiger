@@ -45,7 +45,11 @@ function VTCreateTodoTask($){
 				$.each(eventStatusValues, function(i, v){
 					status.append('<option value="'+v['value']+'">'+v['label']+'</option>');
 				});
-				status.attr('value', taskStatus);
+				if(taskStatus!=''){
+					status.attr('value', taskStatus);
+				} else {
+					status.attr('value',eventStatusValues[0]['value']);
+				}
 				$('#task_status_busyicon').hide();
 				$('#task_status').show();
 				
@@ -53,7 +57,11 @@ function VTCreateTodoTask($){
 				$.each(taskPriorityValues, function(i, v){
 					priority.append('<option value="'+v['value']+'">'+v['label']+'</option>');
 				});
-				priority.attr('value', taskPriority);
+				if(taskPriority!=''){
+					priority.attr('value', taskPriority);
+				} else {
+					priority.attr('value',taskPriorityValues[0]['value']);
+				}
 				$('#task_priority_busyicon').hide();
 				$('#task_priority').show();
 			}));

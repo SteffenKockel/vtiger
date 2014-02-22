@@ -26,89 +26,13 @@ require_once('include/db_backup/backup.php');
 require_once('include/db_backup/ftp.php');
 require_once('include/database/PearDatabase.php');
 require_once('user_privileges/enable_backup.php');
+require_once 'modules/VtigerBackup/VtigerBackup.php';
 
 global $adb, $enable_backup,$current_user;
 
-if($enable_ftp_backup == 'true' && is_admin($current_user) == true)
-{
-	$ftpserver = '';
-	$ftpuser = '';
-	$ftppassword = '';
-	$query = "select * from vtiger_systems where server_type=?";
-	$result = $adb->pquery($query, array('ftp_backup'));
-	$num_rows = $adb->num_rows($result);
-	if($num_rows > 0)
-	{
-		$ftpserver = $adb->query_result($result,0,'server');
-		$ftpuser = $adb->query_result($result,0,'server_username');
-		$ftppassword = $adb->query_result($result,0,'server_password');
-	}
-
-	//Taking the Backup of DB
-	$currenttime=date("Ymd_His");
-	if($ftpserver != '' && $ftpuser != '' && $ftppassword != '')
-	{
-		$createZip = new createDirZip;
-		$fileName = '/backup_'.$currenttime.'.zip';
-
-		$createZip->addDirectory('user_privileges/');
-		$createZip->get_files_from_folder('user_privileges/', 'user_privileges/');        
-
-		$createZip->addDirectory('storage/');
-		$createZip->get_files_from_folder('storage/', 'storage/');        
-
-		$backup_DBFileName = "sqlbackup_".$currenttime.".sql";
-		$dbdump = new DatabaseDump(dbserver, dbuser, dbpass);
-		$dumpfile = 'backup/'.$backup_DBFileName;
-		$dbdump->save(dbname, $dumpfile) ;
-
-		$filedata = implode("", file('backup/'.$backup_DBFileName));	
-		$createZip->addFile($filedata,$backup_DBFileName);
-		
-		$fd = fopen ($fileName, 'wb');
-		$out = fwrite ($fd, $createZip->getZippedfile());
-		fclose ($fd);
-		
-		$source_file=$fileName;	
-		ftpBackupFile($source_file, $ftpserver, $ftpuser, $ftppassword);
-		if(file_exists($source_file)) unlink($source_file);	
-
-	}
-}
-if($enable_local_backup == 'true' && is_admin($current_user) == true)
-{
-		define("dbserver", $dbconfig['db_hostname']);
-		define("dbuser", $dbconfig['db_username']);
-		define("dbpass", $dbconfig['db_password']);
-		define("dbname", $dbconfig['db_name']);  
-
-		$path_query = $adb->pquery("SELECT * FROM vtiger_systems WHERE server_type = ?",array('local_backup'));
-        $path = $adb->query_result($path_query,0,'server_path');
-        $currenttime=date("Ymd_His");
-        
-		if(is_dir($path) && is_writable($path))
-		{        
-			$createZip = new createDirZip;
-			$fileName = $path.'/backup_'.$currenttime.'.zip';
-	
-			$createZip->addDirectory('user_privileges/');
-			$createZip->get_files_from_folder('user_privileges/', 'user_privileges/');        
-	
-			$createZip->addDirectory('storage/');
-			$createZip->get_files_from_folder('storage/', 'storage/');        
-	
-			$backup_DBFileName = "sqlbackup_".$currenttime.".sql";
-			$dbdump = new DatabaseDump(dbserver, dbuser, dbpass);
-			$dumpfile = 'backup/'.$backup_DBFileName;
-			$dbdump->save(dbname, $dumpfile) ;
-
-			$filedata = implode("", file('backup/'.$backup_DBFileName));	
-			$createZip->addFile($filedata,$backup_DBFileName);
-			
-			$fd = fopen ($fileName, 'wb');
-			$out = fwrite ($fd, $createZip->getZippedfile());
-			fclose ($fd);
-		}
+if(is_admin($current_user) == true && PerformancePrefs::getBoolean('LOGOUT_BACKUP', true)) {
+	$backup = new VtigerBackup();
+	$backup->backup();
 }
 // Recording Logout Info
 	$usip=$_SERVER['REMOTE_ADDR'];

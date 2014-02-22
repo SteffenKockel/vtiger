@@ -8,19 +8,9 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-// TODO: deprecate connection.php file
-//require_once("connection.php");
-
 @include_once('config.db.php');
-global $dbconfig;
-// TODO: introduce MySQL port as parameters to use non-default value 3306
-//$sock_path=":" .$mysql_port;
+global $dbconfig, $vtiger_current_version;
 $hostname = $_SERVER['SERVER_NAME'];
-
-// TODO: introduce Apache port as parameters to use non-default value 80
-//$web_root = $_SERVER['SERVER_NAME']. ":" .$_SERVER['SERVER_PORT'].$_SERVER['PHP_SELF'];
-//$web_root = $hostname.$_SERVER['PHP_SELF'];
-//$web_root = $HTTP_SERVER_VARS["HTTP_HOST"] . $HTTP_SERVER_VARS["REQUEST_URI"];
 $web_root = ($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"]:$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];
 $web_root .= $_SERVER["REQUEST_URI"];
 $web_root = str_replace("/install.php", "", $web_root);
@@ -30,153 +20,39 @@ $current_dir = pathinfo(dirname(__FILE__));
 $current_dir = $current_dir['dirname']."/";
 $cache_dir = "cache/";
 
+$newdbname = 'vtigercrm'.str_replace(array('.',' '),array(''),strtolower($vtiger_current_version));
+
 require_once('modules/Utilities/Currencies.php');
 
-if (is_file("config.php") && is_file("config.inc.php")) {
-	require_once("config.inc.php");
-	session_start();
+session_start();
 
-	if(isset($upload_maxsize))
-	$_SESSION['upload_maxsize'] = $upload_maxsize;
+!isset($_REQUEST['host_name']) ? $host_name= $hostname : $host_name = $_REQUEST['host_name'];
 
-	if(isset($allow_exports))
-	$_SESSION['allow_exports'] = $allow_exports;
+!isset($_SESSION['config_file_info']['db_hostname']) ? $db_hostname = $hostname: $db_hostname = $_SESSION['config_file_info']['db_hostname'];
+!isset($_SESSION['config_file_info']['db_type']) ? $db_type = "" : $db_type = $_SESSION['config_file_info']['db_type'];
+!isset($_SESSION['config_file_info']['db_username']) ? $db_username = "" : $db_username = $_SESSION['config_file_info']['db_username'];
+!isset($_SESSION['config_file_info']['db_password']) ? $db_password = "" : $db_password = $_SESSION['config_file_info']['db_password'];
+!isset($_SESSION['config_file_info']['db_name']) ? $db_name = $newdbname : $db_name = $_SESSION['config_file_info']['db_name'];
+!isset($_SESSION['config_file_info']['site_URL']) ? $site_URL = $web_root : $site_URL = $_SESSION['config_file_info']['site_URL'];
+!isset($_SESSION['config_file_info']['root_directory']) ? $root_directory = $current_dir : $root_directory = $_SESSION['config_file_info']['root_directory'];
+!isset($_SESSION['config_file_info']['admin_email']) ? $admin_email = "" : $admin_email = $_SESSION['config_file_info']['admin_email'];
+!isset($_SESSION['config_file_info']['currency_name']) ? $currency_name = 'USA, Dollars' : $currency_name = $_SESSION['config_file_info']['currency_name'];
 
-	if(isset($disable_persistent_connections))
-	$_SESSION['disable_persistent_connections'] = $disable_persistent_connections;
+!isset($_SESSION['installation_info']['check_createdb']) ? $check_createdb = "" : $check_createdb = $_SESSION['installation_info']['check_createdb'];
+!isset($_SESSION['installation_info']['root_user']) ? $root_user = "" : $root_user = $_SESSION['installation_info']['root_user'];
+!isset($_SESSION['installation_info']['root_password']) ? $root_password = "" : $root_password = $_SESSION['installation_info']['root_password'];
+!isset($_SESSION['installation_info']['create_utf8_db']) ? $create_utf8_db = "true" : $create_utf8_db = $_SESSION['installation_info']['create_utf8_db'];
+!isset($_SESSION['installation_info']['db_populate']) ? $db_populate = "true" : $db_populate = $_SESSION['installation_info']['db_populate'];
+!isset($_SESSION['installation_info']['admin_email']) ? $admin_email = "" : $admin_email = $_SESSION['installation_info']['admin_email'];
+!isset($_SESSION['installation_info']['admin_password']) ? $admin_password = "admin" : $admin_password = $_SESSION['installation_info']['admin_password'];
 
-	if(isset($default_language))
-	$_SESSION['default_language'] = $default_language;
-
-	if(isset($translation_string_prefix))
-	$_SESSION['translation_string_prefix'] = $translation_string_prefix;
-
-	if(isset($default_charset))
-	$_SESSION['default_charset'] = $default_charset;
-
-	if(isset($languages)) {
-		// need to encode the languages in a way that can be retrieved later
-		$language_keys = Array();
-		$language_values = Array();
-
-		foreach($languages as $key=>$value) {
-			$language_keys[] = $key;
-			$language_values[] = $value;
-		}
-		$_SESSION['language_keys'] = urlencode(implode(",",$language_keys));
-		$_SESSION['language_values'] = urlencode(implode(",",$language_values));
-	}
-													
-	global $dbconfig;
-
-	if (isset($_REQUEST['db_username']))
-	$db_username = $_REQUEST['db_username'];
-	elseif (isset($dbconfig['db_username']) && $dbconfig['db_username']!='_DBC_USER_')
-	$db_username = $dbconfig['db_username'];
-
-	if (isset($_REQUEST['db_hostname']))
-		$db_hostname = $_REQUEST['db_hostname'];
-	elseif (isset($dbconfig['db_server']) && $dbconfig['db_server']!='_DBC_SERVER_'){
-		$db_hostname = $dbconfig['db_server'];
-		if(isset($dbconfig['db_port']) && $dbconfig['db_port']!='_DBC_PORT_')
-			$db_hostname .= ":".$dbconfig['db_port'];
-	} else
-	$db_hostname = 'localhost';
-	
-
-	if (isset($_REQUEST['db_password']))
-	$db_password = $_REQUEST['db_password'];
-	elseif (isset($dbconfig['db_password']) && $dbconfig['db_password']!='_DBC_PASS_')
-	$db_password = $dbconfig['db_password'];
-
-	if (isset($_REQUEST['db_type']))
-	$db_type = $_REQUEST['db_type'];
-	elseif (isset($dbconfig['db_type']) && $dbconfig['db_type']!='_DBC_TYPE_')
-	$db_type = $dbconfig['db_type'];
-
-	if (isset($_REQUEST['db_name']))
-	$db_name = $_REQUEST['db_name'];
-	elseif (isset($dbconfig['db_name']) && $dbconfig['db_name']!='_DBC_NAME_')
-	$db_name = $dbconfig['db_name'];
-	else
-	$db_name = 'vtigercrm510';
-
-	!isset($_REQUEST['db_drop_tables']) ? $db_drop_tables = "0" : $db_drop_tables = $_REQUEST['db_drop_tables'];
-	if (isset($_REQUEST['host_name'])) $host_name = $_REQUEST['host_name'];
-	else $host_name = $hostname;
-
-	if (isset($_REQUEST['site_URL'])) $site_URL = $_REQUEST['site_URL'];
-	elseif (isset($site_URL) && $site_URL!='_SITE_URL_')
-	$site_URL = $site_URL;
-	else $site_URL = $web_root;
-
-	if(isset($_REQUEST['root_directory'])) $root_directory = $_REQUEST['root_directory'];
-	else $root_directory = $current_dir;
-	    
-	if (isset($_REQUEST['cache_dir']))
-		$cache_dir= $_REQUEST['cache_dir'];
-
-	if (isset($_REQUEST['mail_server']))
-		$mail_server= $_REQUEST['mail_server'];
-
-	if (isset($_REQUEST['mail_server_username']))
-		$mail_server_username= $_REQUEST['mail_server_username'];
-
-	if (isset($_REQUEST['mail_server_password']))
-		$mail_server_password= $_REQUEST['mail_server_password'];
-
-	if (isset($_REQUEST['admin_email']))
-		$admin_email = $_REQUEST['admin_email'];
-
-	if (isset($_REQUEST['admin_password']))
-        $admin_password = $_REQUEST['admin_password'];
-	
-	if (isset($_REQUEST['standarduser_email']))
-        $stand_email = $_REQUEST['standarduser_email'];
-
-	if (isset($_REQUEST['standarduser_password']))	
-		$stand_password = $_REQUEST['standarduser_password'];
-	
-	if (isset($_REQUEST['currency_name']))
-		$currency_name = $_REQUEST['currency_name'];
-	}
-	else {
-		!isset($_REQUEST['db_hostname']) ? $db_hostname = $hostname: $db_hostname = $_REQUEST['db_hostname'];
-		!isset($_REQUEST['db_name']) ? $db_name = "vtigercrm510" : $db_name = $_REQUEST['db_name'];
-		!isset($_REQUEST['db_drop_tables']) ? $db_drop_tables = "0" : $db_drop_tables = $_REQUEST['db_drop_tables'];
-		!isset($_REQUEST['host_name']) ? $host_name= $hostname : $host_name= $_REQUEST['host_name'];
-		!isset($_REQUEST['site_URL']) ? $site_URL = $web_root : $site_URL = $_REQUEST['site_URL'];
-		!isset($_REQUEST['root_directory']) ? $root_directory = $current_dir : $root_directory = stripslashes($_REQUEST['root_directory']);
-		!isset($_REQUEST['cache_dir']) ? $cache_dir = $cache_dir : $cache_dir = stripslashes($_REQUEST['cache_dir']);
-		!isset($_REQUEST['mail_server']) ? $mail_server = $mail_server : $mail_server = stripslashes($_REQUEST['mail_server']);
-		!isset($_REQUEST['mail_server_username']) ? $mail_server_username = $mail_server_username : $mail_server_username = stripslashes($_REQUEST['mail_server_username']);
-		!isset($_REQUEST['mail_server_password']) ? $mail_server_password = $mail_server_password : $mail_server_password = stripslashes($_REQUEST['mail_server_password']);
-		!isset($_REQUEST['admin_email']) ? $admin_email = "" : $admin_email = $_REQUEST['admin_email'];
-	}
-		!isset($_REQUEST['check_createdb']) ? $check_createdb = "" : $check_createdb = $_REQUEST['check_createdb'];
-		!isset($_REQUEST['root_user']) ? $root_user = "" : $root_user = $_REQUEST['root_user'];
-		!isset($_REQUEST['root_password']) ? $root_password = "" : $root_password = $_REQUEST['root_password'];
-		!isset($_REQUEST['create_utf8_db'])? $create_utf8_db = "true" : $create_utf8_db = $_REQUEST['create_utf8_db'];
-		// determine database options
-
-		if(isset($_REQUEST['selected_modules'])) {
-			$_SESSION['selectedOptionalModules'] = $_REQUEST['selected_modules'] ;
-		}
-
-		$db_options = array();
-		if(function_exists('mysql_connect')) {
-			$db_options['mysql'] = 'MySQL';
-		}
-		if(function_exists('pg_connect')) {
-			$db_options['pgsql'] = 'Postgres';
-		}
+$db_options = Installation_Utils::getDbOptions();
 ?>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>vtiger CRM 5 - Configuration Wizard - System Configuration</title>
+	<title><?php echo $installationStrings['LBL_VTIGER_CRM_5']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_SYSTEM_CONFIGURATION']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 </head>
@@ -189,336 +65,303 @@ if (is_file("config.php") && is_file("config.inc.php")) {
 
 <script type="text/javascript" language="Javascript">
 
-	function fnShow_Hide(){
-		var sourceTag = document.getElementById('check_createdb').checked;
-		if(sourceTag){
-			document.getElementById('root_user').className = 'show_div';
-			document.getElementById('root_pass').className = 'show_div';
-			document.getElementById('create_db_config').className = 'show_div';
-			document.getElementById('root_user_txtbox').focus();
-		}
-		else{
-			document.getElementById('root_user').className = 'hide_tab';
-			document.getElementById('root_pass').className = 'hide_tab';
-			document.getElementById('create_db_config').className = 'hide_tab';
-		}
+function fnShow_Hide(){
+	var sourceTag = document.getElementById('check_createdb').checked;
+	if(sourceTag){
+		document.getElementById('root_user').className = 'show_div';
+		document.getElementById('root_pass').className = 'show_div';
+		document.getElementById('create_db_config').className = 'show_div';
+		document.getElementById('root_user_txtbox').focus();
 	}
+	else{
+		document.getElementById('root_user').className = 'hide_tab';
+		document.getElementById('root_pass').className = 'hide_tab';
+		document.getElementById('create_db_config').className = 'hide_tab';
+	}
+}
 
 function trim(s) {
-        while (s.substring(0,1) == " ") {
-                s = s.substring(1, s.length);
-        }
-        while (s.substring(s.length-1, s.length) == ' ') {
-                s = s.substring(0,s.length-1);
-        }
-
-        return s;
+    while (s.substring(0,1) == " ") {
+        s = s.substring(1, s.length);
+    }
+    while (s.substring(s.length-1, s.length) == ' ') {
+        s = s.substring(0,s.length-1);
+    }
+    return s;
 }
 
 function verify_data(form) {
 	var isError = false;
 	var errorMessage = "";
-	// Here we decide whether to submit the form.
 	if (trim(form.db_hostname.value) =='') {
 		isError = true;
-		errorMessage += "\n database host name";
+		errorMessage += "\n <?php echo $installationStrings['LBL_DATABASE'].' '.$installationStrings['LBL_HOST_NAME']; ?>";
 		form.db_hostname.focus();
 	}
 	if (trim(form.db_username.value) =='') {
 		isError = true;
-		errorMessage += "\n database user name";
+		errorMessage += "\n <?php echo $installationStrings['LBL_DATABASE'].' '.$installationStrings['LBL_USER_NAME']; ?>";
 		form.db_username.focus();
 	}
 	if (trim(form.db_name.value) =='') {
 		isError = true;
-		errorMessage += "\n database name";
+		errorMessage += "\n <?php echo $installationStrings['LBL_DATABASE_NAME']; ?>";
 		form.db_name.focus();
 	}
 	if (trim(form.site_URL.value) =='') {
 		isError = true;
-		errorMessage += "\n site url";
+		errorMessage += "\n <?php echo $installationStrings['LBL_SITE_URL']; ?>";
 		form.site_URL.focus();
 	}
 	if (trim(form.root_directory.value) =='') {
 		isError = true;
-		errorMessage += "\n path";
+		errorMessage += "\n <?php echo $installationStrings['LBL_PATH']; ?>";
 		form.root_directory.focus();
 	}
 	if (trim(form.admin_password.value) =='') {
 		isError = true;
-		errorMessage += "\n admin password";
+		errorMessage += "\n admin <?php echo $installationStrings['LBL_PASSWORD']; ?>";
 		form.admin_password.focus();
 	}
 	if (trim(form.admin_email.value) =='') {
 		isError = true;
-		errorMessage += "\n user email";
+		errorMessage += "\n admin <?php echo $installationStrings['LBL_EMAIL']; ?>";
 		form.admin_email.focus();
 	}
-	if (trim(form.standarduser_password.value) =='') {
-    	isError = true;
-        errorMessage += "\n standarduser password";
-        form.standarduser_password.focus();
-    }
-    if (trim(form.standarduser_email.value) =='') {
-        isError = true;
-        errorMessage += "\n standarduser email";
-        form.standarduser_email.focus();
-    }
-	if (trim(form.cache_dir.value) =='') {
-                isError = true;
-                errorMessage += "\n temp directory path";
-                form.cache_dir.focus();
-        }
 	if (trim(form.currency_name.value) =='') {
-                isError = true;
-                errorMessage += "\n currency name";
-                form.currency_name.focus();
-        }
+        isError = true;
+        errorMessage += "\n <?php echo $installationStrings['LBL_CURRENCY_NAME']; ?>";
+        form.currency_name.focus();
+    }
 
-	if(document.getElementById('check_createdb').checked == true)
-	{
+	if(document.getElementById('check_createdb').checked == true) {
 		if (trim(form.root_user.value) =='') {
 			isError = true;
-			errorMessage += "\n root username";
+			errorMessage += "\n <?php echo $installationStrings['LBL_ROOT']. ' ' .$installationStrings['LBL_USER_NAME']; ?>";
 			form.root_user.focus();
 		}
 	}
 
-	// Here we decide whether to submit the form.
 	if (isError == true) {
-		alert("Missing required fields:" + errorMessage);
+		alert("<?php echo $installationStrings['LBL_MISSING_REQUIRED_FIELDS']; ?>:" + errorMessage);
 		return false;
 	}
 	if (trim(form.admin_email.value) != "" && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.admin_email.value)) {
-		alert("The email id \'"+form.admin_email.value+"\' in the email field is invalid");
+		alert("<?php echo $installationStrings['ERR_ADMIN_EMAIL_INVALID']; ?> - \'"+form.admin_email.value+"\'");
 		form.admin_email.focus();
 		return false;
 	}
-	if (trim(form.standarduser_email.value) != "" && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.standarduser_email.value)) {
-        alert("The email id \'"+form.standarduser_email.value+"\' in the standard user email field is invalid");
-        form.standarduser_email.focus();
-        return false;
-    }
 
 	var SiteUrl = form.site_URL.value;
-        if(SiteUrl.indexOf("localhost") > -1 && SiteUrl.indexOf("localhost") < 10)
-        {
-                if(confirm("Specify the exact host name instead of \"localhost\" in Site URL field, otherwise you will experience some issues while working with vtiger plug-ins. Do you wish to Continue?"))
-                {
-                        form.submit();
-                }else
-                {
-                        form.site_URL.select();
-                        return false;
-                }
-        }else
-        {
-                form.submit();
+    if(SiteUrl.indexOf("localhost") > -1 && SiteUrl.indexOf("localhost") < 10) {
+        if(confirm("<?php echo $installationStrings['WARNING_LOCALHOST_IN_SITE_URL']; ?>")) {
+			form.submit();
+        } else {
+            form.site_URL.select();
+            return false;
         }
-	
+    } else {
+		form.submit();
+    }	
 }
-// end hiding contents from old browsers  -->
 </script>
 
 	<br>
 	<!-- Table for cfgwiz starts -->
 
 	<table border=0 cellspacing=0 cellpadding=0 width=85% align=center>
-	<tr>
-		<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="Configuration Wizard" hspace="20" title="Configuration Wizard"></td>
-		<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="vtiger CRM 5" title="vtiger CRM 5"></td>
-		<td class="cwHeadBg1" width=2%></td>
-	</tr>
+		<tr>
+			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
+			<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>" title="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>"></td>
+			<td class="cwHeadBg1" width=2%></td>
+		</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=0 width=85% align=center>
-	<tr>
-		<td background="include/install/images/topInnerShadow.gif" align=left><img height="10" src="include/install/images/topInnerShadow.gif" ></td>
-
-	</tr>
+		<tr>
+			<td background="include/install/images/topInnerShadow.gif" align=left><img height="10" src="include/install/images/topInnerShadow.gif" ></td>
+		</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=10 width=85% align=center>
-	<tr>
-		<td class="small" bgcolor="#4572BE" align=center>
-			<!-- Master display -->
-			<table border=0 cellspacing=0 cellpadding=0 width=97%>
-			<tr>
-					<td width=80% valign=top class="cwContentDisplay" align=center>
-				<!-- Right side tabs -->
-				    <table border=0 cellspacing=0 cellpadding=2 width=95%>
-				    <tr><td class=small align=left colspan=2><img src="include/install/images/confWizSysConfig.gif" alt="System Configuration" title="System Configuration"><br>
-					  <hr noshade size=1></td></tr>
-				    <tr valign=top >
-				    <form action="install.php" method="post" name="installform" id="form" name="setConfig" id="form">				    
-					<input type="hidden" name="file" value="ConfirmConfig.php" />				    
-					<td align=left class="small" width=50% style="padding-left:10px">
-		
-			<table width="100%" cellpadding="0"  cellspacing="1" border="0" align=center class="level3"><tbody>
-			<tr><td colspan=4><strong>Database Information</strong><hr noshade size=1></td></tr>
-			<tr>
-               <td width="20%" nowrap >Database Type <sup><font color=red>*</font></sup></td>
-               <td width="30%" align="left">
-		<?php if(!$db_options) : ?>
-			No Database Support Detected
-		<?php elseif(count($db_options) == 1) : ?>
-			<?php list($db_type, $label) = each($db_options); ?>
-			<input type="hidden" name="db_type" value="<?php echo $db_type ?>"><?php echo $label ?>
-		<?php else : ?>
-			<select class="small" length=40 name="db_type">
-			<?php foreach($db_options as $db_option_type => $label) : ?>
-				<option value="<?php echo $db_option_type ?>" <?php if(isset($db_type) && $db_type == $db_option_type) { echo "SELECTED"; } ?>><?php echo $label ?></option>
-			<?php endforeach; ?>
-			</select>
-		<?php endif; ?>
-			   </td>
-            </tr>
-			<tr>
-               <td width="25%" nowrap >Host Name <sup><font color=red>*</font></sup></td>
-               <td width="75%" align="left"><input type="text" class="small" name="db_hostname" value="<?php if (isset($db_hostname)) echo "$db_hostname"; ?>" />
-			   &nbsp;<a href="http://www.vtiger.com/products/crm/help/5.1.0/vtiger_CRM_Database_Hostname.pdf" target="_blank">More...</a></td>
-              </tr>
-              <tr>
-               <td nowrap>User Name <sup><font color=red>*</font></sup></td>
-               <td align="left"><input type="text" class="small" name="db_username" value="<?php if (isset($db_username)) echo "$db_username"; ?>" /></td>
-              </tr>
-              <tr>
-               <td nowrap>Password</td>
-               <td align="left"><input type="password" class="small" name="db_password" value="<?php if (isset($db_password)) echo "$db_password"; ?>" /></td>
-              </tr>
-              <tr>
-               <td nowrap>Database Name <sup><font color=red>*</font></sup></td>
-               <td align="left" width='30%'><input type="text" class="small" name="db_name" value="<?php if (isset($db_name)) echo "$db_name"; ?>" />&nbsp;
-		      </tr>
-		      <tr>
-		      <td colspan=2> 
-		      	<?php if($check_createdb == 'on')
-			       {?>
-			       <input class="small" name="check_createdb" type="checkbox" id="check_createdb" checked onClick="fnShow_Hide()"/> 
-			       <?php }else{?>
-				       <input class="small" name="check_createdb" type="checkbox" id="check_createdb" onClick="fnShow_Hide()"/> 
-			       <?php } ?>
-			       &nbsp;Create Database ( Will drop if the database if exists)</td>
-              </td>
-              </tr>
-	      <tr id="root_user" class="hide_tab">
-			   <td nowrap="nowrap" width="20%">Root Username<sup><font color="red">*</font></sup></td>
-			   <td align="left" width="30%"><input class="small" name="root_user" id="root_user_txtbox" value="<?php echo $root_user;?>" type="text"></td>
- 	      </tr>
-	      <tr id="root_pass" class="hide_tab">
-			   <td nowrap="nowrap" width="20%">Root Password</td>
-			   <td align="left" width="30%"><input class="small" name="root_password" value="<?php echo $root_password;?>" type="password"></td>
-		  </tr>
-          <tr id="create_db_config" class="hide_tab">
-			   <td nowrap="nowrap">UTF-8 Support</td>
-			   <td align="left" colspan=3><input class="small" type="checkbox" id="create_utf8_db" name="create_utf8_db" <?php if($create_utf8_db == 'true') echo "checked"; ?> /> <!-- DEFAULT CHARACTER SET utf8, DEFAULT COLLATE utf8_general_ci --></td>
-	      </tr>
-              </table>
-			<br>
-		</td>			
-		<td align=left class="small" width=50% style="padding-left:20px">
-	  <!-- Web site configuration -->
-		<table width="100%" cellpadding="0" border="0" cellspacing="1" align=center class="level3"><tbody>
-            <tr>
-				<td colspan=2><strong>CRM Configuration</strong><hr noshade size=1></td>
-            </tr>
-			<tr>
-				<td width="20%" >URL <sup><font color=red>*</font></sup></td>
-				<td width="80%" align="left"><input class="small" type="text" name="site_URL"
-				value="<?php if (isset($site_URL)) echo $site_URL; ?>" size="40" />
-				</td>
-			</tr>
-			<tr>
-				<td nowrap width=20% >Currency Name<sup><font color=red>*</font></sup></td>
-				<td width=80% align="left">
-					<select class="small" id='currency_name' name='currency_name''>
-						<?php
-							foreach($currencies as $index=>$value){
-								if(isset($currency_name)){
-									if($index==$currency_name){
-										echo "<option value='$index' selected>$index(".$value[1].")</option>";
-									}
-									else{
-										echo "<option value='$index'>$index(".$value[1].")</option>";
-									}
-								} else
-								{ 
-									if($index=='USA, Dollars'){
-										echo "<option value='$index' selected>$index(".$value[1].")</option>";
-									} else {
-										echo "<option value='$index'>$index(".$value[1].")</option>";
-									}
-								}
-							}
-						?>
-					</select>
-				</td>
-			</tr>
-			<input type="hidden" name="root_directory" value="<?php if (isset($root_directory)) echo "$root_directory"; ?>" size="40" />
-			<input type="hidden" name="cache_dir" size='40' value="<?php if (isset($cache_dir)) echo $cache_dir; ?>" size="40" />
-		</table>
-			<br>
-			
-			<!-- Admin Configuration -->
-		<table width="100%" cellpadding="0" border="0" align=center class="level3" cellspacing="1" >
-			<tr>
-				<td colspan=3><strong>User Configuration</strong><hr noshade size=1></td>
-			</tr>
-			<tr>
-				<td nowrap width=20% >Username</td>
-				<td width=40% align="left">admin</td>
-				<td width=40% align="left">standarduser</td>
-			</tr>
-			<tr>
-				<td nowrap>Password<sup><font color=red>*</font></sup></td>
-				<td align="left"><input class="small" size=15 type="password" name="admin_password" value="<?php if (isset($admin_password)) echo "$admin_password"; else echo "admin"; ?>"></td>
-				<td align="left"><input class="small" size=15 type="password" name="standarduser_password" value="<?php if (isset($stand_password)) echo "$stand_password"; else echo "standarduser"; ?>"></td>
-			</tr>
-			<tr>
-				<td nowrap>Email<sup><font color=red>*</font></sup></td>
-				<td align="left"><input class="small" size=15 type="text" name="admin_email" value="<?php if (isset($admin_email)) echo "$admin_email"; ?>"></td>
-				<td align="left"><input class="small" size=15 type="text" name="standarduser_email" value="<?php if (isset($stand_email)) echo "$stand_email"; ?>"></td>
-			</tr>
-			</table>
-	
-		<!-- System Configuration -->
-		</td>
-		</form>
-		</tr>
 		<tr>
-			<td align="left">
-				<input type="image" src="include/install/images/cwBtnBack.gif" id="back" alt="Back" border="0" title="Back" onClick="window.history.back();" />
-			</td>
-			<td align="right">
-				<input type="image" src="include/install/images/cwBtnNext.gif" id="starttbn" alt="Next" border="0" title="Next" onClick="return verify_data(window.document.installform);" />
+			<td class="small" bgcolor="#4572BE" align=center>
+				<!-- Master display -->
+				<table border=0 cellspacing=0 cellpadding=0 width=97%>
+					<tr>
+						<td width=80% valign=top class="cwContentDisplay" align=center>
+							<!-- Right side tabs -->
+						    <table border=0 cellspacing=0 cellpadding=2 width=95%>
+						    	<tr>
+						    		<td align=left colspan=2 class="small paddingTop">
+						    			<span class="bigHeading"><?php echo $installationStrings['LBL_SYSTEM_CONFIGURATION']?></span>
+						    			<br>
+							  			<hr noshade size=1>
+							  		</td>
+							  	</tr>
+							    <tr valign=top >
+							    	<form action="install.php" method="post" name="installform" id="form">
+							    	<input type="hidden" name="file" value="ConfirmConfig.php" />				    
+									<td align=left class="small" width=50% style="padding-left:10px">				
+										<table width="100%" cellpadding="0"  cellspacing="1" border="0" align=center class="level3">
+											<tr>
+												<td colspan=4><strong><?php echo $installationStrings['LBL_DATABASE_INFORMATION']; ?></strong><hr noshade size=1></td>
+											</tr>
+											<tr>
+								               <td width="20%" nowrap ><?php echo $installationStrings['LBL_DATABASE_TYPE']; ?> <sup><font color=red>*</font></sup></td>
+								               <td width="30%" align="left">
+												<?php if(!$db_options) : ?>
+													<?php echo $installationStrings['LBL_NO_DATABASE_SUPPORT']; ?>
+												<?php elseif(count($db_options) == 1) : ?>
+													<?php list($db_type, $label) = each($db_options); ?>
+													<input type="hidden" name="db_type" value="<?php echo $db_type ?>"><?php echo $label ?>
+												<?php else : ?>
+													<select class="small" length=40 name="db_type">
+													<?php foreach($db_options as $db_option_type => $label) : ?>
+														<option value="<?php echo $db_option_type ?>" <?php if(isset($db_type) && $db_type == $db_option_type) { echo "SELECTED"; } ?>><?php echo $label ?></option>
+													<?php endforeach; ?>
+													</select>
+												<?php endif; ?>
+												</td>
+								            </tr>
+											<tr>
+												<td width="25%" nowrap ><?php echo $installationStrings['LBL_HOST_NAME']; ?> <sup><font color=red>*</font></sup></td>
+												<td width="75%" align="left"><input type="text" class="small" name="db_hostname" value="<?php if (isset($db_hostname)) echo "$db_hostname"; ?>" />
+										   			&nbsp;<a href="http://www.vtiger.com/products/crm/help/<?php echo $vtiger_current_version; ?>/vtiger_CRM_Database_Hostname.pdf" target="_blank">More...</a></td>
+											</tr>
+											<tr>
+												<td nowrap><?php echo $installationStrings['LBL_USER_NAME']; ?> <sup><font color=red>*</font></sup></td>
+												<td align="left"><input type="text" class="small" name="db_username" value="<?php if (isset($db_username)) echo "$db_username"; ?>" /></td>
+											</tr>
+											<tr>
+												<td nowrap><?php echo $installationStrings['LBL_PASSWORD']; ?></td>
+												<td align="left"><input type="password" class="small" name="db_password" value="<?php if (isset($db_password)) echo "$db_password"; ?>" /></td>
+											</tr>
+											<tr>
+												<td nowrap><?php echo $installationStrings['LBL_DATABASE_NAME']; ?> <sup><font color=red>*</font></sup></td>
+												<td align="left" width='30%'><input type="text" class="small" name="db_name" value="<?php if (isset($db_name)) echo "$db_name"; ?>" />&nbsp;
+											</tr>
+											<tr>
+												<td colspan=2> 
+										      		<?php if($check_createdb == 'on')
+											       	{?>
+											       	<input class="small" name="check_createdb" type="checkbox" id="check_createdb" checked onClick="fnShow_Hide()"/> 
+											       	<?php }else{?>
+											       		<input class="small" name="check_createdb" type="checkbox" id="check_createdb" onClick="fnShow_Hide()"/> 
+											       	<?php } ?>
+											       	&nbsp;<?php echo $installationStrings['LBL_CREATE_DATABASE'] . " (". $installationStrings['LBL_DROP_IF_EXISTS'] .")"; ?></td>
+		              							</td>
+		              						</tr>
+									      	<tr id="root_user" class="hide_tab">
+											   	<td nowrap="nowrap" width="20%"><?php echo $installationStrings['LBL_ROOT']. ' ' .$installationStrings['LBL_USER_NAME']; ?> <sup><font color="red">*</font></sup></td>
+											   	<td align="left" width="30%"><input class="small" name="root_user" id="root_user_txtbox" value="<?php echo $root_user;?>" type="text"></td>
+								 	      	</tr>
+									      	<tr id="root_pass" class="hide_tab">
+											   	<td nowrap="nowrap" width="20%"><?php echo $installationStrings['LBL_ROOT']. ' ' .$installationStrings['LBL_PASSWORD']; ?></td>
+											   	<td align="left" width="30%"><input class="small" name="root_password" value="<?php echo $root_password;?>" type="password"></td>
+										 	</tr>
+								          	<tr id="create_db_config" class="hide_tab">
+											   	<td nowrap="nowrap"><?php echo $installationStrings['LBL_UTF8_SUPPORT']; ?></td>
+											   	<td align="left" colspan=3><input class="small" type="checkbox" id="create_utf8_db" name="create_utf8_db" <?php if($create_utf8_db == 'true') echo "checked"; ?> /> <!-- DEFAULT CHARACTER SET utf8, DEFAULT COLLATE utf8_general_ci --></td>
+									      	</tr>							      	
+											<tr>
+												<td colspan=2  style="border-top:1px dotted black;">
+													<input type="checkbox" class="dataInput" name="db_populate"  <?php if($db_populate == 'true') echo "checked"; ?> />
+													&nbsp;<?php echo $installationStrings['LBL_POPULATE_DEMO_DATA']; ?>
+												</td>
+											</tr>
+		              					</table>
+										<br>
+									</td>			
+									<td align=left class="small" width=50% style="padding-left:2em;">
+				  						<!-- Web site configuration -->
+										<table width="100%" cellpadding="0" border="0" cellspacing="1" align=center class="level3"><tbody>
+			            					<tr>
+												<td colspan=2><strong><?php echo $installationStrings['LBL_CRM_CONFIGURATION']; ?></strong><hr noshade size=1></td>
+			            					</tr>
+											<tr>
+												<td width="20%" ><?php echo $installationStrings['LBL_URL']; ?> <sup><font color=red>*</font></sup></td>
+												<td width="80%" align="left"><input class="small" type="text" name="site_URL"
+												value="<?php if (isset($site_URL)) echo $site_URL; ?>" size="40" />
+												</td>
+											</tr>
+											<tr>
+												<td nowrap width=20% ><?php echo $installationStrings['LBL_CURRENCY_NAME']; ?> <sup><font color=red>*</font></sup></td>
+												<td width=80% align="left">
+													<select class="small" id='currency_name' name='currency_name''>
+														<?php
+															foreach($currencies as $index=>$value){
+																if($index==$currency_name){
+																	echo "<option value='$index' selected>$index(".$value[1].")</option>";
+																}
+																else{
+																	echo "<option value='$index'>$index(".$value[1].")</option>";
+																}
+															}
+														?>
+													</select>
+												</td>
+											</tr>
+											<input type="hidden" name="root_directory" value="<?php if (isset($root_directory)) echo "$root_directory"; ?>" size="40" />
+											<input type="hidden" name="cache_dir" size='40' value="<?php if (isset($cache_dir)) echo $cache_dir; ?>" size="40" />
+										</table>
+										<br>
+						
+										<!-- Admin Configuration -->
+										<table width="100%" cellpadding="0" border="0" align=center class="level3" cellspacing="1" >
+											<tr>
+												<td colspan=2><strong><?php echo $installationStrings['LBL_USER_CONFIGURATION']; ?></strong><hr noshade size=1></td>
+											</tr>
+											<tr>
+												<td nowrap width=35% ><?php echo $installationStrings['LBL_USERNAME']; ?></td>
+												<td width=55% align="left">admin</td>
+											</tr>
+											<tr>
+												<td nowrap><?php echo $installationStrings['LBL_PASSWORD']; ?> <sup><font color=red>*</font></sup></td>
+												<td align="left"><input class="small" size=25 type="password" name="admin_password" value="<?php if (isset($admin_password)) echo "$admin_password"; else echo "admin"; ?>"></td>
+											</tr>
+											<tr>
+												<td nowrap><?php echo $installationStrings['LBL_EMAIL']; ?> <sup><font color=red>*</font></sup></td>
+												<td align="left"><input class="small" size=25 type="text" name="admin_email" value="<?php if (isset($admin_email)) echo "$admin_email"; ?>"></td>
+											</tr>
+										</table>		
+										<!-- System Configuration -->										
+									</td>
+									</form>
+								</tr>
+								
+								<tr>
+									<td align="left">
+										<input type="button" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_BACK']; ?>" title="<?php echo $installationStrings['LBL_BACK']; ?>" onClick="window.history.back();" />
+									</td>
+									<td align="right">
+										<input type="button" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>" onClick="return verify_data(window.document.installform);" />
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<!-- Master display stops -->
+				<br>
 			</td>
 		</tr>
-		</table>
-	</td>
+	</table>
+	<table border=0 cellspacing=0 cellpadding=0 width=85% align=center>
+		<tr>
+			<td background="include/install/images/bottomGradient.gif"><img src="include/install/images/bottomGradient.gif"></td>
 		</tr>
 	</table>
-	<!-- Master display stops -->
-	<br>
-	</td>
-	</tr>
-	</table>
 	<table border=0 cellspacing=0 cellpadding=0 width=85% align=center>
-	<tr>
-
-		<td background="include/install/images/bottomGradient.gif"><img src="include/install/images/bottomGradient.gif"></td>
-	</tr>
-	</table>
-	<table border=0 cellspacing=0 cellpadding=0 width=85% align=center>
-	<tr>
-		<td align=center><img src="include/install/images/bottomShadow.jpg"></td>
-	</tr>
+		<tr>
+			<td align=center><img src="include/install/images/bottomShadow.jpg"></td>
+		</tr>
 	</table>	
 	<table border=0 cellspacing=0 cellpadding=0 width=85% align=center>
-
       	<tr>
         	<td class=small align=center> <a href="http://www.vtiger.com" target="_blank">www.vtiger.com</a></td>
       	</tr>
-    	</table>
-	<script>
+	</table>
+<script>
 	fnShow_Hide();
-	</script>
+</script>
 </body>
 </html>

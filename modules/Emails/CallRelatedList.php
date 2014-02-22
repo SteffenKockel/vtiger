@@ -40,6 +40,16 @@ if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') {
 }
 $smarty->assign("id",$focus->id);
 $smarty->assign("RELATEDLISTS", $related_array);
+		
+require_once('include/ListView/RelatedListViewSession.php');
+if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
+		$relationId = vtlib_purify($_REQUEST['relation_id']);
+		RelatedListViewSession::addRelatedModuleToSession($relationId,
+				vtlib_purify($_REQUEST['selected_header']));
+	}
+$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
+$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+	
 $smarty->assign("ID",$RECORD );
 $smarty->assign("MODULE",$currentmodule);
 $smarty->assign("SINGLE_MOD",$app_strings['Email']);

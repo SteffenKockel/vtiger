@@ -274,7 +274,8 @@ elseif($activity_mode == 'Events')
 		$invited_users[$userid]=$username;
 	}
 	$smarty->assign("INVITEDUSERS",$invited_users);
-	$related_array = getRelatedLists("Calendar", $focus);
+	$related_array = getRelatedListsInformation("Calendar", $focus);
+	
 	$smarty->assign("CONTACTS",$related_array['Contacts']['entries']);
 	
 	$is_fname_permitted = getFieldVisibilityPermission("Contacts", $current_user->id, 'firstname');
@@ -347,7 +348,7 @@ if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
 $customlink_params = Array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
-$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), 'DETAILVIEW', $customlink_params));
+$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), Array('DETAILVIEWBASIC','DETAILVIEW','DETAILVIEWWIDGET'), $customlink_params));
 // END
 
 $custom_fields_data = getCalendarCustomFields($tabid,'detail_view',$focus->column_fields);

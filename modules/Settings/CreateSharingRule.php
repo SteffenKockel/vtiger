@@ -169,52 +169,6 @@ elseif($mode == 'edit')
 
 $relatedmodule='';	
 $relatedlistscombo='';
-$relatedModuleSharingArr=getRelatedSharingModules($tabid);
-$size=sizeof($relatedModuleSharingArr);
-if($size > 0)
-{
-	if($mode=='edit')
-	{
-		$relatedModuleSharingPerrArr=getRelatedModuleSharingPermission($shareid);
-	}
-	foreach($relatedModuleSharingArr as $reltabid=>$relmode_shareid)
-	{
-		$rel_module=getTabModuleName($reltabid);
-		$relatedmodule .=$rel_module.'###'; 						
-	}
-	foreach($relatedModuleSharingArr as $reltabid=>$relmode_shareid)
-	{
-		$ro_selected='';
-		$rw_selected='';
-		$rel_module=getTabModuleName($reltabid);
-		if($mode=='create')
-		{
-			$ro_selected='selected';
-		}
-		elseif($mode=='edit')
-		{
-			$perr=$relatedModuleSharingPerrArr[$reltabid];
-			if($perr == 0)
-			{
-				$ro_selected='selected';
-			}
-			elseif($perr == 1)
-			{
-				$rw_selected='selected';
-			}
-		}	
-
-		$relatedlistscombo.='<tr><td align="right" nowrap style="padding-right:10px;"><b>'.$app_strings[$rel_module].' :</b></td>
-			<td width="70%">';
-		$relatedlistscombo.='<select id="'.$rel_module.'_accessopt" name="'.$rel_module.'_accessopt" onChange="fnwriteRules(\''.$app_strings[$sharing_module].'\',\''.$relatedmodule.'\')">
-			<option value="0" '.$ro_selected.' >'.$mod_strings["Read Only "].'</option>
-			<option value="1" '.$rw_selected.' >'.$mod_strings["Read/Write"].'</option>
-			</select></td></tr>';
-
-
-	}
-}
-
 
 if($mode == 'create')
 {
@@ -307,19 +261,6 @@ $output .= '<td align="right" class="small"><img src="'. vtiger_imageurl('close.
 		</td>
 	</tr>
 	<tr><td colspan="2">&nbsp;</td></tr>
-	<tr>
-		<td style="text-align:left;"><b>'.$mod_strings[LBL_STEP].' 3 : '.$mod_strings[LBL_ACCESS_RIGHTS_FOR_MODULES].' </b></td>
-		<td>&nbsp;</td>
-
-	</tr>
-	<tr>
-		<td style="padding-left:20px;text-align:left;">
-		<table width="75%"  border="0" cellspacing="0" cellpadding="0">';
-
-		$output .=$relatedlistscombo.'</table>
-		</td>
-		<td>&nbsp;</td>
-	</tr>
 	<tr><td colspan="2" align="left">&nbsp;</td></tr>
 	<tr>
 		<td colspan="2" class="dvInnerHeader"><b>'.$mod_strings[LBL_RULE_CONSTRUCTION].'</b></td>

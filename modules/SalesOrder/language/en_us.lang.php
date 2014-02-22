@@ -185,6 +185,11 @@ $mod_strings = Array(
 'Cancelled'=>'Cancelled',
 'Adjustment'=>'Adjustment',
 'Sub Total'=>'Sub Total',
+'AutoCreated'=>'AutoCreated',
+'Sent'=>'Sent',
+'Credit Invoice'=>'Credit Invoice',
+'Paid'=>'Paid',
+
 
 //Added for Reports (5.0.4)
 'Tax Type'=>'Tax Type',

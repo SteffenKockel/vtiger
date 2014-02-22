@@ -242,6 +242,9 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 
 	var data = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId+"&recordid=" + crmId ;
 	data = data + "&fldName=" + fieldName + "&fieldValue=" + escapeAll(tagValue) + "&ajxaction=DETAILVIEW"+groupurl;
+	if(module == 'Users') {
+		data += "&form_token=" + (document.getElementsByName('form_token')[0].value);
+	}
 	new Ajax.Request(
 		'index.php',
                 {queue: {position: 'end', scope: 'command'},
@@ -250,6 +253,11 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
                         onComplete: function(response) {
 							if(response.responseText.indexOf(":#:FAILURE")>-1) {
 	          					alert(alert_arr.ERROR_WHILE_EDITING);
+	          				}
+	          				else if(response.responseText.indexOf(":#:ERR")>-1) {
+								alert_str = response.responseText.replace(":#:ERR","");
+	          					alert(alert_str);
+	           					$("vtbusy_info").style.display="none";
 	          				}
 	          				else if(response.responseText.indexOf(":#:SUCCESS")>-1) {
 								//For HD & FAQ - comments, we should empty the field value
@@ -291,7 +299,7 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 		}
 	}else if(uitype == '11'){
 		if(typeof(use_asterisk) != 'undefined' && use_asterisk == true){
-			getObj(dtlView).innerHTML = "<a href=\"javascript:;\" onclick=\"startCall('"+tagValue+"')\">"+tagValue+"</a>";
+			getObj(dtlView).innerHTML = "<a href=\"javascript:;\" onclick=\"startCall('"+tagValue+"','"+crmId+"')\">"+tagValue+"</a>";
 		}else{
 			getObj(dtlView).innerHTML = tagValue;
 		}

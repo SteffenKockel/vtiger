@@ -119,10 +119,11 @@ $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("MODULE",$currentModule);
 $smarty->assign("SINGLE_MOD",'Document');
-//Display the FCKEditor or not? -- configure $FCKEDITOR_DISPLAY in config.php
+//Display the RTE or not? -- configure $USE_RTE in config.php
+$USE_RTE = vt_hasRTE();
 if(getFieldVisibilityPermission('Documents',$current_user->id,'notecontent') != '0')
-        $FCKEDITOR_DISPLAY = false;
-$smarty->assign("FCKEDITOR_DISPLAY",$FCKEDITOR_DISPLAY);
+        $USE_RTE = false;
+$smarty->assign("USE_RTE",$USE_RTE);
 	
 if (isset($focus->name))
 $smarty->assign("NAME", $focus->name);

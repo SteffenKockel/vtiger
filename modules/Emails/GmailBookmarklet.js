@@ -71,13 +71,13 @@ function init(){
 		
 		function create(object, objectType, callback){
 			var objectJson = JSON.stringify(object);
-			var req = new XHR("post",doc.vtigerURL,("operation=create&elementType="+objectType+"&sessionName="+this.sessionId+
+			var req = new XHR("post",document.vtigerURL,("operation=create&elementType="+objectType+"&sessionName="+this.sessionId+
 				"&element="+encodeURIComponent(objectJson)));
 			req.load(true,callback);
 		}
 		
 		function query(query, callback){
-			var req = new XHR("get",doc.vtigerURL,"operation=query&query="+encodeURIComponent(query)+"&sessionName="+this.sessionId);
+			var req = new XHR("get",document.vtigerURL,"operation=query&query="+encodeURIComponent(query)+"&sessionName="+this.sessionId);
 			req.load(true,callback);
 		}
 		return {extendSession:extendsession,query:query,getResult:getResult,userId:userId,create:create,getError:getError};
@@ -200,9 +200,7 @@ function init(){
 		}();
 	}
 	
-	var doc = document;
-	
-	function trim(str) { 
+    function trim(str) {
 		var s = str.replace(/\s+$/, "");
 		s = s.replace(/^\s+/, "");
 		return s;
@@ -228,8 +226,8 @@ function init(){
 	}
 	
 	function getVtigerURL(){
-		if(doc.vtigerBaseURL.length > 0){
-			var url =doc.vtigerBaseURL;
+		if(document.vtigerBaseURL.length > 0){
+			var url =document.vtigerBaseURL;
 			url +="webservice.php";
 			return url;
 		}
@@ -251,14 +249,14 @@ function init(){
 	var elementId = "__vtigerBookMarkletDiv__";
 	var busyElementId = "__vtigerBookMarkletDivBusy__"
 	function showBookMarkletUI(){
-		var bookMarkletDiv = doc.getElementById(elementId);
+		var bookMarkletDiv = document.getElementById(elementId);
 		if(bookMarkletDiv == null){ 
 			bookMarkletDiv.style.display="block";
 		}
 	}
 	
 	function hideBookMarkletUI(){
-		var bookMarkletDiv = doc.getElementById(elementId);
+		var bookMarkletDiv = document.getElementById(elementId);
 		if(bookMarkletDiv != null){
 			bookMarkletDiv.style.display="none";
 		}
@@ -268,16 +266,16 @@ function init(){
 		var closeElementId = '__vtigetGmailCloseElement';
 		var parentLocation = location.href.split("location=");
 		if(parentLocation.length>1){
-			var closeElement = doc.getElementById(closeElementId);
+			var closeElement = document.getElementById(closeElementId);
 			if(closeElement==null){
-				closeElement = doc.createElement("iframe");
+				closeElement = document.createElement("iframe");
 				closeElement.style.width="0px";
 				closeElement.frameBorder="0px";
 				closeElement.style.height="0px";
 				closeElement.style.display="none";
 				closeElement.id = closeElementId;
 				closeElement.src = decodeURIComponent(parentLocation[1])+"#";
-				doc.body.appendChild(closeElement);
+				document.body.appendChild(closeElement);
 			}
 			closeElement.onload=function(){
 				eval('window.parent.parent.removeMe()');
@@ -286,10 +284,10 @@ function init(){
 	}
 	
 	function showBusy(){
-		var bookMarkletDiv = doc.getElementById(elementId);
-		var busyElem = doc.getElementById(busyElementId);
+		var bookMarkletDiv = document.getElementById(elementId);
+		var busyElem = document.getElementById(busyElementId);
 		if(busyElem==null){
-			busyElem = doc.createElement('div');
+			busyElem = document.createElement('div');
 			busyElem.id = busyElementId;
 			busyElem.innerHTML="Working...";
 			busyElem.style.position="absolute";
@@ -306,21 +304,21 @@ function init(){
 	}
 	
 	function hideBusy(){
-		var busyElem = doc.getElementById(busyElementId);
+		var busyElem = document.getElementById(busyElementId);
 		if(busyElem!=null){
 			busyElem.style.display="none";
 		}
 	}
 	
-	if(typeof doc.vtigerURL =="undefined" || doc.vtigerURL == null || doc.vtigerURL == ""){
-		doc.vtigerBaseURL = getVtigerBaseURL();
-		if(doc.vtigerBaseURL ==null){
+	if(typeof document.vtigerURL =="undefined" || document.vtigerURL == null || document.vtigerURL == ""){
+		document.vtigerBaseURL = getVtigerBaseURL();
+		if(document.vtigerBaseURL ==null){
 			alert("Please Provide a Valid URL");
 			return;
 		}
-		doc.vtigerURL = getVtigerURL();
+		document.vtigerURL = getVtigerURL();
 	}
-	var client = new VtigerWebservice(doc.vtigerURL,null,null);
+	var client = new VtigerWebservice(document.vtigerURL,null,null);
 	
 	showBusy();
 	client.extendSession();
@@ -329,7 +327,7 @@ function init(){
 	
 	function onReady(id,callback){
 		var interval = window.setInterval(function(){
-			var elem = doc.getElementById(id);
+			var elem = document.getElementById(id);
 			if(elem != null && typeof elem != "undefined"){
 				callback();
 				window.clearInterval(interval);
@@ -340,20 +338,20 @@ function init(){
 	function createBookMarkletUI(){
 			
 		onReady("__saveVtigerEmail__",function(){
-			doc.getElementById("__saveVtigerEmail__").onclick=function(){
+			document.getElementById("__saveVtigerEmail__").onclick=function(){
 				createEmail();
 			}
 		});
 		onReady("parentType",function(){
-			doc.getElementById("parentName").innerHTML = "No "+doc.getElementById("parentType").value+" Selected.";
-			doc.getElementById("parentType").onchange=function(){
-				doc.getElementById("parentName").innerHTML = "No "+this.value+" Selected.";  
+			document.getElementById("parentName").innerHTML = "No "+document.getElementById("parentType").value+" Selected.";
+			document.getElementById("parentType").onchange=function(){
+				document.getElementById("parentName").innerHTML = "No "+this.value+" Selected.";
 			}
 		});
 		
 		function getQuery(searchValue){
 			
-			var moduleName = doc.getElementById("parentType").value;
+			var moduleName = document.getElementById("parentType").value;
 			var moduleDetails = JSON.parse(moduleNameFields);
 			var entityNameFields = moduleDetails[moduleName];
 			var selectFields = '';
@@ -368,31 +366,40 @@ function init(){
 				}
 				whereFields += v+" like '%"+searchValue+"%'";
 			});
+
+			var moduleEmailDetails = JSON.parse(moduleEmailFields);
+			var entityEmailFields = moduleEmailDetails[moduleName];
+			each(entityEmailFields, function(k,v){
+				if(selectFields.length > 0) {
+					selectFields +=',';
+				}
+				selectFields += v;
+			});
 			return "select "+selectFields+" from "+moduleName+" where "+whereFields+";";
 		}
 		
 		onReady("__searchVtigerAccount__",function(){
-			doc.getElementById("__searchVtigerAccount__").onclick=function(e){
-				var elem = doc.getElementById("__vtigerAccountSearchList___");
+			document.getElementById("__searchVtigerAccount__").onclick=function(e){
+				var elem = document.getElementById("__vtigerAccountSearchList___");
 				elem.style.display="";
 				
-				var accountName = doc.getElementById("__searchaccount__").value;
+				var accountName = document.getElementById("__searchaccount__").value;
 				if(accountName.length < 1){
 					alert("Please enter the search critiria");
 					return;
 				}
 				showBusy();
 				var q = getQuery(accountName);
-				var moduleName = doc.getElementById("parentType").value;
-				var responseElem = doc.getElementById("__vtigerAccountSearchResponse___");
+				var moduleName = document.getElementById("parentType").value;
+				var responseElem = document.getElementById("__vtigerAccountSearchResponse___");
 				if(responseElem != null){
 					responseElem.innerHTML = '';
 				}
 				client.query(q,function(response){
-					var responseElem = doc.getElementById("__vtigerAccountSearchResponse___");
+					var responseElem = document.getElementById("__vtigerAccountSearchResponse___");
 					if(responseElem == null){
-						var sibling = doc.createElement("tr");
-						var td = doc.createElement("td");
+						var sibling = document.createElement("tr");
+						var td = document.createElement("td");
 						td.colSpan = "3";
 						str = "<div id=\"__vtigerAccountSearchResponse___\" "+
 								"style=\"width: 100%;overflow: auto;\"> </div>";
@@ -430,7 +437,7 @@ function init(){
 	
 	function findObject(array,needle){
 		var name, i = 0, length = array.length;
-		var propect = null;
+		var prospect = null;
 		for (; i < length; ++i ){
 			var object = array[i];
 			for ( name in object ){
@@ -447,7 +454,6 @@ function init(){
 		var moduleDetails = JSON.parse(moduleNameFields);
 		var entityNameFields = moduleDetails[moduleName];
 		var entityName = '';
-		var entityNameField = '';
 		each(entityNameFields,function(k,v){
 			if(entityName.length>0){
 				entityName += " ";
@@ -457,6 +463,19 @@ function init(){
 		return entityName;
 	}
 	
+	function getEntityEmail(moduleName,row){
+		var moduleDetails = JSON.parse(moduleEmailFields);
+		var entityEmailFields = moduleDetails[moduleName];
+		var entityEmail = '';
+		each(entityEmailFields,function(k,v){
+			if(entityEmail.length > 0){
+				return;
+			}
+			entityEmail +=row[v];
+		});
+		return entityEmail;
+	}
+
 	function displaySearchResult(moduleName,response,accountName){
 		hideBusy();
 		var queryResponse = JSON.parse(response.responseText);
@@ -473,17 +492,21 @@ function init(){
 				str +="<li>No Record Match \""+accountName+"\"</li>";
 			}
 			str += "</ul>";
-			var elem = doc.getElementById("__vtigerAccountSearchResponse___");
+			var elem = document.getElementById("__vtigerAccountSearchResponse___");
 			elem.style.height="120px";
 			elem.innerHTML = str;
 			each(elem.getElementsByTagName("a"),function(i,v){
 				v.onclick=function(){
 					var elem = findObject(queryResult,this.id);
 					var entityName = getEntityName(moduleName,elem);
-					setAccountId(elem.id,entityName);
-					var wrap = doc.getElementById("__vtigerAccountSearchList___");
+					var entityEmail = getEntityEmail(moduleName, elem);
+					if(entityEmail.length <=0) {
+						alert("'"+entityName+"' has no email, please select another "+moduleName);
+					}
+					setDetails(elem.id,entityName, entityEmail);
+					var wrap = document.getElementById("__vtigerAccountSearchList___");
 					wrap.style.display="none";
-					doc.getElementById('__searchaccount__').value='';
+					document.getElementById('__searchaccount__').value='';
 				}
 			});
 		}else{
@@ -501,11 +524,13 @@ function init(){
 		},10);
 	}
 	
-	function setAccountId(id,entityName){
-		var elem = doc.getElementById("parent_id");
-		var elemName = doc.getElementById("parentName");
+	function setDetails(id, entityName, entityEmail){
+		var elem = document.getElementById("parent_id");
+		var elemName = document.getElementById("parentName");
+		var elemEmail = document.getElementById("parentEmail");
 		elem.value = id;
 		elemName.innerHTML = entityName;
+		elemEmail.value = entityEmail;
 	}
 	
 	function closeOnSuccess(response){
@@ -513,7 +538,7 @@ function init(){
 		if(createResponse.success == true){
 			alert("Email added to vtigerCRM.");
 		}else{
-			doc.getElementById("__saveVtigerEmail__").disabled=false;
+			document.getElementById("__saveVtigerEmail__").disabled=false;
 			var error = client.getError(createResponse);
 			alert("Error while creating: \nerrorCode: "+error.code+"\nerror Message: "+error.message);
 		}
@@ -525,27 +550,31 @@ function init(){
 	}
 	
 	function createEmail(){
-		var parent_id = doc.getElementById("parent_id").value;
-		var type = doc.getElementById("parentType").value;
+		var parent_id = document.getElementById("parent_id").value;
+		var type = document.getElementById("parentType").value;
+		var userEmail = document.getElementById("userEmail").value;
+		var entityEmail = document.getElementById("parentEmail").value;
+		
 		if(parent_id.length < 1){
 			alert("No "+type+" selected.");
 			return ;
 		}
-		var subject = doc.getElementById("subject").value;
+		var subject = document.getElementById("subject").value;
 		if(subject.length < 1){
 			alert("Please provide a value for Subject");
 			return;
 		}
 		
-		var description = doc.getElementById("description").value;
+		var description = document.getElementById("description").value;
 		if(description.length < 1){
 			alert("Please provide a value for Body of the email.");
 			return;
 		}
-		doc.getElementById("__saveVtigerEmail__").disabled=true;
+		document.getElementById("__saveVtigerEmail__").disabled=true;
 		var email ={"description":description,"subject":subject,
-			"description":description,"assigned_user_id":client.userId,
-			"date_start":getTodayDate(),"activitytype":"Emails","parent_id": parent_id};
+			"assigned_user_id":client.userId,"date_start":getTodayDate(),"activitytype":"Emails",
+			"parent_id": parent_id,'from_email': userEmail,'saved_toid':entityEmail,
+			'email_flag':'SAVED'};
 		client.create(email,"Emails",closeOnSuccess) 
 	}
 	createBookMarkletUI();

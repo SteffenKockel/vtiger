@@ -54,6 +54,12 @@ $mod_strings = Array(
 'Price Book Name'=>'Price Book Name',
 
 'LBL_NO_TAXES_ASSOCIATED'=>'No taxes associated with this service',
+'--None--'=>'--None--',
+'Installation'=>'Installation',
+'Migration'=>'Migration',
+'Customization'=>'Customization',
+'Training'=>'Training',
+
 );
 
 ?>

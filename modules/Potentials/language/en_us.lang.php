@@ -151,6 +151,7 @@ $mod_strings = Array(
 'Potential No' => 'Potential No',
 // END
 
+'Related To' => 'Related To', 
 );
 
 ?>

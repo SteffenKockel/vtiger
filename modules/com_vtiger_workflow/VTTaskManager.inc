@@ -110,8 +110,13 @@
 		
 		
 		function getTaskTypes(){
-			return array("VTEmailTask", "VTEntityMethodTask", "VTCreateTodoTask", 
-									 "VTCreateEventTask");
+			$taskTypes = array("VTEmailTask", "VTEntityMethodTask", "VTCreateTodoTask","VTCreateEventTask");
+			// Make SMSTask available if module is active
+			// TODO Generic way of handling this could be helpful
+			if(getTabid('SMSNotifier') && vtlib_isModuleActive('SMSNotifier')) {
+				$taskTypes [] = 'VTSMSTask'; 	
+			}				
+			return $taskTypes;
 		}
 		
 		private function getTasksForResult($result){
@@ -136,8 +141,6 @@
 		private function requireTask($taskType){
 			require_once("tasks/".$taskType.".inc");
 		}
-		
-		
 		
 	}
 	

@@ -342,6 +342,7 @@ $mod_strings = Array(
 'LBL_USERNAME'=>'User Name',
 'LBL_PASWRD'=>'Password',
 'LBL_REQUIRES_AUTHENT'=>'Requires Authentication?',
+'LBL_FROM_EMAIL_FIELD'=>'From Email',
 
 //Fields for Settings
 
@@ -994,7 +995,7 @@ $mod_strings = Array(
 'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'No custom modules found! Create one or Import New ...',
 
 // vtmailscanner START
-'LBL_MAIL_SCANNER'=>'Mail Scanner',
+'LBL_MAIL_SCANNER'=>'Mail Converter',
 'LBL_MAIL_SCANNER_DESCRIPTION'=>'Configure mailbox for scanning',
 'LBL_SCAN_NOW'=>'Scan Now',
 'LBL_RULE'=>'Rule',
@@ -1083,7 +1084,8 @@ $mod_strings = Array(
 'LBL_WHEN_TO_RUN_WORKFLOW'=>'When to run the workflow',
 'LBL_ONLY_ON_FIRST_SAVE'=>'Only on the first save',
 'LBL_UNTIL_FIRST_TIME_CONDITION_TRUE'=>'Until the first time the condition is true',
-'LBL_EVERYTIME_RECORD_SAVED'=>'Every time the the record is saved',
+'LBL_EVERYTIME_RECORD_SAVED'=>'Every time the record is saved',
+'LBL_ON_MODIFY' => 'Every time a record is modified',
 'LBL_CONDITIONS'=>'Conditions',
 'LBL_NEW_CONDITION_BUTTON_LABEL'=>'New Condition',
 'LBL_TASKS'=>'Tasks',
@@ -1146,7 +1148,7 @@ $mod_strings = Array(
 'VTLIB_LBL_NOT_PRESENT'=>'Not Present',
 'VTLIB_LBL_INST_VERSION'=>'Installed Version',
 'VTLIB_LBL_MATCHES_PACKAGE_VERSION'=>'matches Package Version',
-'VTLIB_LBL_CANNOT_UPGRADE'=>'Cannot updgrade!',
+'VTLIB_LBL_CANNOT_UPGRADE'=>'Cannot upgrade!',
 // END
 
 //User group fixes
@@ -1197,8 +1199,6 @@ $mod_strings = Array(
 'PORTAL_EXTENSION_DESCRIPTION'=>'Allows you to Configure Customer Portal Plugin',
 'LBL_CUSTOMER_PORTAL'=> 'Customer Portal',
 
-//FieldFormulas
-'LBL_FIELDFORMULAS' => 'Field Formulas',
-'LBL_FIELDFORMULAS_DESCRIPTION' => 'Add custom equations to custom fields',
+'LBL_ADD_CUSTOMFIELD' => 'Add Custom Field',
 );
 ?>

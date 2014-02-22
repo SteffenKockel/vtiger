@@ -534,57 +534,57 @@ function getUserModuleSharingObjects($module,$userid,$def_org_share,$current_use
 		//Get roles from Role2Grp
 		$grpIterator=false;
 		$groupList = $current_user_groups;
-
-		$query="select vtiger_datashare_role2group.* from vtiger_datashare_role2group inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_role2group.shareid where vtiger_datashare_module_rel.tabid=?";
-		$qparams = array($mod_tabid);
-		if (count($groupList) > 0) {
-			$query .= " and vtiger_datashare_role2group.to_groupid in (". generateQuestionMarks($groupList) .")";
-			array_push($qparams, $groupList);
-		} 
-		$result=$adb->pquery($query, $qparams);
-		$num_rows=$adb->num_rows($result);
-		for($i=0;$i<$num_rows;$i++)
-		{
-			$share_roleid=$adb->query_result($result,$i,'share_roleid');
-			$shareid=$adb->query_result($result,$i,'shareid');
-			$share_id_role_members=Array();
-			$share_id_roles=Array();
-			$share_id_roles[]=$share_roleid;
-			$share_id_role_members['ROLE']=$share_id_roles;
-			$share_id_members[$shareid]=$share_id_role_members;	
-
-			$share_permission=$adb->query_result($result,$i,'permission');
-			if($share_permission == 1)
+		if (!empty($groupList)) {
+			$query="select vtiger_datashare_role2group.* from vtiger_datashare_role2group inner join vtiger_datashare_module_rel on vtiger_datashare_module_rel.shareid=vtiger_datashare_role2group.shareid where vtiger_datashare_module_rel.tabid=?";
+			$qparams = array($mod_tabid);
+			if (count($groupList) > 0) {
+				$query .= " and vtiger_datashare_role2group.to_groupid in (". generateQuestionMarks($groupList) .")";
+				array_push($qparams, $groupList);
+			}
+			$result=$adb->pquery($query, $qparams);
+			$num_rows=$adb->num_rows($result);
+			for($i=0;$i<$num_rows;$i++)
 			{
-				if($def_org_share[$mod_tabid] == 3)
-				{	
+				$share_roleid=$adb->query_result($result,$i,'share_roleid');
+				$shareid=$adb->query_result($result,$i,'shareid');
+				$share_id_role_members=Array();
+				$share_id_roles=Array();
+				$share_id_roles[]=$share_roleid;
+				$share_id_role_members['ROLE']=$share_id_roles;
+				$share_id_members[$shareid]=$share_id_role_members;
+
+				$share_permission=$adb->query_result($result,$i,'permission');
+				if($share_permission == 1)
+				{
+					if($def_org_share[$mod_tabid] == 3)
+					{
+						if(! array_key_exists($share_roleid,$role_read_per))
+						{
+
+							$share_role_users=getRoleUserIds($share_roleid);
+							$role_read_per[$share_roleid]=$share_role_users;
+						}
+					}
+					if(! array_key_exists($share_roleid,$role_write_per))
+					{
+
+						$share_role_users=getRoleUserIds($share_roleid);
+						$role_write_per[$share_roleid]=$share_role_users;
+					}
+				}
+				elseif($share_permission == 0 && $def_org_share[$mod_tabid] == 3)
+				{
 					if(! array_key_exists($share_roleid,$role_read_per))
 					{
 
 						$share_role_users=getRoleUserIds($share_roleid);
 						$role_read_per[$share_roleid]=$share_role_users;
 					}
-				}
-				if(! array_key_exists($share_roleid,$role_write_per))
-				{
 
-					$share_role_users=getRoleUserIds($share_roleid);
-					$role_write_per[$share_roleid]=$share_role_users;
-				}
-			}
-			elseif($share_permission == 0 && $def_org_share[$mod_tabid] == 3)
-			{
-				if(! array_key_exists($share_roleid,$role_read_per))
-				{
-
-					$share_role_users=getRoleUserIds($share_roleid);
-					$role_read_per[$share_roleid]=$share_role_users;
 				}
 
 			}
-
 		}
-
 
 
 		//Retreiving from rs to vtiger_role

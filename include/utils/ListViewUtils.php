@@ -40,7 +40,7 @@ require_once('include/Zend/Json.php');
 function getListViewHeader($focus, $module,$sort_qry='',$sorder='',$order_by='',$relatedlist='',$oCv='',$relatedmodule='',$skipActions=false)
 {
 	global $log, $singlepane_view;
-	$log->debug("Entering getListViewHeader(". $module.",".$sort_qry.",".$sorder.",".$order_by.",".$relatedlist.",".get_class($oCv).") method ...");
+	$log->debug("Entering getListViewHeader(". $module.",".$sort_qry.",".$sorder.",".$order_by.",".$relatedlist.",".(is_object($oCv)? get_class($oCv) : $oCv).") method ...");
 	global $adb;
 	global $theme;
 	global $app_strings;
@@ -205,17 +205,34 @@ function getListViewHeader($focus, $module,$sort_qry='',$sorder='',$order_by='',
 						{
 							$lbl_name .=' ('.$app_strings['LBL_IN'].' '.$user_info['currency_symbol'].')';
 						}
-						if($relatedlist !='' && $relatedlist != 'global')
-							if($singlepane_view == 'true')	
-								$name = "<a href='index.php?module=".$relatedmodule."&action=DetailView&relmodule=".$module."&order_by=".$col."&record=".$relatedlist."&sorder=".$temp_sorder."&parenttab=".$tabname."' class='listFormHeaderLinks'>".$lbl_name."".$arrow."</a>";
-							else
-								$name = "<a href='index.php?module=".$relatedmodule."&action=CallRelatedList&relmodule=".$module."&order_by=".$col."&record=".$relatedlist."&sorder=".$temp_sorder."&parenttab=".$tabname."' class='listFormHeaderLinks'>".$lbl_name."".$arrow."</a>";
-						elseif($module == 'Users' && $name == 'User Name')
-							$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module."\",\"parenttab=".$tabname."&order_by=".$col."&sorder=".$temp_sorder."".$sort_qry."\");' class='listFormHeaderLinks'>".getTranslatedString('LBL_LIST_USER_NAME_ROLE',$module)."".$arrow."</a>";
+						if($relatedlist !='' && $relatedlist != 'global'){
+							$relationURL = '';
+							if(!empty($_REQUEST['relation_id'])){
+								$relationURL = '&relation_id='.vtlib_purify(
+										$_REQUEST['relation_id']);
+							}
+							$actionsURL = '';
+							if(!empty($_REQUEST['actions'])){
+								$actionsURL = '&actions='.vtlib_purify($_REQUEST['actions']);
+							}
+							if(empty($_REQUEST['header'])){
+								$moduleLabel = getTranslatedString($module,$module);
+							}else{
+								$moduleLabel = $_REQUEST['header'];
+							}
+							$moduleLabel = str_replace(' ','',$moduleLabel);
+							$name = "<a href='javascript:void(0);' onClick='loadRelatedListBlock".
+							"(\"module=$relatedmodule&action=".$relatedmodule."Ajax&".
+							"file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=".$moduleLabel.
+							"&order_by=$col&record=$relatedlist&sorder=$temp_sorder$relationURL".
+							"$actionsURL\",\"tbl_".$relatedmodule."_$moduleLabel\",".
+							"\"$relatedmodule"."_$moduleLabel\");' class='listFormHeaderLinks'>".$lbl_name."".$arrow."</a>";
+						} elseif($module == 'Users' && $name == 'User Name')
+							$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module."\",\"parenttab=".$tabname."&order_by=".$col."&start=1&sorder=".$temp_sorder."".$sort_qry."\");' class='listFormHeaderLinks'>".getTranslatedString('LBL_LIST_USER_NAME_ROLE',$module)."".$arrow."</a>";
 						elseif($relatedlist == "global")
 						        $name = $lbl_name;
 						else
-							$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module."\",\"parenttab=".$tabname."&order_by=".$col."&start=".$_SESSION["lvs"][$module]["start"]."&sorder=".$temp_sorder."".$sort_qry."\");' class='listFormHeaderLinks'>".$lbl_name."".$arrow."</a>";
+							$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module."\",\"parenttab=".$tabname."&order_by=".$col."&start=1&sorder=".$temp_sorder."".$sort_qry."\");' class='listFormHeaderLinks'>".$lbl_name."".$arrow."</a>";
 						$arrow = '';
 					}
 					else
@@ -538,7 +555,7 @@ function getListViewEntries($focus, $module,$list_result,$navigation_array,$rela
 {
 	global $log;
 	global $mod_strings;
-	$log->debug("Entering getListViewEntries(".get_class($focus).",". $module.",".$list_result.",".$navigation_array.",".$relatedlist.",".$returnset.",".$edit_action.",".$del_action.",".get_class($oCv).") method ...");
+	$log->debug("Entering getListViewEntries(".get_class($focus).",". $module.",".$list_result.",".$navigation_array.",".$relatedlist.",".$returnset.",".$edit_action.",".$del_action.",".(is_object($oCv)? get_class($oCv) : $oCv).") method ...");
 	$tabname = getParentTab();
 	global $adb,$current_user;
 	global $app_strings;
@@ -780,7 +797,7 @@ function getListViewEntries($focus, $module,$list_result,$navigation_array,$rela
 								$contact_name = getFullNameFromQResult($list_result,$i-1,"Contacts");
 								$value="";
 								//Added to get the contactname for activities custom view - t=2190
-								if($contact_id != '' && $contact_name == '') {
+								if($contact_id != '' && !empty($contact_name)) {
 									$contact_name = getContactName($contact_id);
 								}
 								if(($contact_name != "") && ($contact_id !='NULL')) {
@@ -1438,10 +1455,17 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 	else if($uitype == 53)
 	{
 		$value = textlength_check($adb->query_result($list_result,$list_result_count,'user_name'));
+		// When Assigned To field is used in Popup window
+		if($value == '' ) {
+			$user_id = $adb->query_result($list_result,$list_result_count,'smownerid');
+			if ($user_id != null && $user_id != '') {
+				$value = getOwnerName($user_id);
+			}
+		}
 	}
 	elseif($uitype == 52) 
 	{        
-		$value = getUserName($adb->query_result($list_result,$list_result_count,'handler')); 
+		$value = getUserName($adb->query_result($list_result,$list_result_count,$colname)); 
 	}
 	elseif($uitype == 51)//Accounts - Member Of
 	{
@@ -1480,7 +1504,7 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 		if(($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) && $temp_val != '')
 		{	
 			$temp_acttype = $adb->query_result($list_result,$list_result_count,'activitytype');
-			if(($temp_acttype == 'Meeting' || $temp_acttype == 'Call') && $fieldname =="taskstatus")
+			if(($temp_acttype != 'Task') && $fieldname =="taskstatus")
 				$temptable = "eventstatus";
 			else
 				$temptable = $fieldname;
@@ -1511,6 +1535,10 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 		{
 			$value = textlength_check($value);
 		}
+	}
+	elseif ($uitype == 16)
+	{
+		$value = getTranslatedString($temp_val,$currentModule);
 	}
 	elseif($uitype == 71 || $uitype == 72)
 	{
@@ -1861,7 +1889,12 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 	}
 	//added for asterisk integration
 	elseif($uitype == 11){
-		$value = "<a href='javascript:;' onclick='startCall(&quot;$temp_val&quot;, &quot;$entity_id&quot;)'>".$temp_val."</a>";
+		// Fix added for Trac Id: 6139
+		if(vtlib_isModuleActive('PBXManager')) {
+			$value = "<a href='javascript:;' onclick='startCall(&quot;$temp_val&quot;, &quot;$entity_id&quot;)'>".$temp_val."</a>";
+		} else {
+			$value = $temp_val;
+		}
 	}
 	//asterisk changes end here
 	//Added for email status tracking
@@ -1990,16 +2023,18 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 					$sub_det = $sub_products."::".str_replace(":","<br>",$sub_prod);
 					$qty_stock=$adb->query_result($list_result,$list_result_count,'qtyinstock');
 
-					$slashes_temp_val = popup_from_html($temp_val);
+					//fix for T6943
+
+					$slashes_temp_val = popup_from_html($field_val);
                     $slashes_temp_val = htmlspecialchars($slashes_temp_val,ENT_QUOTES,$default_charset);
-					$description=decode_html_force($adb->query_result($list_result,$list_result_count,'description'));
-					$slashes_desc = addslashes(htmlspecialchars($description,ENT_QUOTES,$default_charset));
+					$description = popup_from_html($adb->query_result($list_result,$list_result_count,'description'));
+					$slashes_temp_desc = decode_html(htmlspecialchars($description,ENT_QUOTES,$default_charset));
 					
-					$slashes_desc = str_replace(array("\r","\n"),array('\r','\n'), $slashes_desc);
-					$tmp_arr = array("entityid"=>$entity_id,"prodname"=>"".stripslashes(nl2br($slashes_temp_val))."","unitprice" => "$unitprice", "qtyinstk"=>"$qty_stock","taxstring"=>"$tax_str","rowid"=>"$row_id","desc"=>"$slashes_desc","subprod_ids"=>"$sub_det");
+					$slashes_desc = str_replace(array("\r","\n"),array('\r','\n'), $slashes_temp_desc);
+					$tmp_arr = array("entityid"=>$entity_id,"prodname"=>"".stripslashes(decode_html(nl2br($slashes_temp_val)))."","unitprice" => "$unitprice", "qtyinstk"=>"$qty_stock","taxstring"=>"$tax_str","rowid"=>"$row_id","desc"=>"$slashes_desc","subprod_ids"=>"$sub_det");
 					require_once('include/Zend/Json.php');
 					$prod_arr = Zend_Json::encode($tmp_arr);
-					$value = '<a href="javascript:window.close();" id=\'popup_product_'.$entity_id.'\' onclick=\'set_return_inventory("'.$entity_id.'", "'.nl2br($slashes_temp_val).'", "'.$unitprice.'", "'.$qty_stock.'","'.$tax_str.'","'.$row_id.'","'.$slashes_desc.'","'.$sub_det.'");\' vt_prod_arr=\''.$prod_arr.'\' >'.$temp_val.'</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_'.$entity_id.'\' onclick=\'set_return_inventory("'.$entity_id.'", "'.decode_html(nl2br($slashes_temp_val)).'", "'.$unitprice.'", "'.$qty_stock.'","'.$tax_str.'","'.$row_id.'","'.$slashes_desc.'","'.$sub_det.'");\' vt_prod_arr=\''.$prod_arr.'\' >'.$temp_val.'</a>';
 				}
 				elseif($popuptype == "inventory_prod_po")
 				{
@@ -2037,18 +2072,17 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 					}
 					
 					$sub_det = $sub_products."::".str_replace(":","<br>",$sub_prod);
-
-					$slashes_temp_val = popup_from_html($temp_val);
-					$slashes_temp_val = htmlspecialchars($slashes_temp_val,ENT_QUOTES,$default_charset);
-					$description=$adb->query_result($list_result,$list_result_count,'description');
-					$slashes_desc = htmlspecialchars($description,ENT_QUOTES,$default_charset);
-					
-					$slashes_desc = str_replace(array("\r","\n"),array('\r','\n'), $slashes_desc);
-					$tmp_arr = array("entityid"=>$entity_id,"prodname"=>"".stripslashes(nl2br($slashes_temp_val))."","unitprice" => "$unitprice", "taxstring"=>"$tax_str","rowid"=>"$row_id","desc"=>"$slashes_desc","subprod_ids"=>"$sub_det");
+                    
+					$slashes_temp_val = popup_from_html($field_val);
+                    $slashes_temp_val = htmlspecialchars($slashes_temp_val,ENT_QUOTES,$default_charset);
+                    $description = popup_from_html($adb->query_result($list_result,$list_result_count,'description'));
+                    $slashes_temp_desc = decode_html(htmlspecialchars($description,ENT_QUOTES,$default_charset));
+                                        
+                    $slashes_desc = str_replace(array("\r","\n"),array('\r','\n'), $slashes_temp_desc);
+                    $tmp_arr = array("entityid"=>$entity_id,"prodname"=>"".stripslashes(decode_html(nl2br($slashes_temp_val)))."","unitprice" => "$unitprice", "qtyinstk"=>"$qty_stock","taxstring"=>"$tax_str","rowid"=>"$row_id","desc"=>"$slashes_desc","subprod_ids"=>"$sub_det");
 					require_once('include/Zend/Json.php');
 					$prod_arr = Zend_Json::encode($tmp_arr);
-					
-					$value = '<a href="javascript:window.close();" id=\'popup_product_'.$entity_id.'\' onclick=\'set_return_inventory_po("'.$entity_id.'", "'.nl2br($slashes_temp_val).'", "'.$unitprice.'", "'.$tax_str.'","'.$row_id.'","'.$slashes_desc.'","'.$sub_det.'"); \'  vt_prod_arr=\''.$prod_arr.'\' >'.$temp_val.'</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_'.$entity_id.'\' onclick=\'set_return_inventory_po("'.$entity_id.'", "'.decode_html(nl2br($slashes_temp_val)).'", "'.$unitprice.'", "'.$tax_str.'","'.$row_id.'","'.$slashes_desc.'","'.$sub_det.'"); \'  vt_prod_arr=\''.$prod_arr.'\' >'.$temp_val.'</a>';
 				}
 				elseif($popuptype == "inventory_service")
 				{
@@ -2073,17 +2107,17 @@ function getValue($field_result, $list_result,$fieldname,$focus,$module,$entity_
 						$unit_price = '';
 					}
 
-					$slashes_temp_val = popup_from_html($temp_val);
+					$slashes_temp_val = popup_from_html($field_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val,ENT_QUOTES,$default_charset);
-					$description=decode_html_force($adb->query_result($list_result,$list_result_count,'description'));
-					$slashes_desc = htmlspecialchars($description,ENT_QUOTES,$default_charset);
+					$description = popup_from_html($adb->query_result($list_result,$list_result_count,'description'));
+					$slashes_temp_desc = decode_html(htmlspecialchars($description,ENT_QUOTES,$default_charset));
 					
-					$slashes_desc = str_replace(array("\r","\n"),array('\r','\n'), $slashes_desc);
-					$tmp_arr = array("entityid"=>$entity_id,"prodname"=>"".stripslashes(nl2br($slashes_temp_val))."","unitprice" => "$unitprice","taxstring"=>"$tax_str","rowid"=>"$row_id","desc"=>"$slashes_desc");
+					$slashes_desc = str_replace(array("\r","\n"),array('\r','\n'), $slashes_temp_desc);
+					$tmp_arr = array("entityid"=>$entity_id,"prodname"=>"".stripslashes(decode_html(nl2br($slashes_temp_val)))."","unitprice" => "$unitprice","taxstring"=>"$tax_str","rowid"=>"$row_id","desc"=>"$slashes_desc");
 					require_once('include/Zend/Json.php');
 					$prod_arr = Zend_Json::encode($tmp_arr);
 
-					$value = '<a href="javascript:window.close();" id=\'popup_product_'.$entity_id.'\' onclick=\'set_return_inventory("'.$entity_id.'", "'.nl2br($slashes_temp_val).'", "'.$unitprice.'", "'.$tax_str.'","'.$row_id.'","'.$slashes_desc.'");\'  vt_prod_arr=\''.$prod_arr.'\' >'.$temp_val.'</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_'.$entity_id.'\' onclick=\'set_return_inventory("'.$entity_id.'", "'.decode_html(nl2br($slashes_temp_val)).'", "'.$unitprice.'", "'.$tax_str.'","'.$row_id.'","'.$slashes_desc.'");\'  vt_prod_arr=\''.$prod_arr.'\' >'.$temp_val.'</a>';
 				}
 				elseif($popuptype == "inventory_pb")
 				{
@@ -2438,14 +2472,9 @@ function getListQuery($module,$where='')
 			LEFT JOIN vtiger_users
 				ON vtiger_crmentity.smownerid = vtiger_users.id
 			LEFT JOIN vtiger_products 
-				ON vtiger_products.productid = vtiger_troubletickets.product_id 
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-				$sec_parameter=getListViewSecurityParameter($module);
-				$query .= $sec_parameter;
-
-		}
+				ON vtiger_products.productid = vtiger_troubletickets.product_id";
+		$query .= ' '.getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 
 	Case "Accounts":
@@ -2469,38 +2498,9 @@ function getListQuery($module,$where='')
 			LEFT JOIN vtiger_users
 				ON vtiger_users.id = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_account vtiger_account2
-				ON vtiger_account.parentid = vtiger_account2.accountid
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-
-	if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-                {
-                    $query .= " AND (vtiger_crmentity.smownerid IN (".$current_user->id.")
-		   		 OR vtiger_crmentity.smownerid IN (
-					 SELECT vtiger_user2role.userid
-					 FROM vtiger_user2role
-					 INNER JOIN vtiger_users
-						 ON vtiger_users.id = vtiger_user2role.userid
-					 INNER JOIN vtiger_role
-						 ON vtiger_role.roleid = vtiger_user2role.roleid
-					 WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%')
-					 OR vtiger_crmentity.smownerid IN (
-						 SELECT shareduserid
-						 FROM vtiger_tmp_read_user_sharing_per
-						 WHERE userid=".$current_user->id."
-						 AND tabid=".$tab_id.")
-					 OR (";
-
-                        if(sizeof($current_user_groups) > 0)
-                        {
-                              $query .= " vtiger_groups.groupid IN (". implode(",", getCurrentUserGroupList()) .")
-					OR ";
-                        }
-                         $query .= " vtiger_groups.groupid IN (
-				 	SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
-					FROM vtiger_tmp_read_group_sharing_per
-					WHERE userid=".$current_user->id."
-					AND tabid=".$tab_id."))) ";
-                }
+				ON vtiger_account.parentid = vtiger_account2.accountid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 
 	Case "Potentials":
@@ -2526,15 +2526,9 @@ function getListQuery($module,$where='')
 			LEFT JOIN vtiger_groups
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_users
-				ON vtiger_users.id = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 ".$where; 
-
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;
-		}
-
+				ON vtiger_users.id = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 
 	Case "Leads":
@@ -2555,15 +2549,10 @@ function getListQuery($module,$where='')
 			LEFT JOIN vtiger_groups
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_users
-				ON vtiger_users.id = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0
-			AND vtiger_leaddetails.converted = 0 ".$where;
-		
-               if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-                {
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;
-                }				
+				ON vtiger_users.id = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_leaddetails.converted = 0 ".
+			$where;
 			break;
 	Case "Products":
 		$query = "SELECT vtiger_crmentity.crmid, vtiger_crmentity.description, vtiger_products.*, vtiger_productcf.*
@@ -2591,13 +2580,9 @@ function getListQuery($module,$where='')
 			LEFT JOIN vtiger_users
 				ON vtiger_users.id = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_attachmentsfolder 
-				ON vtiger_notes.folderid = vtiger_attachmentsfolder.folderid 
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-	        if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-            {
-				$sec_parameter=getListViewSecurityParameter($module);
-				$query .= $sec_parameter;
-            }		
+				ON vtiger_notes.folderid = vtiger_attachmentsfolder.folderid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 	Case "Contacts":
 		//Query modified to sort by assigned to
@@ -2624,15 +2609,13 @@ function getListQuery($module,$where='')
 				ON vtiger_contactdetails.reportsto = vtiger_contactdetails2.contactid
 			LEFT JOIN vtiger_customerdetails
 				ON vtiger_customerdetails.customerid = vtiger_contactdetails.contactid";
-		if((isset($_REQUEST["from_dashboard"]) && $_REQUEST["from_dashboard"] == true) && (isset($_REQUEST["type"]) && $_REQUEST["type"] =="dbrd"))
-                        $query .= " INNER JOIN vtiger_campaigncontrel on vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid";
-                $query .= " WHERE vtiger_crmentity.deleted = 0 ".$where;
-
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;
+		if((isset($_REQUEST["from_dashboard"]) && $_REQUEST["from_dashboard"] == true) &&
+				(isset($_REQUEST["type"]) && $_REQUEST["type"] =="dbrd")) {
+			$query .= " INNER JOIN vtiger_campaigncontrel on vtiger_campaigncontrel.contactid = ".
+			"vtiger_contactdetails.contactid";
 		}
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 	Case "Calendar":
 		
@@ -2680,20 +2663,15 @@ function getListQuery($module,$where='')
 		ON vtiger_campaign.campaignid = vtiger_seactivityrel.crmid";
 
 		//added to fix #5135
-		if(isset($_REQUEST['from_homepage']) && ($_REQUEST['from_homepage'] == "upcoming_activities" || $_REQUEST['from_homepage'] == "pending_activities"))
-		{
+		if(isset($_REQUEST['from_homepage']) && ($_REQUEST['from_homepage'] == 
+				"upcoming_activities" || $_REQUEST['from_homepage'] == "pending_activities")) {
 			$query.=" LEFT OUTER JOIN vtiger_recurringevents
 			             ON vtiger_recurringevents.activityid=vtiger_activity.activityid";
 		}
 		//end
 
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
 		$query.=" WHERE vtiger_crmentity.deleted = 0 AND activitytype != 'Emails' ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;		
-
-		}
 			break;
 	Case "Emails":
 		$query = "SELECT DISTINCT vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
@@ -2719,13 +2697,9 @@ function getListQuery($module,$where='')
 				ON vtiger_salesmanactivityrel.activityid = vtiger_activity.activityid
 			LEFT JOIN vtiger_emaildetails
 				ON vtiger_emaildetails.emailid = vtiger_activity.activityid
-			WHERE vtiger_activity.activitytype = 'Emails'
-			AND vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;	
-		}
+			WHERE vtiger_activity.activitytype = 'Emails'";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "AND vtiger_crmentity.deleted = 0 ".$where;
 			break;
 	Case "Faq":
 		$query = "SELECT vtiger_crmentity.crmid, vtiger_crmentity.createdtime, vtiger_crmentity.modifiedtime,
@@ -2734,13 +2708,9 @@ function getListQuery($module,$where='')
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_faq.id
 			LEFT JOIN vtiger_products
-				ON vtiger_faq.product_id = vtiger_products.productid
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;	
-		}
+				ON vtiger_faq.product_id = vtiger_products.productid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 
 	Case "Vendors":
@@ -2794,13 +2764,9 @@ function getListQuery($module,$where='')
 			LEFT JOIN vtiger_users
 				ON vtiger_users.id = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_users as vtiger_usersQuotes
-			        ON vtiger_usersQuotes.id = vtiger_quotes.inventorymanager
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;	
-		}
+			        ON vtiger_usersQuotes.id = vtiger_quotes.inventorymanager";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 	Case "PurchaseOrder":
 		//Query modified to sort by assigned to
@@ -2828,13 +2794,9 @@ function getListQuery($module,$where='')
 			LEFT JOIN vtiger_groups
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_users
-				ON vtiger_users.id = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;	
-		}
+				ON vtiger_users.id = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 	Case "SalesOrder":
 		//Query modified to sort by assigned to
@@ -2869,13 +2831,9 @@ function getListQuery($module,$where='')
 			LEFT JOIN vtiger_groups
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_users
-				ON vtiger_users.id = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;	
-		}
+				ON vtiger_users.id = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 	Case "Invoice":
 		//Query modified to sort by assigned to
@@ -2907,13 +2865,9 @@ function getListQuery($module,$where='')
 			LEFT JOIN vtiger_groups
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_users
-				ON vtiger_users.id = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;	
-		}
+				ON vtiger_users.id = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 	Case "Campaigns":
 		//Query modified to sort by assigned to
@@ -2930,16 +2884,17 @@ function getListQuery($module,$where='')
 			LEFT JOIN vtiger_users
 				ON vtiger_users.id = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_products
-				ON vtiger_products.productid = vtiger_campaign.product_id
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;	
-		}
+				ON vtiger_products.productid = vtiger_campaign.product_id";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
 			break;
 	Case "Users":
-		$query = "select id,user_name,roleid,first_name,last_name,email1,phone_mobile,phone_work,is_admin,status from vtiger_users inner join vtiger_user2role on vtiger_user2role.userid=vtiger_users.id where deleted=0 ".$where ;
+		$query = "SELECT id,user_name,first_name,last_name,email1,phone_mobile,phone_work,is_admin,status,
+					vtiger_user2role.roleid as roleid,vtiger_role.depth as depth
+				 	FROM vtiger_users 
+				 	INNER JOIN vtiger_user2role ON vtiger_users.id = vtiger_user2role.userid 
+				 	INNER JOIN vtiger_role ON vtiger_user2role.roleid = vtiger_role.roleid 
+					WHERE deleted=0 ".$where ;
 			break;
 	default:
 		// vtlib customization: Include the module file
@@ -2948,6 +2903,9 @@ function getListQuery($module,$where='')
 		// END
 	}
 
+	if($module != 'Users') {
+		$query = listQueryNonAdminChange($query, $module);
+	}
 	$log->debug("Exiting getListQuery method ...");
 	return $query;
 }
@@ -2966,63 +2924,37 @@ function getReadEntityIds($module)
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	$tab_id = getTabid($module);
 
-	if($module == "Leads")
-	{
+	if($module == "Leads") {
 		$query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_leaddetails
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
 			LEFT JOIN vtiger_groups
-                 ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0
+                 ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0
 			AND vtiger_leaddetails.converted = 0 ";
-        if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-        {
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;
-		}
-	}
-	if($module == "Accounts")
-	{
+	}elseif($module == "Accounts") {
 		//Query modified to sort by assigned to
 		$query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_account
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_account.accountid
 			LEFT JOIN vtiger_groups
-                ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 ";
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-                {
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;
-		}
-                    	
-		
-	}
-
-	if ($module == "Potentials")
-	{
+                ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ";
+	}elseif ($module == "Potentials") {
 		//Query modified to sort by assigned to
 		$query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_potential
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_potential.potentialid
 			LEFT JOIN vtiger_groups
-				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 "; 
-
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;
-		}
-
-
-	}
-
-	if($module == "Contacts")
-        {
+				ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ";
+	}elseif($module == "Contacts") {
 		//Query modified to sort by assigned to
 
 		$query="SELECT vtiger_crmentity.crmid
@@ -3030,17 +2962,10 @@ function getReadEntityIds($module)
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 			LEFT JOIN vtiger_groups
-				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 ";
-
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;
-		}
-        }
-	if($module == "Products")
-	{
+				ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ";
+	}elseif($module == "Products") {
 		$query = "SELECT DISTINCT vtiger_crmentity.crmid
 			FROM vtiger_products
 			INNER JOIN vtiger_crmentity
@@ -3053,84 +2978,53 @@ function getReadEntityIds($module)
 				OR vtiger_seproductsrel.crmid IN (".getReadEntityIds('Accounts').")
 				OR vtiger_seproductsrel.crmid IN (".getReadEntityIds('Potentials').")
 				OR vtiger_seproductsrel.crmid IN (".getReadEntityIds('Contacts').")) ";
-	}
-
-	if($module == "PurchaseOrder")
-        {
+	}elseif($module == "PurchaseOrder") {
 		//Query modified to sort by assigned to
                 $query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_purchaseorder
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid
 			LEFT JOIN vtiger_groups
-				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 ";
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;	
-		}
-        }
-        if($module == "SalesOrder")
-        {
+				ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ";
+	}elseif($module == "SalesOrder") {
 		//Query modified to sort by assigned to
                 $query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_salesorder
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
 			LEFT JOIN vtiger_groups
-                ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;	
-		}
-        }
-	if($module == "Invoice")
-	{
+                ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ";
+    }elseif($module == "Invoice") {
 		$query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_invoice
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_invoice.invoiceid
 			LEFT JOIN vtiger_groups
-				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;	
-		}
-	}
-	if($module == "Quotes")
-	{
+				ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ";
+	}elseif($module == "Quotes") {
 		$query = "SELECT vtiger_crmentity.crmid
 		        FROM vtiger_quotes
 			INNER JOIN vtiger_crmentity
 			        ON vtiger_crmentity.crmid = vtiger_quotes.quoteid
 			LEFT JOIN vtiger_groups
-			        ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;
-		}
-	}
-	if($module == "HelpDesk")
-	{
+			        ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ";
+	}elseif($module == "HelpDesk") {
 		$query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_troubletickets
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
 			LEFT JOIN vtiger_groups
-				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0 ".$where;
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter($module);
-			$query .= $sec_parameter;	
-		}
+				ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "WHERE vtiger_crmentity.deleted = 0 ";
 	}
 
 	$log->debug("Exiting getReadEntityIds method ...");
@@ -3175,7 +3069,7 @@ function AlphabeticalSearch($module,$action,$fieldname,$query,$type,$popuptype='
 
 	for($var='A',$i =1;$i<=26;$i++,$var++)
 	// Mike Crowe Mod --------------------------------------------------------added groupid to url
-		$list .= '<td class="searchAlph" id="alpha_'.$i.'" align="center" onClick=\'alphabetic("'.$module.'","gname='.$groupid.'&query='.$query.'&search_field='.$fieldname.'&searchtype=BasicSearch&type=alpbt&search_text='.$var.$flag.$popuptypevalue.$returnvalue.$append_url.'","alpha_'.$i.'")\'>'.$var.'</td>';
+		$list .= '<td class="searchAlph" id="alpha_'.$i.'" align="center" onClick=\'alphabetic("'.$module.'","gname='.$groupid.'&query='.$query.'&search_field='.$fieldname.'&searchtype=BasicSearch&operator=s&type=alpbt&search_text='.$var.$flag.$popuptypevalue.$returnvalue.$append_url.'","alpha_'.$i.'")\'>'.$var.'</td>';
 
 	$log->debug("Exiting AlphabeticalSearch method ...");
 	return $list;
@@ -3274,7 +3168,6 @@ function getRelatedToEntity($module,$list_result,$rset)
 function getRelatedTo($module,$list_result,$rset)
 {
 	global $adb,$log,$app_strings;
-	$log->debug("Entering getRelatedTo(".$module.",".$list_result.",".$rset.") method ...");
 	$tabname = getParentTab();
 	if($module == "Documents")
     {
@@ -4086,49 +3979,61 @@ function setSessionVar($lv_array,$noofrows,$max_ent,$module='',$related='')
 *Returns an string value
 */
 
-//Temp function to be be deleted
-function getRelatedTableHeaderNavigation($navigation_array, $url_qry,$module='',$action_val='',$viewid='')
-{
-	global $log, $singlepane_view,$app_strings;
+function getRelatedTableHeaderNavigation($navigation_array, $url_qry,$module,$related_module,
+		$recordid) {
+	global $log, $app_strings, $adb;
 	$log->debug("Entering getTableHeaderNavigation(".$navigation_array.",". $url_qry.",".$module.",".$action_val.",".$viewid.") method ...");
 	global $theme;
-	$theme_path="themes/".$theme."/";
-	$image_path=$theme_path."images/";
+	$relatedTabId = getTabid($related_module);
 	$tabid = getTabid($module);
-	$tabname = getParentTab();
-	$url_qry .= '&parenttab='.$tabname;
-	$output = '<td align="right" style="padding="5px;">';
-	if($singlepane_view == 'true')
-		$action_val = 'DetailView';
-	else
-		$action_val = 'CallRelatedList';
-	if(($navigation_array['prev']) != 0)
-	{
-		$output .= '<a href="index.php?module='.$module.'&action='.$action_val.$url_qry.'&start=1&viewname='.$viewid.'" alt="'.$app_strings['LBL_FIRST'].'" title="'.$app_strings['LBL_FIRST'].'"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-		$output .= '<a href="index.php?module='.$module.'&action='.$action_val.$url_qry.'&start='.$navigation_array['prev'].'&viewname='.$viewid.'"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+	
+	$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
+		related_tabid=?', array($tabid,$relatedTabId));
+	if(empty($relatedListResult)) return;
+	$relatedListRow = $adb->fetch_row($relatedListResult);
+	$header = $relatedListRow['label'];
+	$actions = $relatedListRow['actions'];
+	$functionName = $relatedListRow['name'];
 
-	}
-	else
-	{
+	$urldata = "module=$module&action={$module}Ajax&file=DetailViewAjax&record={$recordid}&".
+	"ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$relatedListRow['relation_id']}".
+	"&actions={$actions}&{$url_qry}";
+
+	$formattedHeader = str_replace(' ','',$header);
+	$target = 'tbl_'.$module.'_'.$formattedHeader;
+	$imagesuffix = $module.'_'.$formattedHeader;
+
+	$output = '<td align="right" style="padding="5px;">';
+	if(($navigation_array['prev']) != 0) {
+		$output .= '<a href="javascript:;" onClick="loadRelatedListBlock(\''. $urldata.'&start=1\',\''. $target.'\',\''. $imagesuffix.'\');" alt="'.$app_strings['LBL_FIRST'].'" title="'.$app_strings['LBL_FIRST'].'"><img src="' . vtiger_imageurl('start.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+		$output .= '<a href="javascript:;" onClick="loadRelatedListBlock(\''. $urldata.'&start='.$navigation_array['prev'].'\',\''. $target.'\',\''. $imagesuffix.'\');" alt="'.$app_strings['LNK_LIST_PREVIOUS'].'"title="'.$app_strings['LNK_LIST_PREVIOUS'].'"><img src="' . vtiger_imageurl('previous.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+	} else {
 		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
 	
-	$jsNavigate = "index.php?module=$module&action=$action_val$url_qry&start='+this.value+'&viewname=$viewid";
-	$jsHandler = "return VT_disableFormSubmit(event);"; 
+	$jsHandler = "return VT_disableFormSubmit(event);";
 	$output .= "<input class='small' name='pagenum' type='text' value='{$navigation_array['current']}'
-		style='width: 3em;margin-right: 0.7em;' onchange=\"location.href='$jsNavigate'\"
+		style='width: 3em;margin-right: 0.7em;' onchange=\"loadRelatedListBlock('{$urldata}&start='+this.value+'','{$target}','{$imagesuffix}');\"
 		onkeypress=\"$jsHandler\">";
-	$output .= "<span name='listViewCountContainerName' class='small' style='white-space: nowrap;'>";  
-	$output .= $app_strings['LBL_LIST_OF'].' '.$navigation_array['verylast'].'</span>';
-	
-	if(($navigation_array['next']) !=0)
-	{
-			$output .= '<a href="index.php?module='.$module.'&action='.$action_val.$url_qry.'&start='.$navigation_array['next'].'&viewname='.$viewid.'"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
-			$output .= '<a href="index.php?module='.$module.'&action='.$action_val.$url_qry.'&start='.$navigation_array['verylast'].'&viewname='.$viewid.'"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+	$output .= "<span name='listViewCountContainerName' class='small' style='white-space: nowrap;'>";
+	$computeCount = $_REQUEST['withCount'];
+	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true
+			|| ((boolean) $computeCount) == true){
+		$output .= $app_strings['LBL_LIST_OF'].' '.$navigation_array['verylast'];
+	}else{
+		$output .= "<img src='".vtiger_imageurl('windowRefresh.gif',$theme)."' alt='".$app_strings['LBL_HOME_COUNT']."'
+			onclick=\"loadRelatedListBlock('{$urldata}&withCount=true&start={$navigation_array['current']}','{$target}','{$imagesuffix}');\"
+			align='absmiddle' name='".$module."_listViewCountRefreshIcon'/>
+			<img name='".$module."_listViewCountContainerBusy' src='".vtiger_imageurl('vtbusy.gif',$theme)."' style='display: none;'
+			align='absmiddle' alt='".$app_strings['LBL_LOADING']."'>";
 	}
-	else
-	{
+	$output .= '</span>';
+
+	if(($navigation_array['next']) !=0) {
+			$output .= '<a href="javascript:;" onClick="loadRelatedListBlock(\''. $urldata.'&start='.$navigation_array['next'].'\',\''. $target.'\',\''. $imagesuffix.'\');"><img src="' . vtiger_imageurl('next.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+			$output .= '<a href="javascript:;" onClick="loadRelatedListBlock(\''. $urldata.'&start='.$navigation_array['verylast'].'\',\''. $target.'\',\''. $imagesuffix.'\');"><img src="' . vtiger_imageurl('end.gif', $theme) . '" border="0" align="absmiddle"></a>&nbsp;';
+	} else {
 		$output .= '<img src="' . vtiger_imageurl('next_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 		$output .= '<img src="' . vtiger_imageurl('end_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
@@ -4230,9 +4135,12 @@ function getListViewDeleteLink($module,$entity_id,$relatedlist,$returnset)
 	$requestModule = vtlib_purify($_REQUEST['module']);
 	$requestRecord = vtlib_purify($_REQUEST['record']);
 	$requestAction = vtlib_purify($_REQUEST['action']);
-	$parenttab = vtlib_purify($_REQUEST['parenttab']);
-	$isCustomModule = vtlib_isCustomModule($requestModule);
-	if($isCustomModule && !in_array($requestAction, Array('index','ListView'))) {
+	$parenttab = vtlib_purify($_REQUEST['parenttab']);	
+	$isCustomModule = vtlib_isCustomModule($requestModule);	
+	if($requestAction==$requestModule."Ajax"){
+		$requestAction=vtlib_purify($_REQUEST['file']);
+	}	
+	if($isCustomModule && !in_array($requestAction, Array('index','ListView'))) {		
 		$del_link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
 		$del_link .= "&destination_module=$module&idlist=$entity_id&mode=delete&parenttab=$parenttab";
 	}
@@ -4331,11 +4239,15 @@ function popup_decode_html($str)
 //function added to check the text length in the listview.
 function textlength_check($field_val)
 {
-	global $listview_max_textlength;
+	global $listview_max_textlength, $default_charset;
 	if($listview_max_textlength) {
 		$temp_val = preg_replace("/(<\/?)(\w+)([^>]*>)/i","",$field_val);
-        if(strlen($field_val) > $listview_max_textlength)
-        {
+		if(function_exists('mb_strlen')){
+			if(mb_strlen($default_charset) > $listview_max_textlength) {
+				$temp_val = mb_substr(preg_replace("/(<\/?)(\w+)([^>]*>)/i","",$field_val),0,
+						$listview_max_textlength,$default_charset).'...';
+			}
+		}elseif(strlen($field_val) > $listview_max_textlength) {
 			$temp_val = substr(preg_replace("/(<\/?)(\w+)([^>]*>)/i","",$field_val),0,$listview_max_textlength).'...';
         }
 	} else {
@@ -4525,10 +4437,10 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry,$module='',$
 		$output .= '<img src="' . vtiger_imageurl('start_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 		$output .= '<img src="' . vtiger_imageurl('previous_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
-	if($module == 'Calendar' && $action_val == 'index'){  
-		$jsNavigate = "cal_navigation('$tab_type','$url_string','&start='+this.value+');";  
-	}else if($action_val == "FindDuplicate"){  
-		$jsNavigate = "getDuplicateListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";  
+	if($module == 'Calendar' && $action_val == 'index'){
+		$jsNavigate = "cal_navigation('$tab_type','$url_string','&start='+this.value);";
+	}else if($action_val == "FindDuplicate"){
+		$jsNavigate = "getDuplicateListViewEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
 	}elseif($action_val == 'UnifiedSearch'){
 		$jsNavigate = "getUnifiedSearchEntries_js('$module','parenttab=$tabname&start='+this.value+'$url_string');";
 	}elseif($module == 'Documents'){
@@ -4585,15 +4497,23 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry,$module='',$
 		return $output;
 }
 
-function getRecordRangeMessage($listResult, $limitStartRecord) {
+function getRecordRangeMessage($listResult, $limitStartRecord,$totalRows='') {
 	global $adb, $app_strings;
 	$numRows = $adb->num_rows($listResult);
 	$recordListRangeMsg = '';
 	if ($numRows > 0) {
 		$recordListRangeMsg = $app_strings['LBL_SHOWING'].' '.$app_strings['LBL_RECORDS'].
 		' '.($limitStartRecord+1).' - '.($limitStartRecord+$numRows);
+		if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+			$recordListRangeMsg .= ' '.$app_strings['LBL_LIST_OF']." $totalRows";
+		}
 	}
 	return $recordListRangeMsg;
+}
+
+function listQueryNonAdminChange($query, $module, $scope='') {
+	$instance = CRMEntity::getInstance($module);
+	return $instance->listQueryNonAdminChange($query, $scope);
 }
 
 ?>

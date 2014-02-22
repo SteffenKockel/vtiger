@@ -273,6 +273,42 @@ table
 	font-size: small;
 }
 
+.fixedSmallHeight {
+	height: 250px;
+}
+
+.button {
+	background-image:url(images/cwButton.gif);
+	width:80px;
+	height:35px;
+	font-weight:bold;
+	border:0px;
+	font-size:12px;
+	cursor:pointer;
+	font-family:Helvetica; 
+}
+
+.refreshButton {
+	background-image:url(images/checkAgain.png);
+	width:130px;
+	height:25px;
+	font-weight:bold;
+	border:0px;
+	cursor:pointer;
+	color:blue;
+}
+
+.bigHeading {
+	color: #8AB738;
+	font-family: Verdana; 
+	font-size: x-large;
+	font-weight: bold;
+}
+
+.paddingTop {
+	padding-top: 1.5em;
+}
+
 #unhealthyTablesList {
 	border : 1px solid black;
 }

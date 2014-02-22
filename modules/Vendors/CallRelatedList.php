@@ -63,6 +63,16 @@ if($singlepane_view == 'true' && $_REQUEST['action'] == 'CallRelatedList') {
 	$smarty->assign("MODULE",$currentModule);
 	$smarty->assign("SINGLE_MOD",$app_strings['Vendor']);
 	$smarty->assign("RELATEDLISTS", $related_array);
+		
+	require_once('include/ListView/RelatedListViewSession.php');
+	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
+		$relationId = vtlib_purify($_REQUEST['relation_id']);
+		RelatedListViewSession::addRelatedModuleToSession($relationId,
+				vtlib_purify($_REQUEST['selected_header']));
+	}
+	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
+	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+	
 	$smarty->assign("MOD",$mod_strings);
 	$smarty->assign("APP",$app_strings);
 	$smarty->assign("THEME", $theme);

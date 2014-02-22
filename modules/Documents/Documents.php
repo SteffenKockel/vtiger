@@ -233,24 +233,13 @@ class Documents extends CRMEntity {
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id " .
 				" LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid "
 				;
-	
-				$where_auto=" vtiger_crmentity.deleted=0"; 
-				if($where != "")
-					$query .= "  WHERE ($where) AND ".$where_auto;
-				else
-					$query .= "  WHERE ".$where_auto;
+		$query .= getNonAdminAccessControlQuery('Documents',$current_user);
+		$where_auto=" vtiger_crmentity.deleted=0";
+		if($where != "")
+			$query .= "  WHERE ($where) AND ".$where_auto;
+		else
+			$query .= "  WHERE ".$where_auto;
 					
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-		//we should add security check when the user has Private Access
-		$tabid = getTabid("Documents");
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabid] == 3)
-		{
-			//Added security check to get the permitted records only
-			$query = $query." ".getListViewSecurityParameter("Documents");
-		}
-
-		
 		$log->debug("Exiting create_export_query method ...");
 		        return $query;
 	}	

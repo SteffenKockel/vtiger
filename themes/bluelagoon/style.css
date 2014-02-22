@@ -1870,7 +1870,7 @@ textarea {
 }
 
 .TaxShow{
-	display:inline-table;
+	border:3px;
 }
 
 .TaxHide{

@@ -13,6 +13,11 @@ abstract class WebserviceEntityOperation{
 	protected $log;
 	protected $webserviceObject;
 	protected $meta;
+	/**
+	 *
+	 * @var PearDatabase
+	 */
+	protected $pearDB;
 	
 	protected function WebserviceEntityOperation($webserviceObject,$user,$adb,$log){
 		$this->user = $user;
@@ -36,6 +41,11 @@ abstract class WebserviceEntityOperation{
 		"Operation Update is not supported for this entity");
 	}
 	
+	public function revise($element){
+		throw new WebServiceException(WebServiceErrorCode::$OPERATIONNOTSUPPORTED,
+		"Operation Update is not supported for this entity");
+	}
+
 	public function delete($id){
 		throw new WebServiceException(WebServiceErrorCode::$OPERATIONNOTSUPPORTED,
 		"Operation delete is not supported for this entity");
@@ -84,17 +94,26 @@ abstract class WebserviceEntityOperation{
 			===0 || strcasecmp($webserviceField->getFieldDataType(),"id")===0){
 			return false;
 		}
-		//uitype 70 is vtiger generated fields, such as (of vtiger_crmentity table) createdtime and modified time fields.
-		if($webserviceField->getUIType() ==  70){
+		//uitype 70 is vtiger generated fields, such as (of vtiger_crmentity table) createdtime
+		//and modified time fields.
+		if($webserviceField->getUIType() ==  70 || $webserviceField->getUIType() ==  4){
 			return false;
 		}
 		return true;
 	}
 	
 	function getPicklistDetails($webserviceField){
-		$hardCodedPickListNames = array("hdntaxtype");
-		$hardCodedPickListValues = array("hdntaxtype"=>array(array("label"=>"Individual","value"=>"individual"),
-														array("label"=>"Group","value"=>"group")));
+		$hardCodedPickListNames = array("hdntaxtype","email_flag");
+		$hardCodedPickListValues = array(
+				"hdntaxtype"=>array(
+					array("label"=>"Individual","value"=>"individual"),
+					array("label"=>"Group","value"=>"group")
+				),
+				"email_flag" => array(
+					array('label'=>'SAVED','value'=>'SAVED'),
+					array('label'=>'SENT','value' => 'SENT')
+				)
+			);
 		if(in_array(strtolower($webserviceField->getFieldName()),$hardCodedPickListNames)){
 			return $hardCodedPickListValues[strtolower($webserviceField->getFieldName())];
 		}

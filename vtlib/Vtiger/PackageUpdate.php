@@ -320,8 +320,9 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 */
 	function update_RelatedLists($modulenode, $moduleInstance) {
 		if(empty($modulenode->relatedlists) || empty($modulenode->relatedlists->relatedlist)) return;
+		$moduleInstance->deleteRelatedLists();
 		foreach($modulenode->relatedlists->relatedlist as $relatedlistnode) {
-			$relModuleInstance = $this->import_Relatedlist($modulenode, $moduleInstance, $relatedlistnode);
+			$relModuleInstance = $this->update_Relatedlist($modulenode, $moduleInstance, $relatedlistnode);
 		}
 	}
 
@@ -330,7 +331,20 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * @access private
 	 */
 	function update_Relatedlist($modulenode, $moduleInstance, $relatedlistnode) {
-		// TODO Handle related list update
+		$relModuleInstance = Vtiger_Module::getInstance($relatedlistnode->relatedmodule);
+		$label = $relatedlistnode->label;
+		$actions = false; 
+		if(!empty($relatedlistnode->actions) && !empty($relatedlistnode->actions->action)) {
+			$actions = Array();
+			foreach($relatedlistnode->actions->action as $actionnode) {
+				$actions[] = "$actionnode";
+			}
+		}			
+		if($relModuleInstance) {
+			$moduleInstance->unsetRelatedList($relModuleInstance, "$label", "$relatedlistnode->function");
+			$moduleInstance->setRelatedList($relModuleInstance, "$label", $actions, "$relatedlistnode->function");
+		}
+		return $relModuleInstance;
 	}		
 }			
 ?>

@@ -1252,6 +1252,22 @@ $app_strings = array (
 'LBL_SELECT_FIELDS_TO_UDPATE_WITH_NEW_VALUE'=>'Select fields to be updated and provide the new value.',
 
 'LBL_LOADING'=>'Loading...',
+
+//Added for Sub Products
+'Parent Product' => 'Parent Product',
+
+//Added for Service Contracts
+'Service Contracts' => 'Service Contracts',
+'ServiceContracts' => 'ServiceContracts',
+'Services' => 'Services',
+	'LBL_REFRESH' => 'Refresh',
+	'LBL_Reminder' => 'Reminder',
+	'LBL_RESET_PASSWORD' => 'Reset Password',
+	'LBL_PHP_UPGRADE' => 'You have updated your php version. due changes in crypt API your password
+		  is no longer applicable, please reset your password.',
+	'LBL_RESET_PASSWORD_DESCRIPTION' => 'you can reset password for all users using a script and set it to thier respective
+			  user names.',
+	
 );
 
 $app_list_strings = array (
@@ -1378,12 +1394,13 @@ $app_currency_strings = array(
 	'Costa Rica, Colón' 	=> 'Costa Rica, Colón',
 	'Croatia, Kuna' 		=> 'Croatia, Kuna',
 	'Cuba, Pesos' 			=> 'Cuba, Pesos',
+	'Cyprus, Pounds'		=> 'Cyprus, Pounds',
 	'Czech Republic, Koruny' => 'Czech Republic, Koruny',
 	'Denmark, Kroner' 		=> 'Denmark, Kroner',
 	'Dominican Republic, Pesos' => 'Dominican Republic, Pesos',
 	'East Caribbean, Dollars' => 'East Caribbean, Dollars',
 	'Egypt, Pounds' 		=> 'Egypt, Pounds',
-	'El Salvador, Colones' 	=> 'El Salvador, Colones',
+	'El Salvador, Colón' 	=> 'El Salvador, Colón',
 	'England, Pounds' 		=> 'England, Pounds',
 	'Estonia, Krooni' 		=> 'Estonia, Krooni',
 	'Euro' 					=> 'Euro',
@@ -1418,6 +1435,7 @@ $app_currency_strings = array(
 	'Lithuania, Litai' 		=> 'Lithuania, Litai',
 	'Macedonia, Denars' 	=> 'Macedonia, Denars',
 	'Malaysia, Ringgits' 	=> 'Malaysia, Ringgits',
+	'Malta, Liri'			=> 'Malta, Liri',
 	'Mauritius, Rupees' 	=> 'Mauritius, Rupees',
 	'Mexico, Pesos' 		=> 'Mexico, Pesos',
 	'Mongolia, Tugriks' 	=> 'Mongolia, Tugriks',
@@ -1437,6 +1455,7 @@ $app_currency_strings = array(
 	'Peru, Nuevos Soles' 	=> 'Peru, Nuevos Soles',
 	'Philippines, Pesos' 	=> 'Philippines, Pesos',
 	'Poland, Zlotych' 		=> 'Poland, Zlotych',
+	'Qatar, Rials'			=> 'Qatar, Rials',
 	'Romania, New Lei' 		=> 'Romania, New Lei',
 	'Russia, Rubles'		=> 'Russia, Rubles',
 	'Saint Helena, Pounds' => 'Saint Helena, Pounds',
@@ -1470,5 +1489,13 @@ $app_currency_strings = array(
 	'China, Yuan Renminbi' 	=> 'China, Yuan Renminbi',
 	'Afghanistan, Afghanis' => 'Afghanistan, Afghanis',
 	'Cambodia, Riels' 		=> 'Cambodia, Riels',
+	'China, Yuan Renminbi'	=> 'China, Yuan Renminbi',
+	'Jordan, Dinar'			=> 'Jordan, Dinar',
+	'Kenya, Shilling'		=> 'Kenya, Shilling',
+	'MADAGASCAR, Malagasy Ariary' => 'MADAGASCAR, Malagasy Ariary',
+	'United Arab Emirates, Dirham' => 'United Arab Emirates, Dirham',
+	'United Republic of Tanzania, Shilling' => 'United Republic OF Tanzania, Shilling',
+	'Yemen, Rials'			=> 'Yemen, Rials',
+	'Zambia, Kwacha'		=> 'Zambia, Kwacha',
 );
 ?>

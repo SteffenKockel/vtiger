@@ -1381,7 +1381,7 @@ a.calMnu:Hover{
 	font-weight:bold;
 	padding-left:10px;
 	padding-right:10px;
-	background-image:url(themes/images/cal_nav.gif);
+	background-image:url(../images/cal_nav.gif);
 	background-repeat:repeat-x;
 }
 
@@ -1923,7 +1923,7 @@ textarea {
 }
 
 .TaxShow{
-	display:inline-table;
+	border:3px;
 }
 
 .TaxHide{
@@ -2228,7 +2228,7 @@ a.drop_down:Hover{
 }
 
 .winmarkDashboarddef{
-    background-image:url(themes/images/windowmarkDashboard.jpg);
+    background-image:url(../images/windowmarkDashboard.jpg);
     background-position:top right;
     background-repeat:no-repeat;
 }	

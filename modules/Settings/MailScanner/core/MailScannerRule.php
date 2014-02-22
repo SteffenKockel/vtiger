@@ -360,6 +360,13 @@ class Vtiger_MailScannerRule {
 	 */
 	function delete() {
 		global $adb;
+		
+		// Delete dependencies
+		if(!empty($this->actions)) {
+			foreach($this->actions as $action) {
+				$action->delete();
+			}
+		}
 		if($this->ruleid) {
 			$adb->pquery("DELETE FROM vtiger_mailscanner_ruleactions WHERE ruleid = ?", Array($this->ruleid));
 			$adb->pquery("DELETE FROM vtiger_mailscanner_rules WHERE ruleid=?", Array($this->ruleid));

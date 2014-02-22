@@ -14,6 +14,7 @@
 	<td class="colHeader small" width="5%">#</td>
 	<td class="colHeader small" width="40%">{$CMOD.LBL_NOTIFICATION}</td>
 	<td class="colHeader small" width="50%">{$CMOD.LBL_DESCRIPTION}</td>
+	<td class="colHeader small" width="10%">{$CMOD.LBL_STATUS}</td>
 	<td class="colHeader small" width="5%">{$CMOD.Tools}</td>
 	</tr>
 	{foreach name=notifyfor item=elements from=$NOTIFICATION}
@@ -21,6 +22,11 @@
 	<td class="listTableRow small">{$smarty.foreach.notifyfor.iteration}</td>
 	<td class="listTableRow small">{$elements.notificationname}</td>
 	<td class="listTableRow small">{$elements.label}</td>
+	{if $elements.status eq 'Active'}
+	<td class="listTableRow small active">{$elements.status}</td>
+	{else}
+	<td class="listTableRow small inactive">{$elements.status}</td>
+	{/if}
 	<td class="listTableRow small" align="center" ><img onClick="fnvshobj(this,'editdiv');fetchEditNotify('{$elements.id}');" style="cursor:pointer;" src="{'editfield.gif'|@vtiger_imageurl:$THEME}" title="{$APP.LBL_EDIT}"></td>
 	</tr>
 	{/foreach}

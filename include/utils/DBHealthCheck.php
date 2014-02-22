@@ -21,7 +21,11 @@ class DBHealthCheck {
 		$this->dbName = $db->databaseName;
 		$this->dbHostName = $db->host;
 	}
-	
+	 
+	function isMySQL() { return (stripos($this->dbType ,'mysql') === 0);}
+    function isOracle() { return $this->dbType=='oci8'; }
+    function isPostgres() { return $this->dbType=='pgsql'; }
+    
 	function isDBHealthy() {
 		$tablesList = $this->getUnhealthyTablesList();
 		if (count($tablesList) > 0) {
@@ -32,29 +36,26 @@ class DBHealthCheck {
 	
 	function getUnhealthyTablesList() {
 		$tablesList = array();
-		$dbApiName = '_'.($this->dbType).'_getUnhealthyTables';
-		if(method_exists($this,$dbApiName)) {
-			$tablesList = $this->$dbApiName();
+		if($this->isMySql()) {
+			$tablesList = $this->_mysql_getUnhealthyTables();
 		}
 		return $tablesList;
 	}
 	
 	function updateTableEngineType($tableName) {
-		$dbApiName = '_'.($this->dbType).'_updateEngineType';
-		if(method_exists($this,$dbApiName)) {
-			$this->$dbApiName($tableName);
+		if($this->isMySql()) {
+			$this->_mysql_updateEngineType($tableName);
 		}
 	}
 	
 	function updateAllTablesEngineType() {
-		$dbApiName = '_'.($this->dbType).'_updateEngineTypeForAllTables';
-		if(method_exists($this,$dbApiName)) {
-			$this->$dbApiName();
+		if($this->isMySql()) {
+			$this->_mysql_updateEngineTypeForAllTables();
 		}
 	}
 	
 	function _mysql_getUnhealthyTables() {
-		$tablesResult = $this->db->_Execute("SHOW TABLE STATUS FROM $this->dbName");
+		$tablesResult = $this->db->_Execute("SHOW TABLE STATUS FROM `$this->dbName`");
 		$noOfTables = $tablesResult->NumRows($tablesResult);
 		$unHealthyTables = array();
 		$i=0;

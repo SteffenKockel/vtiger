@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+session_start();
 
 require_once('install/VerifyDBHealth.php');
 
@@ -20,12 +21,13 @@ $newDbForCopy = $newDbName = $migrationInfo['new_dbname'];
 if($dbName == $newDbForCopy) {
 	$newDbForCopy = '';
 }
+$_SESSION['pre_migration'] = true;
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>vtiger CRM 5 - Configuration Wizard - Pre-Migration Tools</title>
+	<title><?php echo $installationStrings['LBL_VTIGER_CRM_5']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_PRE_MIGRATION_TOOLS']?></title>
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="include/js/general.js"></script>
@@ -43,14 +45,14 @@ if($dbName == $newDbForCopy) {
 				var element = jQuery('#responsePopup');
 				if(status == 'success'){
 					if(trim(data) == 'TABLE_TYPE_FIXED'){
-						element.attr('innerHTML', 'Database status was successfully fixed');
+						element.attr('innerHTML', '<?php echo $installationStrings['MSG_SUCCESSFULLY_FIXED_TABLE_TYPES']; ?>');
+						jQuery('#databaseFixMessageDiv').hide();
 					} else {
-						element.attr('innerHTML', 'Failed to fix the table types');
+						element.attr('innerHTML', '<?php echo $installationStrings['ERR_FAILED_TO_FIX_TABLE_TYPES']; ?>');
 					}
 				}else{
-					element.attr('innerHTML', 'Failed to fix the table types');
+					element.attr('innerHTML', '<?php echo $installationStrings['ERR_FAILED_TO_FIX_TABLE_TYPES']; ?>');
 				}
-				jQuery('#databaseFixMessageDiv').hide();
 				jQuery('#dbMirrorCopy').hide();
 				VtigerJS_DialogBox.hideprogress();
 				placeAtCenter(document.getElementById('responsePopupContainer'));
@@ -72,13 +74,13 @@ if($dbName == $newDbForCopy) {
 		function doDBCopy(){
 			var dbName = jQuery('#newDatabaseName').attr('value');
 			if (trim(dbName) == '') {
-				alert("Please specify new database name");
+				alert("<?php echo $installationStrings['ERR_SPECIFY_NEW_DATABASE_NAME']; ?>");
 				jQuery('#newDatabaseName').focus();
 				return false;
 			}
 			var rootUserName = jQuery('#rootUserName').attr('value');
 			if (trim(rootUserName) == '') {
-				alert("Please specify root user name");
+				alert("<?php echo $installationStrings['ERR_SPECIFY_ROOT_USER_NAME']; ?>");
 				jQuery('#rootUserName').focus();
 				return false;
 			}
@@ -93,12 +95,12 @@ if($dbName == $newDbForCopy) {
 				var element = jQuery('#responsePopup');
 				if(status == 'success'){
 					if(data != 'true' && data != true){
-						element.attr('innerHTML', '<span class="redColor">Failed</span> to create database copy, please do it manually.');
+						element.attr('innerHTML', '<?php echo $installationStrings['ERR_DATABASE_COPY_FAILED']; ?>.');
 					}else{
-						element.attr('innerHTML', 'Database copy was successfully created.<br />Click Next &#187; to proceed');
+						element.attr('innerHTML', '<?php echo $installationStrings['MSG_DATABASE_COPY_SUCCEDED']; ?>');
 					}
 				}else{
-					element.attr('innerHTML', '<span class="redColor">Failed</span> to create database copy, please do it manually.');
+					element.attr('innerHTML', '<?php echo $installationStrings['ERR_DATABASE_COPY_FAILED']; ?>.');
 				}
 				jQuery('#dbMirrorCopy').hide();
 				VtigerJS_DialogBox.hideprogress();
@@ -121,8 +123,8 @@ if($dbName == $newDbForCopy) {
 	<!-- Table for cfgwiz starts -->
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
-			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="Configuration Wizard" hspace="20" title="Configuration Wizard"></td>
-			<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="vtiger CRM 5" title="vtiger CRM 5"></td>
+			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
+			<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>" title="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>"></td>
 			<td class="cwHeadBg1" width=2%></td>
 		</tr>
 	</table>
@@ -142,20 +144,21 @@ if($dbName == $newDbForCopy) {
 						<!-- Right side tabs -->
 							<table cellspacing=5 cellpadding=2 width=95% align=center>
 								<tr>
-										<td align="left" colspan="2" class="small">
-											<img title="Pre Migration Tools" alt="Pre Migration Tools" src="include/install/images/confWizPreMigrationTools.gif"/><br/>
-					  						<hr size="1" noshade=""/>
-					  					</td>
-					  				</tr>
+									<td align="left" colspan="2" class="small paddingTop">
+										<span class="bigHeading"><?php echo $installationStrings['LBL_PRE_MIGRATION_TOOLS']; ?></span>
+										<br/>
+				  						<hr size="1" noshade=""/>
+				  					</td>
+				  				</tr>
 								<?php if($_SESSION[$newDbName.'_'.$dbHostName.'_HealthApproved'] != true) { ?>
 								<tr>
 									<td colspan=2>
 										<div id="databaseFixMessageDiv" class="helpmessagebox paddingPoint5em smallFont" align="left">
-											<span class="redColor fontBold">Important:</span>
+											<span class="redColor fontBold"><?php echo $installationStrings['LBL_IMPORTANT']; ?>:</span>
 											<hr />											
-											Your database table engine is not the recomended engine 'Innodb'. Please make sure to change the engine before migration.<br/>
+											<?php echo $installationStrings['ERR_TABLES_NOT_INNODB'] .'. '. $installationStrings['MSG_CHANGE_ENGINE_BEFORE_MIGRATION']; ?>.<br/>
 											<br />
-											<a href="javascript:void(0)" onclick="fixDBHealth();">Fix Now</a>&nbsp; | &nbsp;<a href="javascript:void(0)" onclick="viewDBReport();">View Report</a>
+											<a href="javascript:void(0)" onclick="fixDBHealth();"><?php echo $installationStrings['LBL_FIX_NOW']; ?></a>&nbsp; | &nbsp;<a href="javascript:void(0)" onclick="viewDBReport();"><?php echo $installationStrings['LBL_VIEW_REPORT']; ?></a>
 										</div>
 									</td>
 								</tr>								
@@ -171,15 +174,15 @@ if($dbName == $newDbForCopy) {
 																<table width="100%" cellspacing="0" cellpadding="5" border="0">
 																	<tr>
 																		<td width="50" valign="top" rowspan="2">
-																			<input type="image" src="include/install/images/dbDump.gif" alt="DB Dump Download" border="0" title="DB Dump Download" onClick="getDbDump();">
+																			<input type="image" src="include/install/images/dbDump.gif" alt="<?php echo $installationStrings['LBL_DB_DUMP_DOWNLOAD']; ?>" border="0" title="<?php echo $installationStrings['LBL_DB_DUMP_DOWNLOAD']; ?>" onClick="getDbDump();">
 																		</td>
-																		<td valign="bottom" class="heading2">Database Backup</td>
+																		<td valign="bottom" class="heading2"><?php echo $installationStrings['LBL_DATABASE_BACKUP']; ?></td>
 																	</tr>
 																	<tr>
 																		<td valign="top" class="mediumLineHeight">
-																			<b>Have not taken the database backup yet?</b><br>
-																			<b>&#171; Click</b> on the left icon to start the dump and <b>Save</b> the copy of output.<br><br>
-																			<div class="helpmessagebox"><b>Note</b>:<br> This process may take longer time depending on the database size.</div>
+																			<b><?php echo $installationStrings['QUESTION_NOT_TAKEN_BACKUP_YET']; ?></b><br>
+																			<?php echo $installationStrings['LBL_CLICK_FOR_DUMP_AND_SAVE']; ?>.<br><br>
+																			<div class="helpmessagebox"><b><?php echo $installationStrings['LBL_NOTE']; ?></b>:<br><?php echo $installationStrings['MSG_PROCESS_TAKES_LONGER_TIME_BASED_ON_DB_SIZE']; ?>.</div>
 																		</td>
 																	</tr>
 																</table>
@@ -189,17 +192,17 @@ if($dbName == $newDbForCopy) {
 																<table width="100%" cellspacing="0" cellpadding="5" border="0">
 																	<tr>
 																		<td width="50" valign="top" rowspan="2">
-																			<input type="image" src="include/install/images/dbCopy.gif" alt="DB Copy" border="0" title="DB Copy" onClick="showCopyPopup();">
+																			<input type="image" src="include/install/images/dbCopy.gif" alt="<?php echo $installationStrings['LBL_DB_COPY']; ?>" border="0" title="<?php echo $installationStrings['LBL_DB_COPY']; ?>" onClick="showCopyPopup();">
 																		</td>
-																		<td valign="bottom" class="heading2">Database Copy</td>
+																		<td valign="bottom" class="heading2"><?php echo $installationStrings['LBL_DATABASE_COPY']; ?></td>
 																	</tr>
 																	<tr>
 																		<td valign="top" class="mediumLineHeight">
-																			<b>Are you migrating to new database?</b><br>
-																			<b>&#171; Click</b> on the left icon to proceed if you have not setup new database with earlier data.																			
+																			<b><?php echo $installationStrings['QUESTION_MIGRATING_TO_NEW_DB']; ?>?</b><br>
+																			<?php echo $installationStrings['LBL_CLICK_FOR_NEW_DATABASE']; ?>.																			
 																			<br><br>
-																			<div class="helpmessagebox"><b>Recommended</b>:<br>
-																			Use tools like (mysql, phpMyAdmin) to setup new database with data.
+																			<div class="helpmessagebox"><b><?php echo $installationStrings['LBL_RECOMMENDED']; ?></b>:<br>
+																				<?php echo $installationStrings['MSG_USE_OTHER_TOOLS_FOR_DB_COPY']; ?>.
 																			</div>
 																		</td>
 																	</tr>
@@ -214,15 +217,18 @@ if($dbName == $newDbForCopy) {
 									</td>
 								</tr>
 								<tr valign=top>
-									<td align=left >
-										<input type="image" src="include/install/images/cwBtnBack.gif" alt="Back" border="0" title="Back" onClick="window.history.back();">
+									<td align=left>
+										<form action="install.php" method="post" name="form" id="form">
+											<input type="hidden" name="file" value="SetMigrationConfig.php">
+											<input type="submit" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_BACK']; ?>" title="<?php echo $installationStrings['LBL_BACK']; ?>" />
+										</form>
 									</td>
 									<td align=right>
 										<form action="install.php" name="migrateform" id="migrateform" method="post">
 											<input type="hidden" name="auth_key" id="auth_key" value="<?php echo $_SESSION['authentication_key']; ?>" />
 											<input type="hidden" name="file" value="ConfirmMigrationConfig.php" />
 											<input type="hidden" name="forceDbCheck" value="true" />											
-											<input type="image" src="include/install/images/cwBtnNext.gif" alt="Next" border="0" title="Next" onClick="migrateform.submit();">
+											<input type="button" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>" onClick="migrateform.submit();">
 										</form>
 									</td>
 								</tr>
@@ -252,24 +258,24 @@ if($dbName == $newDbForCopy) {
 	</table>
 <div id="dbMirrorCopy" class="posLayPopup" style="display: none;">
 	<div class="floatRightTiny" onmouseover="this.className= 'floatRightTinyOn';" onmouseout="this.className= 'floatRightTiny';"><a href="javascript: void(0);" onClick="fninvsh('dbMirrorCopy');"><img src="themes/images/close.gif" border=0></a></div>
-	<div class="paddingPoint5em"><b>Copy your Existing database into New Database to be used for migration</b></div>
+	<div class="paddingPoint5em"><b><?php echo $installationStrings['LBL_COPY_OLD_DB_TO_NEW_DB'] ?></b></div>
 	<table cellpadding="5" cellspacing="2" width="100%" border="0">
 		<tbody>
 			<tr class="dvtCellLabel">
-				<td width="25%" nowrap valign='top'>New Database Name:<sup><font class="redColor">*</font></sup></td>
+				<td width="25%" nowrap valign='top'><?php echo $installationStrings['LBL_NEW']. ' ' .$installationStrings['LBL_DATABASE_NAME']; ?> <sup><font class="redColor">*</font></sup></td>
 				<td>
 					<input type='text' class="detailedViewTextBox" name='newDatabaseName' id='newDatabaseName' value='<?php echo $newDbForCopy ?>'>
-					<br>If database exists it will be recreated.			
+					<br><?php echo $installationStrings['LBL_IF_DATABASE_EXISTS_WILL_RECREATE'] ?>.			
 				</td>								
 			</tr>
 			<tr class="dvtCellLabel">
-				<td width="25%" nowrap valign='top'>Root User Name:<sup><font class="redColor">*</font></sup></td>
+				<td width="25%" nowrap valign='top'>Root <?php echo $installationStrings['LBL_USER_NAME'] ?> <sup><font class="redColor">*</font></sup></td>
 				<td><input type='text' class="detailedViewTextBox" name='rootUserName' id='rootUserName' value=''>
-					<br>Should have privilege to CREATE DATABASE
+					<br><?php echo $installationStrings['LBL_SHOULD_BE_PRIVILEGED_USER'] ?>.
 				</td>
 			</tr>
 			<tr class="dvtCellLabel">
-				<td width="25%">Root Password:</td>
+				<td width="25%">Root <?php echo $installationStrings['LBL_PASSWORD'] ?></td>
 				<td><input type='password' class="detailedViewTextBox" name='rootPassword' id='rootPassword' value=''></td>
 			</tr>
 			<tr class="dvtCellLabel">
@@ -278,7 +284,7 @@ if($dbName == $newDbForCopy) {
 		</tbody>
 	</table>
 	<br>
-	<div class="helpmessagebox"><span class='redColor fontBold'>Note:</span> This process may take longer time based on your database size.</div>
+	<div class="helpmessagebox"><span class='redColor fontBold'><?php echo $installationStrings['LBL_NOTE']; ?>:</span> <?php echo $installationStrings['MSG_PROCESS_TAKES_LONGER_TIME_BASED_ON_DB_SIZE']; ?>.</div>
 </div>
 <div id='responsePopupContainer' class="posLayPopup" style="display: none;" align="center">
 	<div class="floatRightTiny" onmouseover="this.className= 'floatRightTinyOn';" onmouseout="this.className= 'floatRightTiny';"><a href="javascript: void(0);" onClick="fninvsh('responsePopupContainer');"><img src="themes/images/close.gif" border=0></a></div>

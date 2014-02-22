@@ -36,16 +36,7 @@ function performScanNow(app_key, scannername) {
 	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
     <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 
-	<form action="index.php" method="post" id="form" onsubmit="VtigerJS_DialogBox.block();">
-		<input type='hidden' name='module' value='Settings'>
-		<input type='hidden' name='action' value='MailScanner'>
-		<input type='hidden' name='mode' value='edit'>
-		<input type='hidden' name='scannername' value='{$SCANNERINFO.scannername}'>
-		<input type='hidden' name='return_action' value='MailScanner'>
-		<input type='hidden' name='return_module' value='Settings'>
-		<input type='hidden' name='parenttab' value='Settings'>
-
-        <br>
+		<br>
 
 		<div align=center>
 			{include file='SetMenu.tpl'}
@@ -62,24 +53,56 @@ function performScanNow(app_key, scannername) {
 				
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
+				
+				<tr>
+					<td>
+						<table border=0 cellspacing=0 cellpadding=2 width=100% class="tableHeading">
+						<tr>
+							<td class="big" width="70%"><strong>{$MOD.LBL_MAILBOX}</strong></td>
+							<td width="30%" nowrap align="right">
+								<a href="index.php?module=Settings&action=MailScanner&parenttab=Settings&mode=edit&scannername="><img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" border="0" /></a>
+							</td>								
+						</tr>
+						</table>
+					</td>
+				</tr>
+				
+				{foreach item=SCANNER from=$SCANNERS}				
+				
+				{assign var="SCANNERINFO" value=$SCANNER->getAsMap()}				
 				<tr>
 				<td>
 
+				<form action="index.php" method="post" id="form" onsubmit="VtigerJS_DialogBox.block();">
+				<input type='hidden' name='module' value='Settings'>
+				<input type='hidden' name='action' value='MailScanner'>
+				<input type='hidden' name='mode' value='edit'>
+				<input type='hidden' name='scannername' value='{$SCANNERINFO.scannername}'>
+				<input type='hidden' name='return_action' value='MailScanner'>
+				<input type='hidden' name='return_module' value='Settings'>
+				<input type='hidden' name='parenttab' value='Settings'>
+		
+				{* When mode is Ajax, xmode will be set *}
+				<input type='hidden' name='xmode' value=''>
+				<input type='hidden' name='file' value=''>
+		
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 				<tr>
-				<td class="big" width="70%"><strong>{$MOD.LBL_MAILBOX} {$MOD.LBL_INFORMATION}</strong></td>
+				<td class="big" width="70%"><strong>{$SCANNERINFO.scannername} {$MOD.LBL_INFORMATION}</strong></td>
 				<td width="30%" nowrap align="right">
 					{if $SCANNERINFO.isvalid eq true}
 
 					{if $SCANNERINFO.rules neq false}
 					<input type="button" class="crmbutton small delete" value="{$MOD.LBL_SCAN_NOW}" 
-						onclick="performScanNow('{$APP_KEY}','{$SCANNERINFO.scannername}')" />
+						onclick="performScanNow('{$APP_KEY}','{$SCANNERINFO.scannername|@decode_html|@addslashes|@to_html}')" />
 					{/if}
 
 					<input type="submit" class="crmbutton small cancel" onclick="this.form.mode.value='folder'" value="{$MOD.LBL_SELECT} {$MOD.LBL_FOLDERS}" />
 					<input type="submit" class="crmbutton small create" onclick="this.form.mode.value='rule'" value="{$MOD.LBL_SETUP} {$MOD.LBL_RULE}" />
 					{/if}
 					<input type="submit" class="crmbutton small edit" value="{$APP.LBL_EDIT}" />
+					
+					<input type="submit" class="crmbutton small delete" onclick="if(confirm(alert_arr.ARE_YOU_SURE)){ldelim}with(this.form) {ldelim}action.value='SettingsAjax';file.value='MailScanner';mode.value='Ajax';xmode.value='remove';{rdelim}{rdelim}else return false;" value="{$MOD.LBL_DELETE}" />
 				</td>
 				</tr>
 				</table>
@@ -121,10 +144,11 @@ function performScanNow(app_key, scannername) {
 								{if $SCANNERINFO.isvalid eq true}<font color=green><b>{$MOD.LBL_ENABLED}</b></font>
 								{elseif $SCANNERINFO.isvalid eq false}<font color=red><b>{$MOD.LBL_DISABLED}</b></font>{/if}
 							</td>
-                        </tr>
+                        </tr></table>
 				    </td>
             	</tr>
 				</table>	
+				
 				{if $SCANNERINFO.isvalid}
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
@@ -151,12 +175,17 @@ function performScanNow(app_key, scannername) {
 									{if $SCANNERINFO.markas eq 'SEEN'}{$MOD.LBL_MARK_MESSAGE_AS} {$MOD.LBL_READ}{/if}
 								</td>
     	                    </tr>
-						</td>
+						</td></table>
 					</tr>
 					</table>
 				{/if}
+				</form>
+				
 				</td>
 				</tr>
+				
+				{/foreach}
+				
 				</table>
 			
 			</td>

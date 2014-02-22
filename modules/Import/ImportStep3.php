@@ -35,11 +35,6 @@ require_once('include/ListView/ListView.php');
 require_once('include/database/PearDatabase.php');
 require_once('modules/Import/ImportSave.php');
 
-global $php_max_execution_time;
-set_time_limit($php_max_execution_time);
-ini_set("display_errors",'0');
-
-
 function p($str){
 	global $adb;
 	$adb->println("IMP :".$str);
@@ -275,23 +270,23 @@ if($_REQUEST['noofrows'] != ''){
 	$totalnoofrows = count($datarows);
 }
 
-$loopcount = ($totalnoofrows/$RECORDCOUNT)+1;
-
+if($_REQUEST['recordcount'] != ''){
+        $RECORDCOUNT = vtlib_purify($_REQUEST['recordcount']);
+}else{
+        $RECORDCOUNT = vtlib_purify($_SESSION['recordcount']);
+}
+	
 if($_REQUEST['startval'] != ''){
 	$START = vtlib_purify($_REQUEST['startval']);
 }else{
 	$START = vtlib_purify($_SESSION['startval']);
 }
 
-if($_REQUEST['recordcount'] != ''){
-	$RECORDCOUNT = vtlib_purify($_REQUEST['recordcount']);
-}else{
-	$RECORDCOUNT = vtlib_purify($_SESSION['recordcount']);
+if(($START+$RECORDCOUNT) > $totalnoofrows){
+        $RECORDCOUNT = $totalnoofrows - $START;
 }
 
-if(($START+$RECORDCOUNT) > $totalnoofrows){
-	$RECORDCOUNT = $totalnoofrows - $START;
-}
+$loopcount = ($totalnoofrows/$RECORDCOUNT)+1;
 
 $focus->initImportableFields($module);
 if($totalnoofrows > $RECORDCOUNT && $START < $totalnoofrows){

@@ -33,6 +33,7 @@ if($cbaction == 'POSTPONE') {
 	if(isset($cbmodule) && isset($cbrecord)) {
 		$reminderid = $_REQUEST['cbreminderid'];
 		if(!empty($reminderid) ) {
+			unset($_SESSION['next_reminder_time']);
 			$reminder_query = "UPDATE vtiger_activity_reminder_popup set status = 0 WHERE reminderid = ? AND semodule = ? AND recordid = ?";
 			$adb->pquery($reminder_query, array($reminderid, $cbmodule, $cbrecord));
 			echo ":#:SUCCESS";

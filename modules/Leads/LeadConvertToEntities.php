@@ -326,9 +326,22 @@ function saveLeadRelatedCampaigns($leadid, $relatedid)
 	{
 		$campaignid = $adb->query_result($campaign_result,$i,'campaignid');
 
-		$adb->pquery("insert into vtiger_campaigncontrel (campaignid, contactid) values(?,?)", array($campaignid, $relatedid));
-	}
+		$adb->pquery("insert into vtiger_campaigncontrel (campaignid, contactid, campaignrelstatusid) values(?,?,1)", array($campaignid, $relatedid));
+		}
 	$log->debug("Exit from function saveLeadRelatedCampaigns.");
+}
+function saveLeadConvertedAccounts($leadid,$relatedid){
+	global $adb, $log;
+	$log->debug("Entering into function saveLeadConvertedAccounts($leadid, $relatedid)");
+	$campaign_result = $adb->pquery("select * from vtiger_campaignleadrel where leadid=?", array($leadid));
+	$noofcampaigns = $adb->num_rows($campaign_result);
+	for($i = 0; $i < $noofcampaigns; $i++)
+	{
+		$campaignid = $adb->query_result($campaign_result,$i,'campaignid');
+		$adb->pquery("INSERT INTO vtiger_campaignaccountrel (campaignid, accountid, campaignrelstatusid) values(?,?,1)",array($campaignid,$relatedid));
+		
+	}
+	$log->debug("Exit from function saveLeadConvertedAccounts.");
 }
 $crmid ='';
 if(vtlib_isModuleActive('Accounts') && isPermitted("Accounts","EditView") =='yes'){
@@ -338,15 +351,17 @@ if(vtlib_isModuleActive('Accounts') && isPermitted("Accounts","EditView") =='yes
 	$acc_rows = $adb->num_rows($acc_res);
 	if($acc_rows != 0){
 		$crmid = $adb->query_result($acc_res,0,"accountid");
-	
 		//Retrieve the lead related products and relate them with this new account
 		getRelatedNotesAttachments($id,$crmid); 
 		saveLeadRelatedProducts($id, $crmid, "Accounts");
 		saveLeadRelations($id, $crmid, "Accounts");
+		$accountid=$crmid;
+		saveLeadConvertedAccounts($id,$accountid);
+
 	} else if($accountname==''){
 		$crmid='';
 	} else
-	{
+	{ 
 		$crmid = $adb->getUniqueID("vtiger_crmentity");
 	
 		//Saving Account - starts
@@ -402,6 +417,9 @@ if(vtlib_isModuleActive('Accounts') && isPermitted("Accounts","EditView") =='yes
 		//Retrieve the lead related products and relate them with this new account
 		saveLeadRelatedProducts($id, $crmid, "Accounts");
 		saveLeadRelations($id, $crmid, "Accounts");
+		$accountid = $crmid;
+		//Retrieve the lead related Campaigns and relate them with this new Account
+		saveLeadConvertedAccounts($id, $accountid);
 	}
 }
 //Up to this, Account related data save finshed

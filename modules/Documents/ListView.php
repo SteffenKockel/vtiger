@@ -65,16 +65,6 @@ $_SESSION['NOTES_ORDER_BY'] = $order_by;
 $_SESSION['NOTES_SORT_ORDER'] = $sorder;
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
 
-
-if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true')
-{
-	list($where, $ustring) = split("#@@#",getWhereCondition($currentModule));
-	// we have a query
-	$url_string .="&query=true".$ustring;
-	$log->info("Here is the where clause for the list view: $where");
-	$smarty->assign("SEARCH_URL",$url_string);
-
-}
 if(isPermitted('Documents','Delete','') == 'yes')
 {
 	$smarty->assign("MASS_DELETE","yes");
@@ -111,25 +101,33 @@ $smarty->assign("CATEGORY",$category);
 
 //Retreive the list from Database
 //<<<<<<<<<customview>>>>>>>>>
-if($viewid != 0)
-{
-	$listquery = getListQuery("Documents");
-	$query = $oCustomView->getModifiedCvListQuery($viewid,$listquery,"Documents");
-}else
-{
-	$query = getListQuery("Documents");
+global $current_user;
+$queryGenerator = new QueryGenerator($currentModule, $current_user);
+if ($viewid != "0") {
+	$queryGenerator->initForCustomViewById($viewid);
+} else {
+	$queryGenerator->initForDefaultCustomView();
 }
 //<<<<<<<<customview>>>>>>>>>
 
 $hide_empty_folders = 'no';
 
-if(isset($where) && $where != '')
-{
-        $query .= ' and '.$where;
-        $_SESSION['export_where'] = $where;
+// Enabling Module Search
+$url_string = '';
+if($_REQUEST['query'] == 'true') {
+	$queryGenerator->addUserSearchConditions($_REQUEST);
+	$ustring = getSearchURL($_REQUEST);
+	$url_string .= "&query=true$ustring";
+	$smarty->assign('SEARCH_URL', $url_string);
 }
-else
-   unset($_SESSION['export_where']);
+
+$query = $queryGenerator->getQuery();
+$where = $queryGenerator->getConditionalWhere();
+if(isset($where) && $where != '') {
+	$_SESSION['export_where'] = $where;
+} else {
+	unset($_SESSION['export_where']);
+}
    
 $focus->query = $query;
 
@@ -159,9 +157,11 @@ if($viewid ==0)
 if($viewid !='')
 $url_string .="&viewname=".$viewid;
 
-$listview_header = getListViewHeader($focus,"Documents",$url_string,$sorder,$order_by,"",$oCustomView);
+$controller = new ListViewController($adb, $current_user, $queryGenerator);
+$listview_header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,
+		$order_by);
 $smarty->assign("LISTHEADER", $listview_header);
-$listview_header_search = getSearchListHeaderValues($focus,"Documents",$url_string,$sorder,$order_by,"",$oCustomView);
+$listview_header_search = $controller->getBasicSearchFieldInfoList();
 $smarty->assign("SEARCHLISTHEADER",$listview_header_search);
 
 $smarty->assign("SELECT_SCRIPT", $view_script);
@@ -262,10 +262,12 @@ if($foldercount > 0 )
 		$folder_details['foldername']=$adb->query_result($result,$i,"foldername");
 		$foldername = $folder_details['foldername'];
 		$folder_details['description']=$adb->query_result($result,$i,"description");
-		$folder_files = getListViewEntries($focus,"Documents",$list_result,$navigation_array,"","","EditView","Delete",$oCustomView);
+		$folder_files = $controller->getListViewEntries($focus,$currentModule,$list_result,
+			$navigation_array);
 		$folder_details['entries']= $folder_files;
 		$folder_details['navigation'] = getTableHeaderSimpleNavigation($navigation_array, $url_string,"Documents",$folder_id,$viewid);
-		$folder_details['recordListRange'] = getRecordRangeMessage($list_result, $limit_start_rec);
+		$folder_details['recordListRange'] = getRecordRangeMessage($list_result, $limit_start_rec,
+				$num_records);
 		if ($displayFolder == true) {
 			$folders[$foldername] = $folder_details;
 		} else{
@@ -290,19 +292,26 @@ $smarty->assign("SELECTEDIDS", vtlib_purify($_REQUEST['selobjs']));
 $smarty->assign("ALLSELECTEDIDS", vtlib_purify($_REQUEST['allselobjs']));
 
 $alphabetical = AlphabeticalSearch($currentModule,'index','notes_title','true','basic',"","","","",$viewid);
-$fieldnames = getAdvSearchfields($module);
+$fieldnames = $controller->getAdvancedSearchOptionString();
 $criteria = getcriteria_options();
 $smarty->assign("CRITERIA", $criteria);
 $smarty->assign("FIELDNAMES", $fieldnames);
 $smarty->assign("ALPHABETICAL", $alphabetical);
 $smarty->assign("NAVIGATION", $navigationOutput);
 $smarty->assign("RECORD_COUNTS", $record_string);
-if($current_user->id == 1)
-	$smarty->assign("IS_ADMIN","on");
+
+$smarty->assign("IS_ADMIN",$current_user->is_admin); 
+
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
 
-$_SESSION[$currentModule.'_listquery'] = $list_query;
+ListViewSession::setSessionQuery($currentModule,$list_query,$viewid);
+
+// Gather the custom link information to display
+include_once('vtlib/Vtiger/Link.php');
+$customlink_params = Array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
+$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), Array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
+// END
 
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '' || $_REQUEST['mode'] == 'ajax')
 	$smarty->display("DocumentsListViewEntries.tpl");

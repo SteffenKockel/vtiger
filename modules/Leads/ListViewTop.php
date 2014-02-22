@@ -69,7 +69,7 @@ function getNewLeads($maxval,$calCnt)
 
 	$list_query = 'select vtiger_leaddetails.firstname, vtiger_leaddetails.lastname, vtiger_leaddetails.leadid, vtiger_leaddetails.company 
 		from vtiger_leaddetails inner join vtiger_crmentity on vtiger_leaddetails.leadid = vtiger_crmentity.crmid 
-		where vtiger_crmentity.deleted =0 AND vtiger_leaddetails.converted =0 AND 
+		where vtiger_crmentity.deleted =0 AND vtiger_leaddetails.converted =0 AND vtiger_leaddetails.leadid > 0 AND 
 		vtiger_leaddetails.leadstatus not in ("Lost Lead", "Junk Lead","'.$current_module_strings['Lost Lead'].'","'.$current_module_strings['Junk Lead'].'") 
 		AND vtiger_crmentity.createdtime >=? AND vtiger_crmentity.smownerid = ?';
 	
@@ -124,7 +124,7 @@ function getNewLeads($maxval,$calCnt)
 		$entries[$lead_fields['LEAD_ID']]=$value;
 	}
 	
-	$search_qry = "&query=true&Fields0=vtiger_leaddetails.leadstatus&Condition0=isn&Srch_value0=Lost+Lead&Fields1=vtiger_leaddetails.leadstatus&Condition1=isn&Srch_value1=Junk+Lead&Fields2=vtiger_crmentity.smownerid&Condition2=is&Srch_value2=".$current_user->column_fields['user_name']."&Fields3=vtiger_crmentity.createdtime&Condition3=grteq&Srch_value3=".$start_date."&searchtype=advance&search_cnt=4&matchtype=all";
+	$search_qry = "&query=true&Fields0=leadstatus&Condition0=n&Srch_value0=Lost+Lead&Fields1=leadstatus&Condition1=n&Srch_value1=Junk+Lead&Fields2=assigned_user_id&Condition2=e&Srch_value2=".$current_user->column_fields['user_name']."&Fields3=createdtime&Condition3=h&Srch_value3=".$start_date."&searchtype=advance&search_cnt=4&matchtype=all";
 
 	$values=Array('ModuleName'=>'Leads','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 	$log->debug("Exiting getNewLeads method ...");

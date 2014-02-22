@@ -16,31 +16,34 @@
 <script language="JavaScript" type="text/javascript" src="include/calculator/calc.js"></script>
 {$BLOCKJS_STD}
 <table class="small" bgcolor="#ffffff" border="0" cellpadding="5" cellspacing="0" height='530' width="100%">
-	<tbody><tr valign='top'>
-	<td colspan="2">
-	<span class="genHeaderGray">{$MOD.LBL_FILTERS}</span><br>
-	{$MOD.LBL_SELECT_FILTERS_TO_STREAMLINE_REPORT_DATA}
-	<hr>
-	</td>
+	<tbody>
+	<tr valign='top'>
+		<td colspan="2">
+			<span class="genHeaderGray">{$MOD.LBL_SHARING_TYPE}</span><br>
+			{$MOD.LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS}
+			<hr>
+		</td>
 	</tr>
 	
-	<tr><td colspan="2">
-	<table class="small" border="0" cellpadding="5" cellspacing="0" width="100%">
+	<tr>
+	<td colspan="2">
+	<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tbody>
-	<tr><td colspan="4">
-			<table width="100%" cellspacing="0" cellpadding="0" border="0" class="small">
-				<tbody>
-					<tr>
-				    	<td nowrap="" align="center" id="mi" style="width: 100px;" colspan="2" class="detailedViewHeader"><!--onclick="fnLoadRepValues('mi','pi','mnuTab2','mnuTab')"-->
-				     	<b>{$MOD.LBL_SHARING}</b>
-				    	</td>
-					</tr>
-				</tbody>
-			</table>		
-		</td>
+		<tr>
+			<td colspan="4">
+				<table width="100%" cellspacing="0" cellpadding="0" border="0" class="small">
+					<tbody>
+						<tr>
+					    	<td nowrap="" align="center" id="mi" style="width: 100px;" colspan="2" class="detailedViewHeader"><!--onclick="fnLoadRepValues('mi','pi','mnuTab2','mnuTab')"-->
+					     	<b>{$MOD.LBL_SHARING}</b>
+					    	</td>
+						</tr>
+					</tbody>
+				</table>		
+			</td>
 		</tr>
 		<tr>
-		<td colspan=4>
+			<td colspan=4>
 				<table width="100%" cellspacing="0" cellpadding="0" class="small" height="190px">
 					<tr valign=top><td colspan="2">
 						<table width="100%" border="0" cellpadding="5" class="small" cellspacing="0" align="center">

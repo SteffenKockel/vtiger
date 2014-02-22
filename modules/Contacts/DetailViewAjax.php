@@ -14,7 +14,7 @@ global $adb;
 
 $local_log =& LoggerManager::getLogger('ContactsAjax');
 global $currentModule;
-$cntObj = CRMEntity::getInstance($currentModule);
+$modObj = CRMEntity::getInstance($currentModule);
 
 $ajaxaction = $_REQUEST["ajxaction"];
 if($ajaxaction == "DETAILVIEW")
@@ -25,19 +25,15 @@ if($ajaxaction == "DETAILVIEW")
      $fieldvalue = utf8RawUrlDecode($_REQUEST["fieldValue"]); 
      if($crmid != "")
 	 {
-		 $cntObj->retrieve_entity_info($crmid,"Contacts");
-		 $cntObj->column_fields[$fieldname] = $fieldvalue;
-		 $cntObj->id = $crmid;
-		 $cntObj->mode = "edit";
-		 $cntObj->save("Contacts");
-		 if($cntObj->column_fields['notify_owner'] == 1 )
-		 {
-			 sendNotificationToOwner('Contacts',&$cntObj);
-		 }
-		 $email_res = $adb->pquery("select email from vtiger_contactdetails where contactid=?", array($cntObj->id));
+		 $modObj->retrieve_entity_info($crmid,"Contacts");
+		 $modObj->column_fields[$fieldname] = $fieldvalue;
+		 $modObj->id = $crmid;
+		 $modObj->mode = "edit";
+		 $modObj->save("Contacts");
+		 $email_res = $adb->pquery("select email from vtiger_contactdetails where contactid=?", array($modObj->id));
 		 $email = $adb->query_result($email_res,0,'email');
 
-		 $check_available = $adb->pquery("select * from vtiger_portalinfo where id=?", array($cntObj->id));
+		 $check_available = $adb->pquery("select * from vtiger_portalinfo where id=?", array($modObj->id));
 		 $update = '';
 		 if($fieldname =='email')
 		 {
@@ -48,7 +44,7 @@ if($ajaxaction == "DETAILVIEW")
 				$sql = "update vtiger_portalinfo set user_name=?,isactive=? where id=?";
 				$adb->pquery($sql, array($fieldvalue, $active, $crmid));
 				$email = $fieldvalue;
-				$result = $adb->pquery("select user_password from vtiger_portalinfo where id=?", array($cntObj->id));
+				$result = $adb->pquery("select user_password from vtiger_portalinfo where id=?", array($modObj->id));
 				$password = $adb->query_result($result,0,'user_password');
 				$update = true;
 		 	 }
@@ -63,7 +59,7 @@ if($ajaxaction == "DETAILVIEW")
 				{
 					$password = makeRandomPassword();
 					$sql = "insert into vtiger_portalinfo (id,user_name,user_password,type,isactive) values(?,?,?,?,?)";
-					$params = array($cntObj->id, $email, $password, 'C', 1);
+					$params = array($modObj->id, $email, $password, 'C', 1);
 					$adb->pquery($sql, $params);
 					$insert = true;
 
@@ -71,10 +67,10 @@ if($ajaxaction == "DETAILVIEW")
 				elseif($confirm == 0 && $fieldvalue == 1)
 				{
 					$sql = "update vtiger_portalinfo set user_name=?, isactive=1 where id=?";
-					$params = array($email, $cntObj->id);
+					$params = array($email, $modObj->id);
 					$adb->pquery($sql, $params);
 					
-					$result = $adb->pquery("select user_password from vtiger_portalinfo where id=?", array($cntObj->id));
+					$result = $adb->pquery("select user_password from vtiger_portalinfo where id=?", array($modObj->id));
 					$password = $adb->query_result($result,0,'user_password');
 					$update = true;
 
@@ -82,22 +78,19 @@ if($ajaxaction == "DETAILVIEW")
 				elseif($confirm == 1 && $fieldvalue == 0)
 				{
 					$sql = "update vtiger_portalinfo set isactive=0 where id=?";
-					$adb->pquery($sql, array($cntObj->id));
+					$adb->pquery($sql, array($modObj->id));
 				}
 			}
 		}
 			require_once("modules/Emails/mail.php");
 			global $current_user;
 			$data_array = Array();
-			$data_array['first_name'] = $cntObj->column_fields['firstname'];
-			$data_array['last_name'] = $cntObj->column_fields['lastname'];
+			$data_array['first_name'] = $modObj->column_fields['firstname'];
+			$data_array['last_name'] = $modObj->column_fields['lastname'];
 			$data_array['email'] = $email;
 			$data_array['portal_url'] = "<a href=".$PORTAL_URL."/login.php>".$mod_strings['Please Login Here']."</a>";
 			$contents = getmail_contents_portalUser($data_array,$password);
-			if($insert == true || $update == true)
-				send_mail('Contacts',$cntObj->column_fields['email'],$current_user->user_name,'',$mod_strings['Customer Portal Login Details'],$contents);
-
-		 if($cntObj->id != "")
+		 if($modObj->id != "")
 		 {
 			 echo ":#:SUCCESS";
 		 }else
@@ -108,5 +101,7 @@ if($ajaxaction == "DETAILVIEW")
 	 {
 		 echo ":#:FAILURE";
 	 }
+} elseif($ajaxaction == "LOADRELATEDLIST" || $ajaxaction == "DISABLEMODULE"){
+	require_once 'include/ListView/RelatedListViewContents.php';
 }
 ?>

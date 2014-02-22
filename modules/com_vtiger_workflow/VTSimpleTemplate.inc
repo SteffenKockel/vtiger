@@ -20,31 +20,77 @@ class VTSimpleTemplate{
 	}
 	
 	private function matchHandler($match){
-		preg_match('/\((\w+) : \((\w+)\) (\w+)\)/', $match[1], $matches);
+		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $match[1], $matches);
 		if(count($matches)==0){
 			$fieldname = $match[1];
 			$data = $this->parent->getData();
-			$result = $data[$fieldname];
+			if($this->useValue($data, $fieldname)){
+				$result = $data[$fieldname];
+			}else{
+				$result ='';
+			}
 		}else{
 			list($full, $referenceField, $referenceModule, $fieldname) = $matches;
-			$referenceId = $this->parent->get($referenceField);
-			if($referenceId==null){
-				$result="";
+			if($referenceModule === '__VtigerMeta__'){
+				$result = $this->getMetaValue($fieldname);
 			}else{
-				$entity = $this->cache->forId($referenceId);
-				if($entity->getModuleName()==$referenceModule){
-					$data = $entity->getData();
-					$result = $data[$fieldname];
+				$referenceId = $this->parent->get($referenceField);
+				if($referenceId==null){
+					$result="";
 				}else{
-					$result = "";
+					$entity = $this->cache->forId($referenceId);
+					if($referenceModule==="Users" && $entity->getModuleName()=="Groups"){
+						list($groupEntityId, $groupId) = vtws_getIdComponents($referenceId);
+						
+						require_once('include/utils/GetGroupUsers.php');
+						$ggu = new GetGroupUsers();
+						$ggu->getAllUsersInGroup($groupId);
+						
+						$users = $ggu->group_users;
+						$parts = Array();
+						foreach($users as $userId){
+							$refId = vtws_getWebserviceEntityId("Users", $userId);
+							$entity = $this->cache->forId($refId);
+							$data = $entity->getData();
+							if($this->useValue($data, $fieldname)){
+								$parts[] = $data[$fieldname];
+							}
+						}
+						$result = implode(",", $parts);
+					}if($entity->getModuleName()===$referenceModule){
+						$data = $entity->getData();
+						if($this->useValue($data, $fieldname)){
+							$result = $data[$fieldname];
+						}else{
+							$result = '';
+						}
+					}else{
+						$result = '';
+					}
 				}
 			}
 		}
-		return $result;
+			if(!empty($result)){
+				$result .= ',';
+		}
+		return $result;						
+		
+	}
+
+	protected function useValue($data, $fieldname) {
+		return !empty($data[$fieldname]);
+	}
+
+	function parseTemplate(){
+		return preg_replace_callback('/\\$(\w+|\((\w+) : \(([_\w]+)\) (\w+)\))\s*,?/', array($this,"matchHandler"), $this->template);
 	}
 	
-	function parseTemplate(){
-		return preg_replace_callback('/\\$(\w+|\((\w+) : \((\w+)\) (\w+)\))/', array($this,"matchHandler"), $this->template);
+	function getMetaValue($fieldname){
+		switch($fieldname){
+			case 'date': return getNewDisplayDate();
+			case 'time': return date('h-i-s');
+			default: '';
+		}
 	}
 }
 ?>

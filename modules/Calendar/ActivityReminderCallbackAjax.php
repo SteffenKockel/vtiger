@@ -22,38 +22,41 @@ require_once('themes/'.$theme.'/layout_utils.php');
 require_once('include/utils/utils.php');
 require_once('modules/Calendar/Activity.php');
 
+$cur_time = time();
+$_SESSION['last_reminder_check_time'] = $cur_time;
+$_SESSION['next_reminder_interval'] = 60;
+if($_SESSION['next_reminder_time'] == 'None') {
+	return;
+} elseif(isset($_SESSION['next_reminder_interval']) && (($_SESSION['next_reminder_time'] -
+		$_SESSION['next_reminder_interval']) > $cur_time)) {
+	echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".
+		($_SESSION['next_reminder_interval'] * 1000)."</script>";
+	return;
+}
 $log = LoggerManager::getLogger('Activity_Reminder');
 $smarty = new vtigerCRM_Smarty;
 if(isPermitted('Calendar','index') == 'yes'){
-$active = $adb->pquery("select * from vtiger_users where id=?",array($current_user->id));
-$active_res = $adb->query_result($active,0,'reminder_interval');
-if($active_res!='None'){
-	$reminder_next=$adb->query_result($active,0,"reminder_next_time");
-	$lastlogin_time =$adb->query_result($active,0,"date_entered");
-	if(empty($reminder_next)) {
-		$reminder_next = date('Y-m-d H:i');
+	$active = $adb->pquery("select * from vtiger_users where id=?",array($current_user->id));
+	$active_res = $adb->query_result($active,0,'reminder_interval');
+	if($active_res == 'None') {
+		$_SESSION['next_reminder_time'] = 'None';
 	}
-	if(strtotime($lastlogin_time) > strtotime($reminder_next)) {
-		$reminder_next = $lastlogin_time;
-	}
-	$reminder_next_time = strtotime($reminder_next);
-	$cur_time = mktime(date('H'),date('i'),0,date('m'),date('d'),date('Y'));
-
-	if($reminder_next_time <= $cur_time)
-	{
-		$cb_time=$adb->query_result($active,0,"reminder_interval");
-		$cb_time = ConvertToMinutes($cb_time);
-		$cb_mktime = strtotime($reminder_next);
-		$cbdate1 = date('Y-m-d', strtotime("+$cb_time minutes", $cb_mktime));
-		$cbtime1 = date('H:i',   strtotime("+$cb_time minutes", $cb_mktime));
-		$callback_query = 
+	if($active_res!='None'){
+		$interval=$adb->query_result($active,0,"reminder_interval");
+		$intervalInMinutes = ConvertToMinutes($interval);
+		// check for reminders every minute
+		$time = time();
+		$_SESSION['next_reminder_time'] = $time + ($intervalInMinutes * 60);
+		$date = date('Y-m-d', strtotime("+$intervalInMinutes minutes", $time));
+		$time = date('H:i',   strtotime("+$intervalInMinutes minutes", $time));
+		$callback_query =
 		"SELECT * FROM vtiger_activity_reminder_popup inner join vtiger_crmentity where " .
 		" vtiger_activity_reminder_popup.status = 0 and " .
 		" vtiger_activity_reminder_popup.recordid = vtiger_crmentity.crmid " .
 		" and vtiger_crmentity.smownerid = ".$current_user->id." and vtiger_crmentity.deleted = 0 " .
-		" and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $cbdate1 . "')" . 
-		" OR ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $cbdate1 . "')" . 
-		" AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $cbtime1 . "')))";
+		" and ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') < '" . $date . "')" .
+		" OR ((DATE_FORMAT(vtiger_activity_reminder_popup.date_start,'%Y-%m-%d') = '" . $date . "')" .
+		" AND (TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') <= '" . $time . "')))";
 
 		$result = $adb->query($callback_query);
 
@@ -63,12 +66,12 @@ if($active_res!='None'){
 				$reminderid = $adb->query_result($result, $index, "reminderid");
 				$cbrecord = $adb->query_result($result, $index, "recordid");
 				$cbmodule = $adb->query_result($result, $index, "semodule");
- 
+
 				$focus = CRMEntity::getInstance($cbmodule);
-								
+
 				if($cbmodule == 'Calendar') {
 					$focus->retrieve_entity_info($cbrecord,$cbmodule);
-					
+
 					$cbsubject = $focus->column_fields['subject'];
 					$cbactivitytype   = $focus->column_fields['activitytype'];
 					$cbdate   = $focus->column_fields["date_start"];
@@ -79,9 +82,9 @@ if($active_res!='None'){
 					$cbsubject      = $cbsubject[0];
 					$cbactivitytype = getTranslatedString($cbmodule, $cbmodule);
 					$cbdate         = $adb->query_result($result, $index, 'date_start');
-					$cbtime         = $adb->query_result($result, $index, 'time_start');				
+					$cbtime         = $adb->query_result($result, $index, 'time_start');
 				}
-				
+
 				if($cbactivitytype=='Task')
 					$cbstatus   = $focus->column_fields["taskstatus"];
 				else
@@ -109,20 +112,28 @@ if($active_res!='None'){
 
 				$mark_reminder_as_read = "UPDATE vtiger_activity_reminder_popup set status = 1 where reminderid = ?";
 				$adb->pquery($mark_reminder_as_read, array($reminderid));
+				echo "<script type='text/javascript'>window.top.document.title= '".
+					$app_strings['LBL_NEW_BUTTON_LABEL'].$app_strings['LBL_Reminder']."';</script>";
 			}
+		} else {
+			$callback_query =
+			"SELECT * FROM vtiger_activity_reminder_popup inner join vtiger_crmentity where " .
+			" vtiger_activity_reminder_popup.status = 0 and " .
+			" vtiger_activity_reminder_popup.recordid = vtiger_crmentity.crmid " .
+			" and vtiger_crmentity.smownerid = ".$current_user->id." and vtiger_crmentity.deleted = 0 ".
+			"AND vtiger_activity_reminder_popup.reminderid > 0 ORDER BY date_start DESC , ".
+			"TIME_FORMAT(vtiger_activity_reminder_popup.time_start,'%H:%i') DESC LIMIT 1";
+			$result = $adb->query($callback_query);
+			$it = new SqlResultIterator($adb, $result);
+			$nextReminderTime = null;
+			foreach ($it as $row) {
+				$nextReminderTime = strtotime($row->date_start.' '.$row->time_start);
+			}
+			$_SESSION['next_reminder_time'] = $nextReminderTime - ($intervalInMinutes * 60);
 		}
-		$reminder_next = date('Y-m-d H:i', strtotime("+$cb_time minutes", $cur_time));
-		// NOTE date_entered has CURRENT_TIMESTAMP constraint, so we need to reset when updating the table 
-		$adb->pquery("UPDATE vtiger_users set reminder_next_time=?, date_entered=? where id=?",array($reminder_next, $lastlogin_time, $current_user->id));
-		$reminder_interval_reset = (strtotime($reminder_next) - $cur_time) * 1000;
-		
-		// NOTE (Overcome Browser's issue): If required comment out the following line if condition below. 
-		// To make popup work fine when interval is set to 1 minute, we need decrement the timeout
-		// if($reminder_interval_reset / 1000 == 60) $reminder_interval_reset = (40 * 1000);
-		
-		echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>$reminder_interval_reset</script>";
+		echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".
+				($_SESSION['next_reminder_interval'] * 1000)."</script>";
 	}
-}
 }
 
 ?>

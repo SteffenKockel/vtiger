@@ -87,4 +87,4 @@ function dashboardDisplayCall($type,$Chart_Type,$from_page)
 	}
 }
 
-?>	
+?>

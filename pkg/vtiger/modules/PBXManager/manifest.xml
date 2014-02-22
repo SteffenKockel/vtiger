@@ -1,12 +1,13 @@
 <?xml version='1.0'?>
 <module>
-<exporttime></exporttime>
+<exporttime>2010-05-11 14:57:40</exporttime>
 <name>PBXManager</name>
 <label>PBXManager</label>
 <parent>Tools</parent>
-<version>1.1</version>
+<version>1.2</version>
 <dependencies>
 <vtiger_version>5.1.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
 </dependencies>
 <tables>
 <table>
@@ -161,7 +162,7 @@
 <rules>
 <rule>
 <columnindex>0</columnindex>
-<comparator>EQUALS</comparator>
+<comparator>CONTAINS</comparator>
 <value>Missed</value>
 </rule>
 </rules>
@@ -191,7 +192,7 @@
 <rules>
 <rule>
 <columnindex>0</columnindex>
-<comparator>EQUALS</comparator>
+<comparator>CONTAINS</comparator>
 <value>outgoing</value>
 </rule>
 </rules>
@@ -221,8 +222,8 @@
 <rules>
 <rule>
 <columnindex>0</columnindex>
-<comparator>EQUALS</comparator>
-<value>incoming</value>
+<comparator>CONTAINS</comparator>
+<value>received</value>
 </rule>
 </rules>
 </field>
@@ -235,15 +236,15 @@
 <actions>
 <action>
 <name><![CDATA[Import]]></name>
-<status>enabled</status>
+<status>disabled</status>
 </action>
 <action>
 <name><![CDATA[Export]]></name>
-<status>enabled</status>
+<status>disabled</status>
 </action>
 <action>
 <name><![CDATA[Merge]]></name>
-<status>enabled</status>
+<status>disabled</status>
 </action>
 </actions>
 </module>

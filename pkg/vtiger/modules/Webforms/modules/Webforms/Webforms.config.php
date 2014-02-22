@@ -8,11 +8,11 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$enableAppKeyValidation = true;
+$enableAppKeyValidation = false;
 $defaultUserName = 'admin';
 $defaultUserAccessKey = 'iFOdqrI8lS5UhNTa';
 
-$defaultOwner = 'standarduser';
+$defaultOwner = 'admin';
 $successURL = '';
 $failureURL = '';
 

@@ -20,5 +20,6 @@ $return_module = vtlib_purify($_REQUEST['return_module']);
 
 $query = "update vtiger_pricebookproductrel set listprice=? where pricebookid=? and productid=?";
 $adb->pquery($query, array($listprice, $pricebook_id, $product_id)); 
-header("Location: index.php?module=$return_module&action=".$return_module."Ajax&file=$return_action&ajax=updatelistprice&record=$record");
+header("Location: index.php?module=$return_module&action=".$return_module.
+		"Ajax&file=$return_action&ajax=true&record=$record");
 ?>

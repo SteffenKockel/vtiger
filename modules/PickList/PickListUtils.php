@@ -62,7 +62,7 @@ function getPickListModules(){
 	// END
 	$result = $adb->pquery($query, array());
 	while($row = $adb->fetch_array($result)){
-		$modules[$row['tablabel']] = $row['tabname']; 
+		$modules[$row['tablabel']] = $row['tabname'];
 	}
 	return $modules;
 }

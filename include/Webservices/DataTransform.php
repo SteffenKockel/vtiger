@@ -54,12 +54,45 @@
 		function sanitizeForInsert($row,$meta){
 			global $adb;
 			$associatedToUser = false;
+			$parentTypeId = null;
 			if(strtolower($meta->getEntityName()) == "emails"){
 				if(isset($row['parent_id'])){
 					$components = vtws_getIdComponents($row['parent_id']);
-					if($components[0] == VtigerWebserviceObject::fromName($adb,'Users')){
+					$userObj = VtigerWebserviceObject::fromName($adb,'Users');
+					$parentTypeId = $components[0];
+ 		                        if($components[0] == $userObj->getEntityId()){
 						$associatedToUser = true;
 					}
+				}
+			}
+                        // added to handle the setting reminder time
+			if(strtolower($meta->getEntityName()) == "events"){
+				if(isset($row['reminder_time'])&& $row['reminder_time']!= null){
+					$_REQUEST['set_reminder'] = "Yes";
+					$_REQUEST['mode'] = 'edit';
+
+					$reminder = $row['reminder_time'];
+					$seconds = $reminder%60;
+					$minutes = ($reminder/60)%60;
+					$hours = ($reminder/(60*60))%24;
+					$days =  ($reminder/(60*60*24));
+
+					//at vtiger there cant be 0 minutes reminder so we are setting to 1
+					if($minutes == 0){
+							$minutes = 1;
+					}
+
+					$_REQUEST['remmin'] = $minutes;
+					$_REQUEST['remhrs'] = $hours;
+					$_REQUEST['remdays'] = $days;
+				} else {
+					$_REQUEST['set_reminder'] = "No";
+				}
+			} elseif(strtolower($meta->getEntityName()) == "calendar") {
+				if(empty($row['sendnotification']) || strtolower($row['sendnotificaiton'])=='no'
+						|| $row['sendnotificaiton'] == '0' || $row['sendnotificaiton'] == 'false'
+						|| strtolower($row['sendnotificaiton']) == 'n') {
+					unset($row['sendnotification']);
 				}
 			}
 			$references = $meta->getReferenceFieldDetails();
@@ -83,9 +116,11 @@
 						$row['parent_id'] = $row['parent_id']."@-1|";
 						$_REQUEST['parent_id'] = $row['parent_id']; 
 					}else{
-						$emailFields = $meta->getEmailFields();
-						$fieldId = getEmailFieldId($meta,$row['parent_id'],$emailFields);
-						$row['parent_id'] = $row['parent_id']."@$fieldId|";
+						$referenceHandler = vtws_getModuleHandlerFromId($parentTypeId,
+								$meta->getUser());
+						$referenceMeta = $referenceHandler->getMeta();
+						$fieldId = getEmailFieldId($referenceMeta, $row['parent_id']);
+						$row['parent_id'] .= "@$fieldId|";
 					}
 				}
 			}
@@ -157,6 +192,12 @@
 			global $adb,$log;
 			$references = $meta->getReferenceFieldDetails();
 			foreach($references as $field=>$typeList){
+                            if(strtolower($meta->getEntityName()) == "emails"){
+				if(isset($row['parent_id'])){
+                                    list($row['parent_id'], $fieldId) = explode('@',
+					    $row['parent_id']);
+                                }
+                            }
 				if($row[$field]){
 					$found = false;
 					foreach ($typeList as $entity) {

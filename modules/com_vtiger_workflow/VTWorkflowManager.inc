@@ -11,10 +11,11 @@
 	
 	class VTWorkflowManager{
 		
-		static $ON_FIRST_SAVE=1;
-		static $ONCE=2;
-		static $ON_EVERY_SAVE=3;
-		
+		static $ON_FIRST_SAVE = 1;
+		static $ONCE = 2;
+		static $ON_EVERY_SAVE = 3;
+		static $ON_MODIFY = 4;
+			
 		
 		function __construct($adb){
 			$this->adb = $adb;
@@ -42,16 +43,34 @@
 		
 		function getWorkflows(){
 			$adb=$this->adb;
-			$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition 
+			
+			$result=$adb->getColumnNames("com_vtiger_workflows");
+			if(in_array("defaultworkflow",$result)){
+				$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition,defaultworkflow 
+									from com_vtiger_workflows ");
+			}else{
+				
+				$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition 
 									from com_vtiger_workflows");
+			}						
 			return $this->getWorkflowsForResult($result);
 			
 		}
 		
 		function getWorkflowsForModule($moduleName){
 			$adb=$this->adb;
-			$result = $adb->pquery("select workflow_id, module_name, summary, test, execution_condition 
+						
+			
+			//my changes	
+			$result=$adb->getColumnNames("com_vtiger_workflows");
+			if(in_array(defaultworkflow,$result)){
+				$result = $adb->pquery("select workflow_id, module_name, summary, test, execution_condition,defaultworkflow 
 									from com_vtiger_workflows where module_name=?",array($moduleName));
+			}
+			else{
+				$result = $adb->pquery("select workflow_id, module_name, summary, test, execution_condition 
+									from com_vtiger_workflows where module_name=?",array($moduleName));
+			}
 			return $this->getWorkflowsForResult($result);
 		}
 		
@@ -66,6 +85,10 @@
 				$workflow->description = $row->summary;
 				$workflow->test = $row->test;
 				$workflow->executionCondition = $row->execution_condition;
+			
+				if($row->defaultworkflow){
+					$workflow->defaultworkflow=$row->defaultworkflow;
+				}
 				$workflows[]=$workflow;
 			}
 			return $workflows;
@@ -176,10 +199,10 @@
 		
 		function executionConditionAsLabel($label=null){
 			if($label==null){
-				$arr = array('ON_FIRST_SAVE', 'ONCE', 'ON_EVERY_SAVE');
+				$arr = array('ON_FIRST_SAVE', 'ONCE', 'ON_EVERY_SAVE','ON_MODIFY');
 				return $arr[$this->executionCondition-1];
 			}else{
-				$arr = array('ON_FIRST_SAVE'=>1, 'ONCE'=>2, 'ON_EVERY_SAVE'=>3);
+				$arr = array('ON_FIRST_SAVE'=>1, 'ONCE'=>2, 'ON_EVERY_SAVE'=>3, 'ON_MODIFY'=>4);
 				$this->executionCondition = $arr[$label];
 			}
 		}

@@ -177,5 +177,7 @@ $mod_strings = Array(
 'LBL_ATTACHMENTS_TO_CHOOSE'=>' attachment(s) to choose from',
 'LBL_ATTACHMENTS'=>'Attachments', 
 
+'LBL_LIST_COUNT'=>'Showing',
+
 );
 ?>

@@ -216,6 +216,9 @@ $mod_strings = Array(
 // Module Sequence Numbering
 'Ticket No' => 'Ticket No',
 // END
+
+'Hours' => 'Hours',
+'Days' => 'Days',
 );
 
 ?>

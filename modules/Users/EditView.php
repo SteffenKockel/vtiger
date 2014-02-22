@@ -119,6 +119,8 @@ else $smarty->assign("TAGCLOUDVIEW",getTagCloudView($focus->id));
 $smarty->assign("DUPLICATE",vtlib_purify($_REQUEST['isDuplicate']));
 $smarty->assign("USER_MODE",$mode);
 $smarty->assign('PARENTTAB', getParentTab());
+$_SESSION['Users_FORM_TOKEN'] = rand(5, 2000) * rand(2, 7);
+$smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 
 $smarty->display('UserEditView.tpl');
 

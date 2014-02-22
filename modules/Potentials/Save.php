@@ -65,10 +65,5 @@ $local_log->debug("Saved record with id of ".$return_id);
 if($_REQUEST['return_viewname'] == '') $return_viewname='0';
 if($_REQUEST['return_viewname'] != '')$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
 
-//Added to send mail to the vtiger_potential-owner about the Potential
-if($focus->mode == 'edit') { // For non-edit mode sending mail is handled during Save 
-	$status = sendNotificationToOwner('Potentials',$focus);
-}
-
 header("Location: index.php?action=$return_action&module=$return_module&parenttab=$parenttab&record=$return_id&pot_id=$pot_id&viewname=$return_viewname&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
 ?>

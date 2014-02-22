@@ -73,11 +73,13 @@ class Accounts extends CRMEntity {
 	var $search_fields = Array(
 			'Account Name'=>Array('vtiger_account'=>'accountname'),
 			'Billing City'=>Array('vtiger_accountbillads'=>'bill_city'), 
+			'Assigned To'=>Array('vtiger_crmentity'=>'smownerid'),
 			);
 
 	var $search_fields_name = Array(
 			'Account Name'=>'accountname',
 			'Billing City'=>'bill_city',
+			'Assigned To'=>'assigned_user_id',
 			);
 	// This is the list of vtiger_fields that are required
 	var $required_fields =  array();
@@ -145,6 +147,60 @@ class Accounts extends CRMEntity {
 	}	
 	// Mike Crowe Mod --------------------------------------------------------
 
+	/** Returns a list of the associated Campaigns
+	  * @param $id -- campaign id :: Type Integer
+	  * @returns list of campaigns in array format
+	  */
+	function get_campaigns($id, $cur_tab_id, $rel_tab_id, $actions=false) {
+		global $log, $singlepane_view,$currentModule,$current_user;
+		$log->debug("Entering get_campaigns(".$id.") method ...");
+		$this_module = $currentModule;
+
+        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		require_once("modules/$related_module/$related_module.php");
+		$other = new $related_module();
+        vtlib_setup_modulevars($related_module, $other);
+		$singular_modname = vtlib_toSingular($related_module);
+
+		$parenttab = getParentTab();
+
+		if($singlepane_view == 'true')
+			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
+		else
+			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
+
+		$button = '';
+
+		$button .= '<input type="hidden" name="email_directing_module"><input type="hidden" name="record">';
+
+		if($actions) {
+			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
+			if(in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
+				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
+			}
+			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
+				$button .= "<input title='". getTranslatedString('LBL_ADD_NEW')." ". getTranslatedString($singular_modname)."' accessyKey='F' class='crmbutton small create' onclick='fnvshobj(this,\"sendmail_cont\");sendmail(\"$this_module\",$id);' type='button' name='button' value='". getTranslatedString('LBL_ADD_NEW')." ". getTranslatedString($singular_modname)."'></td>";
+			}
+		}
+
+		$query = "SELECT case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
+					vtiger_campaign.campaignid, vtiger_campaign.campaignname, vtiger_campaign.campaigntype, vtiger_campaign.campaignstatus,
+					vtiger_campaign.expectedrevenue, vtiger_campaign.closingdate, vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
+					vtiger_crmentity.modifiedtime from vtiger_campaign
+					inner join vtiger_campaignaccountrel on vtiger_campaignaccountrel.campaignid=vtiger_campaign.campaignid
+					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_campaign.campaignid
+					left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
+					left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
+					where vtiger_campaignaccountrel.accountid=".$id." and vtiger_crmentity.deleted=0";
+		
+		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
+
+		if($return_value == null) $return_value = Array();
+		$return_value['CUSTOM_BUTTON'] = $button;
+
+		$log->debug("Exiting get_campaigns method ...");
+		return $return_value;
+	}
 
 	/** Returns a list of the associated contacts
 	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
@@ -371,9 +427,7 @@ class Accounts extends CRMEntity {
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_users
 				ON vtiger_users.id=vtiger_crmentity.smownerid
-			WHERE (vtiger_activity.activitytype = 'Meeting'
-				OR vtiger_activity.activitytype = 'Call'
-				OR vtiger_activity.activitytype = 'Task')
+			WHERE (vtiger_activity.activitytype != 'Emails')
 			AND (vtiger_activity.status = 'Completed'
 				OR vtiger_activity.status = 'Deferred'
 				OR (vtiger_activity.eventstatus = 'Held'
@@ -690,34 +744,7 @@ class Accounts extends CRMEntity {
 				ON vtiger_users.id=vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_groups
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE  vtiger_crmentity.deleted = 0 and ( vtiger_troubletickets.parent_id=".$id." or " ;
-
-		$query .= " vtiger_troubletickets.parent_id in(SELECT vtiger_contactdetails.contactid
-			FROM vtiger_contactdetails
-			INNER JOIN vtiger_crmentity
-				ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
-			LEFT JOIN vtiger_groups
-				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_users
-				ON vtiger_crmentity.smownerid = vtiger_users.id
-			WHERE vtiger_crmentity.deleted = 0
-			AND vtiger_contactdetails.accountid = ".$id;
-
-			
-		//Appending the security parameter
-		global $current_user;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-		$tab_id=getTabid('Contacts');
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-		{
-			$sec_parameter=getListViewSecurityParameter('Contacts');
-			$query .= ' '.$sec_parameter;
-
-		}
-
-		$query .= ") )";
-					
+			WHERE  vtiger_crmentity.deleted = 0 and vtiger_troubletickets.parent_id=$id" ;
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset); 
 		
 		if($return_value == null) $return_value = Array();
@@ -816,22 +843,13 @@ class Accounts extends CRMEntity {
 					ON vtiger_account2.accountid = vtiger_account.parentid
 				";//vtiger_account2 is added to get the Member of account
 
-
+		$query .= $this->getNonAdminAccessControlQuery('Accounts',$current_user);
 		$where_auto = " vtiger_crmentity.deleted = 0 ";
 
 		if($where != "")
 			$query .= " WHERE ($where) AND ".$where_auto;
 		else
 			$query .= " WHERE ".$where_auto;
-
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-		//we should add security check when the user has Private Access
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[6] == 3)
-		{
-			//Added security check to get the permitted records only
-			$query = $query." ".getListViewSecurityParameter("Accounts");
-		}
 
 		$log->debug("Exiting create_export_query method ...");
 		return $query;
@@ -865,7 +883,7 @@ class Accounts extends CRMEntity {
 		for($i=0; $i < $numRows;$i++)
 		{
 			$custom_fields[$i] = $this->db->query_result($result,$i,"fieldlabel");
-			$custom_fields[$i] = ereg_replace(" ","",$custom_fields[$i]);
+			$custom_fields[$i] = preg_replace("/\s+/","",$custom_fields[$i]);
 			$custom_fields[$i] = strtoupper($custom_fields[$i]);
 		}
 		$mergeflds = $custom_fields;
@@ -935,6 +953,7 @@ class Accounts extends CRMEntity {
 			"HelpDesk" => array("vtiger_troubletickets"=>array("parent_id","ticketid"),"vtiger_account"=>"accountid"),
 			"Products" => array("vtiger_seproductsrel"=>array("crmid","productid"),"vtiger_account"=>"accountid"),
 			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_account"=>"accountid"),
+			"Campaigns" => array("vtiger_campaignaccountrel"=>array("accountid","campaignid"),"vtiger_account"=>"accountid"),
 		);
 		return $rel_tables[$secmodule];
 	}
@@ -1218,7 +1237,10 @@ class Accounts extends CRMEntity {
 		global $log;
 		if(empty($return_module) || empty($return_id)) return;		
 		
-		if($return_module == 'Products') {
+		if($return_module == 'Campaigns') {
+			$sql = 'DELETE FROM vtiger_campaignaccountrel WHERE accountid=? AND campaignid=?';
+			$this->db->pquery($sql, array($id, $return_id));
+		} else if($return_module == 'Products') {
 			$sql = 'DELETE FROM vtiger_seproductsrel WHERE crmid=? AND productid=?';
 			$this->db->pquery($sql, array($id, $return_id));
 		} else {
@@ -1227,7 +1249,6 @@ class Accounts extends CRMEntity {
 			$this->db->pquery($sql, $params);
 		}
 	}
-
 }
 
 ?>

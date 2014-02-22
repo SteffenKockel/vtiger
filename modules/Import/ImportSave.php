@@ -97,11 +97,6 @@ function InsertImportRecords($rows,$rows1,$focus,$ret_field_count,$col_pos_to_fi
 				{
 					$focus->column_fields[$field]=$pick_orginal_val;
 				}
-				elseif (substr(trim($field), 0, 3) == "CF_")
-				{
-					p("setting custfld".$field."=".$row[$field_count]);
-					$resCustFldArray[$field] = $row[$field_count];
-				}
 				//MWC
 				elseif ( $field == "assignedto" || $field == "assigned_user_id" )
 				{
@@ -221,81 +216,15 @@ function InsertImportRecords($rows,$rows1,$focus,$ret_field_count,$col_pos_to_fi
 			if($process_fields == 'false'){
 				$focus->process_special_fields();
 			}
-			
-			$focus->save($module);
+			$focus->saveentity($module);
 			//$focus->saveentity($module);
 			$return_id = $focus->id;
-
-			if(count($resCustFldArray)>0){
-				if($_REQUEST['module'] == 'Contacts'){
-					$_REQUEST['module']='contactdetails';
-				}
-				$dbquery="select * from vtiger_field where vtiger_tablename=? and vtiger_field.presence in (0,2)";
-				$custresult = $adb->pquery($dbquery, array($_REQUEST['module']));
-				if($adb->num_rows($custresult) != 0)
-				{
-					if (! isset( $_REQUEST['module'] ) || $_REQUEST['module'] == 'Contacts')
-					{
-						$columns = 'contactid';
-						$custTabName = 'contactscf';
-					}
-					else if ( $_REQUEST['module'] == 'Accounts')
-					{
-						$columns = 'accountid';
-						$custTabName = 'accountscf';
-					}
-					else if ( $_REQUEST['module'] == 'Potentials')
-					{
-						$columns = 'potentialid';
-						$custTabName = 'potentialscf';
-					}
-					else if ( $_REQUEST['module'] == 'Leads')
-					{
-						$columns = 'leadidid';
-						$custTabName = 'leadscf';
-					}
-					else if ( $_REQUEST['module'] == 'Products')
-					{
-						$columns = 'productid';
-						$custTabName = 'productcf';
-					}
-					else if ( $_REQUEST['module'] == 'Helpdesk')
-					{
-						$columns = 'ticketid';
-						$custTabName = 'ticketcf';
-					}
-					else if ( $_REQUEST['module'] == 'Vendors')
-					{
-						$columns = 'vendorid';
-						$custTabName = 'vendorcf';
-					}
-					$noofrows = $adb->num_rows($custresult);
-					$params = array($focus->id);
-
-					for($j=0; $j<$noofrows; $j++)
-					{
-						$colName=$adb->query_result($custresult,$j,"columnname");
-						if(array_key_exists($colName, $resCustFldArray))
-						{
-							$value_colName = $resCustFldArray[$colName];
-
-							$columns .= ', '.$colName;
-							array_push($params, $value_colName);
-						}
-					}
-
-					$insert_custfld_query = 'insert into '.$custTabName.' ('.$columns.') values('. generateQuestionMarks($params) .')';
-					$adb->pquery($insert_custfld_query, $params);
-
-				}
-			}
 
 			$last_import = new UsersLastImport();
 			$last_import->assigned_user_id = $current_user->id;
 			$last_import->bean_type = $_REQUEST['module'];
 			$last_import->bean_id = $focus->id;
 			$last_import->save();
-			array_push($saved_ids,$focus->id);
 			$count++;
 		}
 		$ii++;
@@ -309,6 +238,7 @@ function InsertImportRecords($rows,$rows1,$focus,$ret_field_count,$col_pos_to_fi
 	$START = $start + $recordcount;
 	$RECORDCOUNT = $recordcount;
 	$dup_check_type = $_REQUEST['dup_type'];
+	$auto_dup_type = $_REQUEST['auto_type'];
 
 	if($end >= $totalnoofrows) {
 		$module = 'Import';//$_REQUEST['module'];
@@ -319,7 +249,6 @@ function InsertImportRecords($rows,$rows1,$focus,$ret_field_count,$col_pos_to_fi
 			$skip_required_count = 0;
 		}
 		 if($dup_check_type == "auto") {
-			 $auto_dup_type = $_REQUEST['auto_type'];
 			 if($auto_dup_type == "ignore") {
 			 	$dup_info = $mod_strings['Duplicate_Records_Skipped_Info'].$dup_count;
 			 	$imported_records -= $dup_count;
@@ -334,7 +263,7 @@ function InsertImportRecords($rows,$rows1,$focus,$ret_field_count,$col_pos_to_fi
 		 
 		 if($imported_records < 0) $imported_records = 0;
 	
-		 $message= urlencode("<b>".$mod_strings['LBL_SUCCESS']."</b>"."<br><br>" .$mod_strings['LBL_SUCCESS_1']."  $imported_records" ."<br><br>" .$mod_strings['LBL_SKIPPED_1']."  $skip_required_count <br><br>".$dup_info );
+		 $message= urlencode("<b>".$mod_strings['LBL_SUCCESS']."</b>"."<br><br>" .$mod_strings['LBL_SUCCESS_1']."  $imported_records " .$mod_strings['of'].' '.$totalnoofrows."<br><br>" .$mod_strings['LBL_SKIPPED_1']."  $skip_required_count <br><br>".$dup_info );
 	} else {
 		$module = 'Import';
 		$action = 'ImportStep3';
@@ -345,7 +274,7 @@ function InsertImportRecords($rows,$rows1,$focus,$ret_field_count,$col_pos_to_fi
 setTimeout("b()",1000);
 function b()
 {
-	document.location.href="index.php?action=<?php echo $action?>&module=<?php echo $module?>&modulename=<?php echo $modulename?>&startval=<?php echo $end?>&recordcount=<?php echo $RECORDCOUNT?>&noofrows=<?php echo $totalnoofrows?>&message=<?php echo $message?>&skipped_record_count=<?php echo $skip_required_count?>&parenttab=<?php echo vtlib_purify($_SESSION['import_parenttab'])?>&dup_type=<?php echo $dup_check_type?>";
+	document.location.href="index.php?action=<?php echo $action?>&module=<?php echo $module?>&modulename=<?php echo $modulename?>&startval=<?php echo $end?>&recordcount=<?php echo $RECORDCOUNT?>&noofrows=<?php echo $totalnoofrows?>&message=<?php echo $message?>&skipped_record_count=<?php echo $skip_required_count?>&parenttab=<?php echo vtlib_purify($_SESSION['import_parenttab'])?>&dup_type=<?php echo $dup_check_type?>&auto_type=<?php echo $auto_dup_type?>";
 }
 </script>
 
@@ -476,6 +405,23 @@ function overwrite_duplicate_records($module,$focus)
 	global $dup_ow_count;
 	global $process_fields;
 
+	//Fix for 6187 : overwriting records during duplicate merge to handle uitype 10
+	//handle uitype 10
+	foreach($focus->importable_fields as $fieldname=>$uitype){
+		$uitype = $focus->importable_fields[$fieldname];
+		if($uitype == 10){
+			//added to handle security permissions for related modules :: for e.g. Accounts/Contacts in Potentials
+			if(method_exists($focus, "add_related_to")){
+				if(!$focus->add_related_to($module, $fieldname)){
+					if(array_key_exists($fieldname, $focus->required_fields)){
+						$do_save = 0;
+						$skip_required_count++;
+						continue 2;
+					}
+				}
+			}
+		}
+	}
 	$where_clause = "";
 	$where = get_where_clause($module,$focus->column_fields);
 	$sec_parameter = getSecParameterforMerge($module);
@@ -567,6 +513,36 @@ function overwrite_duplicate_records($module,$focus)
 	}
 	else
 		return false;
+}
+
+//picklist function is added to avoid duplicate picklist entries
+function getPicklist($field,$value)
+{
+        global $table_picklist,$converted_table_picklist_values;
+
+        //for the first run these will be defined and for the subsequent redirections
+        //pick up from session.
+        if(is_array($table_picklist)){
+                $_SESSION['import_table_picklist'] = $table_picklist;
+        }else{
+                $table_picklist = $_SESSION['import_table_picklist'];
+        }
+        if(is_array($converted_table_picklist_values)){
+                $_SESSION['import_converted_picklist_values'] = $converted_table_picklist_values;
+        }else{
+                $converted_table_picklist_values = $_SESSION['import_converted_picklist_values'];
+        }
+
+        $orginal_val = $table_picklist[$field];
+        $converted_val = $converted_table_picklist_values[$field];
+        $temp_val = strtolower($value);
+                if(is_array($converted_val) && in_array($temp_val,$converted_val)) {
+                $existkey = array_search($temp_val,$converted_val);
+                $correct_val=$orginal_val[$existkey];
+                return $correct_val;
+        }
+        return null;
+
 }
 
 ?>

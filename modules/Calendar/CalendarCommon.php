@@ -332,13 +332,14 @@ function getAssignedTo($tabid)
  */
 function getActivityDetails($description,$user_id,$from='')
 {
-        global $log,$current_user;
-        global $adb,$mod_strings;
-        $log->debug("Entering getActivityDetails(".$description.") method ...");
-
+	global $log,$current_user,$current_language;
+	global $adb;
+	require_once 'include/utils/utils.php';
+	$mod_strings = return_module_language($current_language, 'Calendar');
+	$log->debug("Entering getActivityDetails(".$description.") method ...");
 	$updated = $mod_strings['LBL_UPDATED'];
 	$created = $mod_strings['LBL_CREATED'];
-        $reply = (($description['mode'] == 'edit')?"$updated":"$created");
+    $reply = (($description['mode'] == 'edit')?"$updated":"$created");
 	if($description['activity_mode'] == "Events")
 	{
 		$end_date_lable=$mod_strings['End date and time'];
@@ -355,17 +356,16 @@ function getActivityDetails($description,$user_id,$from='')
 	else
 		$msg = getTranslatedString($mod_strings['LBL_ACTIVITY_NOTIFICATION']);
 
-        $current_username = getUserName($current_user->id);
-        $status = getTranslatedString($description['status']);
-
-        $list = $name.',';
+	$current_username = getUserName($current_user->id);
+	$status = getTranslatedString($description['status'],'Calendar');
+	$list = $name.',';
 	$list .= '<br><br>'.$msg.' '.$reply.'.<br> '.$mod_strings['LBL_DETAILS_STRING'].':<br>';
-        $list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_SUBJECT"].' '.$description['subject'];
+	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_SUBJECT"].' : '.$description['subject'];
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Start date and time"].' : '.$description['st_date_time'];
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$end_date_lable.' : '.$description['end_date_time'];
-        $list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_STATUS"].': '.$status;
-        $list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Priority"].': '.getTranslatedString($description['taskpriority']);
-        $list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Related To"].': '.getTranslatedString($description['relatedto']);
+	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_STATUS"].': '.$status;
+	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Priority"].': '.getTranslatedString($description['taskpriority']);
+	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Related To"].': '.getTranslatedString($description['relatedto']);
 	if(!empty($description['contact_name']))
 	{
         	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_CONTACT_LIST"].' '.$description['contact_name'];
@@ -378,7 +378,7 @@ function getActivityDetails($description,$user_id,$from='')
         $list .= '<br>'.$current_username.'.';
 
         $log->debug("Exiting getActivityDetails method ...");
-        return $list;
+		return $list;
 }
 
 function twoDigit( $no ){
@@ -414,24 +414,15 @@ function getEventNotification($mode,$subject,$desc)
 	require_once("modules/Emails/mail.php");
 	$subject = $mode.' : '.$subject;
 	$crmentity = new CRMEntity();
-	if($desc['assingn_type'] == "U")
+	if(getUserName($desc['user_id']))
 	{
 		$to_email = getUserEmailId('id',$desc['user_id']);
 		$description = getActivityDetails($desc,$desc['user_id']);
 		send_mail('Calendar',$to_email,$current_user->user_name,'',$subject,$description);
 	}
-	if($desc['assingn_type'] == "T")
+	else
 	{
-		$groupid  = '';
-		$groupname=$desc['group_name'];
-		// getGroupName API was changed to return array of two elements!
-		if(is_array($groupname) && !empty($groupname)) {
-			$groupid = $groupname[1];
-			$groupname = $groupname[0];
-		} else {
-			$resultqry=$adb->pquery("select groupid from vtiger_groups where groupname=?", array($groupname));
-			$groupid=$adb->query_result($resultqry,0,"groupid");
-		}
+		$groupid = $desc['user_id'];
 		require_once('include/utils/GetGroupUsers.php');
 		$getGroupObj=new GetGroupUsers();
 		$getGroupObj->getAllUsersInGroup($groupid);
@@ -531,7 +522,7 @@ function getActivityMailInfo($return_id,$status,$activity_type)
 	$mail_data['relatedto'] = $rel_name;
 	$mail_data['contact_name'] = $cont_name;
 	$mail_data['description'] = $description;
-	$mail_data['assingn_type'] = $assignType;
+	$mail_data['assign_type'] = $assignType;
 	$mail_data['group_name'] = $grp_name;
 	$value = getaddEventPopupTime($st_time,$end_time,'24');
 	$start_hour = $value['starthour'].':'.$value['startmin'].''.$value['startfmt'];

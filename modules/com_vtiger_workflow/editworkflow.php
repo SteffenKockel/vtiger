@@ -59,6 +59,7 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		$util->redirectTo($errorUrl, $mod['LBL_ERROR_NO_WORKFLOW']);
 		return;
 	}
+	$workflow->test = addslashes($workflow->test);
 	$tm = new VTTaskManager($adb);
 	$tasks = $tm->getTasksForWorkflow($workflow->id);
 	$smarty->assign("tasks", $tasks);

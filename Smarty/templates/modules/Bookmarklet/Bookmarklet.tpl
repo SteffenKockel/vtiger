@@ -87,6 +87,7 @@ ul.searchResult li a:hover {
 </style>
 <script type="text/javascript">
 		var moduleNameFields = '{$entityNameFields}';
+		var moduleEmailFields = '{$emailFields}';
 </script>
 </head>
 
@@ -126,7 +127,9 @@ Update your custom description ...</textarea>
 					</td>
 					<td class="dvtCellInfo" width="20%">
 						<span id="parentName" class="small bold">&nbsp;</span><br>
-						<input id="parent_id" value="" type="hidden" />						
+						<input id="parent_id" value="" type="hidden" />
+						<input id="parentEmail" value="" type="hidden" />
+						<input id="userEmail" value="{$userEmail}" type="hidden" />
 					</td>
 					<td class="dvtCellInfo">
 						<input id="__searchaccount__" value="" size="30" />&nbsp; 

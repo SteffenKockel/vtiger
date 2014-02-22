@@ -19,13 +19,13 @@ include('vtigerversion.php');
 // memory limit default value = 64M
 ini_set('memory_limit','64M');
 
-// show or hide calendar, world clock, calculator, chat and FCKEditor 
+// show or hide calendar, world clock, calculator, chat and CKEditor 
 // Do NOT remove the quotes if you set these to false! 
 $CALENDAR_DISPLAY = 'true';
 $WORLD_CLOCK_DISPLAY = 'true';
 $CALCULATOR_DISPLAY = 'true';
 $CHAT_DISPLAY = 'true'; 
-$FCKEDITOR_DISPLAY = 'true';
+$USE_RTE = 'true';
 
 // url for customer portal (Example: http://vtiger.com/portal)
 $PORTAL_URL = 'http://vtiger.com/customerportal';
@@ -124,13 +124,6 @@ $limitpage_navigation = '5';
 // history_max_viewed default value = 5
 $history_max_viewed = '5';
 
-// define list of menu tabs
-//$moduleList = Array('Home', 'Dashboard', 'Contacts', 'Accounts', 'Opportunities', 'Cases', 'Notes', 'Calls', 'Emails', 'Meetings', 'Tasks','MessageBoard');
-
-// map sugar language codes to jscalendar language codes
-// unimplemented until jscalendar language files are fixed
-// $cal_codes = array('en_us'=>'en', 'ja'=>'jp', 'sp_ve'=>'sp', 'it_it'=>'it', 'tw_zh'=>'zh', 'pt_br'=>'pt', 'se'=>'sv', 'cn_zh'=>'zh', 'ge_ge'=>'de', 'ge_ch'=>'de', 'fr'=>'fr');
-
 // default_module default value = Home
 $default_module = 'Home';
 
@@ -162,10 +155,6 @@ $default_user_is_admin = false;
 // if your MySQL/PHP configuration does not support persistent connections set this to true to avoid a large performance slowdown
 // disable_persistent_connections default value = false
 $disable_persistent_connections = false;
-
-// defined languages available. the key must be the language file prefix. (Example 'en_us' is the prefix for every 'en_us.lang.php' file)
-// languages default value = en_us=>US English
-$languages = Array('en_us'=>'US English',);
 
 //Master currency name
 $currency_name = '_MASTER_CURRENCY_';
@@ -201,7 +190,7 @@ $listview_max_textlength = 40;
 $php_max_execution_time = 0;
 
 // Set the default timezone as per your preference
-//$default_timezone = '';
+$default_timezone = 'Europe/London';
 
 /** If timezone is configured, try to set it */
 if(isset($default_timezone) && function_exists('date_default_timezone_set')) {

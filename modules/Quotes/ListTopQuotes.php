@@ -52,13 +52,35 @@ function getTopQuotes($maxval,$calCnt)
 	//Retreive the list from Database
 	//<<<<<<<<<customview>>>>>>>>>
 	$date_var = date('Y-m-d');
+	$currentModule = 'Quotes';
+	$viewId = getCvIdOfAll($currentModule);
+	$queryGenerator = new QueryGenerator($currentModule, $current_user);
+	$queryGenerator->initForCustomViewById($viewId);
+	$meta = $queryGenerator->getMeta($currentModule);
+	$accessibleFieldNameList = array_keys($meta->getModuleFields());
+	$customViewFields = $queryGenerator->getCustomViewFields();
+	$fields = $queryGenerator->getFields();
+	$newFields = array_diff($fields, $customViewFields);
+	$widgetFieldsList = array('subject','potential_id','account_id','total');
+	$widgetFieldsList = array_intersect($accessibleFieldNameList, $widgetFieldsList);
+	$widgetSelectedFields = array_chunk(array_intersect($customViewFields, $widgetFieldsList), 2);
+	//select the first chunk of two fields
+	$widgetSelectedFields = $widgetSelectedFields[0];
+	if(count($widgetSelectedFields) < 2) {
+		$widgetSelectedFields = array_chunk(array_merge($widgetSelectedFields, $accessibleFieldNameList), 2);
+		//select the first chunk of two fields
+		$widgetSelectedFields = $widgetSelectedFields[0];
+	}
+	$newFields = array_merge($newFields, $widgetSelectedFields);
+	$queryGenerator->setFields($newFields);
+	$_REQUEST = getTopQuotesSearch($_REQUEST, array(
+		'assigned_user_id'=>$current_user->column_fields['user_name'],
+		'validtill'=>$date_var,'quotestage.Rejected' => $current_module_strings['Rejected'],
+		'quotestage.Accepted' => $current_module_strings['Accepted']));
+	$queryGenerator->addUserSearchConditions($_REQUEST);
+	$search_qry = '&query=true'.getSearchURL($_REQUEST);
+	$query = $queryGenerator->getQuery();
 
-	$where = " and vtiger_crmentity.smownerid=".$current_user->id." and vtiger_quotes.quotestage not in('Rejected','Accepted','".$current_module_strings['Rejected']."','".$current_module_strings['Accepted']."') and  vtiger_quotes.validtill >= '".$date_var."'";
-	//$where = ' and vtiger_crmentity.smownerid='.$current_user->id.' and  vtiger_quotes.validtill >= \''.$date_var.'\'';
-	
-	
-	$query = getListQuery("Quotes",$where);
-	$query .=" ORDER BY total DESC";
 	//<<<<<<<<customview>>>>>>>>>
 	
 	$query .= " LIMIT " . $adb->sql_escape_string($maxval);
@@ -118,20 +140,44 @@ function getTopQuotes($maxval,$calCnt)
 	
 	$title=array('TopOpenQuotes.gif',$current_module_strings['LBL_MY_TOP_QUOTE'],'home_mytopquote');
 	//Retreive the List View Table Header
-	$listview_header = getListViewHeader($focus,"Quotes",$url_string,$sorder,$order_by,"HomePage",$oCustomView);
-	$header = Array($listview_header[1],$listview_header[3]);
+	$controller = new ListViewController($adb, $current_user, $queryGenerator);
+	$controller->setHeaderSorting(false);
+	$header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,
+			$order_by, true);
 
-	$listview_entries = getListViewEntries($focus,"Quotes",$list_result,$navigation_array,"HomePage","","EditView","Delete",$oCustomView);
-	foreach($listview_entries as $crmid=>$valuearray)
-	{
-		$entries[$crmid] = Array($valuearray[1],$valuearray[3]);	
-	}
+	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,
+		$navigation_array, true);
 
-	$search_qry = "&query=true&Fields0=vtiger_crmentity.smownerid&Condition0=is&Srch_value0=".$current_user->column_fields['user_name']."&Fields1=vtiger_quotes.validtill&Condition1=grteq&Srch_value1=".$date_var."&Fields2=vtiger_quotes.quotestage&Condition2=isn&Srch_value2=Rejected&Fields3=vtiger_quotes.quotestage&Condition3=isn&Srch_value3=Accepted&searchtype=advance&search_cnt=4&matchtype=all";
-	
 	$values=Array('ModuleName'=>'Quotes','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 
 	if ( ($display_empty_home_blocks && $noofrows == 0 ) || ($noofrows>0) )
 		return $values;
 }
+
+function getTopQuotesSearch($output, $input) {
+	$output['query'] = 'true';
+	$output['Fields0'] = 'assigned_user_id';
+	$output['Condition0'] = 'e';
+	$output['Srch_value0'] = $input['assigned_user_id'];
+	$output['Fields1'] = 'validtill';
+	$output['Condition1'] = 'h';
+	$output['Srch_value1'] = $input['validtill'];
+	$output['Fields2'] = 'quotestage';
+	$output['Condition2'] = 'n';
+	$output['Srch_value2'] = 'Rejected';
+	$output['Fields3'] = 'quotestage';
+	$output['Condition3'] = 'n';
+	$output['Srch_value3'] = 'Accepted';
+	$output['Fields4'] = 'quotestage';
+	$output['Condition4'] = 'n';
+	$output['Srch_value4'] = $input['quotestage.Rejected'];
+	$output['Fields5'] = 'quotestage';
+	$output['Condition5'] = 'n';
+	$output['Srch_value5'] = $input['quotestage.Accepted'];
+	$output['searchtype'] = 'advance';
+	$output['search_cnt'] = '6';
+	$output['matchtype'] = 'all';
+	return $output;
+}
+
 ?>

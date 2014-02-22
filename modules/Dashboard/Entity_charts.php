@@ -354,7 +354,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 				}
 				if($graph_for =="smownerid")
 				{
-					$name_val=get_assigned_user_name($mod_name);
+					$name_val=getOwnerName($mod_name);
 					if($name_val!="")
 					{
 						$mod_name=$name_val;
@@ -421,24 +421,30 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 						$search_str=$name_val;
 					}	
 				}
-				if($graph_for =="contactid")
+				if($graph_for =="parent_id" || $graph_for =="related_to")
 				{
-					$query = "SELECT contact_no, lastname, firstname FROM vtiger_contactdetails WHERE contactid=?";
-					$result = $adb->pquery($query, array($mod_name));
-					$name_val = $adb->query_result($result,0,"lastname");
-					if($name_val!="")
-					{
-						if(getFieldVisibilityPermission('Contacts', $current_user->id,'firstname') == '0')
-						{
-							$first_name = '';
-							$first_name = $adb->query_result($result,0,"firstname");
-							if($first_name != '')
-								$name_val .= " ".$first_name;
+					$seType = getSalesEntityType($mod_name);
+					if($seType == 'Contacts') {
+						$query = "SELECT lastname, firstname FROM vtiger_contactdetails
+							WHERE contactid=?";
+						$result = $adb->pquery($query, array($mod_name));
+						$name_val = $adb->query_result($result,0,"lastname");
+						if($name_val!="") {
+							if(getFieldVisibilityPermission('Contacts', $current_user->id,
+									'firstname') == '0') {
+								$first_name = $adb->query_result($result,0,"firstname");
+								if($first_name != '') {
+									$name_val .= " ".$first_name;
+								}
+							}
 						}
-
-						$mod_name=$name_val;
-						$search_str=$adb->query_result($result, 0, "contact_no");
-					}	
+					} else {
+						$query = "SELECT accountname FROM vtiger_account WHERE accountid=?";
+						$result = $adb->pquery($query, array($mod_name));
+						$name_val = $adb->query_result($result,0,"accountname");
+					}
+					$mod_name=$name_val;
+					$search_str=$name_val;
 				}
 				//Passing name to graph
 				$mod_name = str_replace(":", "&#58;", $mod_name);
@@ -458,9 +464,17 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 					}
 
 					//added to get valid url in dashbord for tickets by team
-					if($graph_for == "ticketgroupname" || $graph_for == "groupname") $graph_for = "smownerid";
-
-					if($graph_for == "accountid") $graph_for = "account_id";
+					if($graph_for == "smownerid"){
+						$searchField = "assigned_user_id";
+					} elseif($graph_for == 'category') {
+						$searchField = 'ticketcategories';
+					} elseif($graph_for == 'priority') {
+						$searchField = 'ticketpriorities';
+					} elseif($graph_for == "accountid") {
+						$searchField = "account_id";
+					} else{
+						$searchField = $graph_for;
+					}
 					$cvid = getCvIdOfAll($module);
 					if($module == "Home")
 					{
@@ -468,14 +482,12 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 						$link_val="index.php?module=".$mod_name."&action=ListView&from_homepagedb=true&type=dbrd&query=true&owner=".$current_user->user_name."&viewname=".$cvid;
 					}
 					else if($module == "Contacts" || ($module=="Products" && ($graph_for == "quoteid" || $graph_for == "invoiceid" || $graph_for == "purchaseorderid")))
-						$link_val="index.php?module=".$module."&action=ListView&from_dashboard=true&type=dbrd&query=true&".$graph_for."=".$id_name."&viewname=".$cvid;
+						$link_val="index.php?module=".$module."&action=ListView&from_dashboard=true&type=dbrd&query=true&".$searchField."=".$id_name."&viewname=".$cvid;
 					else {
 						$esc_search_str = urlencode($search_str);
 						//$esc_search_str = htmlentities($search_str, ENT_QUOTES, $default_charset);
-						$link_val="index.php?module=".$module."&action=index&from_dashboard=true&search_text=".$esc_search_str."&search_field=".$graph_for."&searchtype=BasicSearch&query=true&type=entchar&viewname=".$cvid;
+						$link_val="index.php?module=".$module."&action=index&from_dashboard=true&search_text=".$esc_search_str."&search_field=".$searchField."&searchtype=BasicSearch&query=true&type=entchar&operator=e&viewname=".$cvid;
 					}	
-
-					if($graph_for == "account_id") $graph_for = "accountid";
 
 					//Adding the links to the graph	
 					$link_val = str_replace(':', '&#58;', $link_val);

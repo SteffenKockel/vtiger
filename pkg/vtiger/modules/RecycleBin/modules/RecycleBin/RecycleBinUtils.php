@@ -103,7 +103,7 @@ function basicRBsearch($module,$search_field,$search_string)
 			}
 			elseif($table_name == "vtiger_activity" && $column_name == "status")
 			{
-				$where="$table_name.$column_name like '".formatForSqlLike($search_string)."' or vtiger_activity.eventstatus like '".formatForSqlLike($search_string)."'";
+				$where="($table_name.$column_name like '".formatForSqlLike($search_string)."' or vtiger_activity.eventstatus like '".formatForSqlLike($search_string)."')";
 			}
 			elseif($table_name == "vtiger_pricebook" && $column_name == "active")
 			{

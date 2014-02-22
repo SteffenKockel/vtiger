@@ -20,7 +20,7 @@ class VtigerCRMObject{
 			$this->moduleId = $moduleCredential;
 			$this->moduleName = $this->getObjectTypeName($this->moduleId);
 		}else{
-			$this->moduleName = $this->titleCase($moduleCredential);
+			$this->moduleName = $moduleCredential;
 			$this->moduleId = $this->getObjectTypeId($this->moduleName);
 		}
 		$this->instance = null;
@@ -136,6 +136,27 @@ class VtigerCRMObject{
 		return !$error;
 	}
 	
+	public function revise($element){
+		global $adb;
+		$error = false;
+
+		$error = $this->read($this->getObjectId());
+		if($error == false){
+			return $error;
+		}
+
+		foreach($element as $k=>$v){
+			$this->instance->column_fields[$k] = $v;
+		}
+
+		$adb->startTransaction();
+		$this->instance->mode = "edit";
+		$this->instance->Save($this->getTabName());
+		$error = $adb->hasFailedTransaction();
+		$adb->completeTransaction();
+		return !$error;
+	}
+
 	public function delete($id){
 		global $adb;
 		$error = false;

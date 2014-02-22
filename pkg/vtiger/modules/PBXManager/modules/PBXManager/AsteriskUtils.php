@@ -7,40 +7,6 @@
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
 ********************************************************************************/
- /**
- * this function checks if there are any outgoing calls for the asterisk server
- * @param $adb - the peardatabase type object
- * @return 	array in the format array(from, to, extension, password) if call exists
- * 			false otherwise
- */
-function checkOutgoingCalls($adb){
-	$sql = "select * from vtiger_asteriskoutgoingcalls";
-	$result = $adb->pquery($sql, array());
-	
-	if($adb->num_rows($result)>0){
-		$call = array();
-		$userid = $adb->query_result($result,0,"userid");
-		$call['from'] = $adb->query_result($result,0,"from_number");
-		$call['to'] = $adb->query_result($result,0,"to_number");
-		
-		$sql = "delete from vtiger_asteriskoutgoingcalls where userid=?";
-		$result = $adb->pquery($sql, array($userid));
-		
-		$sql = "select * from vtiger_users where id = ?";
-		$result = $adb->pquery($sql, array($userid));
-		if($adb->num_rows($result)>0){
-			$call['extension'] = $adb->query_result($result,0,"asterisk_extension");
-			$call['password'] = $adb->query_result($result,0,"asterisk_password");
-		}else{
-			return false;
-		}
-		return $call;
-	}else{
-		return false;
-	}
-}
-
-
 /**
  * this function returns the asterisk server information
  * @param $adb - the peardatabase type object
@@ -154,7 +120,7 @@ function getChannel($asterisk){
  */
 function getUserFromExtension($extension, $adb){
 	$userid = false;
-	$sql = "select * from vtiger_asteriskextensions where asterisk_extension=?";
+	$sql = "select userid from vtiger_asteriskextensions where asterisk_extension=?";
 	$result = $adb->pquery($sql, array($extension));
 	if($adb->num_rows($result) > 0){
 		$userid = $adb->query_result($result, 0, "userid");
@@ -173,8 +139,13 @@ function getUserFromExtension($extension, $adb){
  * @return string $status - on success - string success
  * 							on failure - string failure
  */
-function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $current_user){
-	global $log;
+function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $userid, $relcrmid, $callerInfo=false){
+	global $log, $current_user;
+	
+	// Reset date format for a while
+	$old_userdate_format = $current_user->date_format;	
+	$current_user->date_format = 'yyyy-mm-dd';
+	
 	require_once 'modules/Calendar/Activity.php';
 	$focus = new Activity();
 	$focus->column_fields['subject'] = "Incoming call from $callerName ($callerNumber)";
@@ -184,30 +155,37 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 	$focus->column_fields['time_start'] = date('H:i');
 	$focus->column_fields['time_end'] = date('H:i');
 	$focus->column_fields['eventstatus'] = "Held";
-	$focus->column_fields['assigned_user_id'] = $current_user->id;
+	$focus->column_fields['assigned_user_id'] = $userid;
 	$focus->save('Calendar');
 	$focus->setActivityReminder('off');
 	
-//	$callerInfo = getCallerInfo("$callerType:".$callerNumber);
-//	if($callerInfo == false){
-		$callerInfo = getCallerInfo(getStrippedNumber($callerNumber));
-	//}
+	// Restore dateformat
+	$current_user->date_format = $old_userdate_format;
+	
+	if(empty($relcrmid)) {
+		if(empty($callerInfo)) {
+			$callerInfo = getCallerInfo($callerNumber);
+		}
+	} else {
+		$callerInfo = array();
+		$callerInfo['module'] = getSalesEntityType($relcrmid);
+		$callerInfo['id'] = $relcrmid;
+	}
+	
 	if($callerInfo != false){
 		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel');
 		$sql = "insert into ".$tablename[$callerInfo['module']]." values (?,?)";
-		$params = array($callerInfo[id], $focus->id);
+		$params = array($callerInfo['id'], $focus->id);
 		$adb->pquery($sql, $params);
-		$status = "success";
-	}else{
-		$status = "failure";
 	}
 	
-	return $status;
+	return $focus->id;
 }
+
 /* Function to add an outgoing call to the History
  * Params Object $current_user  - the current user
  * 		string $extension - the users extension number
- * 		int $record - the activity will be attached to this record 
+ * 		int $record - the activity will be attached to this record
  * 		object $adb - the peardatabase object
  */
 function addOutgoingcallHistory($current_user,$extension, $record ,$adb){
@@ -226,7 +204,7 @@ function addOutgoingcallHistory($current_user,$extension, $record ,$adb){
 	$focus->setActivityReminder('off');
 	$setype = $adb->pquery("SELECT setype FROM vtiger_crmentity WHERE crmid = ?",array($record));
 	$rows = $adb->num_rows($setype);
-	
+
 	if($rows > 0){
 		$module = $adb->query_result($setype,0,'setype');
 		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel');
@@ -237,7 +215,7 @@ function addOutgoingcallHistory($current_user,$extension, $record ,$adb){
 	}else{
 		$status = "failure";
 	}
-	
+
 	return $status;
 }
 ?>

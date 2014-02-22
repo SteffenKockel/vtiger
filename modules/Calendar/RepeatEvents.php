@@ -148,7 +148,8 @@ class Calendar_RepeatEvents {
 		/** Create instance before and reuse */
 		$new_focus = new Activity();
 
-		foreach($repeatIntervals as $interval) {
+		$numberOfRepeats = count($repeatIntervals);
+		foreach($repeatIntervals as $index => $interval) {
 			$new_focus_start_timing = self::nexttime($base_focus_start, "+$interval days");
 			$new_focus_start_timing = self::splittime(self::formattime($new_focus_start_timing));
 
@@ -157,7 +158,7 @@ class Calendar_RepeatEvents {
 
 			// Reset the new_focus and prepare for reuse
 			if(isset($new_focus->id)) unset($new_focus->id);
-			foreach($new_focus->column_fields as $key=>$value) $new_focus->column_fields[$key] = '';
+			$new_focus->column_fields = array();
 
 			foreach($base_focus->column_fields as $key=>$value) {
 				if(in_array($key, $skip_focus_fields)) {
@@ -173,7 +174,10 @@ class Calendar_RepeatEvents {
 				} else {
 					$new_focus->column_fields[$key]         = $value;
 				}
-			}	
+			}
+			if($numberOfRepeats > 10 && $index > 10) {
+				unset($new_focus->column_fields['sendnotification']);
+			}
 			$new_focus->save('Calendar');
 		}
 	}

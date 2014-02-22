@@ -108,8 +108,8 @@ echo $content['body'];
 //test added by Richie
 if (!isset($_REQUEST['display_images']) || $_REQUEST['display_images'] != 1)
 {
-	$content['body'] = eregi_replace('src="[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]"', 'src="none"', $content['body']);
-	$content['body'] = eregi_replace('src=[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]', 'src="none"', $content['body']);
+	$content['body'] = preg_replace('/src="[[:alpha:]]+:\/\/[^<>[:space:]]+[[:alnum:]\/]"/i', 'src="none"', $content['body']);
+	$content['body'] = preg_replace('/src=[[:alpha:]]+:\/\/[^<>[:space:]]+[[:alnum:]\/]/i', 'src="none"', $content['body']);
 }
 
 //Display embedded HTML images
@@ -120,11 +120,11 @@ $conf->display_text_attach = true;
 
 while ($tmp = array_pop($tmp_attach_tab)) 
 {
-	if ($conf->display_img_attach && (eregi('image', $tmp['mime']) && ($tmp['number'] != '')))
+	if ($conf->display_img_attach && (preg_match("/image/i", $tmp['mime']) && ($tmp['number'] != '')))
 	{
 		$exploded = explode('/', $tmp['mime']);
 		$img_type = array_pop($exploded);
-		if (eregi('JPEG', $img_type) || eregi('JPG', $img_type) || eregi('GIF', $img_type) || eregi ('PNG', $img_type))
+		if (preg_match("/JPEG/i", $img_type) || preg_match("/JPG/i", $img_type) || preg_match("/GIF/i", $img_type) || preg_match ('/PNG/i', $img_type))
 		{
 			$new_img_src = 'src="get_img.php?mail=' . $mailid.'&num=' . $tmp['number'] . '&mime=' . $img_type . '&transfer=' . $tmp['transfer'] . '"';
 			$img_id = str_replace('<', '', $tmp['id']);
@@ -136,13 +136,13 @@ while ($tmp = array_pop($tmp_attach_tab))
 }
 while ($tmp = array_pop($content['attachtab']))
 {
-	if ((!eregi('ATTACHMENT', $tmp['disposition'])) && $conf->display_text_attach && (eregi('text/plain', $tmp['mime'])))
+	if ((!preg_match("/ATTACHMENT/i", $tmp['disposition'])) && $conf->display_text_attach && (preg_match("/text\/plain/i", $tmp['mime'])))
 		echo '<hr />'.view_part_detail($mail, $mailid, $tmp['number'], $tmp['transfer'], $tmp['charset'], $charset);
-	if ($conf->display_img_attach && (eregi('image', $tmp['mime']) && ($tmp['number'] != '')))
+	if ($conf->display_img_attach && (preg_match("/image/i", $tmp['mime']) && ($tmp['number'] != '')))
 	{
 		$exploded = explode('/', $tmp['mime']);
 		$img_type = array_pop($exploded);
-		if (eregi('JPEG', $img_type) || eregi('JPG', $img_type) || eregi('GIF', $img_type) || eregi ('PNG', $img_type))
+		if (preg_match("/JPEG/i", $img_type) || preg_match("/JPG/i", $img_type) || preg_match("/GIF/i", $img_type) || preg_match ('/PNG/g', $img_type))
                         {
 			echo '<hr />';
 			echo '<center>';

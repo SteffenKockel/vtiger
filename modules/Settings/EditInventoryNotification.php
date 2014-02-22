@@ -32,14 +32,17 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='')
 		$notification_subject = $adb->query_result($result,0,'notificationsubject');
 		$notification_body = function_exists(iconv) ? iconv("UTF-8",$default_charset,$adb->query_result($result,0,'notificationbody')) : $adb->query_result($result,0,'notificationbody');
 		$notification_id = $adb->query_result($result,0,'notificationid');
+		$notification_status = $adb->query_result($result,0,'status');
 
 		$notification = Array();
 		$notification['label'] = $label;
 		$notification['subject'] = $notification_subject;
 		$notification['body'] = $notification_body;
 		$notification['id'] = $notification_id;
+		$notification['status'] = $notification_status;
+		
 	}
-	
+
 	$smarty->assign("NOTIFY_DETAILS",$notification);
 	$smarty->assign("MOD", return_module_language($current_language,'Settings'));
 	$smarty->assign("THEME", $theme);

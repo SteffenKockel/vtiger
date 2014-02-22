@@ -103,12 +103,13 @@ if($contact_mailid != '')
 }
 if($isactive == 1)
 {
-	$url = "<a href='".$PORTAL_URL."/index.php?module=Tickets&action=index&ticketid=".$focus->id."&fun=detail'>".$mod_strings['LBL_TICKET_DETAILS']."</a>";
+	$url = "<a href='".$PORTAL_URL."/index.php?module=HelpDesk&action=index&ticketid=".$focus->id."&fun=detail'>".$mod_strings['LBL_TICKET_DETAILS']."</a>";
 	$email_body = $bodysubject.'<br><br>'.getPortalInfo_Ticket($focus->id,$_REQUEST['ticket_title'],$contactname,$url,$_REQUEST['mode']);
 }
 else
 {
 	$data['sub']=$_REQUEST['ticket_title'];
+	$data['ticketno']=$focus->column_fields['ticket_no'];
 	$data['parent_name']=$parentname;
 	$data['status']=$focus->column_fields['ticketstatus'];
 	$data['category']=$focus->column_fields['ticketcategories'];
@@ -125,63 +126,66 @@ if($_REQUEST['return_module'] == 'Products' & $_REQUEST['product_id'] != '' &&  
 	$return_id = vtlib_purify($_REQUEST['product_id']);
 
 //send mail to the assigned to user and the parent to whom this ticket is assigned
-require_once('modules/Emails/mail.php');
-$user_emailid = getUserEmailId('id',$focus->column_fields['assigned_user_id']);
+//only if NOTIFY_OWNER_EMAILS is true
+if(PerformancePrefs::getBoolean('NOTIFY_OWNER_EMAILS', true) === true){
+	//send mail to the assigned to user and the parent to whom this ticket is assigned
+	require_once('modules/Emails/mail.php');
+	$user_emailid = getUserEmailId('id',$focus->column_fields['assigned_user_id']);
 
-if($user_emailid != '')
-{
-	if($_REQUEST['mode'] != 'edit')
+	if($user_emailid != '')
 	{
-		$mail_status = send_mail('HelpDesk',$user_emailid,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
-	}
-	else
-	{
-		if(($focus->column_fields['ticketstatus'] == $mod_strings["Closed"]) || ($focus->column_fields['comments'] != '') || ($_REQUEST['helpdesk_solution'] != $_REQUEST['solution']) || ($focus->column_fields['assigned_user_id'] != $old_user_id))	
+		if($_REQUEST['mode'] != 'edit')
 		{
 			$mail_status = send_mail('HelpDesk',$user_emailid,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
 		}
+		else
+		{
+			if(($focus->column_fields['ticketstatus'] == $mod_strings["Closed"]) || ($focus->column_fields['comments'] != '') || ($_REQUEST['helpdesk_solution'] != $_REQUEST['solution']) || ($focus->column_fields['assigned_user_id'] != $old_user_id))
+			{
+				$mail_status = send_mail('HelpDesk',$user_emailid,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
+			}
 
 	}
 
 	$mail_status_str = $user_emailid."=".$mail_status."&&&";
-}
-else
-{
-	$mail_status_str = "'".$to_email."'=0&&&";
-}
-//added condition to check the emailoptout(this is for contacts and vtiger_accounts.)
-if($emailoptout == 0)
-{
-	//send mail to parent
-	if($_REQUEST['parent_id'] != '' && $_REQUEST['parent_type'] != '')
+	}
+	else
+	{
+		$mail_status_str = "'".$to_email."'=0&&&";
+	}
+	//added condition to check the emailoptout(this is for contacts and vtiger_accounts.)
+	if($emailoptout == 0)
+	{
+		//send mail to parent
+		if($_REQUEST['parent_id'] != '' && $_REQUEST['parent_type'] != '')
         {
-                $parentmodule = $_REQUEST['parent_type'];
-                $parentid = $_REQUEST['parent_id'];
+        	$parentmodule = $_REQUEST['parent_type'];
+            $parentid = $_REQUEST['parent_id'];
 
-		$parent_email = getParentMailId($parentmodule,$parentid);
-		if($_REQUEST['mode'] != 'edit')
+			$parent_email = getParentMailId($parentmodule,$parentid);
+			if($_REQUEST['mode'] != 'edit')
         	{	
-		$mail_status = send_mail('HelpDesk',$parent_email,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
-		}
-	        else
-        	{
-			if(( $focus->column_fields['ticketstatus']== $mod_strings["Closed"]) || ($focus->column_fields['comments'] != '' ) || ($_REQUEST['helpdesk_solution'] != $_REQUEST['solution']))
-			{
 				$mail_status = send_mail('HelpDesk',$parent_email,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
 			}
-		}
-		$mail_status_str .= $parent_email."=".$mail_status."&&&";
+	        else
+        	{
+				if(( $focus->column_fields['ticketstatus']== $mod_strings["Closed"]) || ($focus->column_fields['comments'] != '' ) || ($_REQUEST['helpdesk_solution'] != $_REQUEST['solution']))
+				{
+					$mail_status = send_mail('HelpDesk',$parent_email,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
+				}
+			}
+			$mail_status_str .= $parent_email."=".$mail_status."&&&";
         }
-}
-else
-{
-	$adb->println("'".$parentname."' is not want to get the email about the ticket details as emailoptout is selected");
-}
+	}
+	else
+	{
+		$adb->println("'".$parentname."' is not want to get the email about the ticket details as emailoptout is selected");
+	}
 
-if ($mail_status != '') {
-	$mail_error_status = getMailErrorString($mail_status_str);
+	if ($mail_status != '') {
+		$mail_error_status = getMailErrorString($mail_status_str);
+	}
 }
-
 //code added for returning back to the current view after edit from list view
 if($_REQUEST['return_viewname'] == '') $return_viewname='0';
 if($_REQUEST['return_viewname'] != '')$return_viewname=vtlib_purify($_REQUEST['return_viewname']);

@@ -82,10 +82,18 @@ if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == "Campaigns
 {
 	if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "")
 	{
+		 $campLeadStatusResult = $adb->pquery("select campaignrelstatusid from vtiger_campaignleadrel where campaignid=? AND leadid=?",array($_REQUEST['return_id'], $focus->id));
+		 $leadStatus = $adb->query_result($campLeadStatusResult,0,'campaignrelstatusid');
 		 $sql = "delete from vtiger_campaignleadrel where leadid = ?";
 		 $adb->pquery($sql, array($focus->id));
-		 $sql = "insert into vtiger_campaignleadrel values (?,?)";
+		 if(isset($leadStatus) && $leadStatus !=''){
+		 $sql = "insert into vtiger_campaignleadrel values (?,?,?)";
+		 $adb->pquery($sql, array($_REQUEST['return_id'], $focus->id,$leadStatus));
+		 }
+		 else{
+		 $sql = "insert into vtiger_campaignleadrel values (?,?,1)";
 		 $adb->pquery($sql, array($_REQUEST['return_id'], $focus->id));
+		}
 	}
 }
 header("Location: index.php?action=$return_action&module=$return_module&record=$return_id&parenttab=$parenttab&viewname=$return_viewname&start=".vtlib_purify($_REQUEST['pagenumber']).$search);

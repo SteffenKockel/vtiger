@@ -65,15 +65,18 @@
 				<tr>
 	         	    <td class="small" valign=top ><table width="100%"  border="0" cellspacing="0" cellpadding="5">
 						<tr>
-                            <td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_SCANNER} {$MOD.LBL_NAME}</strong></td>
-                            <td width="80%"><input type="text" name="mailboxinfo_scannername" class="small" value="DEFAULT" size=50 readonly></td>
+                            <td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_SCANNER} {$MOD.LBL_NAME}</strong> <font color="red">*</font></td>
+                            <td width="80%">
+                            	<input type="hidden" name="hidden_scannername" class="small" value="{$SCANNERINFO.scannername}" readonly>
+                            	<input type="text" name="mailboxinfo_scannername" class="small" value="{$SCANNERINFO.scannername}" size=50>
+                            </td>
                         </tr>
                         <tr>
-                            <td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_SERVER} {$MOD.LBL_NAME}</strong></td>
+                            <td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_SERVER} {$MOD.LBL_NAME}</strong> <font color="red">*</font></td>
                             <td width="80%"><input type="text" name="mailboxinfo_server" class="small" value="{$SCANNERINFO.server}" size=50></td>
                         </tr>
                         <tr>
-							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_PROTOCOL}</strong></td>
+							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_PROTOCOL}</strong> <font color="red">*</font></td>
                             <td width="80%">
 								{assign var="imapused" value=""}
 								{assign var="imap4used" value=""}
@@ -89,11 +92,11 @@
 							</td>
 						</tr>
 						<tr>
-			                <td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_USERNAME}</strong></td>
+			                <td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_USERNAME}</strong> <font color="red">*</font></td>
                             <td width="80%"><input type="text" name="mailboxinfo_username" class="small" value="{$SCANNERINFO.username}" size=50></td>
                         </tr>
 						<tr>
-			                <td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_PASSWORD}</strong></td>
+			                <td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_PASSWORD}</strong> <font color="red">*</font></td>
                             <td width="80%"><input type="password" name="mailboxinfo_password" class="small" value="{$SCANNERINFO.password}" size=50></td>
                         </tr>
 						<tr>
@@ -197,8 +200,8 @@
 
 				<tr>
 					<td colspan=2 nowrap align="center">
-						<input type="submit" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" />
-						<input type="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onclick="history.go(-1)"/>
+						<input type="submit" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" onclick="return mailscaneredit_validateform(this.form);" />
+						<input type="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onclick="window.location.href='index.php?module=Settings&action=MailScanner&parenttab=Settings'"/>
 					</td>
 				</tr>
 				</table>	
@@ -228,3 +231,15 @@
 
 </tr>
 </table>
+{literal}
+<script type="text/javascript">
+function mailscaneredit_validateform(form) {
+	var scannername = form.mailboxinfo_scannername;
+	if(scannername.value == '') {
+		scannername.focus();
+		return false;
+	}
+	return true;		
+}
+</script>
+{/literal}

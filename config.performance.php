@@ -20,10 +20,6 @@ $PERFORMANCE_CONFIG = Array(
 	// This avoids executing the SET NAMES SQL for each query!
 	'DB_DEFAULT_CHARSET_UTF8' => true,
 
-	// To avoid overshooting max_connections configured for database server
-	// it is preferable to have this parameter set to false
-	'ALLOW_MULTI_DB_CONNECTION_PER_REQUEST' => false,
-
 	// Compute record change indication for each record shown on listview
 	'LISTVIEW_RECORD_CHANGE_INDICATOR' => true,
 
@@ -36,5 +32,13 @@ $PERFORMANCE_CONFIG = Array(
 
 	// Control DetailView Record Navigation
 	'DETAILVIEW_RECORD_NAVIGATION' => true,
+
+	// To control the Email Notifications being sent to the Owner
+	'NOTIFY_OWNER_EMAILS' => true,		//By default it is set to true, if it is set to false, then notifications will not be sent
+	// reduce number of ajax requests on home page, reduce this value if home page widget dont
+	// show value.
+	'HOME_PAGE_WIDGET_GROUP_SIZE' => 12,
+	//take backup legacy style, whenever an admin user logs out.
+	'LOGOUT_BACKUP' => true,
 );
 ?>

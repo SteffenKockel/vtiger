@@ -50,6 +50,13 @@ class Image_Graph_Fill extends Image_Graph_Common
 {
 
     /**
+     * Constructor
+     */
+    function Image_Graph_Fill() {
+        parent::__construct();
+    }
+
+    /**
      * Resets the fillstyle
      *
      * @access private

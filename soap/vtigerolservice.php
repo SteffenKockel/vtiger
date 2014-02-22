@@ -563,34 +563,34 @@ function __GetContactSOAPNode($contact) {
 	global $server;
 	$nodestring = "<item xsi:type='tns:contactdetail'>
 <id xsi:type='xsd:string'>"         . $contact[id] . "</id>
-<title xsi:type='xsd:string'>"      . $contact[saluation] . "</title>
-<firstname xsi:type='xsd:string'>"  . $contact[firstname] ."</firstname>
-<middlename xsi:type='xsd:string'>" . trim($contact[middlename]) . "</middlename>
-<lastname xsi:type='xsd:string'>"   . trim($contact[lastname])  ."</lastname>
-<birthdate xsi:nil='true' xsi:type='xsd:string'>" .$contact[birthdate]. "</birthdate>
+<title xsi:type='xsd:string'>"      . __GetSOAPEncode($contact[saluation]) . "</title>
+<firstname xsi:type='xsd:string'>"  . __GetSOAPEncode($contact[firstname]) ."</firstname>
+<middlename xsi:type='xsd:string'>" . __GetSOAPEncode(trim($contact[middlename])) . "</middlename>
+<lastname xsi:type='xsd:string'>"   . __GetSOAPEncode(trim($contact[lastname]))  ."</lastname>
+<birthdate xsi:nil='true' xsi:type='xsd:string'>" .$contact[birthday]. "</birthdate>
 <emailaddress xsi:type='xsd:string'>" .trim($contact[email]) . "</emailaddress>
-<jobtitle xsi:type='xsd:string'>"     .$contact[title] ."</jobtitle>
-<department xsi:type='xsd:string'>"   .$contact[department] ."</department>
-<accountname xsi:type='xsd:string'>"  .$contact[accountname] ."</accountname>
-<officephone xsi:type='xsd:string'>"  .$contact[phone]."</officephone>
-<homephone xsi:type='xsd:string'>"    .$contact[homephone]."</homephone>
-<otherphone xsi:type='xsd:string'>"   .$contact[otherphone]."</otherphone>
-<fax xsi:type='xsd:string'>"          .$contact[fax]."</fax>
-<mobile xsi:type='xsd:string'>"       .$contact[mobile]."</mobile>
-<asstname xsi:type='xsd:stringi'>"    .$contact[assistant]."</asstname>
-<asstphone xsi:type='xsd:string'>"    .$contact[assistantphone]."</asstphone>
-<reportsto xsi:type='xsd:string'>"    .$contact[reports_to_name]."</reportsto>
-<mailingstreet xsi:type='xsd:string'>".$contact[mailingstreet]."</mailingstreet>
-<mailingcity xsi:type='xsd:string'>"  .$contact[mailingcity]."</mailingcity>
-<mailingstate xsi:type='xsd:string'>" .$contact[mailingstate]."</mailingstate>
-<mailingzip xsi:type='xsd:string'>"   .$contact[mailingzip]."</mailingzip>
-<mailingcountry xsi:type='xsd:string'>".$contact[mailingcountry]."</mailingcountry>
-<otherstreet xsi:type='xsd:string'>"   .$contact[otherstreet]."</otherstreet>
-<othercity xsi:type='xsd:string'>"     .$contact[othercity]."</othercity>
-<otherstate xsi:type='xsd:string'>"    .$contact[otherstate]."</otherstate>
-<otherzip xsi:type='xsd:string'>".$contact[otherzip]."</otherzip>
-<othercountry xsi:type='xsd:string'>".$contact[othercountry]."</othercountry>
-<description xsi:type='xsd:string'>".$contact[description]."</description>
+<jobtitle xsi:type='xsd:string'>"     .__GetSOAPEncode($contact[title]) ."</jobtitle>
+<department xsi:type='xsd:string'>"   .__GetSOAPEncode($contact[department]) ."</department>
+<accountname xsi:type='xsd:string'>"  .__GetSOAPEncode($contact[accountname]) ."</accountname>
+<officephone xsi:type='xsd:string'>"  .__GetSOAPEncode($contact[phone])."</officephone>
+<homephone xsi:type='xsd:string'>"    .__GetSOAPEncode($contact[homephone])."</homephone>
+<otherphone xsi:type='xsd:string'>"   .__GetSOAPEncode($contact[otherphone])."</otherphone>
+<fax xsi:type='xsd:string'>"          .__GetSOAPEncode($contact[fax])."</fax>
+<mobile xsi:type='xsd:string'>"       .__GetSOAPEncode($contact[mobile])."</mobile>
+<asstname xsi:type='xsd:stringi'>"    .__GetSOAPEncode($contact[assistant])."</asstname>
+<asstphone xsi:type='xsd:string'>"    .__GetSOAPEncode($contact[assistantphone])."</asstphone>
+<reportsto xsi:type='xsd:string'>"    .__GetSOAPEncode($contact[reports_to_name])."</reportsto>
+<mailingstreet xsi:type='xsd:string'>".__GetSOAPEncode($contact[mailingstreet])."</mailingstreet>
+<mailingcity xsi:type='xsd:string'>"  .__GetSOAPEncode($contact[mailingcity])."</mailingcity>
+<mailingstate xsi:type='xsd:string'>" .__GetSOAPEncode($contact[mailingstate])."</mailingstate>
+<mailingzip xsi:type='xsd:string'>"   .__GetSOAPEncode($contact[mailingzip])."</mailingzip>
+<mailingcountry xsi:type='xsd:string'>".__GetSOAPEncode($contact[mailingcountry])."</mailingcountry>
+<otherstreet xsi:type='xsd:string'>"   .__GetSOAPEncode($contact[otherstreet])."</otherstreet>
+<othercity xsi:type='xsd:string'>"     .__GetSOAPEncode($contact[othercity])."</othercity>
+<otherstate xsi:type='xsd:string'>"    .__GetSOAPEncode($contact[otherstate])."</otherstate>
+<otherzip xsi:type='xsd:string'>".__GetSOAPEncode($contact[otherzip])."</otherzip>
+<othercountry xsi:type='xsd:string'>".__GetSOAPEncode($contact[othercountry])."</othercountry>
+<description xsi:type='xsd:string'>".__GetSOAPEncode($contact[description])."</description>
 <category xsi:type='xsd:string'></category>
 </item>";
 	return $nodestring;
@@ -1236,6 +1236,7 @@ function AddClndr($username,$session,$clndrdtls)
 			$clndr->column_fields[description]= in_array('description',$permitted_lists) ? $clndrow["description"] : "";
 			$clndr->column_fields[activitytype]="Meeting";
 			$clndr->column_fields[assigned_user_id]= in_array('assigned_user_id',$permitted_lists) ? $user_id : "";
+			$clndr->column_fields[eventstatus]="Planned";
 			$clndr->save("Calendar");
 		}
 	}
@@ -1395,6 +1396,21 @@ function validateSession($username, $sessionid)
 		return false;
 	}
 }
+
+function __GetSOAPEncode($text)
+{	
+	$text = decode_html($text);
+	$seek[0]='/&/';
+	$seek[1]='/</';
+	$seek[2]='/>/';
+	
+	$replace[0]='&amp;';
+	$replace[1]='&lt;';
+	$replace[2]='&gt;';
+	
+	return preg_replace($seek, $replace, $text);
+}
+
 function getServerSessionId($id)
 {
 	global $adb;
@@ -1414,4 +1430,5 @@ if (!isset($HTTP_RAW_POST_DATA)){
 }
 $server->service($HTTP_RAW_POST_DATA); 
 exit();
+
 ?>

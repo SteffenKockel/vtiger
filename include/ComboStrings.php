@@ -326,6 +326,11 @@ $combo_strings = Array(
 								'Net 45 days'=>'Net 45 days',
 								'Net 60 days'=>'Net 60 days'
 							),      
+'campaignrelstatus_dom' => Array('--None--'=>'--None--',
+								'Contacted - Successful' => 'Contacted - Successful',
+								'Contacted - Unsuccessful' => 'Contacted - Unsuccessful',
+								'Contacted - Never Contact Again' => 'Contacted - Never Contact Again'
+							),		
 		
 );
 

@@ -157,7 +157,7 @@ class VTExpressionEngine{
 		$this->expressions[$var] = $value;
 	}
 
-	private private function parse($str){
+	private function parse($str){
 		$parser = new VTParser(new SpaceFilter(new VTTokenizer($str)));
 		return $parser->expression();
 	}

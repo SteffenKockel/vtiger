@@ -20,32 +20,20 @@
 		<tr>	
 			<td rowspan=3 valign=top align=left width=250px;>	
 				<b>{$MOD.LBL_EXISTING_PICKLIST_VALUES}</b>
-				<div id="add_availPickList" name="availList" style="overflow:auto; height: 150px;width:200px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;"> 				
-					<table style="padding-left:5px" cellpadding="0" cellspacing="3" width="100%">
-						{foreach item=pick_val from=$PICKVAL}
-							<tr style="background-color: #ffffff;">
-								<td>
-									<span class="picklist_existing_options">{$pick_val}</span>
-								</td>
-							</tr>
-						{/foreach}
-					</table>
+				<div id="add_availPickList" name="availList" style="overflow:auto;  height:150px;width:200px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;"> 				
+					{foreach item=pick_val from=$PICKVAL}
+						<div class="picklist_existing_options" style="background-color: #ffffff;">{$pick_val}</div>
+					{/foreach}
 				</div>
 				<br>
 				{if is_array($NONEDITPICKLIST)}				
 					<b>{$MOD.LBL_NON_EDITABLE_PICKLIST_ENTRIES} :</b>
 					<div id="nonedit_pl_values" name="availList" style="overflow:auto; height: 150px;width:200px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
-						<table style="padding-left:5px" cellspacing="3" cellpadding="0" width="100%">
-							{foreach item=nonedit from=$NONEDITPICKLIST}
-								<tr style="background-color: #ffffff;">
-									<td>
-									<span class="picklist_noneditable_options">
-										{$nonedit}		
-									</span>							
-									</td>
-								</tr>	
-							{/foreach}
-						</table>
+						{foreach item=nonedit from=$NONEDITPICKLIST}
+							<div class="picklist_noneditable_options" style="background-color: #ffffff;">
+								{$nonedit}		
+							</div>							
+						{/foreach}
 					</div>
 				{/if}
 			</td>

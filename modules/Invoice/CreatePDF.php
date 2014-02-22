@@ -8,19 +8,18 @@
  * All Rights Reserved.
  *
  ********************************************************************************/
+include_once 'modules/Invoice/InvoicePDFController.php';
+global $currentModule;
 
-include('include/InventoryPDF.php');
-$pdf=get_invoice_pdf();
+$controller = new Vtiger_InvoicePDFController($currentModule);
+$controller->loadRecord(vtlib_purify($_REQUEST['record']));
 
-// Request from Customer Portal for downloading the file.
-if(isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file')
-{
-	$quote_id = $_REQUEST['record'];
-	$filepath='test/product/'.$quote_id.'_Invoice.pdf';
-	$pdf->Output($filepath,'F'); //added file name to make it work in IE, also forces the download giving the user the option to save
-
-}else {
-	$pdf->Output('Invoice.pdf','D'); //added file name to make it work in IE, also forces the download giving the user the option to save
+if(isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
+	$id = vtlib_purify($_REQUEST['record']);
+	$filepath='test/product/'.$id.'_Invoice.pdf';
+	$controller->Output($filepath,'F'); //added file name to make it work in IE, also forces the download giving the user the option to save
+} else {
+	$controller->Output('Invoice.pdf', 'D');//added file name to make it work in IE, also forces the download giving the user the option to save
 	exit();
 }
 

@@ -116,7 +116,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		else
 		{
-			$disp_value = getDisplayDate($value);
+			$disp_value = getValidDisplayDate($value);
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']);
@@ -865,27 +865,35 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	//added by rdhital/Raju for better email support
 	elseif($uitype == 357)
 	{
-		if($_REQUEST['pmodule'] == 'Contacts')
+		$pmodule = $_REQUEST['pmodule'];
+		if(empty($pmodule))
+			$pmodule = $_REQUEST['par_module'];
+
+		if($pmodule == 'Contacts')
 		{
 			$contact_selected = 'selected';
 		}
-		elseif($_REQUEST['pmodule'] == 'Accounts')
+		elseif($pmodule == 'Accounts')
 		{
 			$account_selected = 'selected';
 		}
-		elseif($_REQUEST['pmodule'] == 'Leads')
+		elseif($pmodule == 'Leads')
 		{
 			$lead_selected = 'selected';
 		}
-		elseif($_REQUEST['pmodule'] == 'Vendors')
+		elseif($pmodule == 'Vendors')
 		{
 			$vendor_selected = 'selected';
+		}
+		elseif($pmodule == 'Users')
+		{
+			$user_selected = 'selected';
 		}
 		if(isset($_REQUEST['emailids']) && $_REQUEST['emailids'] != '')
 		{
 			$parent_id = $_REQUEST['emailids'];
 			$parent_name='';
-			$pmodule=$_REQUEST['pmodule'];
+
 			$myids=explode("|",$parent_id);
 			for ($i=0;$i<(count($myids)-1);$i++)
 			{
@@ -1335,7 +1343,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	}
 
 	// Mike Crowe Mod --------------------------------------------------------force numerics right justified.
-	if ( !eregi("id=",$custfld) )
+	if ( !preg_match("/id=/i",$custfld) )
 		$custfld = preg_replace("/<input/iS","<input id='$fieldname' ",$custfld);
 
 	if ( in_array($uitype,array(71,72,7,9,90)) )
@@ -1622,18 +1630,18 @@ function getAssociatedProducts($module,$focus,$seid='')
 		{
 			$product_Detail[$i]['delRow'.$i]="Del";
 		}
-		if(!isset($focus->mode) && $seid!=''){
+		if(empty($focus->mode) && $seid!=''){
 			$sub_prod_query = $adb->pquery("SELECT crmid as prod_id from vtiger_seproductsrel WHERE productid=? AND setype='Products'",array($seid));
 		} else {
 			$sub_prod_query = $adb->pquery("SELECT productid as prod_id from vtiger_inventorysubproductrel WHERE id=? AND sequence_no=?",array($focus->id,$i));
 		}
 		$subprodid_str='';
 		$subprodname_str='';
-		
+		$subProductArray = array();
 		if($adb->num_rows($sub_prod_query)>0){
 			for($j=0;$j<$adb->num_rows($sub_prod_query);$j++){
 				$sprod_id = $adb->query_result($sub_prod_query,$j,'prod_id');
-				$sprod_name = getProductName($sprod_id);
+				$sprod_name = $subProductArray[] = getProductName($sprod_id);
 				$str_sep = "";
 				if($j>0) $str_sep = ":";
 				$subprodid_str .= $str_sep.$sprod_id;
@@ -1642,7 +1650,8 @@ function getAssociatedProducts($module,$focus,$seid='')
 		}
 
 		$subprodname_str = str_replace(":","<br>",$subprodname_str);
-		
+
+		$product_Detail[$i]['subProductArray'.$i] = $subProductArray;
 		$product_Detail[$i]['hdnProductId'.$i] = $hdnProductId;
 		$product_Detail[$i]['productName'.$i]= from_html($productname);
 		/* Added to fix the issue Product Pop-up name display*/
@@ -1650,7 +1659,11 @@ function getAssociatedProducts($module,$focus,$seid='')
 			$product_Detail[$i]['productName'.$i]= htmlspecialchars($product_Detail[$i]['productName'.$i]);
 		$product_Detail[$i]['hdnProductcode'.$i] = $hdnProductcode;
 		$product_Detail[$i]['productDescription'.$i]= from_html($productdescription);
-		$product_Detail[$i]['comment'.$i]= $comment;
+		if($module == 'Potentials' || $module == 'Products' || $module == 'Services') {
+			$product_Detail[$i]['comment'.$i]= $productdescription;
+		}else {
+            $product_Detail[$i]['comment'.$i]= $comment;
+		}
 
 		if($module != 'PurchaseOrder' && $focus->object_name != 'Order')
 		{

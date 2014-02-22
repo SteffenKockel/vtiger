@@ -56,8 +56,14 @@ if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "") $return_id = v
 $local_log->debug("Saved record with id of ".$return_id);
 
 //code added for returning back to the current view after edit from list view
-if($_REQUEST['return_viewname'] == '') $return_viewname='0';
-if($_REQUEST['return_viewname'] != '')$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
-
-header("Location: index.php?action=$return_action&module=$return_module&parenttab=$parenttab&record=$return_id&viewname=$return_viewname&smodule=SO&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
+$return_viewname='';
+if($_REQUEST['return_viewname'] != '') {
+	$return_viewname='&viewname='.vtlib_purify($_REQUEST['return_viewname']);
+}
+$page = '';
+if(!empty($_REQUEST['pagenumber'])){
+	$page = '&start='.vtlib_purify($_REQUEST['pagenumber']);
+}
+header("Location: index.php?action=$return_action&module=$return_module&parenttab=$parenttab&".
+		"record=$return_id$return_viewname$page".$search);
 ?>

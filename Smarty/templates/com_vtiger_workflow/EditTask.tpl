@@ -20,7 +20,7 @@
 {include file='SetMenu.tpl'}
 <div id="view">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
-	<form name="new_task" id="new_task_form" onsubmit="VtigerJS_DialogBox.block();">
+	<form name="new_task" id="new_task_form" method="post" onsubmit="VtigerJS_DialogBox.block();">
 	
 		<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
 			<tr>

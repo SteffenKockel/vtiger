@@ -47,11 +47,34 @@ function getTopInvoice($maxval,$calCnt)
 	//Retreive the list from Database
 	//<<<<<<<<<customview>>>>>>>>>
 	$date_var = date('Y-m-d');
+	$currentModule = 'Invoice';
+	$viewId = getCvIdOfAll($currentModule);
+	$queryGenerator = new QueryGenerator($currentModule, $current_user);
+	$queryGenerator->initForCustomViewById($viewId);
+	$meta = $queryGenerator->getMeta($currentModule);
+	$accessibleFieldNameList = array_keys($meta->getModuleFields());
+	$customViewFields = $queryGenerator->getCustomViewFields();
+	$fields = $queryGenerator->getFields();
+	$newFields = array_diff($fields, $customViewFields);
+	$widgetFieldsList = array('subject','salesorder_id','account_id','contact_id','invoicestatus',
+		'total');
+	$widgetFieldsList = array_intersect($accessibleFieldNameList, $widgetFieldsList);
+	$widgetSelectedFields = array_chunk(array_intersect($customViewFields, $widgetFieldsList), 2);
+	//select the first chunk of two fields
+	$widgetSelectedFields = $widgetSelectedFields[0];
+	if(count($widgetSelectedFields) < 2) {
+		$widgetSelectedFields = array_chunk(array_merge($widgetSelectedFields, $accessibleFieldNameList), 2);
+		//select the first chunk of two fields
+		$widgetSelectedFields = $widgetSelectedFields[0];
+	}
+	$newFields = array_merge($newFields, $widgetSelectedFields);
+	$queryGenerator->setFields($newFields);
+	$_REQUEST = getTopInvoiceSearch($_REQUEST, array(
+		'assigned_user_id'=>$current_user->column_fields['user_name']));
+	$queryGenerator->addUserSearchConditions($_REQUEST);
+	$search_qry = '&query=true'.getSearchURL($_REQUEST);
+	$query = $queryGenerator->getQuery();
 
-	//Changed for Patch 2 by Don
-	$where = ' and vtiger_crmentity.smownerid='.$current_user->id.' and  vtiger_invoice.invoicestatus != \'Paid\'';
-	$query = getListQuery("Invoice",$where);
-	$query .= " ORDER BY total DESC";
 	//<<<<<<<<customview>>>>>>>>>
 
 	$query .= " LIMIT " . $adb->sql_escape_string($maxval);
@@ -110,21 +133,32 @@ function getTopInvoice($maxval,$calCnt)
 
 	$title=array('myTopInvoices.gif',$current_module_strings['LBL_MY_TOP_INVOICE'],'home_mytopinv');
 	//Retreive the List View Table Header
-	$listview_header = getListViewHeader($focus,"Invoice",$url_string,$sorder,$order_by,"HomePage",$oCustomView);
+	$controller = new ListViewController($adb, $current_user, $queryGenerator);
+	$controller->setHeaderSorting(false);
+	$header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,
+			$order_by, true);
 
-	$header = Array($listview_header[1],$listview_header[2]);
-
-	$listview_entries = getListViewEntries($focus,"Invoice",$list_result,$navigation_array,"HomePage","","EditView","Delete",$oCustomView);
-	foreach($listview_entries as $crmid=>$valuearray)
-	{
-		$entries[$crmid] = Array($valuearray[1],$valuearray[2]);	
-	}
-	
-	$search_qry = "&query=true&Fields0=vtiger_invoice.invoicestatus&Condition0=isn&Srch_value0=Paid&Fields1=vtiger_crmentity.smownerid&Condition1=is&Srch_value1=".$current_user->column_fields['user_name']."&searchtype=advance&search_cnt=2&matchtype=all";
+	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,
+	$navigation_array, true);	
 
 	$values=Array('ModuleName'=>'Invoice','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 
 	if ( ($display_empty_home_blocks && $noofrows == 0 ) || ($noofrows>0) )
 		return $values;
 }
+
+function getTopInvoiceSearch($output, $input) {
+	$output['query'] = 'true';
+	$output['Fields0'] = 'invoicestatus';
+	$output['Condition0'] = 'n';
+	$output['Srch_value0'] = 'Paid';
+	$output['Fields1'] = 'assigned_user_id';
+	$output['Condition1'] = 'e';
+	$output['Srch_value1'] = $input['assigned_user_id'];
+	$output['searchtype'] = 'advance';
+	$output['search_cnt'] = '2';
+	$output['matchtype'] = 'all';
+	return $output;
+}
+
 ?>

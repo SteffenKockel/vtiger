@@ -40,7 +40,7 @@ $email->loadMail($array_tab);
 $msgData = str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">',"",$email->body);
 $content['attachtab'] = $email->attachtab;
 while ($tmp = array_pop($content['attachtab'])){
-	if ((!eregi('ATTACHMENT', $tmp['disposition'])) && $conf->display_text_attach && (eregi('text/plain', $tmp['mime'])))
+	if ((!preg_match('/ATTACHMENT/i', $tmp['disposition'])) && $conf->display_text_attach && (preg_match('/text\/plain/i', $tmp['mime'])))
 		$msgData .= '<hr />'.view_part_detail($mail, $mailid, $tmp['number'], $tmp['transfer'], $tmp['charset'], $charset);
 }
 $focus->column_fields['subject']=$subject;
@@ -108,7 +108,7 @@ function add_attachment_to_contact($cid,$email,$emailid) {
 			$current_id = $adb->getUniqueID("vtiger_crmentity");
 			$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);	
 	
-			$filename = ereg_replace("[ ()-]+", "_",$attachments[$i]["filename"]);
+			$filename = preg_replace("/[ ()-]+/", "_",$attachments[$i]["filename"]);
 			preg_match_all('/=\?([^\?]+)\?([^\?]+)\?([^\?]+)\?=/', $filename, $matches);
 			$totalmatches = count($matches[0]);
 			

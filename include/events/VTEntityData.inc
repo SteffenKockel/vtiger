@@ -119,7 +119,6 @@
 		function isNew(){
 			return $this->isNew;
 		}
-		
 	}
 
 ?>

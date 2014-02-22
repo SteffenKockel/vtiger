@@ -53,13 +53,10 @@ function vtlib_getModuleNameById($tabid) {
  */
 function vtlib_getModuleNameForSharing() {
 	global $adb;
-	$vtlib_sqlres = $adb->query("SELECT * from vtiger_tab WHERE ownedby = 0 
-		AND name NOT IN('Calendar','Leads','Accounts','Contacts','Potentials',
-			'HelpDesk','Campaigns','Quotes','PurchaseOrder','SalesOrder','Invoice','Events')");
-	$vtlib_numrows = $adb->num_rows($vtlib_sqlres);
-	$modules = Array();
-	for($idx = 0; $idx < $vtlib_numrows; ++$idx) $modules[] = $adb->query_result($vtlib_sqlres, 0, 'name');
-	return $modules;
+	$std_modules = array('Calendar','Leads','Accounts','Contacts','Potentials',
+			'HelpDesk','Campaigns','Quotes','PurchaseOrder','SalesOrder','Invoice','Events');
+	$modulesList = getSharingModuleList($std_modules);
+	return $modulesList;
 }
 
 /**
@@ -105,8 +102,8 @@ function vtlib_isModuleActive($module) {
 	}
 
 	if(!isset($__cache_module_activeinfo[$module])) {
-		$tabres = $adb->pquery("SELECT presence FROM vtiger_tab WHERE name=?", array($module));
-		$presence = $adb->query_result($tabres, 0, 'presence');
+		include 'tabdata.php';
+		$presence = isset($tab_info_array[$module])? 0: 1;
 		$__cache_module_activeinfo[$module] = $presence;
 	} else {
 		$presence = $__cache_module_activeinfo[$module];
@@ -564,6 +561,30 @@ function vtlib_purify($input, $ignore=false) {
 		}
 	}
 	return $value;
+}
+
+/**
+ * Process the UI Widget requested
+ * @param Vtiger_Link $widgetLinkInfo
+ * @param Current Smarty Context $context
+ * @return 
+ */
+function vtlib_process_widget($widgetLinkInfo, $context = false) {
+	if (preg_match("/^block:\/\/(.*)/", $widgetLinkInfo->linkurl, $matches)) {
+		list($widgetControllerClass, $widgetControllerClassFile) = explode(':', $matches[1]);
+		if (!class_exists($widgetControllerClass)) {
+			checkFileAccess($widgetControllerClassFile);
+			include_once $widgetControllerClassFile;
+		}
+		if (class_exists($widgetControllerClass)) {
+			$widgetControllerInstance = new $widgetControllerClass;
+			$widgetInstance = $widgetControllerInstance->getWidget($widgetLinkInfo->linklabel);
+			if ($widgetInstance) {
+				return $widgetInstance->process($context);
+			}
+		}
+	}
+	return "";
 }
 
 ?>

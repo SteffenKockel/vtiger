@@ -81,19 +81,19 @@ if($cvmodule != "") {
 	//<<<<<<<advancedfilter>>>>>>>>>
 	for ($i=0;$i<count($allKeys);$i++) {
 	   $string = substr($allKeys[$i], 0, 4);
-	   if($string == "fcol") {
+	   if($string == "fcol" && !empty($_REQUEST[$allKeys[$i]])) {
            	$adv_filter_col[] = $_REQUEST[$allKeys[$i]];
    	   }
 	}
 	for ($i=0;$i<count($allKeys);$i++) {
 	   $string = substr($allKeys[$i], 0, 3);
-	   if($string == "fop") {
+	   if($string == "fop" && !empty($_REQUEST[$allKeys[$i]])) {
            	$adv_filter_option[] = $_REQUEST[$allKeys[$i]];
    	   }
 	}
 	for ($i=0;$i<count($allKeys);$i++) {
    	   $string = substr($allKeys[$i], 0, 4);
-	   if($string == "fval") {
+	   if($string == "fval"  && !empty($_REQUEST[$allKeys[$i]])) {
 		   //$adv_filter_value[] = htmlentities(trim($_REQUEST[$allKeys[$i]]));
 		   $adv_filter_value[] = trim($_REQUEST[$allKeys[$i]]);
    	   }

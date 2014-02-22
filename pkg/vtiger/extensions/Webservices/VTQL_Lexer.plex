@@ -32,7 +32,7 @@ if(strcmp($val, "*")===0){
 if(!$count){
 incrementN($lexer, 1);
 }
-return VTQL_Parser::ASTERISK;	
+return VTQL_Parser::ASTERISK;
 }else if((strcmp($val, "(")===0)){
 return VTQL_Parser::PARENOPEN;
 }else if(strcmp($val, ")")===0){
@@ -63,11 +63,12 @@ $lexer->current_state =0;
 $lexer->mandatory = false;
 if(!(strcasecmp($val, $lexer->optional_states[$lexer->current_state])===0)){
 return VTQL_Parser::TABLENAME;
-}	
+}
 }
 }
 function handlewhere($lexer, $val){
 global $where_col,$in_started;
+$val = trim($val);
 if((strcmp($val, "=")===0)){
 return VTQL_Parser::EQ;
 }else if((strcasecmp($val, $lexer->optional_states[$lexer->current_state])===0)){
@@ -122,7 +123,7 @@ return VTQL_Parser::COMMA;
 }else if(strcasecmp($val, "asc")===0){
 return VTQL_Parser::ASC;
 }else if(strcasecmp($val, "desc")===0){
-return VTQL_Parser::desc;
+return VTQL_Parser::DESC;
 }else{
 return VTQL_Parser::COLUMNNAME;
 }
@@ -171,7 +172,7 @@ return $this->token."";
 %token $this->token
 %value $this->value
 %line $this->linenum
-query = /(\w+|'(?:[^']|'')+'|\(|\)|(\+|-)?\d+|,|\*|=|<|>|;)/
+query = /(\w+|'(?:[^']|'')+'|\(|\)|(\+|-)?\d+|,|\*|(?!<|>)=|<(?!=)|>(?!=)|<=|>=|!=|;)/
 whitespace = /[ \t\r\n]+/
 */
 /*!lex2php

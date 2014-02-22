@@ -50,7 +50,7 @@ $modulenamearr = Array();
 foreach($tabrows as $resultrow) {
 	if($resultrow['isentitytype'] != '0') {
 		// Eliminate: Events, Emails
-		if($resultrow['tabid'] == '16' || $resultrow['tabid'] == '10') {
+		if($resultrow['tabid'] == '16' || $resultrow['tabid'] == '10' || $resultrow['name'] == 'Webmails') {
 			continue;
 		}
 		$modName=$resultrow['name'];
@@ -98,6 +98,8 @@ $smarty->assign("MOD",$mod_strings);
 $smarty->assign("APP",$app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("LAYOUT", $numberofcols);
+$widgetBlockSize = PerformancePrefs::getBoolean('HOME_PAGE_WIDGET_GROUP_SIZE', 12);
+$smarty->assign('widgetBlockSize', $widgetBlockSize);
 
 $smarty->display("Home/Homestuff.tpl");
 

@@ -125,18 +125,25 @@ if($image_error=="false")
 	if(isset($_REQUEST['activity_mode']) && $_REQUEST['activity_mode'] != '') $activitymode = vtlib_purify($_REQUEST['activity_mode']);
 
 	$local_log->debug("Saved record with id of ".$return_id);
-
 	if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == "Campaigns")
 	{
 		if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "")
 		{
+			$campContStatusResult = $adb->pquery("select campaignrelstatusid from vtiger_campaigncontrel where campaignid=? AND contactid=?",array($_REQUEST['return_id'], $focus->id));
+			$contactStatus = $adb->query_result($campContStatusResult,0,'campaignrelstatusid');
 			$sql = "delete from vtiger_campaigncontrel where contactid = ?";
 			$adb->pquery($sql, array($focus->id));
-			$sql = "insert into vtiger_campaigncontrel values (?,?)";
-			$adb->pquery($sql, array($_REQUEST['return_id'], $focus->id));
+			if(isset($contactStatus) && $contactStatus!=''){
+				$sql = "insert into vtiger_campaigncontrel values (?,?,?)";
+				$adb->pquery($sql, array($_REQUEST['return_id'], $focus->id,$contactStatus));
+			}
+			else
+			{
+				$sql = "insert into vtiger_campaigncontrel values (?,?,1)";
+				$adb->pquery($sql, array($_REQUEST['return_id'], $focus->id));
+			}
 		}
 	}
-
 	//BEGIN -- Code for Create Customer Portal Users password and Send Mail 
 	if($_REQUEST['portal'] == '' && $_REQUEST['mode'] == 'edit')
 	{
@@ -212,10 +219,7 @@ if($image_error=="false")
 	if($_REQUEST['return_viewname'] != '')$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
 
 	$parenttab = getParentTab();
-
-	//Send notification mail to the assigned to owner about the contact creation
-	if($focus->column_fields['notify_owner'] == 1 || $focus->column_fields['notify_owner'] == 'on')
-		$status = sendNotificationToOwner('Contacts',$focus);
+	
 
 	header("Location: index.php?action=$return_action&module=$return_module&parenttab=$parenttab&record=$return_id&activity_mode=$activitymode&viewname=$return_viewname&start=".vtlib_purify($_REQUEST['pagenumber']));
 }

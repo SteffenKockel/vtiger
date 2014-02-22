@@ -43,9 +43,12 @@ foreach($focus->column_fields as $fieldname => $val)
 }
  $focus->column_fields["subject"] = $_REQUEST["task_subject"];
  $focus->column_fields["time_start"] = $_REQUEST["task_time_start"];
- $focus->column_fields["assigned_user_id"] =  $_REQUEST["task_assigned_user_id"];
- $_REQUEST["assigned_group_id"]  = $_REQUEST['task_assigned_group_id'];
- $_REQUEST['assigntype'] = $_REQUEST['task_assigntype'];
+ if($_REQUEST['task_assigntype'] == 'U')  {
+ 	$focus->column_fields['assigned_user_id'] = $_REQUEST['task_assigned_user_id'];
+ } elseif($_REQUEST['task_assigntype'] == 'T') {
+ 	$focus->column_fields['assigned_user_id'] = $_REQUEST['task_assigned_group_id'];
+ }
+ 
  $focus->column_fields["taskstatus"] =  $_REQUEST["taskstatus"];
  $focus->column_fields["date_start"] =  $_REQUEST["task_date_start"];
  $focus->column_fields["due_date"] =  $_REQUEST["task_due_date"];
@@ -55,14 +58,8 @@ foreach($focus->column_fields as $fieldname => $val)
  $focus->column_fields["description"] =  $_REQUEST["task_description"];
  if(isset($_REQUEST['task_sendnotification']) && $_REQUEST['task_sendnotification'] != null)
  	$focus->column_fields["sendnotification"] =  $_REQUEST["task_sendnotification"];
+ $focus->save($tab_type);
 
- 	$focus->save($tab_type);
-	if($_REQUEST["task_sendnotification"]=='on')
-        {
-		$mail_contents = getRequestedToData();
-		getEventNotification($_REQUEST['activity_mode'],$_REQUEST['task_subject'],$mail_contents);
-
-        }
 function getRequestedToData()
 {
 	$mail_data = Array();
@@ -74,7 +71,7 @@ function getRequestedToData()
 	$mail_data['relatedto'] = $_REQUEST['task_parent_name'];
 	$mail_data['contact_name'] = $_REQUEST['task_contact_name'];
 	$mail_data['description'] = $_REQUEST['task_description'];
-	$mail_data['assingn_type'] = $_REQUEST['task_assigntype'];
+	$mail_data['assign_type'] = $_REQUEST['task_assigntype'];
 	$mail_data['group_name'] = getGroupName($_REQUEST['task_assigned_group_id']);
 	$mail_data['mode'] = $_REQUEST['task_mode'];
 	$value = getaddEventPopupTime($_REQUEST['task_time_start'],$_REQUEST['task_time_end'],'24');

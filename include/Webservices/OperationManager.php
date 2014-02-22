@@ -128,6 +128,7 @@
 		function handleType($type,$value){
 			$result;
 			$value = stripslashes($value);
+			$type = strtolower($type);
 			if($this->inParamProcess[$type]){
 				$result = call_user_func($this->inParamProcess[$type],$value);
 			}else{

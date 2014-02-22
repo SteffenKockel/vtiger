@@ -23,7 +23,7 @@ class Vtiger_LanguageImport extends Vtiger_LanguageExport {
 	}
 
 	function getPrefix() {
-		return $this->_modulexml->name;
+		return (string)$this->_modulexml->prefix;
 	}
 
 	/**

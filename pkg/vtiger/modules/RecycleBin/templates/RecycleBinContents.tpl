@@ -17,6 +17,7 @@
         <tr>
 	<!-- Buttons -->
     		<td style="padding-right:20px" nowrap>
+				<input type="hidden" id="search_url" value="{$SEARCH_URL}">
 				<input type="hidden" name="idlist" id="idlist">
 				<input type="hidden" id="allselectedboxes" name="allselectedboxes">
 				<input type="hidden" name="selected_module" id="selected_module" value="{$SELECTED_MODULE}">

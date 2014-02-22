@@ -29,78 +29,30 @@ if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
 	if($secondarymodule!='')
 		$oReport->secmodule = $secondarymodule;
 	
-	$BLOCK1 = getPrimaryColumns_AdvFilterHTML($oReport->primodule,$oReport->advft_column[0]);
-	$BLOCK1 .= getSecondaryColumns_AdvFilterHTML($oReport->secmodule,$oReport->advft_column[0]);
-	$report_std_filter->assign("BLOCK1", $BLOCK1);
-	$REL_FIELDS1 = getRelatedColumns($oReport->advft_column[0]);
-	$report_std_filter->assign("REL_FIELDS1",$REL_FIELDS1);
+	$COLUMNS_BLOCK = getPrimaryColumns_AdvFilterHTML($oReport->primodule);
+	$COLUMNS_BLOCK .= getSecondaryColumns_AdvFilterHTML($oReport->secmodule);
+	$report_std_filter->assign("COLUMNS_BLOCK", $COLUMNS_BLOCK);
 	
-	$BLOCK2 = getPrimaryColumns_AdvFilterHTML($oReport->primodule,$oReport->advft_column[1]);
-	$BLOCK2 .= getSecondaryColumns_AdvFilterHTML($oReport->secmodule,$oReport->advft_column[1]);
-	$report_std_filter->assign("BLOCK2", $BLOCK2);
-	$REL_FIELDS2 = getRelatedColumns($oReport->advft_column[1]);
-	$report_std_filter->assign("REL_FIELDS2",$REL_FIELDS2);
-	
-	$BLOCK3 = getPrimaryColumns_AdvFilterHTML($oReport->primodule,$oReport->advft_column[2]);
-	$BLOCK3 .= getSecondaryColumns_AdvFilterHTML($oReport->secmodule,$oReport->advft_column[2]);
-	$report_std_filter->assign("BLOCK3", $BLOCK3);
-	$REL_FIELDS3 = getRelatedColumns($oReport->advft_column[2]);
-	$report_std_filter->assign("REL_FIELDS3",$REL_FIELDS3);
-	
-	$BLOCK4 = getPrimaryColumns_AdvFilterHTML($oReport->primodule,$oReport->advft_column[3]);
-	$BLOCK4 .= getSecondaryColumns_AdvFilterHTML($oReport->secmodule,$oReport->advft_column[3]);
-	$report_std_filter->assign("BLOCK4", $BLOCK4);
-	$REL_FIELDS4 = getRelatedColumns($oReport->advft_column[3]);
-	$report_std_filter->assign("REL_FIELDS4",$REL_FIELDS4);
-	
-	$BLOCK5 = getPrimaryColumns_AdvFilterHTML($oReport->primodule,$oReport->advft_column[4]);
-	$BLOCK5 .= getSecondaryColumns_AdvFilterHTML($oReport->secmodule,$oReport->advft_column[4]);
-	$report_std_filter->assign("BLOCK5", $BLOCK5);
-	$REL_FIELDS5 = getRelatedColumns($oReport->advft_column[4]);
-	$report_std_filter->assign("REL_FIELDS5",$REL_FIELDS5);
-	
-	$FILTEROPTION1 = getAdvCriteriaHTML($oReport->advft_option[0]);
-	$report_std_filter->assign("FOPTION1",$FILTEROPTION1);
-	
-	$FILTEROPTION2 = getAdvCriteriaHTML($oReport->advft_option[1]);
-	$report_std_filter->assign("FOPTION2",$FILTEROPTION2);
-	
-	$FILTEROPTION3 = getAdvCriteriaHTML($oReport->advft_option[2]);
-	$report_std_filter->assign("FOPTION3",$FILTEROPTION3);
-	
-	$FILTEROPTION4 = getAdvCriteriaHTML($oReport->advft_option[3]);
-	$report_std_filter->assign("FOPTION4",$FILTEROPTION4);
-	
-	$FILTEROPTION5 = getAdvCriteriaHTML($oReport->advft_option[4]);
-	$report_std_filter->assign("FOPTION5",$FILTEROPTION5);
-	
-	$report_std_filter->assign("VALUE1",$oReport->advft_value[0]);
-	$report_std_filter->assign("VALUE2",$oReport->advft_value[1]);
-	$report_std_filter->assign("VALUE3",$oReport->advft_value[2]);
-	$report_std_filter->assign("VALUE4",$oReport->advft_value[3]);
-	$report_std_filter->assign("VALUE5",$oReport->advft_value[4]);
+	$FILTER_OPTION = getAdvCriteriaHTML();
+	$report_std_filter->assign("FOPTION",$FILTER_OPTION);
 
 	$rel_fields = getRelatedFieldColumns();
 	$report_std_filter->assign("REL_FIELDS",Zend_Json::encode($rel_fields));
-} else
-{
+	
+	$report_std_filter->assign("CRITERIA_GROUPS",$oReport->advft_criteria);
+} else {
 	$primarymodule = $_REQUEST["primarymodule"];
-	$BLOCK1 = getPrimaryColumns_AdvFilterHTML($primarymodule);
+	$COLUMNS_BLOCK = getPrimaryColumns_AdvFilterHTML($primarymodule);
 	$ogReport =  new Reports();
 	if(!empty($ogReport->related_modules[$primarymodule])) {
 		foreach($ogReport->related_modules[$primarymodule] as $key=>$value){
 			//$BLOCK1 .= getSecondaryColumnsHTML($_REQUEST["secondarymodule_".$value]);
-			$BLOCK1 .= getSecondaryColumns_AdvFilterHTML($_REQUEST["secondarymodule_".$value]);
+			$COLUMNS_BLOCK .= getSecondaryColumns_AdvFilterHTML($_REQUEST["secondarymodule_".$value]);
 		}
 	}
-	$rel_fields = getRelatedFieldColumns();
+	$report_std_filter->assign("COLUMNS_BLOCK", $COLUMNS_BLOCK);
 	
-	$report_std_filter->assign("BLOCK1", $BLOCK1);
-	$report_std_filter->assign("BLOCK2", $BLOCK1);
-	$report_std_filter->assign("BLOCK3", $BLOCK1);
-	$report_std_filter->assign("BLOCK4", $BLOCK1);
-	$report_std_filter->assign("BLOCK5", $BLOCK1);
-	
+	$rel_fields = getRelatedFieldColumns();	
 	$report_std_filter->assign("REL_FIELDS",Zend_Json::encode($rel_fields));
 }
 
@@ -266,4 +218,3 @@ function getAdvCriteriaHTML($selected="")
 }
 
 ?>
-

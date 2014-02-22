@@ -436,7 +436,17 @@ $mod_strings = Array(
 'LBL_SET_DATE'=>'Set Date',
 
 'LBL_MINE' =>'Mine',
-
+'LBL_SUCCESS_CALENDAR_1' => 'No. of Tasks Successfully Imported : ',
+'LBL_SKIPPED_CALENDAR_1' => 'No. of Tasks Skipped as they were missing one or more required fields : ',
+'LBL_SUCCESS_EVENTS_1' => 'No. of Events Successfully Imported : ',
+'LBL_SKIPPED_EVENTS_1' => 'No. of Events Skipped as they were missing one or more required fields : ',
+'LBL_FINISHED'=>'Finished',
+'LBL_UNDO_LAST_IMPORT'=>'Undo Last Import',
+'LBL_LAST_IMPORT'=>'Last Imported',
+'LBL_LAST_IMPORT_UNDONE'=>'Your Last Import Was Undone',
+'LBL_SUCCESS'=>'Success!',
+'LBL_NO_IMPORT_TO_UNDO'=>'There was no import to undo.',
+'LBL_FAILURE'=>'Failed!',
 );
 
 ?>

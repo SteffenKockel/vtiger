@@ -21,7 +21,9 @@ require_once('data/CRMEntity.php');
 $focus = CRMEntity::getInstance($selected_module);
 
 for($i=0;$i<count($idlists);$i++) {
-	$focus->restore($mod_name, $idlists[$i]);
+	if(!empty($idlists[$i])) {
+		$focus->restore($mod_name, $idlists[$i]);
+	}
 }
 
 $parenttab = getParentTab();

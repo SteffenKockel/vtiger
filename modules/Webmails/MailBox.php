@@ -1,13 +1,15 @@
 <?php
 /*+********************************************************************************
- * The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- ********************************************************************************/
-
+* The contents of this file are subject to the vtiger CRM Public License Version 1.0
+* ("License"); You may not use this file except in compliance with the License
+* The Original Code is:  vtiger CRM Open Source
+* The Initial Developer of the Original Code is vtiger.
+* Portions created by vtiger are Copyright (C) vtiger.
+* Portions created by FOSS Labs are Copyright (C) FOSS Labs.
+* All Rights Reserved.
+************************************************************************************/
+//Modified By Krem on  30/05/2008  - Details  at http://creadev.net/Webmails-vTiger504
+  
 include_once('config.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
@@ -33,7 +35,7 @@ class MailBox {
 	var $mailbox;
 	var $mailList;
 
-	function MailBox($mailbox = '') {
+	function MailBox($mailbox = '',$p='',$s='') {
 		global $current_user;
 		require_once('include/utils/encryption.php');
 		$oencrypt = new Encryption();
@@ -76,30 +78,64 @@ class MailBox {
 			$this->getImapMbox();
 
 		$this->db->println("Loading mail list");
-		if($this->mbox)
-			$this->mailList = $this->fullMailList();
+		$pa=$p;
+		$se=$s;
+		if($this->mbox){
+			if ($se != ""){$this->mailList = $this->searchMailList($se,$pa);}		
+			else if ($pa == ""){$this->mailList = $this->customMailList(0);}
+			else {$this->mailList = $this->customMailList($pa);}
+		}
 
 		$this->db->println("Exiting MailBox($mailbox)");
 	}
-	
-	function loadOverviewList($start, $end) {
-		if($this->mbox) {
-			if($end == 0) $end = 1;
-			
-			$mailOverviews = @imap_fetch_overview($this->mbox, "$start:$end", 0);
-			$this->mailList['headers'] = Array();
-			$this->mailList['overview'] = $mailOverviews;
-		}
+
+	function customMailList($page) {
+		$info = imap_check($this->mbox);
+		$numEmails = $info->Nmsgs;
+		$current_mails = ceil($page*$this->mails_per_page);
+		$current_mails = $numEmails - $current_mails;
+		$start =$current_mails-$this->mails_per_page+1;
+		if ($start<=0) $start=1;
+		if ($current_mails<=0)$current_mails=0;
+
+		$mailOverviews = @imap_fetch_overview($this->mbox, "$start:$current_mails", 0);
+		$out = array("overview"=>$mailOverviews,"count"=>$numEmails);
+		return $out;
 	}
 
+	function searchMailList($searchstring,$page) {	
+		$search="";		
+		$searchlist = Array();
+
+		$searchlist = imap_search($this->mbox,$searchstring);
+		if ($searchlist==false) return $out;
+		$num_searches = count($searchlist);
+		if ($num_searches < $this->mails_per_page){
+			$current_mails = $num_searches -1;
+		}else{
+			$current_mails = ceil($page*$this->mails_per_page);
+			$current_mails = $num_searches - $current_mails-1;
+		}
+		$start = $current_mails-$this->mails_per_page;
+		if ($start < 0)$start=0;
+		$j=0;
+		for($i=$current_mails; $i >= $start ; $i--){	
+			if($i==$current_mails){			
+				$search=$searchlist[$i];
+			}else $search=$search.",".$searchlist[$i];			
+			$j++;			
+		}
+		if ($search!="")
+			$result = @imap_fetch_overview($this->mbox, "$search",0);
+		$out = array("overview"=>$result,"count"=>count($searchlist));
+		return $out;
+	}
+	
 	function fullMailList() {
-		/*$mailHeaders = @imap_headers($this->mbox);
+		$mailHeaders = @imap_headers($this->mbox);
 		$numEmails = sizeof($mailHeaders);
 		$mailOverviews = @imap_fetch_overview($this->mbox, "1:$numEmails", 0);
-		$out = array("headers"=>$mailHeaders,"overview"=>$mailOverviews,"count"=>$numEmails);& */
-		
-		$numEmails = @imap_num_msg($this->mbox);
-		$out = array("count" => $numEmails);
+		$out = array("headers"=>$mailHeaders,"overview"=>$mailOverviews,"count"=>$numEmails);
 		return $out;
 	}
 

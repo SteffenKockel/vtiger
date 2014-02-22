@@ -40,14 +40,16 @@ function getTopAccounts($maxval,$calCnt)
     require('user_privileges/user_privileges_'.$current_user->id.'.php');
     require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 
-	$list_query = "select vtiger_account.accountid, vtiger_account.accountname, vtiger_account.tickersymbol, sum(vtiger_potential.amount) as amount from vtiger_potential inner join vtiger_crmentity on (vtiger_potential.potentialid=vtiger_crmentity.crmid) left join vtiger_account on (vtiger_potential.related_to=vtiger_account.accountid) left join vtiger_groups on (vtiger_groups.groupid = vtiger_crmentity.smownerid) where vtiger_crmentity.deleted=0 AND vtiger_crmentity.smownerid='".$current_user->id."' and vtiger_potential.sales_stage not in ('Closed Won', 'Closed Lost','".$app_strings['LBL_CLOSE_WON']."','".$app_strings['LBL_CLOSE_LOST']."')";
-	if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[6] == 3)
-	{
-		$sec_parameter=getListViewSecurityParameter('Accounts');
-		$list_query .= $sec_parameter;
-
-	}
-	$list_query .= " group by vtiger_account.accountid, vtiger_account.accountname, vtiger_account.tickersymbol order by amount desc";
+	$list_query = "select vtiger_potential.potentialname,vtiger_account.accountid, vtiger_account.accountname, ".
+	"vtiger_account.tickersymbol, sum(vtiger_potential.amount) as amount from vtiger_potential ".
+	"inner join vtiger_crmentity on (vtiger_potential.potentialid=vtiger_crmentity.crmid) ".
+	"left join vtiger_account on (vtiger_potential.related_to=vtiger_account.accountid) ";
+	$list_query .= " WHERE vtiger_crmentity.deleted = 0 ".$where.
+		" AND vtiger_potential.potentialid>0";
+	$list_query .= " AND vtiger_crmentity.smownerid='".$current_user->id."' ".
+	"and vtiger_potential.sales_stage not in ('Closed Won', 'Closed Lost','".
+			$app_strings['LBL_CLOSE_WON']."','".$app_strings['LBL_CLOSE_LOST']."')";
+	$list_query .= " group by vtiger_account.accountid, vtiger_account.tickersymbol order by amount desc";
 
 	$list_query .= " LIMIT 0," . $adb->sql_escape_string($maxval);
 	
@@ -82,7 +84,8 @@ function getTopAccounts($maxval,$calCnt)
 	$rate_symbol = getCurrencySymbolandCRate($currencyid);
 	$rate = $rate_symbol['rate'];
 	$curr_symbol = $rate_symbol['symbol'];
-        $header[]=$current_module_strings['LBL_LIST_AMOUNT'].'('.$curr_symbol.')';
+    $header[]=$current_module_strings['LBL_LIST_AMOUNT'].'('.$curr_symbol.')';
+	$header[] = $current_module_strings['LBL_POTENTIAL_TITLE'];
 	
 	$entries=array();
 	foreach($open_accounts_list as $account)

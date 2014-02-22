@@ -7,16 +7,12 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
-//get php configuration settings.  requires elaborate parsing of phpinfo() output
 ?>
-<html>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>vtiger CRM 5 - Configuration Wizard - Installation Check</title>
+	<title><?php echo $installationStrings['LBL_VTIGER_CRM_5']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_INSTALLATION_CHECK']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -26,8 +22,8 @@
 
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
-			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="Configuration Wizard" hspace="20" title="Configuration Wizard"></td>
-			<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="vtiger CRM 5" title="vtiger CRM 5"></td>
+			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
+			<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>" title="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>"></td>
 			<td class="cwHeadBg1" width=2%></td>
 		</tr>
 	</table>
@@ -65,14 +61,14 @@
 						    <table cellspacing=0 cellpadding=10 width=90% align=center class='cwContentDisplay'>
 								<tr>
 									<td align=left width=50% valign=top ><br>
-										<input type="image" src="include/install/images/cwBtnBack.gif" alt="Back" border="0" title="Back" onClick="window.history.back();">
+										<input type="button" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_BACK']; ?>" title="<?php echo $installationStrings['LBL_BACK']; ?>" onClick="window.history.back();">
 									</td>
 									<td width=50% valign=top align=right>
 													<br>
 										<form action="install.php" method="post" name="form" id="form">
 										<input type="hidden" name="filename" value="SetInstallationConfig.php" />
 										<input type="hidden" name="file" value="CheckSystem.php" />	
-								        <input type="image" src="include/install/images/cwBtnNext.gif" value='Agree' alt="Agree" border="0" title="Next" style="cursor:pointer;" onClick="window.document.form.submit();">
+								        <input type="button" class="button" value='<?php echo $installationStrings['LBL_AGREE']; ?>' title="<?php echo $installationStrings['LBL_AGREE']; ?>" onClick="window.document.form.submit();">
 										</form>
 									</td>
 								</tr>

@@ -19,26 +19,26 @@
 <script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <script language="javascript" type="text/javascript">
 var typeofdata = new Array();
-typeofdata['E'] = ['is','isn','bwt','ewt','cts','dcts'];
-typeofdata['V'] = ['is','isn','bwt','ewt','cts','dcts'];
-typeofdata['N'] = ['is','isn','lst','grt','lsteq','grteq'];
-typeofdata['NN'] = ['is','isn','lst','grt','lsteq','grteq'];
-typeofdata['T'] = ['is','isn','lst','grt','lsteq','grteq'];
-typeofdata['I'] = ['is','isn','lst','grt','lsteq','grteq'];
-typeofdata['C'] = ['is','isn'];
-typeofdata['DT'] = ['is','isn','lst','grt','lsteq','grteq'];
-typeofdata['D'] = ['is','isn','lst','grt','lsteq','grteq'];
+typeofdata['E'] = ['e','n','s','ew','c','k'];
+typeofdata['V'] = ['e','n','s','ew','c','k'];
+typeofdata['N'] = ['e','n','l','g','m','h'];
+typeofdata['NN'] = ['e','n','l','g','m','h'];
+typeofdata['T'] = ['e','n','l','g','m','h'];
+typeofdata['I'] = ['e','n','l','g','m','h'];
+typeofdata['C'] = ['e','n'];
+typeofdata['DT'] = ['e','n','l','g','m','h'];
+typeofdata['D'] = ['e','n','l','g','m','h'];
 var fLabels = new Array();
-fLabels['is'] = "{$APP.is}";
-fLabels['isn'] = "{$APP.is_not}";
-fLabels['bwt'] = "{$APP.begins_with}";
-fLabels['ewt'] = "{$APP.ends_with}";
-fLabels['cts'] = "{$APP.contains}";
-fLabels['dcts'] = "{$APP.does_not_contains}";
-fLabels['lst'] = "{$APP.less_than}";
-fLabels['grt'] = "{$APP.greater_than}";
-fLabels['lsteq'] = "{$APP.less_or_equal}";
-fLabels['grteq'] = "{$APP.greater_or_equal}";
+fLabels['e'] = "{$APP.is}";
+fLabels['n'] = "{$APP.is_not}";
+fLabels['s'] = "{$APP.begins_with}";
+fLabels['ew'] = "{$APP.ends_with}";
+fLabels['c'] = "{$APP.contains}";
+fLabels['k'] = "{$APP.does_not_contains}";
+fLabels['l'] = "{$APP.less_than}";
+fLabels['g'] = "{$APP.greater_than}";
+fLabels['m'] = "{$APP.less_or_equal}";
+fLabels['h'] = "{$APP.greater_or_equal}";
 var noneLabel;
 {literal}
 function trimfValues(value)
@@ -57,22 +57,6 @@ function updatefOptions(sel, opSelName) {
     
     var fld = currField.value.split(":");
     var tod = fld[4];
-  /*  if(fld[4] == 'D' || (fld[4] == 'T' && fld[1] != 'time_start' && fld[1] != 'time_end') || fld[4] == 'DT')
-    {
-	$("and"+sel.id).innerHTML =  "";
-	if(sel.id != "fcol5")
-		$("and"+sel.id).innerHTML =  "<em old='(yyyy-mm-dd)'>("+$("user_dateformat").value+")</em>&nbsp;"+alert_arr.LBL_AND;
-	else
-		$("and"+sel.id).innerHTML =  "<em old='(yyyy-mm-dd)'>("+$("user_dateformat").value+")</em>&nbsp;";
-    }
-    else {
-	$("and"+sel.id).innerHTML =  "";
-	if(sel.id != "fcol5")
-		$("and"+sel.id).innerHTML =  "&nbsp;"+alert_arr.LBL_AND;
-	else
-		$("and"+sel.id).innerHTML =  "&nbsp;";
-    } 	
-*/
     if(currField.value != null && currField.value.length != 0)
     {
 	fieldtype = trimfValues(currField.value);
@@ -87,10 +71,6 @@ function updatefOptions(sel, opSelName) {
 		{
 			selObj.remove(0);
 		}
-	/*	selObj.options[0] = new Option ('None', '');
-		if (currField.value == '') {
-			selObj.options[0].selected = true;
-		}*/
 		for (var i = 0; i < ops.length; i++)
 		{
 			var label = fLabels[ops[i]];
@@ -245,7 +225,7 @@ function alphabetic(module,url,dataid)
 
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 	 <!-- SIMPLE SEARCH -->
-<div id="searchAcc" style="z-index:1;display:none;position:relative;">
+<div id="searchAcc" style="display: block;position:relative;">
 <form name="basicSearch" method="post" action="index.php" onSubmit="return callSearch('Basic');">
 <table width="80%" cellpadding="5" cellspacing="0"  class="searchUIBasic small" align="center" border=0>
 	<tr>

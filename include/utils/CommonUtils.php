@@ -22,6 +22,8 @@
 
   require_once('include/utils/utils.php'); //new
   require_once('include/utils/RecurringType.php');
+  require_once 'include/QueryGenerator/QueryGenerator.php';
+  require_once 'include/ListView/ListViewController.php';
 
 /**
  * Check if user id belongs to a system admin.
@@ -247,7 +249,7 @@ function from_html($string, $encode=true){
         global $toHtml;
         //if($encode && is_string($string))$string = html_entity_decode($string, ENT_QUOTES);
 	if(is_string($string)){
-		if(eregi('(script).*(/script)',$string))
+		if(preg_match('/(script).*(\/script)/i',$string))
 			$string=preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
 		//$string = str_replace(array_values($toHtml), array_keys($toHtml), $string);
 	}
@@ -258,7 +260,7 @@ function from_html($string, $encode=true){
 function fck_from_html($string)
 {
 	if(is_string($string)){
-		if(eregi('(script).*(/script)',$string))
+		if(preg_match('/(script).*(\/script)/i',$string))
 			$string=str_replace('script', '', $string);
 	}
 	return $string;
@@ -951,7 +953,7 @@ function getDisplayDate($cur_date_val)
 	}
 
 		$date_value = explode(' ',$cur_date_val);
-		list($y,$m,$d) = split('-',$date_value[0]);
+		list($y,$m,$d) = explode('-',$date_value[0]);
 		if($dat_fmt == 'dd-mm-yyyy')
 		{
 			$display_date = $d.'-'.$m.'-'.$y;
@@ -974,6 +976,32 @@ function getDisplayDate($cur_date_val)
 	$log->debug("Exiting getDisplayDate method ...");
 	return $display_date;
  			
+}
+
+/**
+ * This function returns the date in user specified format.
+ * limitation is that mm-dd-yyyy and dd-mm-yyyy will be considered same by this API.
+ * As in the date value is on mm-dd-yyyy and user date format is dd-mm-yyyy then the mm-dd-yyyy
+ * value will be return as the API will be considered as considered as in same format.
+ * this due to the fact that this API tries to consider the where given date is in user date
+ * format. we need a better gauge for this case.
+ * @global Users $current_user
+ * @param Date $cur_date_val the date which should a changed to user date format.
+ * @return Date
+ */
+function getValidDisplayDate($cur_date_val) {
+	global $current_user;
+	$dat_fmt = $current_user->date_format;
+	if($dat_fmt == '') {
+		$dat_fmt = 'dd-mm-yyyy';
+	}
+	$date_value = explode(' ',$cur_date_val);
+	list($y,$m,$d) = explode('-',$date_value[0]);
+	list($fy, $fm, $fd) = explode('-', $dat_fmt);
+	if((strlen($fy) == 4 && strlen($y) == 4) || (strlen($fd) == 4 && strlen($d) == 4)) {
+		return $cur_date_val;
+	}
+	return getDisplayDate($cur_date_val);
 }
 
 /** This function returns the date in user specified format.
@@ -1054,7 +1082,7 @@ function convertFromDollar($amount,$crate){
 	global $log;
 	$log->debug("Entering convertFromDollar(".$amount.",".$crate.") method ...");
 	$log->debug("Exiting convertFromDollar method ...");
-	return $amount * $crate;
+	return round($amount * $crate, 2);
 }
 
 /** This function returns the amount converted from master currency.
@@ -2389,14 +2417,16 @@ function getEntityName($module, $ids_list)
 		 	return array();
 		 }
 		 
-		 $query1 = "select $fieldsname as entityname from $tablename where $entityidfield in (". generateQuestionMarks($ids_list) .")"; 
-		 $params1 = array($ids_list);		 
+		 $query1 = "select $fieldsname as entityname,$entityidfield from $tablename where ".
+			"$entityidfield in (". generateQuestionMarks($ids_list) .")";
+		 $params1 = array($ids_list);
 		 $result = $adb->pquery($query1, $params1);
 		 $numrows = $adb->num_rows($result);
 	  	 $account_name = array();
+		 $entity_info = array();
 		 for ($i = 0; $i < $numrows; $i++)
 		 {
-			$entity_id = $ids_list[$i];
+			$entity_id = $adb->query_result($result,$i,$entityidfield);
 			$entity_info[$entity_id] = $adb->query_result($result,$i,'entityname');
 		 }
 		 return $entity_info;
@@ -2951,6 +2981,7 @@ function getTicketDetails($id,$whole_date)
 	
 	 $desc = $mod_strings['Ticket ID'] .' : '.$id.'<br> Ticket Title : '. $temp .' '.$whole_date['sub'];
 	 $desc .= "<br><br>".$mod_strings['Hi']." ". $whole_date['parent_name'].",<br><br>".$mod_strings['LBL_PORTAL_BODY_MAILINFO']." ".$reply." ".$mod_strings['LBL_DETAIL']."<br>";
+	 $desc .= "<br>".$mod_strings['Ticket No']." : ".$whole_date['ticketno'];
 	 $desc .= "<br>".$mod_strings['Status']." : ".$whole_date['status'];
 	 $desc .= "<br>".$mod_strings['Category']." : ".$whole_date['category'];
 	 $desc .= "<br>".$mod_strings['Severity']." : ".$whole_date['severity'];
@@ -3055,11 +3086,16 @@ function getUItype($module,$columnname)
 {
         global $log;
         $log->debug("Entering getUItype(".$module.") method ...");
-	//To find tabid for this module
-	$tabid=getTabid($module);
+		$tabIdList = array();
+		//To find tabid for this module
+		$tabIdList[] = getTabid($module);
         global $adb;
-        $sql = "select uitype from vtiger_field where tabid=? and columnname=?";
-        $result = $adb->pquery($sql, array($tabid, $columnname));
+		if($module == 'Calendar') {
+			$tabIdList[] = getTabid('Events');
+		}
+        $sql = "select uitype from vtiger_field where tabid IN (".generateQuestionMarks($tabIdList).
+				") and columnname=?";
+        $result = $adb->pquery($sql, array($tabIdList, $columnname));
         $uitype =  $adb->query_result($result,0,"uitype");
         $log->debug("Exiting getUItype method ...");
         return $uitype;
@@ -3312,7 +3348,8 @@ function ChangeTypeOfData_Filter($table_name,$column_name,$type_of_data)
 		"vtiger_vendorcontactrel:vendorid"=>"V",
 		"vtiger_vendorcontactrel:contactid"=>"V",
 		
-		"vtiger_pricebook:currency_id"=>"V",		
+		"vtiger_pricebook:currency_id"=>"V",
+        "vtiger_service:handler"=>"V",		
 	);
 
 	//If the Fields details does not match with the array, then we return the same typeofdata
@@ -3546,18 +3583,37 @@ function getOwnerName($id)
 	$log->debug("Entering getOwnerName(".$id.") method ...");
 	$log->info("in getOwnerName ".$id);
 
-	if($id != '') {
-		$sql = "select user_name from vtiger_users where id=?";
-		$result = $adb->pquery($sql, array($id));
-		$ownername = $adb->query_result($result,0,"user_name");
+	$ownerList = getOwnerNameList(array($id));
+	return $ownerList[$id];
+}
+
+/** Function to get owner name either user or group */
+function getOwnerNameList($idList) {
+	global $log;
+
+	if(!is_array($idList) || count($idList) == 0) {
+		return array();
 	}
-	if($ownername == '') {
-		$sql = "select groupname from vtiger_groups where groupid=?";
-		$result = $adb->pquery($sql, array($id));
-		$ownername = $adb->query_result($result,0,"groupname");
+
+	$nameList = array();
+	$db = PearDatabase::getInstance();
+	$sql = "select user_name,id from vtiger_users where id in (".generateQuestionMarks($idList).")";
+	$result = $db->pquery($sql, $idList);
+	$it = new SqlResultIterator($db, $result);
+	foreach ($it as $row) {
+		$nameList[$row->id] = $row->user_name;
 	}
-	$log->debug("Exiting getOwnerName method ...");
-	return $ownername;	
+	$groupIdList = array_diff($idList, array_keys($nameList));
+	if(count($groupIdList) > 0) {
+		$sql = "select groupname,groupid from vtiger_groups where groupid in (".
+				generateQuestionMarks($groupIdList).")";
+		$result = $db->pquery($sql, $groupIdList);
+		$it = new SqlResultIterator($db, $result);
+		foreach ($it as $row) {
+			$nameList[$row->groupid] = $row->groupname;
+		}
+	}
+	return $nameList;
 }
 
 /**
@@ -3627,4 +3683,11 @@ require_once('include/utils/VtlibUtils.php');
 function vt_suppressHTMLTags($string){
 	return preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
 }
+
+function vt_hasRTE() {
+	global $FCKEDITOR_DISPLAY, $USE_RTE;
+	return ((!empty($FCKEDITOR_DISPLAY) && $FCKEDITOR_DISPLAY == 'true') ||
+			(!empty($USE_RTE) && $USE_RTE == 'true'));
+}
+
 ?>

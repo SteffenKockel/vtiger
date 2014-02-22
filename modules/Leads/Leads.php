@@ -182,22 +182,13 @@ class Leads extends CRMEntity {
 					ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'
 				";
 
-
+		$query .= $this->getNonAdminAccessControlQuery('Leads',$current_user);
 		$where_auto = " vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted =0";
 
 		if($where != "")
 			$query .= " where ($where) AND ".$where_auto;
 		else
 			$query .= " where ".$where_auto;
-
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-		//we should add security check when the user has Private Access
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[7] == 3)
-		{
-			//Added security check to get the permitted records only
-			$query = $query." ".getListViewSecurityParameter("Leads");
-		}
 
 		$log->debug("Exiting create_export_query method ...");
 		return $query;
@@ -385,7 +376,7 @@ class Leads extends CRMEntity {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
 				left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid 
 				left join vtiger_users on vtiger_crmentity.smownerid= vtiger_users.id
-				where (vtiger_activity.activitytype = 'Meeting' or vtiger_activity.activitytype='Call' or vtiger_activity.activitytype='Task')
+				where (vtiger_activity.activitytype != 'Emails')
 				and (vtiger_activity.status = 'Completed' or vtiger_activity.status = 'Deferred' or (vtiger_activity.eventstatus = 'Held' and vtiger_activity.eventstatus != ''))
 				and vtiger_seactivityrel.crmid=".$id."
 	                        and vtiger_crmentity.deleted = 0";
@@ -491,7 +482,7 @@ class Leads extends CRMEntity {
 		for($i=0; $i < $numRows;$i++)
 		{
 	   	$custom_fields[$i] = $this->db->query_result($result,$i,"fieldlabel");
-	   	$custom_fields[$i] = ereg_replace(" ","",$custom_fields[$i]);
+	   	$custom_fields[$i] = preg_replace("/\s+/","",$custom_fields[$i]);
 	   	$custom_fields[$i] = strtoupper($custom_fields[$i]);
 		}
 		$mergeflds = $custom_fields;

@@ -70,7 +70,7 @@ if($ajaxaction == "DETAILVIEW")
 				}
 				
 				if($isactive == 1){
-					$url = "<a href='".$PORTAL_URL."/index.php?module=Tickets&action=index&ticketid=".$modObj->id."&fun=detail'>Ticket Details</a>";
+					$url = "<a href='".$PORTAL_URL."/index.php?module=HelpDesk&action=index&ticketid=".$modObj->id."&fun=detail'>Ticket Details</a>";
 					$email_body = $subject.'<br><br>'.getPortalInfo_Ticket($modObj->id,$sub,$contactname,$url,"edit");
 				}else{
 					$data['sub']=$modObj->column_fields['ticket_title'];
@@ -85,14 +85,16 @@ if($ajaxaction == "DETAILVIEW")
 					$email_body = getTicketDetails($modObj->id,$data);
 				}
 			}
-			if($user_emailid != ''){
-				$mail_status = send_mail('HelpDesk',$user_emailid,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
-			}
-			if($emailoptout == 0){
-				//send mail to parent
-				if(!empty($parent_id)){
-					$parent_email = getParentMailId($parent_module,$parent_id);
-					$mail_status = send_mail('HelpDesk',$parent_email,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
+			if(PerformancePrefs::getBoolean('NOTIFY_OWNER_EMAILS', true) === true){
+				if($user_emailid != ''){
+					$mail_status = send_mail('HelpDesk',$user_emailid,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
+				}
+				if($emailoptout == 0){
+					//send mail to parent
+					if(!empty($parent_id)){
+						$parent_email = getParentMailId($parent_module,$parent_id);
+						$mail_status = send_mail('HelpDesk',$parent_email,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
+					}
 				}
 			}
 		}
@@ -112,5 +114,7 @@ if($ajaxaction == "DETAILVIEW")
 	}else{
 		echo ":#:FAILURE";
 	}
+} elseif($ajaxaction == "LOADRELATEDLIST" || $ajaxaction == "DISABLEMODULE"){
+	require_once 'include/ListView/RelatedListViewContents.php';
 }
 ?>

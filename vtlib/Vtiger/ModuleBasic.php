@@ -28,6 +28,8 @@ class Vtiger_ModuleBasic {
 	var $name = false;
 	var $label = false;
 	var $version= 0;
+	var $minversion = false;
+	var $maxversion = false;
 
 	var $presence = 0;
 	var $ownedby = 0; // 0 - Sharing Access Enabled, 1 - Sharing Access Disabled
@@ -148,6 +150,29 @@ class Vtiger_ModuleBasic {
 		$useisentitytype = $this->isentitytype? 1 : 0;
 		$adb->pquery('UPDATE vtiger_tab set isentitytype=? WHERE tabid=?',Array($useisentitytype, $this->id));
 
+		if(!Vtiger_Utils::CheckTable('vtiger_tab_info')) {
+			Vtiger_Utils::CreateTable(
+				'vtiger_tab_info',
+				'(tabid INT PRIMARY KEY, prefname VARCHAR(256), prefvalue VARCHAR(256), FOREIGN KEY fk_1_vtiger_tab_info(tabid) REFERENCES vtiger_tab(tabid) ON DELETE CASCADE ON UPDATE CASCADE)',
+				true);
+		}
+		if($this->minversion) {
+			$tabResult = $adb->pquery("SELECT 1 FROM vtiger_tab_info WHERE tabid=? AND prefname='vtiger_min_version'", array($this->id));
+			if ($adb->num_rows($tabResult) > 0) {
+				$adb->pquery("UPDATE vtiger_tab_info SET prefvalue=? WHERE tabid=? AND prefname='vtiger_min_version'", array($this->minversion,$this->id));
+			} else {
+				$adb->pquery('INSERT INTO vtiger_tab_info(tabid, prefname, prefvalue) VALUES (?,?,?)', array($this->id, 'vtiger_min_version', $this->minversion));
+			}
+		}
+		if($this->maxversion) {
+			$tabResult = $adb->pquery("SELECT 1 FROM vtiger_tab_info WHERE tabid=? AND prefname='vtiger_max_version'", array($this->id));
+			if ($adb->num_rows($tabResult) > 0) {
+				$adb->pquery("UPDATE vtiger_tab_info SET prefvalue=? WHERE tabid=? AND prefname='vtiger_max_version'", array($this->maxversion,$this->id));
+			} else {
+				$adb->pquery('INSERT INTO vtiger_tab_info(tabid, prefname, prefvalue) VALUES (?,?,?)', array($this->id, 'vtiger_max_version', $this->maxversion));
+			}			
+		}
+		
 		Vtiger_Profile::initForModule($this);
 		
 		self::syncfile();

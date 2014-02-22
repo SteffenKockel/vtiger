@@ -76,7 +76,8 @@ $helpdesk_query=" select vtiger_troubletickets.status AS ticketstatus, vtiger_gr
 
 
 //Query for Contacts by Campaign
-$cont_Q = "select crmid from vtiger_contactdetails inner join vtiger_campaigncontrel on vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id where vtiger_crmentity.deleted=0 ".dashboard_check("Contacts");
+$contByCampaign = "select crmid from vtiger_contactdetails inner join vtiger_campaigncontrel on vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id where vtiger_crmentity.deleted=0 ";
+$cont_Q = getDashboardQuery($contByCampaign,"Contacts");
 
 $result = $adb->pquery($cont_Q, array());
 $num_conts = $adb->num_rows($result);
@@ -146,7 +147,7 @@ $graph_array = Array(
                     	$graph_title= $mod_strings['leadsource'];
                     	$module="Leads";
                     	$where="";
-                    	$query=$leads_query." ".dashboard_check($module);                   
+                    	$query=getDashboardQuery($leads_query,$module);
                     	return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     
                     }
@@ -157,7 +158,7 @@ $graph_array = Array(
                     	$graph_title= $mod_strings['leadstatus'];
                     	$module="Leads";
                     	$where="";
-                    	$query=$leads_query." ".dashboard_check($module);
+                    	$query=getDashboardQuery($leads_query,$module);
 			if(!$is_admin)
 				$query .= ' and vtiger_leaddetails.leadsource '.picklist_check($module,$graph_by);
                     	return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
@@ -169,7 +170,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['leadindustry'];
                             $module="Leads";
                             $where="";
-                            $query=$leads_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($leads_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
                     //Sales by Lead Source
@@ -179,38 +180,38 @@ $graph_array = Array(
                             $graph_title=$mod_strings['salesbyleadsource'];
                             $module="Potentials";
                             $where=" and vtiger_potential.sales_stage like '%Closed Won%' ";
-                            $query=$potential_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($potential_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
                     //Sales by Account
-                    elseif ($profileTabsPermission[getTabid("Potentials")] == 0 && ($type == "salesbyaccount") && (getFieldVisibilityPermission('Potentials',$user_id,'account_id') == "0"))
+                    elseif ($profileTabsPermission[getTabid("Potentials")] == 0 && ($type == "salesbyaccount") && (getFieldVisibilityPermission('Potentials',$user_id,'related_to') == "0"))
                     {
-                    	 $graph_by="accountid";
+                    	 $graph_by="related_to";
                          $graph_title=$mod_strings['salesbyaccount'];
                          $module="Potentials";
                          $where=" and vtiger_potential.sales_stage like '%Closed Won%' ";
-                         $query=$potential_query." ".dashboard_check($module);
+                         $query=getDashboardQuery($potential_query,$module);
                          return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
 		    //Sales by User
 		    elseif ($profileTabsPermission[getTabid("Potentials")] == 0 && ($type == "salesbyuser"))
 		    {
-			$graph_by="smownerid";
-			$graph_title=$mod_strings['salesbyuser'];
-			$module="Potentials";
-			$where=" and vtiger_potential.sales_stage like '%Closed Won%' and (vtiger_crmentity.smownerid != NULL || vtiger_crmentity.smownerid != ' ')";
-			$query=$potential_query." ".dashboard_check($module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+				$graph_by="smownerid";
+				$graph_title=$mod_strings['salesbyuser'];
+				$module="Potentials";
+				$where=" and vtiger_potential.sales_stage like '%Closed Won%' and (vtiger_groups.groupname is NULL)";
+				$query=getDashboardQuery($potential_query,$module);
+				return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }
 		    //Sales by team
 		    elseif ($profileTabsPermission[getTabid("Potentials")] == 0 && ($type == "salesbyteam"))
 		    {
-			$graph_by="groupname";
-			$graph_title=$mod_strings['salesbyteam'];
-			$module="Potentials";
-			$where=" and vtiger_potential.sales_stage like '%Closed Won%' and (vtiger_groups.groupname != NULL || vtiger_groups.groupname != '')";
-			$query=$potential_query." ".dashboard_check($module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+				$graph_by="smownerid";
+				$graph_title=$mod_strings['salesbyteam'];
+				$module="Potentials";
+				$where=" and vtiger_potential.sales_stage like '%Closed Won%' and (vtiger_groups.groupname != NULL || vtiger_groups.groupname != '')";
+				$query=getDashboardQuery($potential_query,$module);
+				return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }
                     //Charts for Account by Industry
                     elseif ($profileTabsPermission[getTabid("Accounts")] == 0 && ($type == "accountindustry") && (getFieldVisibilityPermission('Accounts',$user_id,'industry') == "0"))
@@ -219,7 +220,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['accountindustry'];
                             $module="Accounts";
                             $where="";
-                            $query=$account_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($account_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
                     //Charts for Products by Category
@@ -229,7 +230,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['productcategory'];
                             $module="Products";
                             $where="";
-                            $query=$product_category." ".dashboard_check($module);
+                            $query=getDashboardQuery($product_category, $module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
 		    //Charts for Products by Quantity in stock
@@ -239,7 +240,7 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['productbyqtyinstock'];
 			    $module="Products";
 			    $where="";
-			    $query=$products_query." ".dashboard_check($module);
+			    $query=getDashboardQuery($products_query,$module);
 			    return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }
 		    //Charts for Products by PO
@@ -249,7 +250,7 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['productbypo'];
 			    $module="Products";
 			    $where="";
-			    $query=$probyPO." ".dashboard_check($module);
+			    $query=getDashboardQuery($probyPO,$module);
 			    return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }
 		    //Charts for Products by Quotes
@@ -259,7 +260,7 @@ $graph_array = Array(
    			    $graph_title=$mod_strings['productbyquotes'];
 			    $module="Products";
 			    $where=""; 
-			    $query=$probyQ." ".dashboard_check($module);
+			    $query=getDashboardQuery($probyQ, $module);
 			    return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }
 		    //Charts for Products by Invoice
@@ -269,7 +270,7 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['productbyinvoice'];
 			    $module="Products";
 			    $where="";
-			    $query=$probyInv." ".dashboard_check($module);
+			    $query=getDashboardQuery($probyInv, $module);
 			    return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }
 
@@ -280,7 +281,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['sobyaccounts'];
                             $module="SalesOrder";
                             $where="";
-                            $query=$so_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($so_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
                     //Sales Order by Status
@@ -290,7 +291,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['sobystatus'];
                             $module="SalesOrder";
                             $where="";
-                            $query=$so_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($so_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
                     //Purchase Order by Status
@@ -300,7 +301,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['pobystatus'];
                             $module="PurchaseOrder";
                             $where="";
-                            $query=$po_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($po_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
                     //Quotes by Accounts
@@ -310,7 +311,7 @@ $graph_array = Array(
                             $graph_title= $mod_strings['quotesbyaccounts'];
                             $module="Quotes";
                             $where="";
-                            $query=$quotes_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($quotes_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
                     //Quotes by Stage
@@ -320,7 +321,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['quotesbystage'];
                             $module="Quotes";
                             $where="";
-                            $query=$quotes_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($quotes_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
                     //Invoice by Accounts
@@ -330,7 +331,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['invoicebyacnts'];
                             $module="Invoice";
                             $where="";
-                            $query=$invoice_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($invoice_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
                     //Invoices by status
@@ -340,7 +341,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['invoicebystatus'];
                             $module="Invoice";
                             $where="";
-                            $query=$invoice_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($invoice_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
                     //Tickets by Status
@@ -350,7 +351,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['ticketsbystatus'];
                             $module="HelpDesk";
                             $where="";
-                            $query=$helpdesk_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($helpdesk_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
                     //Tickets by Priority
@@ -360,7 +361,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['ticketsbypriority'];
                             $module="HelpDesk";
                             $where="";
-                            $query=$helpdesk_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($helpdesk_query,$module);
                             return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
                     }
 		    //Tickets by Category
@@ -370,7 +371,7 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['ticketsbycategory'];
 			    $module="HelpDesk";
 			    $where="";
-			    $query=$helpdesk_query." ".dashboard_check($module);
+			    $query=getDashboardQuery($helpdesk_query,$module);
 			    return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }
 		    //Tickets by User   
@@ -379,18 +380,18 @@ $graph_array = Array(
 			    $graph_by="smownerid";
 			    $graph_title=$mod_strings['ticketsbyuser'];
 			    $module="HelpDesk";
-			    $where=" and (vtiger_crmentity.smownerid != NULL || vtiger_crmentity.smownerid != ' ')";
-			    $query=$helpdesk_query." ".dashboard_check($module);
+			    $where=" and (vtiger_groups.groupname is NULL)";
+			    $query=getDashboardQuery($helpdesk_query,$module);
 			    return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }
 		    //Tickets by Team
 		    elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbyteam"))
 		    {
-			    $graph_by="ticketgroupname";
+			    $graph_by="smownerid";
 			    $graph_title=$mod_strings['ticketsbyteam'];
 			    $module="HelpDesk";
 			    $where=" and (vtiger_groups.groupname != NULL || vtiger_groups.groupname != ' ')";
-			    $query=$helpdesk_query." ".dashboard_check($module);
+			    $query=getDashboardQuery($helpdesk_query,$module);
 			    return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }    
 		    //Tickets by Product
@@ -400,7 +401,7 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['ticketsbyproduct'];
 			    $module="HelpDesk";
 			    $where="";
-			    $query=$helpdesk_query." ".dashboard_check($module);
+			    $query=getDashboardQuery($helpdesk_query,$module);
 			    return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }
 		    //Campaigns by Contact
@@ -410,27 +411,27 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['contactbycampaign'];
 			    $module="Contacts";
 			    $where="";
-			    $query=$campaign_query." ".dashboard_check($module);
+			    $query=getDashboardQuery($campaign_query,$module);
 			    return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }
 		    //Tickets by Account
 		    elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbyaccount") && (getFieldVisibilityPermission('HelpDesk',$user_id,'parent_id') == "0"))
 		    {
-			    $graph_by="accountid";
+			    $graph_by="parent_id";
 			    $graph_title=$mod_strings['ticketsbyaccount'];
 			    $module="HelpDesk";
 			    $where="";
-			    $query=$tickets_by_account." ".dashboard_check($module);
+			    $query=getDashboardQuery($tickets_by_account,$module);
 			    return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 		    }
 		    //Tickets by Contact
 		    elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbycontact") && (getFieldVisibilityPermission('HelpDesk',$user_id,'parent_id') == "0"))
 			    {
-				    $graph_by="contactid";
+				    $graph_by="parent_id";
 				    $graph_title=$mod_strings['ticketsbycontact'];
 				    $module="HelpDesk";
 				    $where="";
-				    $query=$tickets_by_contact." ".dashboard_check($module);
+				    $query=getDashboardQuery($tickets_by_contact,$module);
 				    return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
 				    }
 		    else
@@ -450,7 +451,7 @@ $graph_array = Array(
                     	$graph_title= $mod_strings['leadsource'];
                     	$module="Leads";
                     	$where="";
-                    	$query=$leads_query." ".dashboard_check($module);                   
+                    	$query=getDashboardQuery($leads_query,$module);
                     	//$html .= get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
                     }
@@ -461,7 +462,7 @@ $graph_array = Array(
                     	$graph_title= $mod_strings['leadstatus'];
                     	$module="Leads";
                     	$where="";
-                    	$query=$leads_query." ".dashboard_check($module);
+                    	$query=getDashboardQuery($leads_query,$module);
 						if(!$is_admin)
 							$query .= ' and vtiger_leaddetails.leadstatus '.picklist_check($module,$graph_by);
 			                    	echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
@@ -473,7 +474,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['leadindustry'];
                             $module="Leads";
                             $where="";
-                            $query=$leads_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($leads_query,$module);
 			    if(!$is_admin)
 			    	$query .= ' and vtiger_leaddetails.industry '.picklist_check($module,$graph_by);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
@@ -485,19 +486,19 @@ $graph_array = Array(
                             $graph_title=$mod_strings['salesbyleadsource'];
                             $module="Potentials";
                             $where=" and vtiger_potential.sales_stage like 'Closed Won' ";
-                            $query=$potential_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($potential_query,$module);
 			    if(!$is_admin)
 			    	$query .= ' and vtiger_potential.leadsource '.picklist_check($module,$graph_by);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
                     }
                     //Sales by Account
-                    elseif ($profileTabsPermission[getTabid("Potentials")] == 0 && ($type == "salesbyaccount") && (getFieldVisibilityPermission('Potentials',$user_id,'account_id') == "0"))
+                    elseif ($profileTabsPermission[getTabid("Potentials")] == 0 && ($type == "salesbyaccount") && (getFieldVisibilityPermission('Potentials',$user_id,'related_to') == "0"))
                     {
-                    	 $graph_by="accountid";
+                    	 $graph_by="related_to";
                          $graph_title=$mod_strings['salesbyaccount'];
                          $module="Potentials";
                          $where=" and vtiger_potential.sales_stage like 'Closed Won' ";
-                         $query=$potential_query." ".dashboard_check($module);
+                         $query=getDashboardQuery($potential_query,$module);
                          echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
                     }
 		    //Sales by User
@@ -506,18 +507,18 @@ $graph_array = Array(
 			$graph_by="smownerid";
 			$graph_title=$mod_strings['salesbyuser'];
 			$module="Potentials";
-			$where=" and vtiger_potential.sales_stage like 'Closed Won' and (vtiger_crmentity.smownerid != NULL || vtiger_crmentity.smownerid != ' ')";
-			$query=$potential_query." ".dashboard_check($module);
+			$where=" and vtiger_potential.sales_stage like 'Closed Won' and (vtiger_groups.groupname is NULL)";
+			$query=getDashboardQuery($potential_query,$module);
 			echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }
 		    //Sales by team
 		    elseif ($profileTabsPermission[getTabid("Potentials")] == 0 && ($type == "salesbyteam"))
 		    {
-			$graph_by="groupname";
+			$graph_by="smownerid";
 			$graph_title=$mod_strings['salesbyteam'];
 			$module="Potentials";
 			$where=" and vtiger_potential.sales_stage like 'Closed Won' and (vtiger_groups.groupname != NULL || vtiger_groups.groupname != '')";
-			$query=$potential_query." ".dashboard_check($module);
+			$query=getDashboardQuery($potential_query,$module);
 			echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }
                     //Charts for Account by Industry
@@ -527,7 +528,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['accountindustry'];
                             $module="Accounts";
                             $where="";
-                            $query=$account_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($account_query,$module);
 			    if(!$is_admin)
 			    	$query .= ' and vtiger_account.industry '.picklist_check($module,$graph_by);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
@@ -539,7 +540,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['productcategory'];
                             $module="Products";
                             $where="";
-                            $query=$product_category." ".dashboard_check($module);
+                            $query=getDashboardQuery($product_category,$module);
 			    if(!$is_admin)
 			    	$query .= ' and vtiger_products.productcategory '.picklist_check($module,$graph_by);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
@@ -551,7 +552,7 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['productbyqtyinstock'];
 			    $module="Products";
 			    $where="";
-			    $query=$products_query." ".dashboard_check($module);
+			    $query=getDashboardQuery($products_query,$module);
 			    echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }
 		    //Charts for Products by PO
@@ -561,7 +562,7 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['productbypo'];
 			    $module="Products";
 			    $where="";
-			    $query=$probyPO." ".dashboard_check("PurchaseOrder");
+			    $query=getDashboardQuery($probyPO,"PurchaseOrder");
 			    echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }
 		    //Charts for Products by Quotes
@@ -571,7 +572,7 @@ $graph_array = Array(
    			    $graph_title=$mod_strings['productbyquotes'];
 			    $module="Products";
 			    $where=""; 
-			    $query=$probyQ." ".dashboard_check("Quotes");
+			    $query=getDashboardQuery($probyQ,"Quotes");
 			    echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }
 		    //Charts for Products by Invoice
@@ -581,7 +582,7 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['productbyinvoice'];
 			    $module="Products";
 			    $where="";
-			    $query=$probyInv." ".dashboard_check("Invoice");
+			    $query=getDashboardQuery($probyInv,"Invoice");
 			    echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }
 
@@ -592,7 +593,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['sobyaccounts'];
                             $module="SalesOrder";
                             $where="";
-                            $query=$so_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($so_query,$module);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
                     }
                     //Sales Order by Status
@@ -602,7 +603,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['sobystatus'];
                             $module="SalesOrder";
                             $where="";
-                            $query=$so_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($so_query,$module);
 			    if(!$is_admin)
 			    	$query .= ' and vtiger_salesorder.sostatus '.picklist_check($module,$graph_by);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
@@ -614,7 +615,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['pobystatus'];
                             $module="PurchaseOrder";
                             $where="";
-                            $query=$po_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($po_query,$module);
 			    if(!$is_admin)
 			    	$query .= ' and vtiger_purchaseorder.postatus '.picklist_check($module,$graph_by);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
@@ -626,7 +627,7 @@ $graph_array = Array(
                             $graph_title= $mod_strings['quotesbyaccounts'];
                             $module="Quotes";
                             $where="";
-                            $query=$quotes_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($quotes_query,$module);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
                     }
                     //Quotes by Stage
@@ -636,7 +637,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['quotesbystage'];
                             $module="Quotes";
                             $where="";
-                            $query=$quotes_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($quotes_query,$module);
 			    if(!$is_admin)
 			    	$query .= ' and vtiger_quotes.quotestage '.picklist_check($module,$graph_by);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
@@ -648,7 +649,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['invoicebyacnts'];
                             $module="Invoice";
                             $where="";
-                            $query=$invoice_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($invoice_query,$module);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
                     }
                     //Invoices by status
@@ -658,7 +659,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['invoicebystatus'];
                             $module="Invoice";
                             $where="";
-                            $query=$invoice_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($invoice_query,$module);
 			    if(!$is_admin)
 			    	$query .= ' and vtiger_invoice.invoicestatus '.picklist_check($module,$graph_by);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
@@ -670,7 +671,7 @@ $graph_array = Array(
                         $graph_title=$mod_strings['ticketsbystatus'];
                         $module="HelpDesk";
                         $where="";
-					    $query=$helpdesk_query." ".dashboard_check($module);
+					    $query=getDashboardQuery($helpdesk_query,$module);
 					    if(!$is_admin)
 					    	$query .= ' and vtiger_troubletickets.status '.picklist_check($module,$graph_by);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
@@ -682,7 +683,7 @@ $graph_array = Array(
                             $graph_title=$mod_strings['ticketsbypriority'];
                             $module="HelpDesk";
                             $where="";
-                            $query=$helpdesk_query." ".dashboard_check($module);
+                            $query=getDashboardQuery($helpdesk_query,$module);
 			    if(!$is_admin)
 			    	$query .= ' and vtiger_troubletickets.priority '.picklist_check($module,$graph_by);
                             echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
@@ -694,7 +695,7 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['ticketsbycategory'];
 			    $module="HelpDesk";
 			    $where="";
-			    $query=$helpdesk_query." ".dashboard_check($module);
+			    $query=getDashboardQuery($helpdesk_query,$module);
 			    if(!$is_admin)
 			    	$query .= ' and vtiger_troubletickets.category '.picklist_check($module,$graph_by);
 			    echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
@@ -705,18 +706,18 @@ $graph_array = Array(
 			    $graph_by="smownerid";
 			    $graph_title=$mod_strings['ticketsbyuser'];
 			    $module="HelpDesk";
-			    $where=" and (vtiger_crmentity.smownerid != NULL || vtiger_crmentity.smownerid != ' ')";
-			    $query=$helpdesk_query." ".dashboard_check($module);
+			    $where=" and (vtiger_groups.groupname is NULL)";
+			    $query=getDashboardQuery($helpdesk_query,$module);
 			    echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }
 		    //Tickets by Team
 		    elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbyteam"))
 		    {
-			    $graph_by="ticketgroupname";
+			    $graph_by="smownerid";
 			    $graph_title=$mod_strings['ticketsbyteam'];
 			    $module="HelpDesk";
 			    $where=" and (vtiger_groups.groupname != NULL || vtiger_groups.groupname != ' ')";
-			    $query=$helpdesk_query." ".dashboard_check($module);
+			    $query=getDashboardQuery($helpdesk_query,$module);
 			    echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }    
 		    //Tickets by Product
@@ -726,7 +727,7 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['ticketsbyproduct'];
 			    $module="HelpDesk";
 			    $where="";
-			    $query=$helpdesk_query." ".dashboard_check($module);
+			    $query=getDashboardQuery($helpdesk_query,$module);
 			    echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }
 		    //Campaigns by Contact
@@ -736,27 +737,27 @@ $graph_array = Array(
 			    $graph_title=$mod_strings['contactbycampaign'];
 			    $module="Contacts";
 			    $where="";
-			    $query=$campaign_query." ".dashboard_check("Campaigns");
+			    $query=getDashboardQuery($campaign_query,"Campaigns");
 			    echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }
 		    //Tickets by Account
 		    elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbyaccount") && (getFieldVisibilityPermission('HelpDesk',$user_id,'parent_id') == "0"))
 		    {
-			    $graph_by="accountid";
+			    $graph_by="parent_id";
 			    $graph_title=$mod_strings['ticketsbyaccount'];
 			    $module="HelpDesk";
 			    $where="";
-			    $query=$tickets_by_account." ".dashboard_check($module);
+			    $query=getDashboardQuery($tickets_by_account, $module);
 			    echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }
 		    //Tickets by Contact
 		    elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbycontact") && (getFieldVisibilityPermission('HelpDesk',$user_id,'parent_id') == "0"))
 		    {
-				    $graph_by="contactid";
+				    $graph_by="parent_id";
 				    $graph_title=$mod_strings['ticketsbycontact'];
 				    $module="HelpDesk";
 				    $where="";
-				    $query=$tickets_by_contact." ".dashboard_check($module);
+				    $query=getDashboardQuery($tickets_by_contact, $module);
 				    echo get_graph_by_type($graph_by,$graph_title,$module,$where,$query);
 		    }
 		    else
@@ -773,18 +774,13 @@ $graph_array = Array(
 *Returns an string value
 */
 
-function dashboard_check($module)
-{
+function getDashboardQuery($query, $module) {
 	global $current_user;
-	$sec_parameter = '';
-	$tab_id = getTabid($module);
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3)
-	{
-		$sec_parameter=getListViewSecurityParameter($module);
+	$secQuery = getNonAdminAccessControlQuery($module, $current_user);
+	if(strlen($secQuery) > 1) {
+		$query = appendFromClauseToQuery($query, $secQuery);
 	}
-	return $sec_parameter;
+	return $query;
 }
 
 /**This function generates the security parameters for a given user base picklist values

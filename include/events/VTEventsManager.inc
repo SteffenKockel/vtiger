@@ -159,13 +159,14 @@
 		 */
 		function listActiveEventHandlers(){
 			$adb = $this->adb;
-			$result = $adb->pquery("select * from vtiger_eventhandlers where is_active=true");
+			$result = $adb->pquery("select * from vtiger_eventhandlers where is_active=true",
+					array());
 			return $this->listEventHandlers($result);
 		}
 		
 		function listAllEventHandlers(){
 			$adb = $this->adb;
-			$result = $adb->pquery("select * from vtiger_eventhandlers");
+			$result = $adb->pquery("select * from vtiger_eventhandlers", array());
 			return $this->listEventHandlers($result);
 
 		}
@@ -178,7 +179,7 @@
 				$el = array();
 				$el['eventName'] = $row->event_name;
 				$el['handlerPath'] = $row->handler_path;
-				$el['handlerClass'] = $tow->handler_class;
+				$el['handlerClass'] = $row->handler_class;
 				$el['condition'] = $row->cond;
 				$el['isActive'] = $row->is_active;
 				$out[] = $el;

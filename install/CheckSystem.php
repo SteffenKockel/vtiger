@@ -46,163 +46,17 @@ if (isset ($_REQUEST['filename'])) {
 	$file_name = htmlspecialchars($_REQUEST['filename']);
 }
 
-$writable_files_folders = array (
-	'Configuration File' => './config.inc.php',
-	'Tabdata File' => './tabdata.php',
-	'Installation File' => './install.php',
-	'Parent Tabdata File' => './parent_tabdata.php',
-	'Cache Directory' => './cache/',
-	'Image Cache Directory' => './cache/images/',
-	'Import Cache Directory' => './cache/import/',
-	'Storage Directory' => './storage/',
-	'Install Directory' => './install/',
-	'User Privileges Directory' => './user_privileges/',
-	'Smarty Cache Directory' => './Smarty/cache/',
-	'Smarty Compile Directory' => './Smarty/templates_c/',
-	'Email Templates Directory' => './modules/Emails/templates/',
-	'Modules Directory' => './modules/',
-	'Cron Modules Directory' => './cron/modules/',
-	'Vtlib Test Directory' => './test/vtlib/',
-	'Backup Directory' => './backup/',
-	'Smarty Modules Directory' => './Smarty/templates/modules/',
-	'Mail Merge Template Directory' => './test/wordtemplatedownload/',
-	'Product Image Directory' => './test/product/',
-	'User Image Directory' => './test/user/',
-	'Contact Image Directory' => './test/contact/',
-	'Logo Directory' => './test/logo/',
-	'Logs Directory' => './logs/',
-	'Webmail Attachments Directory' => './modules/Webmails/tmp/'
-);
-
-require_once ('include/utils/VtlibUtils.php');
-
-foreach ($writable_files_folders as $index => $value) {
-	if (!vtlib_isWriteable($value)) {
-		$failed_permissions[$index] = $value;
-	}
-}
-$gd_info_alternate = 'function gd_info() {
-$array = Array(
-                       "GD Version" => "",
-                       "FreeType Support" => 0,
-                       "FreeType Support" => 0,
-                       "FreeType Linkage" => "",
-                       "T1Lib Support" => 0,
-                       "GIF Read Support" => 0,
-                       "GIF Create Support" => 0,
-                       "JPG Support" => 0,
-                       "PNG Support" => 0,
-                       "WBMP Support" => 0,
-                       "XBM Support" => 0
-                     );
-       $gif_support = 0;
-
-       ob_start();
-       eval("phpinfo();");
-       $info = ob_get_contents();
-       ob_end_clean();
-
-       foreach(explode("\n", $info) as $line) {
-           if(strpos($line, "GD Version")!==false)
-               $array["GD Version"] = trim(str_replace("GD Version", "", strip_tags($line)));
-           if(strpos($line, "FreeType Support")!==false)
-               $array["FreeType Support"] = trim(str_replace("FreeType Support", "", strip_tags($line)));
-           if(strpos($line, "FreeType Linkage")!==false)
-               $array["FreeType Linkage"] = trim(str_replace("FreeType Linkage", "", strip_tags($line)));
-           if(strpos($line, "T1Lib Support")!==false)
-               $array["T1Lib Support"] = trim(str_replace("T1Lib Support", "", strip_tags($line)));
-           if(strpos($line, "GIF Read Support")!==false)
-               $array["GIF Read Support"] = trim(str_replace("GIF Read Support", "", strip_tags($line)));
-           if(strpos($line, "GIF Create Support")!==false)
-               $array["GIF Create Support"] = trim(str_replace("GIF Create Support", "", strip_tags($line)));
-           if(strpos($line, "GIF Support")!==false)
-               $gif_support = trim(str_replace("GIF Support", "", strip_tags($line)));
-           if(strpos($line, "JPG Support")!==false)
-               $array["JPG Support"] = trim(str_replace("JPG Support", "", strip_tags($line)));
-           if(strpos($line, "PNG Support")!==false)
-               $array["PNG Support"] = trim(str_replace("PNG Support", "", strip_tags($line)));
-           if(strpos($line, "WBMP Support")!==false)
-               $array["WBMP Support"] = trim(str_replace("WBMP Support", "", strip_tags($line)));
-           if(strpos($line, "XBM Support")!==false)
-               $array["XBM Support"] = trim(str_replace("XBM Support", "", strip_tags($line)));
-       }
-
-       if($gif_support==="enabled") {
-           $array["GIF Read Support"]  = 1;
-           $array["GIF Create Support"] = 1;
-       }
-
-       if($array["FreeType Support"]==="enabled"){
-           $array["FreeType Support"] = 1;    }
-
-       if($array["T1Lib Support"]==="enabled")
-           $array["T1Lib Support"] = 1;
-
-       if($array["GIF Read Support"]==="enabled"){
-           $array["GIF Read Support"] = 1;    }
-
-       if($array["GIF Create Support"]==="enabled")
-           $array["GIF Create Support"] = 1;
-
-       if($array["JPG Support"]==="enabled")
-           $array["JPG Support"] = 1;
-
-       if($array["PNG Support"]==="enabled")
-           $array["PNG Support"] = 1;
-
-       if($array["WBMP Support"]==="enabled")
-           $array["WBMP Support"] = 1;
-
-       if($array["XBM Support"]==="enabled")
-           $array["XBM Support"] = 1;
-
-       return $array;
-
-}';
-
-$directive_recommended = array (
-	'safe_mode' => 'Off',
-	'display_errors' => 'On',
-	'file_uploads' => 'On',
-	'register_globals' => 'On',
-	'output_buffering' => 'On',
-	'max_execution_time' => '600',
-	'memory_limit' => '32',
-	'error_reporting' => 'E_WARNING & ~E_NOTICE',
-	'allow_call_time_pass_reference' => 'On',
-	'log_errors' => 'Off',
-	'short_open_tag' => 'On'
-);
-$directive_array = array ();
-if (ini_get('safe_mode') == '1' || stripos(ini_get('safe_mode'), 'On') > -1)
-	$directive_array['safe_mode'] = 'On';
-if (ini_get('display_errors') != '1' || stripos(ini_get('display_errors'), 'Off') > -1)
-	$directive_array['display_errors'] = 'Off';
-if (ini_get('file_uploads') != '1' || stripos(ini_get('file_uploads'), 'Off') > -1)
-	$directive_array['file_uploads'] = 'Off';
-if (ini_get('register_globals') == '1' || stripos(ini_get('register_globals'), 'On') > -1)
-	$directive_array['register_globals'] = 'On';
-if (ini_get(('output_buffering') < '4096' && ini_get('output_buffering') != '0') || stripos(ini_get('output_buffering'), 'Off') > -1)
-	$directive_array['output_buffering'] = 'Off';
-if (ini_get('max_execution_time') < 600)
-	$directive_array['max_execution_time'] = ini_get('max_execution_time');
-if (ini_get('memory_limit') < 32)
-	$directive_array['memory_limit'] = ini_get('memory_limit');
-if (ini_get('error_reporting') != '2')
-	$directive_array['error_reporting'] = 'NOT RECOMMENDED';
-if (ini_get('allow_call_time_pass_reference') != '1' || stripos(ini_get('allow_call_time_pass_reference'), 'Off') > -1)
-	$directive_array['allow_call_time_pass_reference'] = 'Off';
-if (ini_get('log_errors') == '1' || stripos(ini_get('log_errors'), 'On') > -1)
-	$directive_array['log_errors'] = 'On';
-if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off') > -1)
-	$directive_array['short_open_tag'] = 'Off';
+$failed_permissions = Common_Install_Wizard_Utils::getFailedPermissionsFiles();
+$gd_info_alternate = Common_Install_Wizard_Utils::$gdInfoAlternate;
+$directive_recommended = Common_Install_Wizard_Utils::getRecommendedDirectives();
+$directive_array = Common_Install_Wizard_Utils::getCurrentDirectiveValue();
+$check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 ?>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>vtiger CRM 5 - Configuration Wizard - Installation Check</title>
+	<title><?php echo $installationStrings['LBL_VTIGER_CRM_5']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_INSTALLATION_CHECK']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 </head>
@@ -214,8 +68,8 @@ if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off'
 
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
-			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="Configuration Wizard" hspace="20" title="Configuration Wizard"></td>
-			<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="vtiger CRM 5" title="vtiger CRM 5"></td>
+			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
+			<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>" title="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>"></td>
 			<td class="cwHeadBg1" width=2%></td>
 		</tr>
 	</table>
@@ -234,12 +88,15 @@ if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off'
 							<!-- Right side tabs -->
 				    		<table cellspacing=0 cellpadding=2 width=95% align=center>
 				    			<tr>
-				    				<td align=left><img src="include/install/images/confWizInstallCheck.gif" alt="Pre Installation Check" title="Pre Installation Check"><br></td>
-									<td align=right valign="middle">
+				    				<td align=left class="paddingTop">
+				    					<span class="bigHeading"><?php echo $installationStrings['LBL_PRE_INSTALLATION_CHECK']; ?></span>
+				    					<br>
+				    				</td>
+									<td align=right valign="middle" class="paddingTop">
 										<form action="install.php" method="post" name="form" id="form">
-							                <input type="hidden" name="filename" value="<?php echo $file_name?>" />
-											<input type="hidden" name="file" value="CheckSystem.php" />	
-									        <input type="image" src="include/install/images/checkagain_blue2.png" value='Refresh' alt="Refresh" border="0" title="Refresh" style="cursor:pointer;" onClick="submit();">
+											<input type="hidden" name="filename" value="<?php echo $file_name?>" />
+							                <input type="hidden" name="file" value="CheckSystem.php" />	
+									        <input type="button" class="refreshButton" value='<?php echo $installationStrings['LBL_CHECK_AGAIN']; ?>' alt="<?php echo $installationStrings['LBL_CHECK_AGAIN']; ?>" title="<?php echo $installationStrings['LBL_REFRESH']; ?>" style="cursor:pointer;" onClick="submit();">
 										</form>
 									</td>  
 								</tr>
@@ -254,35 +111,35 @@ if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off'
 															<td  valign=top align=left width=100%>
 																<table cellpadding="2" cellspacing="1" align=right width="100%" border="0" class="level1">
 																	<tr class='level1'>
-																		<td valign=top >PHP version >= 5.0</td>
+																		<td valign=top ><?php echo $installationStrings['LBL_PHP_VERSION_GT_5']; ?></td>
 																		<td  valign=top><?php $php_version = phpversion(); 
-																					echo (str_replace(".", "", $php_version) < "430") ? 
-																						"<strong><font color=\"Red\">No.</strong></font>" : 
-																						"<strong><font color=\"#46882B\">$php_version</strong></font>";
-																					?>
+																							echo (str_replace(".", "", $php_version) < "430") ? 
+																								"<strong><font color=\"Red\">{$installationStrings['LBL_NO']}</strong></font>" : 
+																								"<strong><font color=\"#46882B\">$php_version</strong></font>";
+																						?>
 																		</td>
 																	</tr>
 																	<tr class='level1'>
-																		<td valign=top >IMAP Support</td>
+																		<td valign=top ><?php echo $installationStrings['LBL_IMAP_SUPPORT']; ?></td>
 										        						<td valign=top><?php echo function_exists('imap_open') ? 
-																						"<strong><font color=\"#46882B\">Yes</strong></font>" : 
-																						"<strong><font color=\"#FF0000\">No</strong></font>";
-																					?>
+																							"<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>" : 
+																							"<strong><font color=\"#FF0000\">{$installationStrings['LBL_NO']}</strong></font>";
+																						?>
 																		</td>
 																	</tr>
 																	<tr class='level1'>
-																		<td valign=top >Zlib Support</td>
+																		<td valign=top ><?php echo $installationStrings['LBL_ZLIB_SUPPORT']; ?></td>
 										        						<td valign=top><?php echo function_exists('gzinflate') ? 
-																						"<strong><font color=\"#46882B\">Yes</strong></font>" : 
-																						"<strong><font color=\"#FF0000\">No</strong></font>";
+																						"<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>" : 
+																						"<strong><font color=\"#FF0000\">{$installationStrings['LBL_NO']}</strong></font>";
 																					?>
 																		</td>
 																	</tr>
 																	<tr class='level1'>
-																		<td valign=top >GD graphics library
+																		<td valign=top ><?php echo $installationStrings['LBL_GD_LIBRARY']; ?></td>
 																		<td valign=top><?php				
 																			if (!extension_loaded('gd')) {
-																			echo "<strong><font size=-1 color=\"#FF0000\">Not configured. </strong></font>";
+																			echo "<strong><font size=-1 color=\"#FF0000\">{$installationStrings['LBL_NOT_CONFIGURED']}.</strong></font>";
 																			} else {
 																				if (!function_exists('gd_info')) {
 																				eval ($gd_info_alternate);
@@ -292,10 +149,22 @@ if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off'
 																			if (isset ($gd_info['GD Version'])) {
 																			$gd_version = $gd_info['GD Version'];
 																			$gd_version = preg_replace('%[^0-9.]%', '', $gd_version);
-																			echo "<strong><font color=\"#46882B\">Yes</strong></font>";
+																			echo "<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>";
 																			} else {
-																				echo "<strong><font size=-1 color=\"#FF0000\">No</font>";
+																				echo "<strong><font size=-1 color=\"#FF0000\">{$installationStrings['LBL_NO']}</font>";
 																				}
+																			}
+																		?>
+																		</td>
+																	</tr>
+																	<tr class="level1">
+																		<td valign=top><?php echo $installationStrings['LBL_DATABASE_EXTENSION'];?></td>
+																		<td valign=top><?php
+																			if($check_mysql_extension == false) {
+																				echo "<strong><font size=-1 color=\"#FF0000\">{$installationStrings['LBL_NO']}</strong></font>";
+																			}
+																			else {
+																				echo "<strong><font color=\"#46882B\">{$installationStrings['LBL_YES']}</strong></font>";
 																			}
 																		?>
 																		</td>
@@ -304,7 +173,7 @@ if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off'
 															</td>
 														</tr>
 														<tr><td class="small" colspan=2><br></td></tr>
-														<tr><td class="small" colspan=2><strong>Recommended PHP Settings:</strong></td></tr>
+														<tr><td class="small" colspan=2><strong><?php echo $installationStrings['LBL_RECOMMENDED_PHP_SETTINGS']; ?>:</strong></td></tr>
 														<?php
 														$all_directive_recommended_value = true;
 														if (!empty ($directive_array)) {
@@ -314,9 +183,9 @@ if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off'
 							   	   							<!-- Recommended Settings -->
 															<table cellpadding="2" cellspacing="1"  width="100%" border="0" class="level1">
 										    					<tr>
-										    						<td valign=top ><strong>Directive</strong></td>
-										    						<td><strong>Recommended</strong></td>
-										    						<td nowrap><strong>PHP.ini value</strong></td>
+										    						<td valign=top ><strong><?php echo $installationStrings['LBL_DIRECTIVE']; ?></strong></td>
+										    						<td><strong><?php echo $installationStrings['LBL_RECOMMENDED']; ?></strong></td>
+										    						<td nowrap><strong><?php echo $installationStrings['LBL_PHP_INI_VALUE']; ?></strong></td>
 										    					</tr>
 														    	<?php
 																foreach ($directive_array as $index => $value) {
@@ -333,7 +202,7 @@ if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off'
 														</td></tr>
 														<?php
 														} else {
-															echo "<tr><td class='small' colspan=2>Your PHP directives have the Recommended values.</td>";
+															echo "<tr><td class='small' colspan=2>{$installationStrings['LBL_PHP_DIRECTIVES_HAVE_RECOMMENDED_VALUES']}</td>";
 														}
 														?>
 													</table>
@@ -343,13 +212,13 @@ if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off'
 														<?php
 														if (!empty ($failed_permissions)) {
 														?>
-														<tr class='level1'><td colspan=2><strong><span style="color:Black;">Read/Write Access</span></strong></td></tr>
+														<tr class='level1'><td colspan=2><strong><span style="color:Black;"><?php echo $installationStrings['LBL_READ_WRITE_ACCESS']; ?></span></strong></td></tr>
 														<?php
 															foreach ($failed_permissions as $index => $value) {
 														?>
 														<tr class='level1'>
 															<td valign=top ><?php echo $index; ?> (<?php echo str_replace("./","",$value); ?>)</td>
-							        						<td valign=top><font color="red"><strong>No</strong></font></td>
+							        						<td valign=top><font color="red"><strong><?php echo $installationStrings['LBL_NO']; ?></strong></font></td>
 														</tr>
 														<?php					
 															}
@@ -364,14 +233,13 @@ if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off'
 								</tr>
 								<tr valign=top>
 									<td align=left >
-										<input type="image" src="include/install/images/cwBtnBack.gif" alt="Back" border="0" title="Back" onClick="window.history.back();">
+										<input type="button" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_BACK']; ?>" title="<?php echo $installationStrings['LBL_BACK']; ?>" onClick="window.history.back();">
 										
 										</td>
 									<td align=right>
 										<form action="install.php" method="post" name="form" id="form">
-							                <input type="hidden" name="filename" value="<?php echo $file_name?>" />
-							                <input type="hidden" name="file" value="SelectOptionalModules.php" />
-											<input type="image" src="include/install/images/cwBtnNext.gif" alt="Next" border="0" title="Next" onClick="return isPermitted();">
+											<input type="hidden" name="file" value="<?php echo $file_name?>" />
+											<input type="submit" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>" onClick="return isPermitted();">
 										</form>
 									</td>
 								</tr>
@@ -406,14 +274,14 @@ function isPermitted(){
 <?php
 
 if (!empty ($failed_permissions)) {
-	echo "alert('Provide Read/Write access to the files and directories listed to Proceed');";
+	echo "alert('{$installationStrings['MSG_PROVIDE_READ_WRITE_ACCESS_TO_PROCEED']}');";
 	echo "return false;";
 } else {
 	if (!$all_directive_recommended_value) { ?>
-		if(confirm('Few of the PHP Setting does not meeting recommended values. This might affect some of the features of vtiger CRM. Are you sure, you want to proceed?')) {
-		<?php echo "return true;"; ?>
+		if(confirm('<?php echo $installationStrings['WARNING_PHP_DIRECTIVES_NOT_RECOMMENDED_STILL_WANT_TO_PROCEED']; ?>')) {
+			return true;
 		} else {
-		<?php echo "return false;"; ?>
+			return false;
 		}
 	<?php
 	}

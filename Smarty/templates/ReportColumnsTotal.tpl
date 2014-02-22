@@ -19,7 +19,7 @@
 	</tr>
 	<tr><td colspan="2">
 	<div style="overflow:auto;height:448px">
-	<table style="background-color: rgb(204, 204, 204);" class="small" border="0" cellpadding="5" cellspacing="1" width="100%">
+	<table style="background-color: rgb(204, 204, 204);" class="small" border="0" cellpadding="5" cellspacing="1" width="100%" valign="top">
 		<tbody>
 		<tr>	
 		<td class="lvtCol" nowrap width="40%">{$MOD.LBL_COLUMNS}</td>

@@ -15,7 +15,6 @@
 <script language="JavaScript" type="text/javascript" src="include/js/picklist.js"></script>
 <script language="JAVASCRIPT" src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
 <script language="JAVASCRIPT" src="modules/Home/Homestuff.js" type="text/javascript"></script>
-<script language="JAVASCRIPT" src="include/js/json.js" type="text/javascript"></script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>

@@ -11,41 +11,41 @@ session_start();
 $current_dir = pathinfo(dirname(__FILE__));
 $current_dir = $current_dir['dirname']."/";
 
+$cur_dir_path = false;
 if (is_file("config.php") && is_file("config.inc.php")) {
 	require_once("config.inc.php");	
-	$cur_dir_path = false;
+	$cur_dir_path = true;
 	if(!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
-		$cur_dir_path = true;
+		$cur_dir_path = false;
 	}
-														
-	global $dbconfig;
+} 
 
-	if(isset($_REQUEST['root_directory'])) $root_directory = $_REQUEST['root_directory'];
-	else $root_directory = $current_dir;
+!isset($_SESSION['migration_info']['root_directory']) ? $root_directory = $current_dir : $root_directory = $_SESSION['migration_info']['root_directory'];
+!isset($_SESSION['migration_info']['source_directory']) ? $source_directory = "" : $source_directory = $_SESSION['migration_info']['source_directory'];
+!isset($_SESSION['migration_info']['user_name']) ? $user_name = "admin" : $user_name = $_SESSION['migration_info']['user_name'];
+!isset($_SESSION['migration_info']['user_pwd']) ? $user_pwd = "" : $user_pwd = $_SESSION['migration_info']['user_pwd'];
+!isset($_SESSION['migration_info']['new_dbname']) ? $new_dbname = "" : $new_dbname = $_SESSION['migration_info']['new_dbname'];
 
-	if(isset($_REQUEST['source_directory'])) $source_directory = $_REQUEST['source_directory'];
-	else $source_directory = '';
-
+if(isset($_SESSION['migration_info']['old_version'])) {
+	$old_version = $_SESSION['migration_info']['old_version'];
+} elseif(isset($_SESSION['VTIGER_DB_VERSION'])) {
+	$old_version = $_SESSION['VTIGER_DB_VERSION'];	
 } else {
-	!isset($_REQUEST['root_directory']) ? $root_directory = $current_dir : $root_directory = stripslashes($_REQUEST['root_directory']);
-	!isset($_REQUEST['source_directory']) ? $source_directory = "" : $source_directory = stripslashes($_REQUEST['source_directory']);
-}
-
-if(isset($_REQUEST['selected_modules'])) {
-	$_SESSION['selectedOptionalModules'] = $_REQUEST['selected_modules'] ;
+	$old_version = "";
 }
 
 include("modules/Migration/versions.php");
 $version_sorted = $versions;
-uasort($version_sorted,version_compare);
+uasort($version_sorted,'version_compare');
 $version_sorted = array_reverse($version_sorted,true);
+$_SESSION['pre_migration'] = false;
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>vtiger CRM 5 - Configuration Wizard - System Configuration</title>
+	<title><?php echo $installationStrings['LBL_VTIGER_CRM_5']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_SYSTEM_CONFIGURATION']?></title>
 
     <link rel='stylesheet' type='text/css' href='themes/softed/style.css'></link>
     <script type="text/javascript" src="include/js/en_us.lang.js"></script>
@@ -65,84 +65,30 @@ function verify_data(form) {
 	// Here we decide whether to submit the form.
 	if (trim(form.source_directory.value) =='') {
 		isError = true;
-		errorMessage += "\n path";
+		errorMessage += "\n <?php echo $installationStrings['LBL_PATH']; ?>";
 		form.source_directory.focus();
 	}
 	if (trim(form.user_name.value) =='') {
 		isError = true;
-		errorMessage += "\n username";
+		errorMessage += "\n <?php echo $installationStrings['LBL_USERNAME']; ?>";
 		form.user_name.focus();
 	}
 	if (trim(form.new_dbname.value) =='') {
 		isError = true;
-		errorMessage += "\n database name";
+		errorMessage += "\n <?php echo $installationStrings['LBL_DATABASE_NAME']; ?>";
 		form.new_dbname.focus();
 	}
 	if(form.old_version.value == ""){
-		alert("Please Select Previous Insallation Version");
+		alert("<?php echo $installationStrings['LBL_SELECT_PREVIOUS_INSTALLATION_VERSION']; ?>");
 		form.old_version.focus();
 		return false;
 	}		
 	// Here we decide whether to submit the form.
 	if (isError == true) {
-		alert("Missing required fields:" + errorMessage);
+		alert("<?php echo $installationStrings['LBL_MISSING_REQUIRED_FIELDS']; ?>:" + errorMessage);
 		return false;
 	}
-return true;
-}
-
-function verify_credentials(){
-	VtigerJS_DialogBox.progress('include/install/images/loading.gif');
-	
-	var source_path = document.getElementById("source_directory").value;
-	var root_directory = document.getElementById("root_directory").value;
-	var user_name = document.getElementById("user_name").value;
-	var old_version = document.getElementById("old_version").value;
-	var user_pwd = document.getElementById("password").value;
-	var new_dbname = document.getElementById("new_dbname").value;
-	new Ajax.Request(
-		'migrate.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'migration_verify=true&source_path='+source_path+'&user_name='+user_name+'&user_pwd='+user_pwd+'&old_version='+old_version+'&new_dbname='+new_dbname+'&root_directory='+root_directory,
-			onComplete: function(response) {
-					var validationFailed = true;
- 					var str = response.responseText
- 					str = trim(str);
- 					if(str.indexOf('NO_CONFIG_FILE') > -1){
-						alert("The Source you have specified doesn't have a config file. \n Please provide a proper Source.");
-					}
-					else if(str.indexOf('NO_USER_PRIV_DIR') > -1){
-						alert("The Source specified doesn't have a user privileges directory. \n Please provide a proper Source.");
-					}
-					else if(str.indexOf('NO_SOURCE_DIR') > -1){
-						alert("The Source specified doesn't seem to be existing. \n Please provide a proper Source.");
-					}
-					else if(str.indexOf('NO_STORAGE_DIR') > -1){
-						alert("The Source specified doesn't have a Storage directory. \n Please provide a proper Source.");
-					}
-					else if(str.indexOf('NOT_VALID_USER') > -1){
-						alert("Not a valid user. Provide an Admin user login details");
-					}
-					else if(str.indexOf('ERR -') > -1){
-						alert(str);
-					}
-					else if(str.indexOf('FAILURE -') > -1){
-						alert(str);
-					}
-					else
-					{
-						validationFailed = false;
-						document.installform.submit();
-						return true;
-					}
-					if (validationFailed == true) {
-						VtigerJS_DialogBox.hideprogress();
-					}
-			}
-		}
-	);
-	return false;
+	return true;
 }
 </script>
 
@@ -150,8 +96,8 @@ function verify_credentials(){
 	<!-- Table for cfgwiz starts -->
 <table border=0 cellspacing=0 cellpadding=0 width=85% align=center>
 	<tr>
-		<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="Configuration Wizard" hspace="20" title="Configuration Wizard"></td>
-		<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="vtiger CRM 5" title="vtiger CRM 5"></td>
+		<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
+		<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>" title="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>"></td>
 		<td class="cwHeadBg1" width=2%></td>
 	</tr>
 </table>
@@ -169,70 +115,63 @@ function verify_credentials(){
 					<td width=80% valign=top class="cwContentDisplay" align=left>
 			    		<table border=0 cellspacing=0 cellpadding=5 width=100%>
 			    			<tr>
-			    				<td colspan=2 class=small align=left>
-			    					<img src="include/install/images/confWizSysConfig.gif" alt="System Configuration" title="System Configuration"><br>
+			    				<td colspan="2" align=left class="paddingTop">
+			    					<span class="bigHeading"><?php echo $installationStrings['LBL_SYSTEM_CONFIGURATION']; ?></span>
+				  					<br>
 				  					<hr noshade size=1>
 				  				</td>
 				  			</tr>
 			    			<tr valign="top">
 								<td align=left class="small" style="padding-left:5px" width="60%">
-							    	<form action="install.php" method="post" name="installform" id="form" name="setConfig">
-										<input type="hidden" name="file" value="PreMigrationActions.php" />
+							    	<form action="install.php" method="post" name="installform" id="form">
+										<!-- input type="hidden" name="file" value="PreMigrationActions.php" /-->
+										<input type="hidden" name="file" value="ConfirmMigrationConfig.php" />
 										<table width="100%" cellpadding="4" align=center border="0" cellspacing="0" class="level3"><tbody>
 											<tr>
-												<td colspan=2><strong>Previous Installation Information</strong><hr size="1" noshade=""/></td>
+												<td colspan=2><strong><?php echo $installationStrings['LBL_PREVIOUS_INSTALLATION_INFORMATION']; ?></strong><hr size="1" noshade=""/></td>
 											</tr>
 											<tr>
-												<td  nowrap width = 35%>Previous Installation Path<sup><font color=red>*</font></sup></td>
+												<td  nowrap width = 35%><?php echo $installationStrings['LBL_PREVIOUS_INSTALLATION_PATH']; ?> <sup><font color=red>*</font></sup></td>
 												<td align="left">
 													<?php
 													if($cur_dir_path == true){
-													?>					
-													<input  class="small" type="text" name="source_directory" id="source_directory" value="<?php if (isset($source_directory)) echo "$source_directory"; ?>" size="50" /> 
-													<?php
-													} else {
 														echo $root_directory;
 													?>					
 													<input  class="small" type="hidden" name="source_directory" id="source_directory" value="<?php if (isset($root_directory)) echo "$root_directory"; ?>" size="50" /> 
-													<?php
-													}
-													?>
+													<?php } else { ?>					
+													<input  class="small" type="text" name="source_directory" id="source_directory" value="<?php if (isset($source_directory)) echo "$source_directory"; ?>" size="50" /> 
+													<?php } ?>	
 													<input class="dataInput" type="hidden" name="root_directory" id="root_directory" value="<?php if (isset($root_directory)) echo "$root_directory"; ?>" size="40" />			
 												</td>
 											</tr>
 											<tr>
-												<td width = 35% >Previous Installation Version<sup><font color=red>*</font></sup></td>
+												<td width = 35%><?php echo $installationStrings['LBL_PREVIOUS_INSTALLATION_VERSION']; ?> <sup><font color=red>*</font></sup></td>
 												<td align="left">
 													<select class="small" name='old_version' id='old_version'>
-														<?php
-															if(!isset($_SESSION['VTIGER_DB_VERSION'])){ 
-																echo "<option value='' selected>--SELECT--</option>";
-															} else {
-																echo "<option value=''>--SELECT--</option>";
-															}
-																
-															foreach($version_sorted as $index=>$value){
-																if($value==$_SESSION['VTIGER_DB_VERSION'] && isset($_SESSION['VTIGER_DB_VERSION']))
-																	echo "<option value='$index' selected>$value</option>";
-																else
-																	echo "<option value='$index'>$value</option>"; 
-															}
+														<option value='' <?php if($old_version == "") echo "selected"; ?> >--SELECT--</option>
+														<?php	
+														foreach($version_sorted as $index=>$value){
+															if($index == $old_version)
+																echo "<option value='$index' selected>$value</option>";
+															else
+																echo "<option value='$index'>$value</option>"; 
+														}
 														?>
 													</select>
 													</select>
 												</td>
 											</tr>
 											<tr>
-												<td width = 35% >Admin Username<sup><font color=red>*</font></sup></td>
+												<td width = 35% >Admin <?php echo $installationStrings['LBL_USERNAME']; ?> <sup><font color=red>*</font></sup></td>
 												<td align="left"><input class="small" type="text" name="user_name" id="user_name" value="<?php if (isset($user_name)) echo $user_name; else echo 'admin';?>" size="50" /> </td>
 											</tr>
 											<tr>
-												<td width = 35%>Admin Password<sup><font color=red></font></sup></td>
-												<td align="left"><input class="small" type="password" name="password" id="password" value="" size="50" /> </td>
+												<td width = 35%>Admin <?php echo $installationStrings['LBL_PASSWORD']; ?> <sup><font color=red></font></sup></td>
+												<td align="left"><input class="small" type="password" name="user_pwd" id="user_pwd" value="<?php if (isset($user_pwd)) echo $user_pwd; else echo '';?>" size="50" /> </td>
 											</tr>
 											<tr>
-												<td width = 35%>Database Name for Migration<sup><font color=red>*</font></sup></td>
-												<td align="left"><input class="small" type="text" name="new_dbname" id="new_dbname" value="" size="50" /> </td>
+												<td width = 35%><?php echo $installationStrings['LBL_MIGRATION_DATABASE_NAME']; ?> <sup><font color=red>*</font></sup></td>
+												<td align="left"><input class="small" type="text" name="new_dbname" id="new_dbname" value="<?php if (isset($new_dbname)) echo $new_dbname; else echo '';?>" size="50" /> </td>
 											</tr>
 										</table>
 									</form>
@@ -242,15 +181,15 @@ function verify_credentials(){
 										<tr>
 											<td>
 												<div class="helpmessagebox paddingPoint5em">
-													<span class="redColor fontBold">Important Note:</span>
+													<span class="redColor fontBold"><?php echo $installationStrings['LBL_IMPORTANT_NOTE']; ?>:</span>
 													<hr />												
 													<ul>
-														<li>Make sure to take <b>backup (dump) of database</b> before proceeding further.</li>
-														<li><b>Migrate using new database</b>?<br>
+														<li><?php echo $installationStrings['MSG_TAKE_DB_BACKUP']; ?>.</li>
+														<li><b><?php echo $installationStrings['QUESTION_MIGRATE_USING_NEW_DB']; ?></b>?<br>
 															<ol style='padding: 0; padding-left: 15px;'>
-															<li>Create the database first with UTF8 charset support.<br>
-															<font class='fontBold'>eg:</font> CREATE DATABASE <newDatabaseName> DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</li>
-															<li><b>Copy the data (dump)</b> from earlier database into this new one.</li>
+															<li><?php echo $installationStrings['MSG_CREATE_DB_WITH_UTF8_SUPPORT']; ?>.<br>
+															<font class='fontBold'><?php echo $installationStrings['LBL_EG']; ?>:</font> CREATE DATABASE <newDatabaseName> DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</li>
+															<li><?php echo $installationStrings['MSG_COPY_DATA_FROM_OLD_DB']; ?>.</li>
 															</ol>
 														</li>
 													</ul>
@@ -263,10 +202,10 @@ function verify_credentials(){
 							
 							<tr>
 								<td align="left">
-									<input type="image" src="include/install/images/cwBtnBack.gif" alt="Back" border="0" title="Back" onClick="window.history.back();">
+									<input type="button" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_BACK']; ?>" title="<?php echo $installationStrings['LBL_BACK']; ?>" onClick="window.history.back();">
 								</td>
 								<td align="right">
-									<input type="image" src="include/install/images/cwBtnNext.gif" id="starttbn" alt="Next" border="0" title="Next" onClick="if(verify_data(installform) == true) return verify_credentials()">
+									<input type="button" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>" onClick="if(verify_data(installform) == true) document.installform.submit();">
 								</td>
 							</tr>
 						</table>

@@ -9,7 +9,7 @@
  *************************************************************************************/
 
 class VtigerModuleOperation extends WebserviceEntityOperation {
-	private $tabId;
+	protected $tabId;
 	protected $isEntity = true;
 	
 	public function VtigerModuleOperation($webserviceObject,$user,$adb,$log){
@@ -73,6 +73,27 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
 	
+	public function revise($element){
+		$ids = vtws_getIdComponents($element["id"]);
+		$element = DataTransform::sanitizeForInsert($element,$this->meta);
+
+		$crmObject = new VtigerCRMObject($this->tabId, true);
+		$crmObject->setObjectId($ids[1]);
+		$error = $crmObject->revise($element);
+		if(!$error){
+			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,"Database error while performing required operation");
+		}
+
+		$id = $crmObject->getObjectId();
+
+		$error = $crmObject->read($id);
+		if(!$error){
+			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,"Database error while performing required operation");
+		}
+
+		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
+	}
+
 	public function delete($id){
 		$ids = vtws_getIdComponents($id);
 		$elemid = $ids[1];
@@ -139,6 +160,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$fields = array();
 		$moduleFields = $this->meta->getModuleFields();
 		foreach ($moduleFields as $fieldName=>$webserviceField) {
+			if(((int)$webserviceField->getPresence()) == 1) {
+				continue;
+			}
 			array_push($fields,$this->getDescribeFieldArray($webserviceField));
 		}
 		array_push($fields,$this->getIdField($this->meta->getObectIndexColumn()));

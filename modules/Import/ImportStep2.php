@@ -42,7 +42,7 @@ require_once('include/utils/CommonUtils.php');
 @session_unregister('startval');
 @session_unregister('return_field_count');
 $_SESSION['totalrows'] = '';
-$_SESSION['recordcount'] = 500;
+$_SESSION['recordcount'] = 250;
 $_SESSION['startval'] = 0;
 
 global $mod_strings;

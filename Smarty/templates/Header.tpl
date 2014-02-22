@@ -15,6 +15,16 @@
 	<title>{$CURRENT_USER} - {$APP.$CATEGORY} - {$APP.$MODULE_NAME} - {$APP.LBL_BROWSER_TITLE}</title>
 	<link REL="SHORTCUT ICON" HREF="themes/images/vtigercrm_icon.ico">	
 	<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
+	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
+	{* vtlib customization: Inclusion of custom javascript and css as registered *}
+	{if $HEADERCSS}
+		<!-- Custom Header CSS -->
+		{foreach item=HDRCSS from=$HEADERCSS}
+			<link rel="stylesheet" type="text/css" href="{$HDRCSS->linkurl}"></script>
+		{/foreach}
+		<!-- END -->
+	{/if}
+	{* END *}
 	<!-- ActivityReminder customization for callback -->
 	{literal}
 	<style type="text/css">div.fixedLay1 { position:fixed; }</style>
@@ -28,6 +38,7 @@
 	<a name="top"></a>
 	<!-- header -->
 	<!-- header-vtiger crm name & RSS -->
+	<script language="JavaScript" type="text/javascript" src="include/js/json.js"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
 	<!-- vtlib customization: Javascript hook -->	
 	<script language="JavaScript" type="text/javascript" src="include/js/vtlib.js"></script>
@@ -40,7 +51,6 @@
 	<script language="JavaScript" type="text/javascript" src="modules/Calendar/script.js"></script>
 	<script language="javascript" type="text/javascript" src="include/scriptaculous/dom-drag.js"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/notificationPopup.js"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
         <script type="text/javascript" src="jscalendar/calendar.js"></script>
         <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
         <script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
@@ -59,13 +69,6 @@
 		<!-- Custom Header Script -->
 		{foreach item=HEADERSCRIPT from=$HEADERSCRIPTS}
 			<script type="text/javascript" src="{$HEADERSCRIPT->linkurl}"></script>
-		{/foreach}
-		<!-- END -->
-	{/if}
-	{if $HEADERCSS}
-		<!-- Custom Header CSS -->
-		{foreach item=HDRCSS from=$HEADERCSS}
-			<link rel="stylesheet" type="text/css" href="{$HDRCSS->linkurl}"></script>
 		{/foreach}
 		<!-- END -->
 	{/if}
@@ -141,6 +144,73 @@
 <div id='miniCal' style='width:300px; position:absolute; display:none; left:100px; top:100px; z-index:100000'>
 </div>
 
+{if $MODULE_NAME eq 'Calendar'}
+<div id="CalExport" style="width:300px; position:absolute; display:none; left:500px; top:100px; z-index:100000" class="layerPopup">
+	<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
+	<tr>
+		<td class="genHeaderSmall" nowrap align="left" width="30%" >{$APP.LBL_EXPORT} </td>
+		<td align="right"><a href='javascript:ghide("CalExport");'><img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="right" border="0"></a></td>
+	</tr>
+	</table>
+	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
+	<tr>
+		<td class="small">
+			<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
+			<tr>
+				<td align="right" nowrap class="cellLabel small">
+					<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="$('ics_filename').removeAttribute('disabled');" checked /> iCal Format
+				</td>
+				<td align="left">
+					<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='vtiger.calendar'/>
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	</table>
+	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
+	<tr>
+		<td class="small" align="center">
+		<input type="button" onclick="return exportCalendar();" value="Export" class="crmbutton small edit" name="button"/>
+		</td>
+	</tr>
+	</table>
+</div>
+<div id='CalImport' style='width:300px; position:absolute; display:none; left:500px; top:100px; z-index:100000' class="layerPopup">
+	{assign var='label_filename' value='LBL_FILENAME'}
+	<form name='ical_import' id='ical_import' onsubmit="VtigerJS_DialogBox.block();" enctype="multipart/form-data" action="index.php" method="POST">
+	<input type='hidden' name='module' value=''>
+	<input type='hidden' name='action' value=''>
+		<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
+			<tr>
+				<td class="genHeaderSmall" nowrap align="left" width="30%" id="editfolder_info">{$APP.LBL_IMPORT}</td>
+				<td align="right"><a href='javascript:ghide("CalImport");'><img src="{'close.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0"></a></td>
+			</tr>
+		</table>
+		<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
+			<tr>
+				<td class="small">
+					<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
+						<tr>
+							<td align="right" nowrap class="cellLabel small"><b>{$label_filename|@getTranslatedString} </b></td>
+							<td align="left">
+								<input class="small" type='file' name='ics_file' id='ics_file'/>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
+			<tr>
+				<td class="small" align="center">
+				<input type="button" onclick="return importCalendar();" value="Import" class="crmbutton small edit" name="button"/>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+{/if}
 <!-- header - master tabs -->
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="hdrTabBg">
 <tr>

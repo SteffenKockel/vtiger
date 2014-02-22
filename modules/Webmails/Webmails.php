@@ -203,7 +203,7 @@ class Webmails extends CRMEntity {
 
     function find_relationships() {
 	// leads search
-	$sql = "SELECT * from vtiger_leaddetails left join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid where vtiger_leaddetails.email = ? AND vtiger_crmentity.deleted='0'";
+	$sql = "SELECT * from vtiger_leaddetails left join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid where vtiger_leaddetails.email = ? AND vtiger_crmentity.deleted='0' and converted=0";
 	$res = $this->db->pquery($sql,array(trim($this->from)),true,"Error: "."<BR>$query");
 	$numRows = $this->db->num_rows($res);
 	if($numRows > 0)
@@ -366,17 +366,17 @@ class Webmails extends CRMEntity {
 	function graphicalsmilies($body) {
 		$user_prefs = $_SESSION['nocc_user_prefs'];
 		if (isset($user_prefs->graphical_smilies) && $user_prefs->graphical_smilies) {
-			$body = ereg_replace("\;-?\)","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/wink.png\" alt=\"wink\"/>", $body);
-			$body = ereg_replace("\;-?D","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/grin.png\" alt=\"grin\"/>", $body);
-			$body = ereg_replace(":\'\(?","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/cry.png\" alt=\"cry\"/>", $body);
-			$body = ereg_replace(":-?[xX]","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/confused.png\" alt=\"confused\"/>", $body);
-			$body = ereg_replace(":-?\[\)","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/embarassed.png\" alt=\"embarassed\"/>", $body);
-			$body = ereg_replace(":-?\*","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/love.png\" alt=\"love\"/>", $body);
-			$body = ereg_replace(":-?[pP]","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/tongue.png\" alt=\"tongue\"/>", $body);
-			$body = ereg_replace(":-?\)","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/happy.png\" alt=\"happy\"/>", $body);
-			$body = ereg_replace(":-?\(","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/unhappy.png\" alt=\"unhappy\"/>", $body);
-			$body = ereg_replace(":-[oO]","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/surprised.png\" alt=\"surprised\"/>", $body);
-			$body = ereg_replace("8-?\)","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/cool.png\" alt=\"cool\"/>", $body);
+			$body = preg_replace("/\;-?\)/","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/wink.png\" alt=\"wink\"/>", $body);
+			$body = preg_replace("/\;-?D/","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/grin.png\" alt=\"grin\"/>", $body);
+			$body = preg_replace("/:\'\(?/","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/cry.png\" alt=\"cry\"/>", $body);
+			$body = preg_replace("/:-?[xX]/","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/confused.png\" alt=\"confused\"/>", $body);
+			$body = preg_replace("/:-?\[\)/","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/embarassed.png\" alt=\"embarassed\"/>", $body);
+			$body = preg_replace("/:-?\*/","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/love.png\" alt=\"love\"/>", $body);
+			$body = preg_replace("/:-?[pP]/","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/tongue.png\" alt=\"tongue\"/>", $body);
+			$body = preg_replace("/:-?\)/","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/happy.png\" alt=\"happy\"/>", $body);
+			$body = preg_replace("/:-?\(/","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/unhappy.png\" alt=\"unhappy\"/>", $body);
+			$body = preg_replace("/:-[oO]/","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/surprised.png\" alt=\"surprised\"/>", $body);
+			$body = preg_replace("/8-?\)/","<img src=\"themes/" . $_SESSION['nocc_theme'] . "/img/smilies/cool.png\" alt=\"cool\"/>", $body);
 		}
 		return ($body);
 	}
@@ -716,7 +716,7 @@ function convertMailData2Html($maildata, $cutafter = 0)
 
 
 
-		if (eregi('text/html', $tmpvar['mime']) || eregi('text/plain', $tmpvar['mime']))
+		if (preg_match("/text\/html/i", $tmpvar['mime']) || preg_match("/text\/plain/i", $tmpvar['mime']))
 		{
 			if ($tmpvar['transfer'] == 'QUOTED-PRINTABLE')
 				$body = imap_qprint($body);
@@ -882,14 +882,14 @@ function convertMailData2Html($maildata, $cutafter = 0)
 	{
 		$parts = array();
 
-		$PN_EREG_BOUNDARY = "Content-Type:(.*)boundary=\"([^\"]+)\"";
+		$PN_EREG_BOUNDARY = "/Content-Type:(.*)boundary=\"([^\"]+)\"/i";
 
-		if (eregi ($PN_EREG_BOUNDARY, $header, $regs))
+		if (preg_match ($PN_EREG_BOUNDARY, $header, $regs))
 		{
 			$boundary = $regs[2];
 
-			$delimiterReg = "([^\r\n]*)$boundary([^\r\n]*)";
-			if (eregi ($delimiterReg, $body, $results))
+			$delimiterReg = "/([^\r\n]*)$boundary([^\r\n]*)/i";
+			if (preg_match ($delimiterReg, $body, $results))
 			{
 				$delimiter = $results[0];
 				$parts = explode($delimiter, $body);

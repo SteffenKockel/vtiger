@@ -130,7 +130,11 @@ function sendPrdStckMail($product_id,$upd_qty,$prod_name,$qtyinstk,$qty,$module)
 
 		$subject = $adb->query_result($result,0,'notificationsubject');
 		$body = $adb->query_result($result,0,'notificationbody');
-
+		$status = $adb->query_result($result,0,'status');
+		
+		if($status == 0 || $status == '')
+				return false;
+	
 		$subject = str_replace('{PRODUCTNAME}',$prod_name,$subject);
 		$body = str_replace('{HANDLER}',$handler_name,$body);	
 		$body = str_replace('{PRODUCTNAME}',$prod_name,$body);	
@@ -518,7 +522,7 @@ function updateInventoryProductRel($entity)
  *	@param $update_prod_stock - true or false (default), if true we have to update the stock for PO only
  *	@return void
  */
-function saveInventoryProductDetails($focus, $module, $update_prod_stock='false', $updateDemand='')
+function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false', $updateDemand='')
 {
 	global $log, $adb;
 	$id=$focus->id;
@@ -594,6 +598,8 @@ function saveInventoryProductDetails($focus, $module, $update_prod_stock='false'
 		$query ="insert into vtiger_inventoryproductrel(id, productid, sequence_no, quantity, listprice, comment, description) values(?,?,?,?,?,?,?)";
 		$qparams = array($focus->id,$prod_id,$prod_seq,$qty,$listprice,$comment,$description);
 		$adb->pquery($query,$qparams);
+		
+		$lineitem_id = $adb->getLastInsertID();
 
 		$sub_prod_str = $_REQUEST['subproduct_ids'.$i];
 		if (!empty($sub_prod_str)) {
@@ -640,8 +646,8 @@ function saveInventoryProductDetails($focus, $module, $update_prod_stock='false'
 				$updatequery .= " $tax_name = ?,";
 				array_push($updateparams,$tax_val);
 			}
-				$updatequery = trim($updatequery,',')." where id=? and productid=?";
-				array_push($updateparams,$focus->id,$prod_id);
+				$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
+				array_push($updateparams,$focus->id,$prod_id, $lineitem_id);
 		}
 		else
 		{
@@ -654,8 +660,8 @@ function saveInventoryProductDetails($focus, $module, $update_prod_stock='false'
 				$updatequery .= " $tax_name = ?,";
 				array_push($updateparams, $_REQUEST[$request_tax_name]);
 			}
-				$updatequery = trim($updatequery,',')." where id=? and productid=?";
-				array_push($updateparams, $focus->id,$prod_id);
+				$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
+				array_push($updateparams, $focus->id,$prod_id, $lineitem_id);
 		}
 		// jens 2006/08/19 - protect against empy update queries
  		if( !preg_match( '/set\s+where/i', $updatequery)) {

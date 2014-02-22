@@ -115,26 +115,11 @@ if((isset($_REQUEST['backupnow'])))
         
 		if(is_dir($path) && is_writable($path))
 		{        
-			$fileName = $path.'/backup_'.$currenttime.'.zip';
-			$createZip = new createDirZip;
-	
-			$createZip->addDirectory('user_privileges/');
-			$createZip->get_files_from_folder('user_privileges/', 'user_privileges/');        
-	
-			$createZip->addDirectory('storage/');
-			$createZip->get_files_from_folder('storage/', 'storage/');        
-	
-			$backup_DBFileName = "sqlbackup_".$currenttime.".sql";
-			$dbdump = new DatabaseDump(dbserver, dbuser, dbpass);
-			$dumpfile = 'backup/'.$backup_DBFileName;
-			$dbdump->save(dbname, $dumpfile) ;
-
-			$filedata = implode("", file('backup/'.$backup_DBFileName));	
-			$createZip->addFile($filedata,$backup_DBFileName);
-			
-			$fd = fopen ($fileName, 'wb');
-			$out = fwrite ($fd, $createZip->getZippedfile());
-			fclose ($fd);
+			require_once 'modules/VtigerBackup/VtigerBackup.php';
+			require_once 'include/db_backup/DatabaseBackup.php';
+			$backup = new VtigerBackup();
+			$backup->backup();
+			$fileName = $backup->getBackupFileName();
 		
 			$smarty->assign("BACKUP_RESULT", '<b><font color="red">'. $fileName.'</font></b>');
 		}

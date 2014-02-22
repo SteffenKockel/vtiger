@@ -52,10 +52,33 @@ function getTopPurchaseOrder($maxval,$calCnt)
 	//Retreive the list from Database
 	//<<<<<<<<<customview>>>>>>>>>
 	$date_var = date('Y-m-d');
-
-	$where = ' and vtiger_crmentity.smownerid='.$current_user->id.' and  vtiger_purchaseorder.duedate >= \''.$date_var.'\'';
-	$query = getListQuery("PurchaseOrder",$where);
-	$query .=" ORDER BY total DESC";
+	$currentModule = 'PurchaseOrder';
+	$viewId = getCvIdOfAll($currentModule);
+	$queryGenerator = new QueryGenerator($currentModule, $current_user);
+	$queryGenerator->initForCustomViewById($viewId);
+	$meta = $queryGenerator->getMeta($currentModule);
+	$accessibleFieldNameList = array_keys($meta->getModuleFields());
+	$customViewFields = $queryGenerator->getCustomViewFields();
+	$fields = $queryGenerator->getFields();
+	$newFields = array_diff($fields, $customViewFields);
+	$widgetFieldsList = array('subject','vendor_id','contact_id','total');
+	$widgetFieldsList = array_intersect($accessibleFieldNameList, $widgetFieldsList);
+	$widgetSelectedFields = array_chunk(array_intersect($customViewFields, $widgetFieldsList), 2);
+	//select the first chunk of two fields
+	$widgetSelectedFields = $widgetSelectedFields[0];
+	if(count($widgetSelectedFields) < 2) {
+		$widgetSelectedFields = array_chunk(array_merge($widgetSelectedFields, $accessibleFieldNameList), 2);
+		//select the first chunk of two fields
+		$widgetSelectedFields = $widgetSelectedFields[0];
+	}
+	$newFields = array_merge($newFields, $widgetSelectedFields);
+	$queryGenerator->setFields($newFields);
+	$_REQUEST = getTopPurchaseOrderSearch($_REQUEST, array(
+		'assigned_user_id'=>$current_user->column_fields['user_name'],
+		'duedate'=>$date_var));
+	$queryGenerator->addUserSearchConditions($_REQUEST);
+	$search_qry = '&query=true'.getSearchURL($_REQUEST);
+	$query = $queryGenerator->getQuery();
 
 	//<<<<<<<<customview>>>>>>>>>
 	
@@ -115,19 +138,32 @@ function getTopPurchaseOrder($maxval,$calCnt)
 
 	//Retreive the List View Table Header
 	$title=array('myTopPurchaseOrders.gif',$current_module_strings['LBL_MY_TOP_PO'],'home_mytoppo');
-	$listview_header = getListViewHeader($focus,"PurchaseOrder",$url_string,$sorder,$order_by,"HomePage",$oCustomView);
-	$header = Array($listview_header[1],$listview_header[2]);
+	$controller = new ListViewController($adb, $current_user, $queryGenerator);
+	$controller->setHeaderSorting(false);
+	$header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,
+			$order_by, true);
 
-	$listview_entries = getListViewEntries($focus,"PurchaseOrder",$list_result,$navigation_array,"HomePage","","EditView","Delete",$oCustomView);
-	foreach($listview_entries as $crmid=>$valuearray)
-	{
-		$entries[$crmid] = Array($valuearray[1],$valuearray[2]);	
-	}
-	
-	$search_qry = "&smodule=PO&query=true&Fields0=vtiger_crmentity.smownerid&Condition0=is&Srch_value0=".$current_user->column_fields['user_name']."&Fields1=vtiger_purchaseorder.duedate&Condition1=grteq&Srch_value1=".$date_var."&searchtype=advance&search_cnt=2&matchtype=all";
+	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,
+	$navigation_array, true);
 	
 	$values=Array('ModuleName'=>'PurchaseOrder','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 	if ( ($display_empty_home_blocks && $noofrows == 0 ) || ($noofrows>0) )	
 		return $values;
 }
+
+function getTopPurchaseOrderSearch($output, $input) {
+	$output['smodule'] = 'PO';
+	$output['query'] = 'true';
+	$output['Fields0'] = 'assigned_user_id';
+	$output['Condition0'] = 'e';
+	$output['Srch_value0'] = $input['assigned_user_id'];
+	$output['Fields1'] = 'duedate';
+	$output['Condition1'] = 'h';
+	$output['Srch_value1'] = $input['duedate'];
+	$output['searchtype'] = 'advance';
+	$output['search_cnt'] = '2';
+	$output['matchtype'] = 'all';
+	return $output;
+}
+
 ?>

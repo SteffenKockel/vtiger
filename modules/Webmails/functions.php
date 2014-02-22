@@ -152,7 +152,7 @@ function inbox(&$pop, $skip = 0, &$ev)
 
 function GetSinglePart(&$attach_tab, &$this_part, &$header, &$body)
 {
-    if (eregi('text/html', $header))
+    if (preg_match("/text\/html/i", $header))
         $full_mime_type = 'text/html';
     else
 	    $full_mime_type = 'text/plain';
@@ -219,7 +219,7 @@ function remove_stuff(&$body, &$mime)
 
     $lang = $_SESSION['nocc_lang'];
 
-    if (eregi('html', $mime))
+    if (preg_match("/html/i", $mime))
     {
         $to_removed_array = array (
             "'<html>'si",
@@ -241,21 +241,18 @@ function remove_stuff(&$body, &$mime)
         $body = preg_replace("|href=\"(.*)script:|i", 'href="nocc_removed_script:', $body);
         $body = preg_replace("|<([^>]*)java|i", '<nocc_removed_java_tag', $body);
         $body = preg_replace("|<([^>]*)&{.*}([^>]*)>|i", "<&{;}\\3>", $body);
-        //$body = eregi_replace("href=\"mailto:([a-zA-Z0-9+-=%&:_.~?@]+[#a-zA-Z0-9+]*)\"","HREF=\"$PHP_SELF?action=write&amp;mail_to=\\1\"", $body);
-	$body = eregi_replace("href=\"mailto:([a-zA-Z0-9+-=%&:_.~?@]+[#a-zA-Z0-9+]*)\"","HREF=\"mailto:\\1\"", $body);
-        $body = eregi_replace("href=mailto:([a-zA-Z0-9+-=%&:_.~?@]+[#a-zA-Z0-9+]*)","HREF=\"$PHP_SELF?action=write&amp;mail_to=\\1\"", $body);
-        $body = eregi_replace("href=\"([a-zA-Z0-9+-=%&:_.~?]+[#a-zA-Z0-9+]*)\"","href=\"javascript:void(0);\" onclick=\"window.open('\\1');\"", $body);
-        $body = eregi_replace("href=([a-zA-Z0-9+-=%&:_.~?]+[#a-zA-Z0-9+]*)","href=\"javascript:void(0);\" onclick=\"window.open('\\1');\"", $body);
+		$body = preg_replace("/href=\"mailto:([a-zA-Z0-9+-=%&:_.~?@]+[#a-zA-Z0-9+]*)\"/i","HREF=\"mailto:\\1\"", $body);
+        $body = preg_replace("/href=mailto:([a-zA-Z0-9+-=%&:_.~?@]+[#a-zA-Z0-9+]*)/i","HREF=\"$PHP_SELF?action=write&amp;mail_to=\\1\"", $body);
+        $body = preg_replace("/href=\"([a-zA-Z0-9+-=%&:_.~?]+[#a-zA-Z0-9+]*)\"/i","href=\"javascript:void(0);\" onclick=\"window.open('\\1');\"", $body);
+        $body = preg_replace("/href=([a-zA-Z0-9+-=%&:_.~?]+[#a-zA-Z0-9+]*)/i","href=\"javascript:void(0);\" onclick=\"window.open('\\1');\"", $body);
     }
-    elseif (eregi('plain', $mime))
+    elseif (preg_match("/plain/i", $mime))
     {
         $user_prefs = $_SESSION['nocc_user_prefs'];
         $body = htmlspecialchars($body);
-        $body = eregi_replace("(http|https|ftp)://([a-zA-Z0-9+-=%&:_.~?]+[#a-zA-Z0-9+]*)","<a href=\"javascript:void(0);\" onclick=\"window.open('\\1://\\2');\">\\1://\\2</a>", $body);
+        $body = preg_replace("/(http|https|ftp):\/\/([a-zA-Z0-9+-=%&:_.~?]+[#a-zA-Z0-9+]*)/","<a href=\"javascript:void(0);\" onclick=\"window.open('\\1://\\2');\">\\1://\\2</a>", $body);
         // Bug #511302: Comment out following line if you have the 'Invalid Range End' problem
         // New rewritten preg_replace should fix the problem, bug #522389
-        // $body = eregi_replace("([#a-zA-Z0-9+-._]*)@([#a-zA-Z0-9+-_.]*)\.([a-zA-Z]+)","<a href=\"$PHP_SELF?action=write&amp;mail_to=\\1@\\2.\\3\">\\1@\\2.\\3</a>", $body);
-        //$body = preg_replace("/([0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,})/", "<a href=\"$PHP_SELF?action=write&amp;mail_to=\\1\">\\1</a>", $body); 
 	$body = preg_replace("/([0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,})/", "<a href=\"mailto:\\1\">\\1</a>", $body);
         if ( !isset($user_prefs->colored_quotes) || (isset($user_prefs->colored_quotes) && $user_prefs->colored_quotes)) {
           $body = preg_replace('/^(&gt; *&gt; *&gt; *&gt; *&gt;)(.*?)(\r?\n)/m', '<span class="quoteLevel5">\\1\\2</span>\\3', $body);
@@ -362,15 +359,15 @@ function get_reply_all(&$from, &$to, &$cc)
 {
     $login = $_SESSION['nocc_login'];
     $domain = $_SESSION['nocc_domain'];
-    if (!eregi($login.'@'.$domain, $from))
+    if (!preg_match("/$login@$domain/i", $from))
         $rcpt = $from.'; ';
     $tab = explode(',', $to);
     while ($tmpvar = array_shift($tab))
-        if (!eregi($login.'@'.$domain, $tmpvar))
+        if (!preg_match("/$login@$domain/i", $tmpvar))
             $rcpt .= $tmpvar.'; ';
     $tab = explode(',', $cc);
     while ($tmpvar = array_shift($tab))
-        if (!eregi($login.'@'.$domain, $tmpvar))
+        if (!preg_match("/$login@$domain/i", $tmpvar))
             $rcpt .= $tmpvar.'; ';
     $rcpt = isset($rcpt) ? substr($rcpt, 0, strlen($rcpt) - 2) : $from;
     return ($rcpt);
@@ -464,8 +461,6 @@ function view_part(&$pop, &$mail, $part_no, &$transfer, &$msg_charset, &$charset
         $str = nl2br(quoted_printable_decode($text));
     else
         $str = nl2br($text);
-    //if (eregi('koi', $transfer) || eregi('windows-1251', $transfer))
-    //    $str = @convert_cyr_string($str, $msg_charset, $charset);
     return ($str);
 }
 
@@ -548,7 +543,7 @@ function mailquote(&$body, &$from, $html_wrote)
     $user_prefs = $_SESSION['nocc_user_prefs'];
 
   $crlf = "\r\n";
-  $from = ucwords(trim(ereg_replace("&lt;.*&gt;", "", str_replace("\"", "", $from))));
+  $from = ucwords(trim(preg_replace("/&lt;.*&gt;/", "", str_replace("\"", "", $from))));
 
   if (isset($user_prefs->wrap_msg)) {
     $wrap_msg = $user_prefs->wrap_msg;
@@ -599,7 +594,7 @@ function mailquote(&$body, &$from, $html_wrote)
       $body = $msg;
     }
   else
-    $body = "> " . ereg_replace("\n", "\n> ", trim($body));
+    $body = "> " . preg_replace("/\n/", "\n> ", trim($body));
   return($from . ' ' . $html_wrote . " :\n\n" . $body);
 
 }
@@ -650,11 +645,11 @@ function wrap_outgoing_msg ($txt, $length, $newline)
 
 function strip_tags2(&$string, $allow)
 {
-    $string = eregi_replace('<<', '<nocc_less_than_tag><', $string);
-    $string = eregi_replace('>>', '><nocc_greater_than_tag>;', $string);
+    $string = preg_replace('/<</', '<nocc_less_than_tag><', $string);
+    $string = preg_replace('/>>/', '><nocc_greater_than_tag>;', $string);
     $string = strip_tags($string, $allow . '<nocc_less_than_tag><nocc_greater_than_tag>');
-    $string = eregi_replace('<nocc_less_than_tag>', '<', $string);
-    return eregi_replace('<nocc_greater_than_tag>', '>', $string);
+    $string = preg_replace('/<nocc_less_than_tag>/', '<', $string);
+    return preg_replace('/<nocc_greater_than_tag>/', '>', $string);
 }
 
 /* ----------------------------------------------------- */
@@ -663,8 +658,8 @@ function strip_tags2(&$string, $allow)
 function valid_email($email)
 {
     /* Regex of valid characters */
-    $regexp = "^[A-Za-z0-9\._-]+@([A-Za-z0-9][A-Za-z0-9-]{1,62})(\.[A-Za-z0-9][A-Za-z0-9-]{1,62})+$";
-    if(!ereg($regexp, $email))
+    $regexp = "/^[A-Za-z0-9\._-]+@([A-Za-z0-9][A-Za-z0-9-]{1,62})(\.[A-Za-z0-9][A-Za-z0-9-]{1,62})+$/";
+    if(!preg_match($regexp, $email))
         return FALSE;
     return TRUE;
 }

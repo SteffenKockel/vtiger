@@ -265,17 +265,15 @@ x;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#fff
 </tbody>
 </table>
 
-<script type="text/javascript" src="include/fckeditor/fckeditor.js"></script>
-       <script type="text/javascript" defer="1">
-
-       var oFCKeditor = null;
-
-                      oFCKeditor = new FCKeditor( "body" ) ;
-       
-       oFCKeditor.BasePath   = "include/fckeditor/" ;
-       oFCKeditor.ReplaceTextarea() ;
-
-       </script>
+<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" defer="1">var textAreaName = null;
+	var textAreaName = 'body';
+	CKEDITOR.replace( textAreaName,	{ldelim}
+		extraPlugins : 'uicolor',
+		uiColor: '#dfdff1'
+	{rdelim} ) ;
+	var oCKeditor = CKEDITOR.instances[textAreaName];
+</script>
 
 <script>
 

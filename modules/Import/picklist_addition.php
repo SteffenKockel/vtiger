@@ -28,6 +28,7 @@ for($i=0;$i<$no_of_picklists;$i++)
 	}
 }
 
+$csv_picklist_values = array();
 //Collect all picklist values from csv file
 foreach($field_to_pos as $fieldname => $ind)
 {
@@ -83,22 +84,6 @@ foreach($csv_picklist_values as $fieldname => $temp_array)
 
 	}
 	
-}
-function getPicklist($field,$value)
-{
-	global $table_picklist,$converted_table_picklist_values;	
-	$orginal_val = $table_picklist[$field];
-	$converted_val = $converted_table_picklist_values[$field];
-	$temp_val = strtolower($value);
-
-	if(in_array($temp_val,$converted_val))
-	{
-		$existkey = array_search($temp_val,$converted_val);
-		$correct_val=$orginal_val[$existkey];
-		return $correct_val;
-	}else
-	return null;
-
 }
 
 ?>

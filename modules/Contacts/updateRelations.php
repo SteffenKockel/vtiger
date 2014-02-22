@@ -41,7 +41,7 @@ foreach($storearray as $id)
 		if($dest_mod == 'Products')
 			$adb->pquery("insert into vtiger_seproductsrel values (?,?,?)", array($forCRMRecord, $id, 'Contacts'));	
 		elseif($dest_mod == 'Campaigns')
-			$adb->pquery("insert into vtiger_campaigncontrel values(?,?)", array($id, $forCRMRecord));
+			$adb->pquery("insert into vtiger_campaigncontrel values(?,?,1)", array($id, $forCRMRecord));
 		elseif($dest_mod == 'Documents')
 			$adb->pquery("insert into vtiger_senotesrel values(?,?)", array($forCRMRecord,$id));
 		else {

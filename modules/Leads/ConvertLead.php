@@ -202,7 +202,7 @@ foreach($fields_list as $mod=>$fields){
 
 $convertlead .='<tr>
 			<td align="right" class="dvtCellLabel">'.$mod_strings['LBL_DO_NOT_CREATE_NEW_POTENTIAL'].'</td>
-			<td class="dvtCellInfo"><input type="checkbox" name="createpotential" onClick="fnSlide2(\'ch\',\'cc\')"></td>
+			<td class="dvtCellInfo"><input type="checkbox" name="createpotential" onClick="if(this.checked) { $(\'ch\').hide(); } else { $(\'ch\').show(); }"></td>
 		</tr>
 		<tr>
 			<td colspan="2" id="ch" height="100px" style="padding:0px;" >

@@ -40,7 +40,7 @@
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 
 		<form name="basicSearch" action="index.php" onsubmit="return false;">
-		<div id="searchAcc" style="z-index:1;display:none;position:relative;">
+		<div id="searchAcc" style="display: block;position:relative;">
 			<table width="80%" cellpadding="5" cellspacing="0"  class="searchUIBasic small" align="center" border=0>
 				<tr>
 					<td class="searchUIName small" nowrap align="left">

@@ -66,5 +66,10 @@ $mod_strings = array(
 // Module Sequence Numbering
 'Vendor No' => 'Vendor No',
 // END
+
+/*
+ * 5.2.0 changes 
+ */
+'LBL_MODULE_NAME'=>'Vendors',
 );
 ?>

@@ -19,7 +19,7 @@ $allowed_modules = array();
 $sql = 'select distinct vtiger_field.tabid,name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid where vtiger_tab.tabid not in (16,29) and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
 $moduleres = $adb->query($sql);
 while($modulerow = $adb->fetch_array($moduleres)) {
-	if(is_admin($current_user) || isPermitted($modulerow['name'], 'DetailView')) {
+	if(is_admin($current_user) || isPermitted($modulerow['name'], 'DetailView') == 'yes') {
 		$modulename = $modulerow['name'];
 		$allowed_modules[$modulename] = array(
 			'label' => getTranslatedString($modulename, $modulename),

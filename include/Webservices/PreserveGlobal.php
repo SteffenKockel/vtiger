@@ -18,8 +18,7 @@ class VTWS_PreserveGlobal{
 		
 		if(!is_array(VTWS_PreserveGlobal::$globalData[$name])){
 			VTWS_PreserveGlobal::$globalData[$name] = array();
-			VTWS_PreserveGlobal::$globalData[$name]['exists'] = true;
-			VTWS_PreserveGlobal::$globalData[$name]['value'] = $$name;
+			VTWS_PreserveGlobal::$globalData[$name][] = $$name;
 		}
 		$$name = $value;
 		return $$name;
@@ -29,10 +28,10 @@ class VTWS_PreserveGlobal{
 		//$name store the name of the global.
 		global $$name;
 		
-		if(VTWS_PreserveGlobal::$globalData[$name]['exists'] === true){
-			$$name = VTWS_PreserveGlobal::$globalData[$name]['value'];
-			return $$name;
+		if(is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0){
+			$$name = array_pop(VTWS_PreserveGlobal::$globalData[$name]);
 		}
+		$$name;
 	}
 	
 	static function getGlobal($name){
@@ -44,8 +43,9 @@ class VTWS_PreserveGlobal{
 		foreach (VTWS_PreserveGlobal::$globalData as $name => $detail) {
 			//$name store the name of the global.
 			global $$name;
-			$$name = VTWS_PreserveGlobal::$globalData[$name]['value'];
-			return $$name;
+			if(is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0) {
+				$$name = array_pop(VTWS_PreserveGlobal::$globalData[$name]);
+			}
 		}
 	}
 	
