@@ -80,14 +80,82 @@ Migrations from version 5.x to 6.0.0 may be an often required task, which is cov
 	php_admin_flag allow_call_time_pass_reference on
 	php_admin_flag short_open_tag on
 	php_admin_flag expose_php off
-#	php_flag  display_errors        on			# for debugging
-#   php_value error_reporting       2039		# for debugging
+#	php_flag  display_errors        on				# for debugging
+#   php_value error_reporting       2039			# for debugging
+	php_admin_value session.gc_maxlifetime 43200  	# increase session to 12 hours
 
 </Directory>
 ```
 ####Nginx	
 
+##### PHP-fpm
+
+Copy `/etc/php5/fpm/pool.d/www.conf` to `/etc/php5/fpm/pool.d/vtiger.conf`. Customize the section header `[www]` to `[vtiger]`. Define either a different port or socket. Eg 
+
+    listen = /var/run/vtiger-php5-fpm.sock
+
+and add the following PHP-directives 
 <pre>
+php_value[newrelic.appname]= "vTiger"
+php_admin_value[max_execution_time]=600
+php_admin_value[memory_limit]=256M
+php_admin_value[upload_max_filesize]=50M
+php_admin_value[post_max_size]=50M
+;php_admin_value[error_reporting]=E_ALL
+php_admin_value[upload_tmp_dir]=/tmp
+php_admin_value[sendmail_path]=/tmp
+php_admin_value[include_path]=.:/usr/share/php:/usr/share/pear:/var/www/apps/vtiger/adodb:/var/www/apps/vtiger
+php_admin_value[error_log]=/tmp/vtiger.php.error.log
+php_admin_flag[output_buffering]=on
+;php_admin_flag[display_errors]=on
+php_flag[allow_call_time_pass_reference]=on
+php_admin_flag[log_errors]=on
+php_admin_flag[short_open_tag]=on
+php_admin_flag[expose_php]=off
+;php_admin_flag[show_errors]=on
+php_admin_value[date.timezone]=Europe/Berlin
+php_admin_value[session.gc_maxlifetime]=43200
+</pre>
+
+##### Vhost
+
+<pre>
+
+# still under construction. Fork and do better!
+
+server {
+        listen 127.80.80.80:80;
+        server_name vtiger.dev;
+        access_log /var/log/nginx/vtiger.access;
+        error_log /var/log/nginx/vtiger.error;
+        index index.php;
+        root /var/www/apps/vtiger;
+
+        location ~* ^.+\.(jpe?g|gif|png|ico|css|zip|tgz|gz|rar|bz2|doc|xls|exe|pdf|ppt|txt|tar|mid|midi|wav|bmp|rtf|js|swf|avi|mp3)$ {
+                root            /var/www/apps/vtiger;
+                expires         max;
+        }
+
+       location ~ \.php$ {
+            alias                    /var/www/apps/vtiger;
+            fastcgi_split_path_info  ^(.+\.php)(/.+)$;
+            fastcgi_pass             unix:/var/run/vtiger-php5-fpm.sock;
+            include                  fastcgi_params;
+            fastcgi_index           index.php;
+            try_files                $uri $uri/;
+            client_header_timeout    3000;
+            client_body_timeout      3000;
+            fastcgi_read_timeout     3000;
+            client_max_body_size     32m;
+            fastcgi_buffers 8        128k;
+            fastcgi_buffer_size      128k;
+            send_timeout             600;
+            keepalive_timeout        600;
+            proxy_connect_timeout    600;
+            proxy_send_timeout       600;
+            proxy_read_timeout       600;
+        }
+}
 
 </pre>
 
