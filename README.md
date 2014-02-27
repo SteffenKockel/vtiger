@@ -69,20 +69,21 @@ Migrations from version 5.x to 6.0.0 may be an often required task, which is cov
 	php_admin_value memory_limit 256M
 	php_admin_value upload_max_filesize 50M
 	php_admin_value post_max_size 50M
-	php_admin_value error_reporting E_ALL
-
-
 	php_admin_value upload_tmp_dir "/tmp"
-	php_admin_value sendmail_path "/tmp"
 	php_admin_value include_path .:/usr/share/php:/usr/share/pear:/var/www/apps/vtiger/adodb/pear:/var/www/apps/vtiger/adodb
-	php_admin_value error_log /var/log/apache2/vtiger.error.log
 	php_admin_flag output_buffering on
 	php_admin_flag allow_call_time_pass_reference on
 	php_admin_flag short_open_tag on
 	php_admin_flag expose_php off
+	
+	# Logging
 #	php_flag  display_errors        on				# for debugging
-#   php_value error_reporting       2039			# for debugging
-	php_admin_value session.gc_maxlifetime 43200  	# increase session to 12 hours
+#   php_admin_value error_reporting E_ALL	 		# 
+#   php_value error_reporting       2039			# 
+	php_admin_value error_log /var/log/apache2/vtiger.error.log
+
+	# Session
+	php_admin_value session.gc_maxlifetime 3600  	# increase session to 1 hour
 
 </Directory>
 ```
@@ -101,20 +102,28 @@ php_admin_value[max_execution_time]=600
 php_admin_value[memory_limit]=256M
 php_admin_value[upload_max_filesize]=50M
 php_admin_value[post_max_size]=50M
-;php_admin_value[error_reporting]=E_ALL
 php_admin_value[upload_tmp_dir]=/tmp
-php_admin_value[sendmail_path]=/tmp
 php_admin_value[include_path]=.:/usr/share/php:/usr/share/pear:/var/www/apps/vtiger/adodb:/var/www/apps/vtiger
-php_admin_value[error_log]=/tmp/vtiger.php.error.log
 php_admin_flag[output_buffering]=on
-;php_admin_flag[display_errors]=on
-php_flag[allow_call_time_pass_reference]=on
-php_admin_flag[log_errors]=on
 php_admin_flag[short_open_tag]=on
+php_flag[allow_call_time_pass_reference]=on
 php_admin_flag[expose_php]=off
-;php_admin_flag[show_errors]=on
+
+# Session
 php_admin_value[date.timezone]=Europe/Berlin
-php_admin_value[session.gc_maxlifetime]=43200
+php_admin_value[session.gc_maxlifetime]=3600			
+php_admin_value[session.save_path]=/tmp
+php_admin_value[session.save_handler]=files
+
+# Logging
+;php_admin_flag[show_errors]=on
+;php_admin_flag[display_errors]=on
+;php_admin_value[error_reporting]=E_ALL
+php_admin_value[error_log]=/tmp/vtiger.php.error.log
+php_admin_flag[log_errors]=on
+
+
+
 </pre>
 
 ##### Vhost

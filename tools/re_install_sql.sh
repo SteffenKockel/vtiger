@@ -10,8 +10,8 @@ GRANT ALL ON dbvtiger.* to 'dbvtiger'@'localhost' IDENTIFIED BY 'VtiG3rSDB1';
 EOF
 
 if [ -z $1 ]; then
-    echo "INFO: Skipped injecting migration source. Give a path"
-    echo "      as first argument. Like:"
+    echo "INFO: Skipped injecting migration source."
+    echo "Give a path as first argument. Like:"
     echo " $0 /here/is/my/gigration_source.sql"
     exit 0
 fi
