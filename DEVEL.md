@@ -11,8 +11,8 @@ Clone the repo into your Devel PCs home directory and setup a devel branch.
 ```bash
 cd ~/
 git clone https://github.com/SteffenKockel/vtiger
+git ceckout -b 6.0.0
 ```
-
 This way, you can easyly access the files via the IDE of your choice.
 
 ### Firewall
@@ -38,6 +38,6 @@ Create a VHost and a Database as mentioned in the [README](README.md).
 edit the `/etc/fstab` and add a line that mounts the fs from the devel host into the VM.
 
 ```bash
-sshfs#you@10.10.0.2:~/vtiger /var/www/vtiger fuse auto,uid=apache,gid=apache,allow_other,umask=0007 0 0
+sshfs#you@10.10.0.2:~/vtiger /var/www/vtiger fuse noauto,uid=apache,gid=apache,allow_other,umask=0007 0 0
 ```
-The `umask` is important for vtiger when it comes to install tests, because vtiger creates a lot of folders and files during installation.
+The `umask` is important for vtiger when it comes to install tests, because vtiger creates a lot of folders and files during installation. Also, you want to go with `noauto`, unless you are using keyfile authentication. 
