@@ -6,7 +6,7 @@ How to setup a devel VM for vtiger
 Install OS and dependencies
 ---------------------------
 
-Install a Linux of your choice with all needed packages mentioned in the [[README]] of this repo.
+Install a Linux of your choice with all needed packages mentioned in the [README](README.md) of this repo.
 
 Also install for devel purposes
 
@@ -21,7 +21,7 @@ Clone the repo into your Devel PCs home directory.
 <pre><code class="bash">
 cd ~/
 git clone https://github.com/SteffenKockel.de/vtiger
-</code><pre>
+</code></pre>
 
 This way, you can easyly access the files via the IDE of your choice.
 
