@@ -1,36 +1,37 @@
 ## SugarCRM
 # Ignore custom .htaccess stuff.
-/.htaccess
-# Ignore large parts of the annoying cache directory without breaking things.
-cache/csv/*
-cache/dashlets/*
-cache/diagnostic/*
-cache/dynamic_fields/*
-cache/feeds/*
-cache/import/*
-cache/include/*
-cache/jsLanguage/*
-cache/modules/*
-!cache/modules/emails
-!cache/modules/Emails
-cache/pdf/*
-cache/smarty/cache/*
-cache/smarty/templates_c/*
-cache/themes/*
-cache/xml/*
-# Ignore some files and directories from the custom directory.
-custom/history/*
-custom/modulebuilder/*
-custom/working/*
-custom/modules/*/Ext/
-custom/application/Ext/*
+# /.htaccess
+#custom/history/*
+#custom/modulebuilder/*
+#custom/working/*
+#custom/modules/*/Ext/
+#custom/application/Ext/*
 # Custom configuration should also be ignored.
 #/config.php
-/config.inc.php
+#/config.inc.php
 # The silent upgrade scripts aren't needed.
-silentUpgrade*.php
+#silentUpgrade*.php
 # Logs files can safely be ignored.
-*.log
-import.sh
+#*.log
+#import.sh
+
 .svn
 nohup.out
+.gitignore.swp
+# all cached templates
+*.tpl.php
+# cache folders
+/cache/images/*
+!/cache/images/index.html
+/cache/import/*
+!/cache/import/index.html
+/cache/upload/*
+!/cache/upload/index.html
+/Smarty/cache/*
+!Smarty/cache/index.html
+/tools/*
+# The config 
+#/config.inc.php
+# Eclipse / Aptana
+.project
+#
