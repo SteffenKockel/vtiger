@@ -12,7 +12,7 @@ read -s -p "MySQL password: " PASS
 mysql -p$PASS <<EOF
 DROP DATABASE IF EXISTS $1;
 CREATE DATABASE $1 DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-GRANT ALL ON dbvtiger.* to '$1'@'localhost' IDENTIFIED BY '$2';
+GRANT ALL ON $1.* to '$1'@'localhost' IDENTIFIED BY '$2';
 EOF
 
 echo "..."
