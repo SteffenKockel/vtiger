@@ -18,10 +18,10 @@
  * @package    Zend_Gdata
  * @subpackage Contacts
  */
-require_once 'Zend/Gdata/Contacts/Extension.php';
+require_once 'include/Zend/Gdata/Contacts/Extension.php';
 
-require_once 'Zend/Gdata/Contacts/Extension/OrgName.php';
-require_once 'Zend/Gdata/Contacts/Extension/OrgTitle.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/OrgName.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/OrgTitle.php';
 
 class Zend_Gdata_Contacts_Extension_Organization extends Zend_Gdata_Contacts_Extension {
 	protected $_rootElement = 'organization';

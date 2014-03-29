@@ -22,7 +22,7 @@
 /**
  * Zend_Gdata_Query
  */
-require_once('Zend/Gdata/Query.php');
+require_once('include/Zend/Gdata/Query.php');
 
 class Zend_Gdata_Contacts_Query extends Zend_Gdata_Query {
     

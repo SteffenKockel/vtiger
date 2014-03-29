@@ -18,10 +18,10 @@
  * @package    Zend_Gdata
  * @subpackage Contacts
  */
-require_once 'Zend/Gdata.php';
-require_once 'Zend/Gdata/Contacts/ListFeed.php';
-require_once 'Zend/Gdata/Contacts/ListEntry.php';
-require_once 'Zend/Gdata/Contacts/Query.php';
+require_once 'include/Zend/Gdata.php';
+require_once 'include/Zend/Gdata/Contacts/ListFeed.php';
+require_once 'include/Zend/Gdata/Contacts/ListEntry.php';
+require_once 'include/Zend/Gdata/Contacts/Query.php';
 
 class Zend_Gdata_Contacts extends Zend_Gdata {
 
@@ -86,7 +86,7 @@ class Zend_Gdata_Contacts extends Zend_Gdata {
 	
 	public function getContactListEntry($location = NULL) {
 		if ($location == null) {
-            require_once 'Zend/Gdata/App/InvalidArgumentException.php';
+            require_once 'include/Zend/Gdata/App/InvalidArgumentException.php';
             throw new Zend_Gdata_App_InvalidArgumentException(
                     'Location must not be null');
         } else if ($location instanceof Zend_Gdata_Query) {

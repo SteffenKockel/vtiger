@@ -19,6 +19,6 @@
  * @subpackage Contacts
  */
 
-require_once 'Zend/Gdata/Contacts/ListEntry.php';
+require_once 'include/Zend/Gdata/Contacts/ListEntry.php';
 
 class Zend_Gdata_Contacts_ContactEntry extends Zend_Gdata_Contacts_ListEntry {}
