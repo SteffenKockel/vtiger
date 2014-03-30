@@ -25,7 +25,7 @@
 /**
  * Zend_Exception
  */
-require_once 'Zend/Exception.php';
+require_once 'include/Zend/Exception.php';
 
 /**
  * Gdata App exceptions

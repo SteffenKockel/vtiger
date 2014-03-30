@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Zend/Gdata/Feed.php';
+require_once 'include/Zend/Gdata/Feed.php';
 
 
 class Zend_Gdata_Contacts_ContactListFeed extends Zend_Gdata_Feed

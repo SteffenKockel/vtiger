@@ -23,7 +23,7 @@
 /**
  * @see Zend_Http_Exception
  */
-require_once 'Zend/Http/Exception.php';
+require_once 'include/Zend/Http/Exception.php';
 
 /**
  * @category   Zend

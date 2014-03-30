@@ -18,12 +18,12 @@
  * @package    Zend_Gdata
  * @subpackage Contacts
  */
-require_once 'Zend/Gdata/Contacts/Extension.php';
+require_once 'include/Zend/Gdata/Contacts/Extension.php';
 
-require_once 'Zend/Gdata/Contacts/Extension/Name/FullName.php';
-require_once 'Zend/Gdata/Contacts/Extension/Name/NamePrefix.php';
-require_once 'Zend/Gdata/Contacts/Extension/Name/GivenName.php';
-require_once 'Zend/Gdata/Contacts/Extension/Name/FamilyName.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/Name/FullName.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/Name/NamePrefix.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/Name/GivenName.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/Name/FamilyName.php';
 
 class Zend_Gdata_Contacts_Extension_Name extends Zend_Gdata_Contacts_Extension {
 	

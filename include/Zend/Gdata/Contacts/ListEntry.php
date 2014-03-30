@@ -19,16 +19,16 @@
  * @subpackage Contacts
  */
 
-require_once 'Zend/Gdata/Entry.php';
-require_once 'Zend/Gdata/Contacts/Extension/Name.php';
-require_once 'Zend/Gdata/Contacts/Extension/Notes.php';
-require_once 'Zend/Gdata/Contacts/Extension/Email.php';
-require_once 'Zend/Gdata/Contacts/Extension/Im.php';
-require_once 'Zend/Gdata/Contacts/Extension/PhoneNumber.php';
-require_once 'Zend/Gdata/Contacts/Extension/StructuredPostalAddress.php';
-require_once 'Zend/Gdata/Contacts/Extension/Organization.php';
-require_once 'Zend/Gdata/Extension/ExtendedProperty.php';
-require_once 'Zend/Gdata/Contacts/Extension/Category.php';
+require_once 'include/Zend/Gdata/Entry.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/Name.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/Notes.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/Email.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/Im.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/PhoneNumber.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/StructuredPostalAddress.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/Organization.php';
+require_once 'include/Zend/Gdata/Extension/ExtendedProperty.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/Category.php';
  
 /**
  * Represents a contact entry.

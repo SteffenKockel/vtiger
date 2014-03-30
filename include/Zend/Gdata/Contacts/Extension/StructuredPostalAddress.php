@@ -18,10 +18,10 @@
  * @package    Zend_Gdata
  * @subpackage Contacts
  */
-require_once 'Zend/Gdata/Contacts/Extension.php';
+require_once 'include/Zend/Gdata/Contacts/Extension.php';
 
-require_once 'Zend/Gdata/Contacts/Extension/FormattedAddress.php';
-require_once 'Zend/Gdata/Contacts/Extension/Street.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/FormattedAddress.php';
+require_once 'include/Zend/Gdata/Contacts/Extension/Street.php';
 
 class Zend_Gdata_Contacts_Extension_StructuredPostalAddress extends Zend_Gdata_Contacts_Extension {
 	protected $_rootElement = 'structuredPostalAddress';
