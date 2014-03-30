@@ -24,10 +24,23 @@ fi
 
 cd $1
 
-mkdir -p cache/import/ backup modules/Webmails/tmp/
+# make folders
+folders="cache/import/ backup modules/Webmails/tmp/"
 
-echo "" > config.inc.php # just in case ...
+for f in $folders; do
+    mkfdir -p $f
+    chmod -r 770 $f
+    echo "INFO: creating folder: $f"
+done
 
-chown -R $WWWUSER:$WWWUSER $1
-chmod -R 777 $1
+
+# prepare config
+conf="config.inc.php"
+if [ -f $conf ];
+    echo "" > $conf 
+else 
+    touch $conf
+
+# chown -R $WWWUSER:$WWWUSER $1
+# chmod -R 777 $1
 
