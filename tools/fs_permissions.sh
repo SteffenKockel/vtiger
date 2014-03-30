@@ -28,8 +28,8 @@ cd $1
 folders="cache/import/ backup modules/Webmails/tmp/"
 
 for f in $folders; do
-    mkfdir -p $f
-    chmod -r 770 $f
+    mkdir -p $f
+    chmod -R 770 $f
     echo "INFO: creating folder: $f"
 done
 
