@@ -157,15 +157,15 @@
 													<h3 class="login-header">Forgot Password</h3>
 												</div>
 												<div class="control-group">
-													<label class="control-label" for="user_name"><b>User name</b></label>
+													<label class="control-label" for="username"><b>User name</b></label>
 													<div class="controls">
-														<input type="text" id="user_name" name="user_name" placeholder="Username">
+														<input type="text" id="username" name="username" placeholder="Username">
 													</div>
 												</div>
 												<div class="control-group">
 													<label class="control-label" for="email"><b>Email</b></label>
 													<div class="controls">
-														<input type="text" id="emailId" name="emailId"  placeholder="Email">
+														<input type="text" id="email" name="email"  placeholder="Email">
 													</div>
 												</div>
 												<div class="control-group signin-button">

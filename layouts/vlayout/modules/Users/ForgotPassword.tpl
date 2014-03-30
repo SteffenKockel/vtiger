@@ -77,12 +77,15 @@
 				<img  src="{$LOGOURL}" alt="{$TITLE}" style="height: 4em;width: 12em;"><br><br><br>
 			</div>
 			<div>
+                            {if $LINK_EXPIRED neq 'true'}   
 				<div id="content">
 					<span><b>{vtranslate('LBL_CHANGE_PASSWORD',$MODULE)}</b></span>
 					<hr>
 					<div id="changePasswordBlock" align='left'>
 						<form name="changePassword" id="changePassword" action="{$TRACKURL}" method="post" accept-charset="utf-8">
 							<input type="hidden" name="username" value="{$USERNAME}">
+                                                        <input type="hidden" name="shorturl_id" value="{$SHORTURL_ID}"> 
+                                                        <input type="hidden" name="secret_hash" value="{$SECRET_HASH}"> 
 							<table align='center'>
 								<tr>
 									<td><label class="control-label" for="password">{vtranslate('LBL_NEW_PASSWORD',$MODULE)}</label></td>
@@ -101,10 +104,11 @@
 							</table>
 						</form>
 					</div>
-					<div id="footer">
-						<p></p>
-					</div>
-					<div style="clear:both;"></div>
+					{else} 
+                                            <div id="content"> 
+                                                {vtranslate('LBL_PASSWORD_LINK_EXPIRED_OR_INVALID_PASSWORD', $MODULE)} 
+                                            </div>
+                                         {/if}
 				</div>
 			</div>
             
