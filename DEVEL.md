@@ -4,6 +4,8 @@ How to setup a devel VM for vtiger
 
 ## Set up the devel PC
 
+The approach is, to have the code on the host, but mount ist via ssh into the vm. This way, you can easily access the files via the IDE of your choice without any sshfs involved.
+
 ### Code
 
 Clone the repo into your Devel PCs home directory and setup a devel branch. 
@@ -11,9 +13,8 @@ Clone the repo into your Devel PCs home directory and setup a devel branch.
 ```bash
 cd ~/
 git clone https://github.com/SteffenKockel/vtiger
-git ceckout -b 6.0.0
+git ceckout -b my_6.0.0
 ```
-This way, you can easyly access the files via the IDE of your choice.
 
 ### Firewall
 
