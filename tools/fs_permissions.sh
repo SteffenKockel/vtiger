@@ -28,18 +28,19 @@ cd $1
 folders="cache/import/ backup modules/Webmails/tmp/"
 
 for f in $folders; do
-    mkdir -p $f
-    chmod -R 770 $f
-    echo "INFO: creating folder: $f"
+    test ! -d $f &&  mkdir -p $f \
+    && chmod -R 770 $f \
+    && echo "INFO: created folder: $f"
 done
 
 
 # prepare config
 conf="config.inc.php"
-if [ -f $conf ];
+if [ -f $conf ];then
     echo "" > $conf 
 else 
     touch $conf
+fi
 
 # chown -R $WWWUSER:$WWWUSER $1
 # chmod -R 777 $1
