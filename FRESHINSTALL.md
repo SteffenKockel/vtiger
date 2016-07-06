@@ -141,7 +141,7 @@ server {
             include                  fastcgi_params;
             fastcgi_index           index.php;
             try_files                $uri $uri/;
-            client_header_timeout    3000;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
             client_body_timeout      3000;
             fastcgi_read_timeout     3000;
             client_max_body_size     32m;
